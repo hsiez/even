@@ -1,0 +1,484 @@
+openapi: 3.1.0
+info:
+  title: Even local backend
+  version: 0.1.0
+  description: Project-scoped API using installed Eve 1.0.0-rc.6. Bind to
+    127.0.0.1 only. All requests require a new token each launch; requests with
+    Origin are rejected. Eve-owned discovery, trace and event fields remain
+    extensible.
+servers:
+  - url: http://127.0.0.1:{port}/api/v1
+    variables:
+      port:
+        default: "2000"
+security:
+  - launchToken: []
+paths:
+  /agents:
+    get:
+      operationId: listAgents
+      description: Passive project-scoped discovery. Eve discovery fields are passed
+        through; runtime does not start execution.
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agents"
+        "401": &a2
+          description: Missing or incorrect per-launch bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403": &a3
+          description: Origin header present or Host is not a localhost IPv4 address and
+            port.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Inventory inspection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /agents/{agentId}/traces:
+    get:
+      operationId: listTraces
+      description: Full recorded traces. sessionId matches Eve session identifiers,
+        not conversation IDs. Matching traces retain all spans. Reading follows
+        Eve spool symlinks and does not start execution.
+      parameters:
+        - &a4
+          name: agentId
+          in: path
+          required: true
+          description: Agent ID from the selected project inventory.
+          schema: &a1
+            type: string
+        - name: sessionId
+          in: query
+          required: false
+          description: Exact recorded session identifier.
+          schema: *a1
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Traces"
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "500":
+          description: Inspection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /agents/{agentId}/traces/{traceId}:
+    get:
+      operationId: getTrace
+      description: Full recorded trace. Empty, missing, malformed-only or invalid-ID
+        traces return 404. Eve span fields are passed through; bigint values
+        serialize as decimal strings.
+      parameters:
+        - *a4
+        - name: traceId
+          in: path
+          required: true
+          description: 32 lowercase hexadecimal characters. Invalid IDs return 404.
+          schema:
+            type: string
+            pattern: ^[a-f0-9]{32}$
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Trace"
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Inspection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /sessions:
+    get:
+      operationId: listSessions
+      description: Only sessions created in this Even launch.
+      parameters:
+        - name: agentId
+          in: query
+          required: false
+          description: Filter by selected project agent.
+          schema: *a1
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sessions"
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+    post:
+      operationId: createSession
+      description: Starts or attaches to the selected agent server. Attached servers
+        retain existing configuration. agentId may be omitted only when
+        inventory has exactly one agent.
+      responses:
+        "201":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "413":
+          description: Body exceeds 64 KiB.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Expected application/json.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "502":
+          description: Eve execution request failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        description: JSON object, at most 64 KiB.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSession"
+  /sessions/{sessionId}/messages:
+    post:
+      operationId: createMessage
+      description: Accept a nonblank message for delivery. Receipt does not imply
+        completion; follow events.
+      parameters:
+        - &a5
+          name: sessionId
+          in: path
+          required: true
+          description: Session created during this Even launch.
+          schema: *a1
+      responses:
+        "202":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delivery"
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "413":
+          description: Body exceeds 64 KiB.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Expected application/json.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "502":
+          description: Eve execution request failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        description: JSON object, at most 64 KiB.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Message"
+  /sessions/{sessionId}/events:
+    get:
+      operationId: streamEvents
+      description: "SSE frames use event: eve, id: line:index and JSON data matching
+        EveEvent. Replay excludes the cursor itself. Last-Event-ID takes
+        precedence over after. Cursor integers must be safe JavaScript integers.
+        follow=false ends at current history; otherwise follows live events. No
+        cursor starts at line zero. A failure after headers emits event: error
+        with JSON Error data and closes the stream. Reconnecting requires the
+        bearer token; native EventSource cannot supply this header."
+      parameters:
+        - *a5
+        - name: after
+          in: query
+          required: false
+          description: Exclusive replay cursor.
+          schema:
+            type: string
+            pattern: ^\d+:\d+$
+        - name: Last-Event-ID
+          in: header
+          required: false
+          description: Exclusive replay cursor; overrides after.
+          schema:
+            type: string
+            pattern: ^\d+:\d+$
+        - name: follow
+          in: query
+          required: false
+          description: Only the literal false disables following.
+          schema:
+            type: string
+            default: "true"
+      responses:
+        "200":
+          description: SSE stream of Eve events; see operation description for framing and
+            replay.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+              example: |+
+                id: 4:0
+                event: eve
+                data: {"type":"delivery.settled","meta":{"position":{"line":4,"index":0}}}
+
+        "400":
+          description: Invalid input or agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "502":
+          description: Eve execution request failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    launchToken:
+      type: http
+      scheme: bearer
+      description: Even per-launch token printed by the CLI. Distinct from Eve channel
+        credentials.
+  schemas:
+    Error:
+      type: object
+      properties:
+        error: *a1
+      required:
+        - error
+      additionalProperties: false
+    Runtime:
+      type: object
+      properties:
+        state:
+          enum:
+            - disconnected
+            - starting
+            - ready
+            - unavailable
+          type: string
+        ownership:
+          type:
+            - string
+            - "null"
+          enum:
+            - started
+            - attached
+            - null
+        url:
+          type: string
+          format: uri
+      required:
+        - state
+        - ownership
+      additionalProperties: false
+    Agent:
+      type: object
+      properties:
+        id: *a1
+        appRoot: *a1
+        runtime:
+          $ref: "#/components/schemas/Runtime"
+      required:
+        - id
+        - appRoot
+        - runtime
+      additionalProperties: true
+    Agents:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Agent"
+      required:
+        - agents
+      additionalProperties: true
+    Session:
+      type: object
+      properties:
+        id: *a1
+        agentId: *a1
+      required:
+        - id
+        - agentId
+      additionalProperties: false
+    Sessions:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Session"
+      required:
+        - sessions
+      additionalProperties: false
+    CreateSession:
+      type: object
+      properties:
+        agentId: *a1
+      required: []
+      additionalProperties: false
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+          pattern: \S
+      required:
+        - message
+      additionalProperties: false
+    Delivery:
+      type: object
+      properties:
+        sessionId: *a1
+        deliveryId: *a1
+      required:
+        - sessionId
+        - deliveryId
+      additionalProperties: false
+    Trace:
+      type: object
+      properties:
+        traceId:
+          type: string
+          pattern: ^[a-f0-9]{32}$
+        spans:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        conversationIds:
+          type: array
+          items: *a1
+      required:
+        - traceId
+        - spans
+        - conversationIds
+      additionalProperties: true
+    Traces:
+      type: object
+      properties:
+        traces:
+          type: array
+          items:
+            $ref: "#/components/schemas/Trace"
+      required:
+        - traces
+      additionalProperties: false
+    EveEvent:
+      type: object
+      properties:
+        type: *a1
+        meta:
+          type: object
+          properties:
+            position:
+              type: object
+              properties:
+                line:
+                  type: integer
+                  minimum: 0
+                index:
+                  type: integer
+                  minimum: 0
+              required:
+                - line
+                - index
+              additionalProperties: true
+          required:
+            - position
+          additionalProperties: true
+      required:
+        - type
+        - meta
+      additionalProperties: true

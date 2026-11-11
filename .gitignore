@@ -1,0 +1,4 @@
+node_modules/
+*.tgz
+.even/
+.even-startup.lock/
