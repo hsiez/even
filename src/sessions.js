@@ -83,9 +83,16 @@ export function parseCursor(value) {
 }
 
 export async function* replayEvents(session, { cursor, follow, signal }) {
-  for await (const event of session.stream({ startIndex: cursor?.line ?? 0, follow, signal, reconnect: false })) {
+  let caughtUp = false;
+  for await (const event of session.stream({
+    startIndex: cursor?.line ?? 0, follow, signal, reconnect: false,
+    onCaughtUp: follow === false ? () => { caughtUp = true; } : undefined,
+  })) {
     const { line, index } = event.meta.position;
     if (cursor && (line < cursor.line || (line === cursor.line && index <= cursor.index))) continue;
     yield { id: line + ':' + index, event };
+  }
+  if (follow === false && !signal?.aborted && !caughtUp) {
+    throw new Error('Replay ended before reaching the captured history tail.');
   }
 }

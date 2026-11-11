@@ -263,7 +263,8 @@ paths:
         precedence over after. Cursor integers must be safe JavaScript integers.
         follow=false ends at current history; otherwise follows live events. No
         cursor starts at line zero. A failure after headers emits event: error
-        with JSON Error data and closes the stream. Reconnecting requires the
+        with JSON Error data and closes the stream. Finite replay also emits an error
+        if the upstream stream ends before the captured tail. Reconnecting requires the
         bearer token; native EventSource cannot supply this header."
       parameters:
         - *a5

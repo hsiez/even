@@ -30,7 +30,7 @@ All routes use the prefix `/api/v1`.
 
 POST bodies require JSON and are limited to 64 KiB. Unknown fields are rejected. Message input currently supports text strings.
 
-Event IDs are `line:index` positions from Eve's durable stream. Reconnect with `Last-Event-ID` or `?after=line:index`. Replay starts after that event, including any remaining events in the same line. Use `?follow=false` for a finite replay through the observed durable tail. Trace nanosecond values are serialized as decimal strings.
+Event IDs are `line:index` positions from Eve's durable stream. Reconnect with `Last-Event-ID` or `?after=line:index`. Replay starts after that event, including any remaining events in the same line. Use `?follow=false` for a finite replay through the observed durable tail. If the upstream stream ends before that tail, Even emits an SSE error; reconnect with the last received event ID to resume. Trace nanosecond values are serialized as decimal strings.
 
 ## Execution and trust
 
@@ -62,7 +62,7 @@ EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules node scripts/verif
 
 The integration fixture supplies a deterministic model through Eve's model interface. The tarball verifier runs `npm pack`, installs the tarball in a temporary directory, launches the installed `even` executable, and checks authentication, inventory, session creation, messaging, live events, replay, traces, and shutdown.
 
-Trace inspection reuses one project-installed Eve `TraceStore` per selected agent. Eve owns parsed-segment caching and incremental reads; Even adds no second span cache or database. Lists and details retain full trace objects, including spans. Empty or malformed traces are omitted until a valid segment is available. Segment files follow Eve's immutable spool naming and read behavior.
+Trace inspection reuses one project-installed Eve `TraceStore` per selected agent. Eve owns parsed-segment caching and incremental reads; Even adds no second span cache or database. Trace inspection operations queue separately for each agent so concurrent requests cannot observe partially loaded segments. Lists and details retain full trace objects, including spans. Empty or malformed traces are omitted until a valid segment is available. Segment files follow Eve's immutable spool naming and read behavior.
 
 Trace lists support `GET /api/v1/agents/:agentId/traces?sessionId=...`. This uses Eve's summary/query helpers to match recorded session identifiers (`agent.run.id`, falling back to `agent.session.id`), not conversation identifiers. A matching response contains the complete trace, including other sessions if they share that trace. Filtering does not import the recorded session into Even's live-session inventory.
 

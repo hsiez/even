@@ -28,12 +28,19 @@ test('Eve trace store follows linked spools, reads new segments, and filters exa
   await writeFile(join(segments, '1111111111111111.otlp.json'), span('1111111111111111', 'parent-session'));
   const adapter = await loadEve(root);
   assert.equal(await adapter.traces('../secret'), undefined);
-  assert.equal((await adapter.traces(id)).spans.length, 1);
+  const concurrent = await Promise.all(Array.from({ length: 10 }, () => adapter.traces(id)));
+  assert.ok(concurrent.every(trace => trace?.spans.length === 1));
   assert.equal((await adapter.traces(undefined, 'root', 'parent-session')).length, 1);
   assert.deepEqual(await adapter.traces(undefined, 'root', 'shared-conversation'), []);
   assert.deepEqual(await adapter.traces(undefined, 'root', 'child-session'), []);
   await writeFile(join(segments, '2222222222222222.otlp.json'), span('2222222222222222', 'child-session'));
-  const updated = await adapter.traces(undefined, 'root', 'child-session');
+  const [updated, detail, listed] = await Promise.all([
+    adapter.traces(undefined, 'root', 'child-session'),
+    adapter.traces(id),
+    adapter.traces(),
+  ]);
+  assert.equal(detail.spans.length, 2);
+  assert.equal(listed[0].spans.length, 2);
   assert.equal(updated.length, 1);
   assert.equal(updated[0].spans.length, 2);
   assert.deepEqual(await adapter.traces(undefined, 'root', 'secret'), []);
