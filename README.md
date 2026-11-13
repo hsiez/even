@@ -73,3 +73,7 @@ TODO: Bound retained trace memory. Eve's current store retains parsed spans and 
 [openapi.yaml](./openapi.yaml) is the HTTP contract for the backend and future UI. It documents requests, responses, bearer authentication, errors, and SSE framing/replay. Use the actual localhost port printed by the CLI. The file is included in the npm package; no documentation server is required.
 
 Update the contract in the same change as API behavior. `npm run test:contract` validates the specification, checks route coverage, and checks representative HTTP inspection/error responses. The real-Eve integration test additionally validates session creation, delivery receipts, streamed event payloads, and trace responses against the contract. Run that suite with `EVEN_TEST_NODE_MODULES` as described above. Eve-owned discovery, event, and span fields remain extensible; these checks do not claim to validate every internal Eve field or every possible response.
+
+## Frontend component development
+
+The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. This library is not yet connected to the backend or shipped as a browser application.

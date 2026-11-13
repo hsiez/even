@@ -1,0 +1,28 @@
+# Frontend component library
+
+## Workflow for existing and new components
+
+1. Start with the user interaction being improved. Read the existing component inventory/contracts in `README.md`, then inspect the relevant implementation, stories, tests, and usages before changing its API. Reuse or compose existing components when they cover the need.
+2. Put the change at the appropriate level: page/layout owns arrangement and application data; product composites coordinate a workflow; shared controls own reusable presentation backed by Base UI behavior. Keep a one-screen composition local until there is a useful independent component to extract. Do not expand the library speculatively.
+3. For an existing component, preserve its documented contracts and update callers when an intentional API change requires it. For a new shared interaction primitive, check the installed Base UI API first and build a thin composition. Use compound parts only when they cooperate; ordinary components do not need context.
+4. Use a decision token for each color, spacing, or sizing purpose. Trace its alias back to an option when evaluating a change. Change a shared decision only when its meaning should change everywhere; use a supported variant or a local token-based class for a contextual difference. Add a missing decision to JSON with a clear purpose and regenerate outputs. Do not use raw palette/scale tokens in component styles or introduce component tokens. Fixed borders, focus-outline widths, breakpoints, and provisional typography remain ordinary CSS as described in `README.md`.
+5. Keep reusable defaults in `src/components/components.css` under `even-components`. Prefer existing variants; add a new variant when it represents a meaningful supported use case. Preserve caller styling and Base UI composition APIs. Page-specific arrangement belongs with the page, rather than changing a control's default for one screen.
+6. Develop and review the component in its colocated Storybook story, then check it in the composed explorer when relevant. Cover applicable interaction/data states, both themes, narrow widths, and keyboard focus. Update behavior tests for changed contracts; use the browser gate for rendered contrast, layout, focus, and portal behavior. For a styling-only change, review rendered output rather than adding tests that merely repeat CSS declarations.
+7. Finish with the checks below and update `README.md` contracts/examples if the API or responsibilities changed. New public components also need an export in `src/components/index.js` and their colocated implementation, story, and test. Keep fixture examples clearly identified; reusable components must not fetch application data.
+
+## Construction and verification
+
+- Read `../docs/design-system/component-exemplar.md` and `README.md` before changing component APIs.
+- Each public component lives in `src/components/Name/` with `Name.jsx`, `Name.stories.jsx`, and `Name.test.jsx`. Keep compound parts together until splitting improves clarity.
+- Shared presentation lives in `src/components/components.css`, in the `even-components` cascade layer. Consume decision tokens for colors, spacing and sizing; keep palette/scale choices in JSON. Read `tokens/README.md` before changing foundations. Preserve `className` (including Base UI state callbacks), `style`, refs and primitive event props when wrapping parts. Avoid CSS frameworks and custom interaction engines.
+- Base UI is the foundation: use thin `@base-ui/react` compositions for shared controls. Do not maintain parallel custom primitive state machines or keyboard handlers. Preserve Base UI event-details/cancellation APIs and document intentional convenience defaults.
+- Context is for cooperating product-specific parts, not a default for every wrapper. Generic components receive data and callbacks; they do not call the backend.
+- Stories must be interactive when demonstrating state, and cover applicable loading, empty, error, controlled, disabled, and malformed-data cases. Identify fixture data honestly.
+- Test observable behavior through roles and accessible names. Exercise keyboard navigation, state changes, errors, and instance isolation where applicable. Do not replace behavior tests with snapshots.
+- Run `npm test` here for the component tests and isolated-story accessibility audits. Run `npm run build-storybook` and `npm run test:browser` for the browser gate (requires `npx playwright install chromium` once).
+- Format code with `npx prettier --write src .storybook scripts vite.config.js style-dictionary.config.js tokens`. Keep examples and API contracts current when behavior changes.
+
+- Tooltip follows Base UI’s supplementary visual-hint contract. Give its trigger an accessible name; put essential information in visible descriptions or a Popover. Do not assume the popup supplies a screen-reader name/description.
+- Include portal content in accessibility audits. Test overlays in Chromium for focus containment (modal dialogs), Escape dismissal, and trigger focus restoration.
+
+- JSON in `tokens/options` and `tokens/decisions` is the token source of truth. No component-token layer or public/private classification. Style Dictionary builds `src/tokens/generated/tokens.css` and `token-manifest.json`; do not edit generated files. Run `npm run tokens:generate` after source changes, commit outputs with sources, and run freshness/contrast checks. Storybook displays output; it does not compile tokens. Use decision tokens in component styles. Add a missing decision with a clear purpose rather than selecting palette steps in component CSS.

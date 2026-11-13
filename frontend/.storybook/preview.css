@@ -1,0 +1,8 @@
+/* Storybook host only; components never reset the consuming app's body. */
+html[data-even-theme] body {
+  background: var(--even-surface-page);
+  color: var(--even-text-primary);
+  font:
+    0.875rem/1.5 system-ui,
+    sans-serif;
+}

@@ -1,0 +1,619 @@
+@import "../tokens/generated/tokens.css";
+
+/* Consumers can override this layer with an ordinary className or inline style.
+   Component rules consume decisions; palette/scale choices belong in JSON. */
+@layer even-components {
+  :where(
+    .even-workbench,
+    .even-sidebar,
+    .even-inspector,
+    .even-popup,
+    .even-button,
+    .even-input,
+    .even-tabs,
+    .even-field,
+    .even-notice
+  ) {
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--even-text-primary);
+  }
+
+  :where(.even-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--even-space-gap-related);
+    min-height: var(--even-size-control-default);
+    padding: var(--even-space-gap-tight) var(--even-space-inset-default);
+    border: 1px solid var(--even-border-control);
+    border-radius: var(--even-size-radius-control);
+    background: var(--even-surface-control);
+    color: var(--even-text-primary);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  :where(.even-button:hover:not(:disabled):not([data-disabled])) {
+    background: var(--even-surface-hover);
+  }
+  :where(.even-button:active:not(:disabled):not([data-disabled])) {
+    background: var(--even-surface-active);
+  }
+  :where(.even-button[data-variant="primary"]) {
+    background: var(--even-action-background);
+    color: var(--even-action-foreground);
+    border-color: var(--even-action-background);
+  }
+  :where(
+    .even-button[data-variant="primary"]:hover:not(:disabled):not(
+        [data-disabled]
+      )
+  ) {
+    background: var(--even-action-hover);
+    border-color: var(--even-action-hover);
+  }
+  :where(.even-button[data-variant="ghost"]) {
+    background: transparent;
+    border-color: transparent;
+  }
+  :where(.even-button[data-size="compact"]) {
+    min-height: var(--even-size-control-compact);
+    padding-inline: var(--even-space-inset-compact);
+  }
+  :where(.even-button[data-size="comfortable"]) {
+    min-height: var(--even-size-control-comfortable);
+  }
+  :where(
+    .even-button:disabled,
+    .even-button[data-disabled],
+    .even-input:disabled
+  ) {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  :where(.even-button[aria-busy="true"]) {
+    cursor: progress;
+  }
+  :where(.even-icon-button) {
+    min-width: var(--even-size-control-default);
+    padding-inline: var(--even-space-inset-compact);
+  }
+  :where(.even-icon-button > span) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+
+  :where(.even-field) {
+    display: grid;
+    gap: var(--even-space-gap-tight);
+    min-width: 0;
+  }
+  :where(.even-label, .even-composer > label) {
+    font-weight: 500;
+  }
+  :where(.even-input) {
+    width: 100%;
+    min-width: 0;
+    min-height: var(--even-size-control-default);
+    padding: var(--even-space-inset-compact);
+    border: 1px solid var(--even-border-control);
+    border-radius: var(--even-size-radius-control);
+    background: var(--even-surface-page);
+    color: var(--even-text-primary);
+  }
+  :where(.even-input:hover:not(:disabled)) {
+    background: var(--even-surface-control);
+  }
+  :where(.even-input::placeholder) {
+    color: var(--even-text-secondary);
+    opacity: 1;
+  }
+  :where(.even-input[aria-invalid="true"]) {
+    border-color: var(--even-status-error-text);
+  }
+  :where(.even-help) {
+    margin: 0;
+    color: var(--even-text-secondary);
+  }
+  :where(.even-field-error, .even-composer [role="alert"]) {
+    color: var(--even-status-error-text);
+  }
+  :where(.even-select-trigger) {
+    width: 100%;
+    justify-content: space-between;
+    text-align: start;
+  }
+  :where(.even-positioner) {
+    z-index: 50;
+  }
+  :where(.even-popup) {
+    padding: var(--even-space-inset-default);
+    border: 1px solid var(--even-border-default);
+    border-radius: var(--even-size-radius-panel);
+    background: var(--even-surface-page);
+    color: var(--even-text-primary);
+    max-height: var(--available-height, 90dvh);
+    max-width: min(
+      var(--available-width, 100vw),
+      calc(100vw - 2 * var(--even-space-inset-default))
+    );
+    overflow: auto;
+  }
+  :where(.even-popup-title) {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  :where(.even-dialog-popup, .even-popover-popup) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--even-space-gap-group);
+    width: var(--even-size-panel-preferred);
+  }
+  :where(.even-dialog-backdrop) {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: var(--even-overlay-backdrop);
+  }
+  :where(.even-dialog-viewport) {
+    position: fixed;
+    inset: 0;
+    z-index: 41;
+    display: grid;
+    place-items: center;
+    overflow: auto;
+    padding: var(--even-space-inset-default);
+  }
+  :where(.even-menu-popup, .even-select-popup) {
+    padding: var(--even-space-gap-tight);
+    min-width: var(--anchor-width);
+  }
+  :where(.even-menu-item) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--even-space-gap-group);
+    min-height: var(--even-size-control-compact);
+    padding: var(--even-space-gap-tight) var(--even-space-inset-compact);
+    border-radius: var(--even-size-radius-control);
+    cursor: pointer;
+  }
+  :where(.even-menu-item[data-highlighted]) {
+    background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-menu-item[data-disabled]) {
+    color: var(--even-text-secondary);
+    cursor: not-allowed;
+  }
+  :where(.even-menu-label) {
+    padding: var(--even-space-inset-compact);
+    color: var(--even-text-secondary);
+  }
+  :where(.even-tooltip-popup) {
+    padding: var(--even-space-inset-compact);
+  }
+  :where(.even-separator) {
+    height: 1px;
+    background: var(--even-border-default);
+    margin-block: var(--even-space-gap-related);
+  }
+  :where(.even-separator[data-orientation="vertical"]) {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    margin-block: 0;
+  }
+
+  :where(.even-tab-list) {
+    display: flex;
+    gap: var(--even-space-gap-group);
+    border-bottom: 1px solid var(--even-border-default);
+    overflow-x: auto;
+  }
+  :where(.even-tab) {
+    font: inherit;
+    font-weight: 500;
+    color: var(--even-text-secondary);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    min-height: var(--even-size-control-default);
+    padding: var(--even-space-inset-compact);
+    cursor: pointer;
+  }
+  :where(.even-tab:hover) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-tab[data-active]) {
+    color: var(--even-selection-foreground);
+    border-color: var(--even-focus-ring);
+  }
+  :where(.even-tab[data-disabled]) {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  :where(.even-tab-list[data-orientation="vertical"]) {
+    flex-direction: column;
+    border-bottom: 0;
+  }
+  :where(.even-tab-panel) {
+    padding-block: var(--even-space-gap-group);
+  }
+  :where(.even-tab-panel[hidden], .even-disclosure-panel[hidden]) {
+    display: none;
+  }
+  :where(.even-disclosure) {
+    border: 1px solid var(--even-border-default);
+    border-radius: var(--even-size-radius-control);
+  }
+  :where(.even-disclosure-trigger) {
+    width: 100%;
+    justify-content: space-between;
+    border: 0;
+    text-align: start;
+  }
+  :where(.even-disclosure-trigger)::after {
+    content: "+";
+  }
+  :where(.even-disclosure-trigger[aria-expanded="true"])::after {
+    content: "−";
+  }
+  :where(.even-disclosure-panel) {
+    padding: var(--even-space-inset-default);
+  }
+
+  :where(.even-workbench) {
+    display: flex;
+    align-items: stretch;
+    min-height: 80dvh;
+    border: 1px solid var(--even-border-default);
+    background: var(--even-surface-page);
+    color: var(--even-text-primary);
+  }
+  :where(.even-workbench > nav, .even-sidebar) {
+    flex: 0 0 var(--even-size-navigation-preferred);
+    box-sizing: border-box;
+    padding: var(--even-space-inset-default);
+    border-right: 1px solid var(--even-border-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-workbench > main) {
+    flex: 1;
+    min-width: 0;
+    padding: var(--even-space-inset-spacious);
+  }
+  :where(.even-workbench h1) {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  :where(.even-workbench > main > p) {
+    color: var(--even-text-secondary);
+    margin-block: var(--even-space-gap-related) var(--even-space-gap-section);
+  }
+  :where(.even-inspector, .even-workbench > aside) {
+    flex: 0 0 var(--even-size-panel-preferred);
+    min-width: 0;
+    box-sizing: border-box;
+    background: var(--even-surface-secondary);
+    border-left: 1px solid var(--even-border-default);
+  }
+  :where(.even-inspector-header) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--even-space-gap-related);
+    padding: var(--even-space-inset-default);
+    border-bottom: 1px solid var(--even-border-default);
+  }
+  :where(.even-inspector-header h2) {
+    margin: 0;
+    font-size: 1rem;
+  }
+  :where(.even-inspector-body) {
+    padding: var(--even-space-inset-default);
+  }
+  :where(.even-trace-toolbar) {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: var(--even-space-gap-related);
+    margin-bottom: var(--even-space-gap-group);
+  }
+  :where(.even-trace-toolbar > .even-field) {
+    flex: 1 1 var(--even-size-navigation-preferred);
+  }
+  :where(.even-filter-bar, .even-filter-bar ul, .even-filter-bar li) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--even-space-gap-related);
+  }
+  :where(.even-filter-bar) {
+    flex-basis: 100%;
+  }
+  :where(.even-filter-bar ul) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  :where(.even-filter-bar li) {
+    padding-left: var(--even-space-inset-compact);
+    background: var(--even-surface-active);
+    border-radius: var(--even-size-radius-control);
+  }
+  :where(.even-agent-navigation) {
+    list-style: none;
+    padding: 0;
+  }
+  :where(.even-agent-navigation a) {
+    display: block;
+    padding: var(--even-space-inset-compact);
+    color: var(--even-text-primary);
+    border-radius: var(--even-size-radius-control);
+    text-decoration: none;
+  }
+  :where(.even-agent-navigation a[aria-current="page"]) {
+    color: var(--even-selection-foreground);
+    background: var(--even-selection-background);
+  }
+
+  :where(.even-execution-links) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--even-space-gap-related);
+  }
+  :where(.even-execution-links a) {
+    color: var(--even-text-link);
+    text-underline-offset: 0.2em;
+  }
+  :where(.even-table-scroll) {
+    overflow: auto;
+    max-width: 100%;
+  }
+  :where(.even-table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: start;
+    color: var(--even-text-primary);
+  }
+  :where(.even-table caption) {
+    text-align: start;
+    padding-block: var(--even-space-inset-compact);
+    color: var(--even-text-secondary);
+  }
+  :where(.even-table th, .even-table td) {
+    padding: var(--even-space-inset-compact);
+    border-bottom: 1px solid var(--even-border-default);
+    text-align: start;
+    vertical-align: top;
+  }
+  :where(.even-table th) {
+    color: var(--even-text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  :where(.even-table td) {
+    font-variant-numeric: tabular-nums;
+  }
+  :where(.even-table tbody tr:hover) {
+    background: var(--even-surface-hover);
+  }
+  :where(.even-table tr[data-selected]) {
+    background: var(--even-selection-background);
+  }
+  :where(.even-trace-status) {
+    display: inline-block;
+    padding: var(--even-space-gap-tight) var(--even-space-inset-compact);
+    border-radius: var(--even-size-radius-control);
+    font-size: 0.8125rem;
+  }
+  :where(.even-trace-status[data-state="error"]) {
+    color: var(--even-status-error-text);
+    background: var(--even-status-error-surface);
+  }
+  :where(.even-trace-status[data-state="complete"]) {
+    color: var(--even-status-success-text);
+    background: var(--even-status-success-surface);
+  }
+  :where(.even-trace-status[data-state="unknown"]) {
+    color: var(--even-text-secondary);
+    background: var(--even-surface-control);
+  }
+  :where(.even-detail-section) {
+    margin-bottom: var(--even-space-gap-section);
+    overflow-wrap: anywhere;
+  }
+  :where(.even-detail-section h2, .even-detail-section h3) {
+    font-size: 1rem;
+    margin-block: 0 var(--even-space-gap-related);
+  }
+  :where(.even-detail-section dl) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--even-space-gap-related);
+    margin-block: var(--even-space-gap-group);
+  }
+  :where(.even-detail-section dt) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-detail-section dd) {
+    margin: 0;
+    min-width: 0;
+  }
+  :where(.even-detail-section pre, .even-payload pre) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin: 0;
+    font:
+      0.8125rem/1.6 ui-monospace,
+      monospace;
+  }
+  :where(.even-payload) {
+    background: var(--even-surface-control);
+    padding: var(--even-space-inset-default);
+    border: 1px solid var(--even-border-default);
+    border-radius: var(--even-size-radius-control);
+  }
+  :where(.even-span-tree, .even-span-tree ul) {
+    list-style: none;
+    margin-block: var(--even-space-gap-related);
+    padding: 0;
+  }
+  :where(.even-span-tree ul) {
+    padding-left: var(--even-space-gap-group);
+  }
+  :where(.even-span-tree [role="treeitem"]) {
+    display: flex;
+    align-items: center;
+    gap: var(--even-space-gap-related);
+    padding: var(--even-space-inset-compact);
+    border-radius: var(--even-size-radius-control);
+    cursor: pointer;
+  }
+  :where(.even-span-tree [role="treeitem"]:hover) {
+    background: var(--even-surface-hover);
+  }
+  :where(.even-span-tree [aria-selected="true"]) {
+    background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-span-tree button) {
+    background: transparent;
+    color: inherit;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    min-width: var(--even-size-icon-large);
+  }
+  :where(.even-notice) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--even-space-gap-related);
+    padding: var(--even-space-inset-default);
+    background: var(--even-status-info-surface);
+    color: var(--even-status-info-text);
+    border: 1px solid var(--even-status-info-border);
+    border-radius: var(--even-size-radius-control);
+  }
+  :where(.even-notice[role="alert"]) {
+    background: var(--even-status-error-surface);
+    color: var(--even-status-error-text);
+    border-color: var(--even-status-error-border);
+  }
+  :where(.even-session-selector) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--even-space-gap-related);
+  }
+  :where(.even-session-selector > p) {
+    flex-basis: 100%;
+    margin: 0;
+    color: var(--even-text-secondary);
+  }
+  :where(.even-session-selector > .even-field) {
+    flex: 1;
+  }
+  :where(.even-conversation [role="log"]) {
+    max-height: 50dvh;
+    overflow: auto;
+    padding: var(--even-space-inset-default);
+    margin-block: var(--even-space-gap-group);
+    border: 1px solid var(--even-border-default);
+    border-radius: var(--even-size-radius-control);
+  }
+  :where(.even-conversation ol) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--even-space-gap-group);
+  }
+  :where(.even-conversation h3) {
+    font-size: 0.875rem;
+    margin: 0;
+    color: var(--even-text-secondary);
+  }
+  :where(.even-conversation p) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin-block: var(--even-space-gap-tight);
+  }
+  :where(.even-composer) {
+    display: grid;
+    gap: var(--even-space-gap-related);
+  }
+  :where(.even-composer textarea) {
+    min-height: calc(var(--even-size-control-default) * 2);
+    resize: vertical;
+  }
+  :where(.even-composer > p) {
+    margin: 0;
+    color: var(--even-text-secondary);
+  }
+  :where(.even-composer > .even-button) {
+    justify-self: end;
+  }
+
+  :where(
+    .even-button,
+    .even-input,
+    .even-tab,
+    .even-menu-item,
+    .even-span-tree [role="treeitem"],
+    .even-table-scroll,
+    .even-agent-navigation a,
+    .even-execution-links a,
+    .even-conversation [role="log"]
+  ):focus-visible {
+    outline: 2px solid var(--even-focus-ring);
+    outline-offset: 2px;
+  }
+  :where(.even-tab, .even-menu-item):focus-visible {
+    outline-offset: -2px;
+  }
+  @media (max-width: 75rem) {
+    :where(.even-workbench) {
+      flex-wrap: wrap;
+    }
+    :where(.even-workbench > aside) {
+      flex-basis: 100%;
+      border-left: 0;
+      border-top: 1px solid var(--even-border-default);
+    }
+  }
+  @media (max-width: 48rem) {
+    :where(.even-workbench) {
+      display: block;
+    }
+    :where(.even-workbench > nav) {
+      border-right: 0;
+      border-bottom: 1px solid var(--even-border-default);
+    }
+    :where(.even-workbench > main) {
+      padding: var(--even-space-inset-default);
+    }
+  }
+  @media (forced-colors: active) {
+    :where(.even-tab[data-active], .even-span-tree [aria-selected="true"]) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+    :where(.even-button, .even-input, .even-popup) {
+      border-color: ButtonText;
+    }
+  }
+}

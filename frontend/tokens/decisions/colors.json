@@ -1,0 +1,158 @@
+{
+  "decision": {
+    "color": {
+      "surface": {
+        "page": {
+          "$type": "color",
+          "$value": "{options.color.background.1}"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "{options.color.background.2}"
+        },
+        "control": {
+          "$type": "color",
+          "$value": "{options.color.gray.1}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{options.color.gray.2}"
+        },
+        "active": {
+          "$type": "color",
+          "$value": "{options.color.gray.3}"
+        }
+      },
+      "text": {
+        "link": {
+          "$type": "color",
+          "$value": "{options.color.blue.9}",
+          "$description": "Navigational text links on page and secondary surfaces."
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "{options.color.gray.10}"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "{options.color.gray.9}"
+        }
+      },
+      "border": {
+        "default": {
+          "$type": "color",
+          "$value": "{options.color.gray.4}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{options.color.gray.5}"
+        },
+        "active": {
+          "$type": "color",
+          "$value": "{options.color.gray.6}"
+        },
+        "control": {
+          "$type": "color",
+          "$value": "{options.color.gray.8}",
+          "$description": "Essential boundary: tested separately from decorative borders."
+        }
+      },
+      "focus": {
+        "ring": {
+          "$type": "color",
+          "$value": "{options.color.blue.9}"
+        }
+      },
+      "selection": {
+        "background": {
+          "$type": "color",
+          "$value": "{options.color.blue.2}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{options.color.blue.10}"
+        }
+      },
+      "action": {
+        "background": {
+          "$type": "color",
+          "$value": "{options.color.gray.10}",
+          "$description": "Even uses a neutral solid action; this is a product decision, not a Geist prescription."
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{options.color.gray.9}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{options.color.background.1}"
+        }
+      },
+      "status": {
+        "error": {
+          "surface": {
+            "$type": "color",
+            "$value": "{options.color.red.1}"
+          },
+          "text": {
+            "$type": "color",
+            "$value": "{options.color.red.9}"
+          },
+          "border": {
+            "$type": "color",
+            "$value": "{options.color.red.6}"
+          }
+        },
+        "warning": {
+          "surface": {
+            "$type": "color",
+            "$value": "{options.color.amber.1}"
+          },
+          "text": {
+            "$type": "color",
+            "$value": "{options.color.amber.9}"
+          },
+          "border": {
+            "$type": "color",
+            "$value": "{options.color.amber.6}"
+          }
+        },
+        "success": {
+          "surface": {
+            "$type": "color",
+            "$value": "{options.color.green.1}"
+          },
+          "text": {
+            "$type": "color",
+            "$value": "{options.color.green.9}"
+          },
+          "border": {
+            "$type": "color",
+            "$value": "{options.color.green.6}"
+          }
+        },
+        "info": {
+          "surface": {
+            "$type": "color",
+            "$value": "{options.color.blue.1}"
+          },
+          "text": {
+            "$type": "color",
+            "$value": "{options.color.blue.9}"
+          },
+          "border": {
+            "$type": "color",
+            "$value": "{options.color.blue.6}"
+          }
+        }
+      },
+      "overlay": {
+        "backdrop": {
+          "$type": "color",
+          "$value": "{options.overlay.scrim}",
+          "$description": "Dim the workspace behind a modal. No content is placed directly on this translucent surface."
+        }
+      }
+    }
+  }
+}

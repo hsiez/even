@@ -18,7 +18,11 @@
   "scripts": {
     "start": "node src/cli.js",
     "test": "node --test test/*.test.js",
-    "test:contract": "node --test test/openapi.test.js"
+    "test:contract": "node --test test/openapi.test.js",
+    "test:ui": "npm --prefix frontend test",
+    "storybook": "npm --prefix frontend run storybook",
+    "build-storybook": "npm --prefix frontend run build-storybook",
+    "test:all": "npm test && npm run test:ui"
   },
   "license": "MIT",
   "dependencies": {

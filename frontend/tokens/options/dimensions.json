@@ -1,0 +1,148 @@
+{
+  "options": {
+    "dimension": {
+      "0": {
+        "$value": {
+          "value": 0,
+          "unit": "rem"
+        },
+        "$description": "0px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "2": {
+        "$value": {
+          "value": 0.125,
+          "unit": "rem"
+        },
+        "$description": "2px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "4": {
+        "$value": {
+          "value": 0.25,
+          "unit": "rem"
+        },
+        "$description": "4px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "8": {
+        "$value": {
+          "value": 0.5,
+          "unit": "rem"
+        },
+        "$description": "8px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "12": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$description": "12px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "16": {
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "$description": "16px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "20": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "$description": "20px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "24": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$description": "24px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "32": {
+        "$value": {
+          "value": 2,
+          "unit": "rem"
+        },
+        "$description": "32px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "40": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "$description": "40px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "48": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        },
+        "$description": "48px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "64": {
+        "$value": {
+          "value": 4,
+          "unit": "rem"
+        },
+        "$description": "64px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "96": {
+        "$value": {
+          "value": 6,
+          "unit": "rem"
+        },
+        "$description": "96px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "128": {
+        "$value": {
+          "value": 8,
+          "unit": "rem"
+        },
+        "$description": "128px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "192": {
+        "$value": {
+          "value": 12,
+          "unit": "rem"
+        },
+        "$description": "192px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "256": {
+        "$value": {
+          "value": 16,
+          "unit": "rem"
+        },
+        "$description": "256px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "384": {
+        "$value": {
+          "value": 24,
+          "unit": "rem"
+        },
+        "$description": "384px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "512": {
+        "$value": {
+          "value": 32,
+          "unit": "rem"
+        },
+        "$description": "512px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "640": {
+        "$value": {
+          "value": 40,
+          "unit": "rem"
+        },
+        "$description": "640px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "768": {
+        "$value": {
+          "value": 48,
+          "unit": "rem"
+        },
+        "$description": "768px equivalent at a 16px root; do not fix the user's root font size."
+      },
+      "$type": "dimension",
+      "$description": "Curated dimension options: mainly 4px multiples, a 2px fine adjustment, and progressively larger gaps. Shared by spacing and sizing decisions."
+    }
+  }
+}

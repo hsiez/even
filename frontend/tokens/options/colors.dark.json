@@ -1,0 +1,692 @@
+{
+  "$description": "Geist dark srgb palette snapshot. Source values, not product decisions.",
+  "$extensions": {
+    "com.even.provenance": {
+      "url": "https://vercel.com/geist/colors",
+      "retrieved": "2026-11-13",
+      "stylesheets": [
+        "/vc-ap-b3331f/_next/static/immutable/chunks/37uvw8gnf1avs.css",
+        "/vc-ap-b3331f/_next/static/immutable/chunks/32sjzx2_xsk_o.css",
+        "/vc-ap-b3331f/_next/static/immutable/chunks/4370_3q36hxmr.css"
+      ]
+    }
+  },
+  "options": {
+    "color": {
+      "gray": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.1, 0.1, 0.1],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.12, 0.12, 0.12],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.16, 0.16, 0.16],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.18, 0.18, 0.18],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.27, 0.27, 0.27],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.53, 0.53, 0.53],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.56, 0.56, 0.56],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.49, 0.49, 0.49],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.63, 0.63, 0.63],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.93, 0.93, 0.93],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "gray-alpha": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.058823529411764705
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.09019607843137255
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.12941176470588237
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.1411764705882353
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.23921568627450981
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.5098039215686274
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.5411764705882353
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.47058823529411764
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.611764705882353
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "alpha": 0.9215686274509803
+          }
+        },
+        "$type": "color"
+      },
+      "blue": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.06, 0.108, 0.18],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0615, 0.1382, 0.2385],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.058, 0.1858, 0.342],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0506, 0.21804, 0.4094],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0378, 0.26226, 0.5022],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0, 0.566666666667, 1],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0, 0.448, 0.96],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0, 0.382666666667, 0.82],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.32, 0.66, 1],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.92, 0.965333333333, 1],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "red": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.1644, 0.0756, 0.08004],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.2336, 0.0864, 0.09376],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.3388, 0.1012, 0.11704],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.403, 0.117, 0.1313],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.512, 0.128, 0.1472],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8975, 0.2825, 0.303],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8975, 0.2825, 0.303],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8512, 0.1888, 0.21088],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 0.38, 0.400666666667],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.996, 0.924, 0.9324],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "amber": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.16, 0.093333333333, 0],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.2, 0.106666666667, 0],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.3, 0.165, 0],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.34, 0.198333333333, 0],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.4202, 0.253366666667, 0.0198],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.9065, 0.61495, 0.0735],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 0.699, 0.14],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 0.6, 0.04],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.95, 0.635, 0.05],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.9958, 0.951933333333, 0.8642],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "green": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.045, 0.135, 0.069],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.06, 0.18, 0.094],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.07, 0.21, 0.107333333333],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.048, 0.272, 0.104],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.069, 0.391, 0.1495],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.102, 0.578, 0.221],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.2714, 0.6486, 0.340553333333],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.2223, 0.5577, 0.28938],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.3851, 0.7549, 0.452896666667],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8962, 0.9838, 0.91956],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "teal": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0154, 0.1246, 0.10458],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0234, 0.1566, 0.1344],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0325, 0.2275, 0.19825],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.0195, 0.2405, 0.20735],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.03, 0.37, 0.324666666667],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.048, 0.592, 0.519466666667],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.072, 0.648, 0.5808],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.051, 0.549, 0.4909],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.041, 0.779, 0.7052],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8803, 0.9797, 0.956506666667],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "purple": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.1356, 0.084, 0.156],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.182293333333, 0.0992, 0.2208],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.26036, 0.1288, 0.3312],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.310053333333, 0.1512, 0.4088],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.372866666667, 0.1785, 0.5215],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.55564, 0.3054, 0.7746],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.55564, 0.3054, 0.7746],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.4641, 0.2385, 0.6615],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.748666666667, 0.478, 0.942],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.970706666667, 0.9308, 0.9892],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "pink": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.1584, 0.0816, 0.1136],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.2288, 0.0912, 0.148533333333],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.3087, 0.1113, 0.19355],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.3322, 0.1078, 0.2013],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.4239, 0.1161, 0.24435],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.7, 0.1, 0.34],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.916, 0.244, 0.5128],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.8726, 0.1474, 0.43748],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.967, 0.373, 0.5611],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.996, 0.924, 0.9564],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "background": {
+        "1": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0.04, 0.04, 0.04],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0, 0, 0],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      }
+    }
+  }
+}

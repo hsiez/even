@@ -1,0 +1,61 @@
+/* Documentation-only layout. No component-library selectors are styled here. */
+.even-color-grid {
+  background: var(--even-surface-page);
+  color: var(--even-text-primary);
+  padding: 1.5rem;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.even-color-grid a {
+  color: var(--even-focus-ring);
+}
+.even-color-grid small {
+  display: block;
+  font-weight: normal;
+}
+.even-color-grid table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+.even-color-grid th,
+.even-color-grid td {
+  padding: 0.6rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--even-border-default);
+}
+.even-color-grid code {
+  overflow-wrap: anywhere;
+}
+.even-color-grid summary {
+  cursor: pointer;
+  margin-block: 1rem;
+  font-weight: 600;
+}
+.even-color-grid__scroll {
+  overflow-x: auto;
+}
+.even-color-grid__scroll table {
+  min-width: 1400px;
+}
+.even-color-grid__swatch {
+  height: 3rem;
+}
+.even-color-grid__pair {
+  display: inline-block;
+  padding: 0.5rem;
+}
+.even-color-grid__boundary {
+  display: inline-block;
+  padding: 0.5rem;
+  border: 2px solid;
+}
+.even-color-grid :focus-visible {
+  outline: 2px solid var(--even-focus-ring);
+  outline-offset: 3px;
+}
+.even-color-grid__both {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 650px), 1fr));
+}

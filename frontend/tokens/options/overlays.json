@@ -1,0 +1,16 @@
+{
+  "options": {
+    "overlay": {
+      "$description": "Even overlay options supplement the Geist color grid.",
+      "scrim": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0, 0, 0],
+          "alpha": 0.64
+        },
+        "$description": "Translucent black for modal dimming in either theme."
+      }
+    }
+  }
+}
