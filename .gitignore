@@ -2,3 +2,5 @@ node_modules/
 *.tgz
 .even/
 .even-startup.lock/
+frontend/storybook-static/
+frontend/coverage/

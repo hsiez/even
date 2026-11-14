@@ -1,0 +1,9 @@
+.even-dimension-grid__bar {
+  display: block;
+  block-size: 0.75rem;
+  background: var(--even-text-primary);
+  margin-block: 0.25rem;
+}
+.even-dimension-grid td:last-child {
+  inline-size: 55%;
+}

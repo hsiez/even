@@ -1,0 +1,66 @@
+{
+  "decision": {
+    "size": {
+      "icon": {
+        "small": {
+          "$type": "dimension",
+          "$value": "{options.dimension.12}",
+          "$description": "Icon dimensions."
+        },
+        "default": {
+          "$type": "dimension",
+          "$value": "{options.dimension.16}",
+          "$description": "Icon dimensions."
+        },
+        "large": {
+          "$type": "dimension",
+          "$value": "{options.dimension.24}",
+          "$description": "Icon dimensions."
+        }
+      },
+      "control": {
+        "compact": {
+          "$type": "dimension",
+          "$value": "{options.dimension.32}",
+          "$description": "Minimum height; allow content to grow."
+        },
+        "default": {
+          "$type": "dimension",
+          "$value": "{options.dimension.40}",
+          "$description": "Minimum height; allow content to grow."
+        },
+        "comfortable": {
+          "$type": "dimension",
+          "$value": "{options.dimension.48}",
+          "$description": "Minimum height; allow content to grow."
+        }
+      },
+      "panel": {
+        "preferred": {
+          "$type": "dimension",
+          "$value": "{options.dimension.384}",
+          "$description": "Preferred width, not a fixed or minimum viewport width."
+        }
+      },
+      "navigation": {
+        "preferred": {
+          "$type": "dimension",
+          "$value": "{options.dimension.256}",
+          "$description": "Preferred width, not a fixed or minimum viewport width."
+        }
+      },
+      "radius": {
+        "control": {
+          "$type": "dimension",
+          "$value": "{options.dimension.4}",
+          "$description": "Corner radius for controls and small surfaces."
+        },
+        "panel": {
+          "$type": "dimension",
+          "$value": "{options.dimension.8}",
+          "$description": "Corner radius for floating panels."
+        }
+      }
+    }
+  }
+}

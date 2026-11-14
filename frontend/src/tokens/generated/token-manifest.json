@@ -1,0 +1,4533 @@
+{
+  "themes": {
+    "light": {
+      "srgb": {
+        "options.color.gray.1": {
+          "value": "rgb(95% 95% 95%)",
+          "name": "even-palette-gray-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.2": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-palette-gray-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.3": {
+          "value": "rgb(90% 90% 90%)",
+          "name": "even-palette-gray-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.4": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-palette-gray-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.5": {
+          "value": "rgb(79% 79% 79%)",
+          "name": "even-palette-gray-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.6": {
+          "value": "rgb(66% 66% 66%)",
+          "name": "even-palette-gray-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.7": {
+          "value": "rgb(56% 56% 56%)",
+          "name": "even-palette-gray-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.8": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-palette-gray-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.9": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-palette-gray-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.10": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-palette-gray-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.1": {
+          "value": "rgb(0% 0% 0% / 0.050980392157)",
+          "name": "even-palette-gray-alpha-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.2": {
+          "value": "rgb(0% 0% 0% / 0.078431372549)",
+          "name": "even-palette-gray-alpha-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.3": {
+          "value": "rgb(0% 0% 0% / 0.101960784314)",
+          "name": "even-palette-gray-alpha-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.4": {
+          "value": "rgb(0% 0% 0% / 0.078431372549)",
+          "name": "even-palette-gray-alpha-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.5": {
+          "value": "rgb(0% 0% 0% / 0.211764705882)",
+          "name": "even-palette-gray-alpha-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.6": {
+          "value": "rgb(0% 0% 0% / 0.341176470588)",
+          "name": "even-palette-gray-alpha-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.7": {
+          "value": "rgb(0% 0% 0% / 0.439215686275)",
+          "name": "even-palette-gray-alpha-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.8": {
+          "value": "rgb(0% 0% 0% / 0.509803921569)",
+          "name": "even-palette-gray-alpha-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.9": {
+          "value": "rgb(0% 0% 0% / 0.701960784314)",
+          "name": "even-palette-gray-alpha-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.10": {
+          "value": "rgb(0% 0% 0% / 0.909803921569)",
+          "name": "even-palette-gray-alpha-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.1": {
+          "value": "rgb(94% 96.8% 100%)",
+          "name": "even-palette-blue-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.2": {
+          "value": "rgb(92% 96% 100%)",
+          "name": "even-palette-blue-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.3": {
+          "value": "rgb(88% 94% 100%)",
+          "name": "even-palette-blue-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.4": {
+          "value": "rgb(80% 90.3333333333% 100%)",
+          "name": "even-palette-blue-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.5": {
+          "value": "rgb(60% 80.6666666667% 100%)",
+          "name": "even-palette-blue-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.6": {
+          "value": "rgb(32% 68.2666666667% 100%)",
+          "name": "even-palette-blue-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.7": {
+          "value": "rgb(0% 44.8% 96%)",
+          "name": "even-palette-blue-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.8": {
+          "value": "rgb(0% 38.2666666667% 82%)",
+          "name": "even-palette-blue-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.9": {
+          "value": "rgb(0% 40.6% 84%)",
+          "name": "even-palette-blue-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.10": {
+          "value": "rgb(0% 14.5% 30%)",
+          "name": "even-palette-blue-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.1": {
+          "value": "rgb(100% 94% 94%)",
+          "name": "even-palette-red-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.2": {
+          "value": "rgb(100% 92% 92%)",
+          "name": "even-palette-red-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.3": {
+          "value": "rgb(100% 90% 90%)",
+          "name": "even-palette-red-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.4": {
+          "value": "rgb(99.2% 84.8% 84.8%)",
+          "name": "even-palette-red-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.5": {
+          "value": "rgb(97.3% 72.7% 72.7%)",
+          "name": "even-palette-red-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.6": {
+          "value": "rgb(97.1% 44.9% 45.77%)",
+          "name": "even-palette-red-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.7": {
+          "value": "rgb(89.75% 28.25% 30.3%)",
+          "name": "even-palette-red-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.8": {
+          "value": "rgb(85.6% 18.4% 20.64%)",
+          "name": "even-palette-red-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.9": {
+          "value": "rgb(79.68% 16.32% 18.432%)",
+          "name": "even-palette-red-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.10": {
+          "value": "rgb(22.35% 7.65% 8.875%)",
+          "name": "even-palette-red-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.1": {
+          "value": "rgb(100% 96.5% 90%)",
+          "name": "even-palette-amber-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.2": {
+          "value": "rgb(100% 95.7333333333% 84%)",
+          "name": "even-palette-amber-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.3": {
+          "value": "rgb(99.6% 94.16% 80.4%)",
+          "name": "even-palette-amber-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.4": {
+          "value": "rgb(100% 86.8% 56%)",
+          "name": "even-palette-amber-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.5": {
+          "value": "rgb(100% 78.7333333333% 42%)",
+          "name": "even-palette-amber-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.6": {
+          "value": "rgb(96.2% 68.84% 27.8%)",
+          "name": "even-palette-amber-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.7": {
+          "value": "rgb(100% 69.9% 14%)",
+          "name": "even-palette-amber-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.8": {
+          "value": "rgb(100% 60% 4%)",
+          "name": "even-palette-amber-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.9": {
+          "value": "rgb(64% 32% 0%)",
+          "name": "even-palette-amber-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.10": {
+          "value": "rgb(30.43% 12.5233333333% 3.57%)",
+          "name": "even-palette-amber-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.1": {
+          "value": "rgb(93.6% 98.4% 93.6%)",
+          "name": "even-palette-green-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.2": {
+          "value": "rgb(92% 98% 92%)",
+          "name": "even-palette-green-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.3": {
+          "value": "rgb(85.6% 96.4% 85.6%)",
+          "name": "even-palette-green-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.4": {
+          "value": "rgb(77.6% 94.4% 78.16%)",
+          "name": "even-palette-green-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.5": {
+          "value": "rgb(60% 90% 62%)",
+          "name": "even-palette-green-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.6": {
+          "value": "rgb(42.4% 85.6% 46%)",
+          "name": "even-palette-green-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.7": {
+          "value": "rgb(27.14% 64.86% 34.0553333333%)",
+          "name": "even-palette-green-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.8": {
+          "value": "rgb(22.23% 55.77% 28.938%)",
+          "name": "even-palette-green-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.9": {
+          "value": "rgb(16% 48% 22.9333333333%)",
+          "name": "even-palette-green-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.10": {
+          "value": "rgb(10.65% 19.35% 11.81%)",
+          "name": "even-palette-green-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.1": {
+          "value": "rgb(93.2% 98.8% 97.7733333333%)",
+          "name": "even-palette-teal-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.2": {
+          "value": "rgb(89.8% 98.2% 96.38%)",
+          "name": "even-palette-teal-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.3": {
+          "value": "rgb(83% 97% 94.2%)",
+          "name": "even-palette-teal-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.4": {
+          "value": "rgb(74.5% 95.5% 92%)",
+          "name": "even-palette-teal-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.5": {
+          "value": "rgb(52.4% 91.6% 85.0666666667%)",
+          "name": "even-palette-teal-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.6": {
+          "value": "rgb(26.9% 87.1% 77.0666666667%)",
+          "name": "even-palette-teal-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.7": {
+          "value": "rgb(7.2% 64.8% 58.08%)",
+          "name": "even-palette-teal-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.8": {
+          "value": "rgb(5.1% 54.9% 49.09%)",
+          "name": "even-palette-teal-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.9": {
+          "value": "rgb(2.25% 47.75% 43.2%)",
+          "name": "even-palette-teal-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.10": {
+          "value": "rgb(2.6% 23.4% 20.28%)",
+          "name": "even-palette-teal-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.1": {
+          "value": "rgb(97.6% 94% 100%)",
+          "name": "even-palette-purple-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.2": {
+          "value": "rgb(97.609% 94.39% 99.61%)",
+          "name": "even-palette-purple-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.3": {
+          "value": "rgb(95.52% 91.1% 98.9%)",
+          "name": "even-palette-purple-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.4": {
+          "value": "rgb(93.136% 86.32% 97.68%)",
+          "name": "even-palette-purple-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.5": {
+          "value": "rgb(83.68% 69.4% 94.6%)",
+          "name": "even-palette-purple-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.6": {
+          "value": "rgb(74.944% 53.56% 92.44%)",
+          "name": "even-palette-purple-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.7": {
+          "value": "rgb(55.564% 30.54% 77.46%)",
+          "name": "even-palette-purple-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.8": {
+          "value": "rgb(46.41% 23.85% 66.15%)",
+          "name": "even-palette-purple-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.9": {
+          "value": "rgb(47.0706666667% 12.47% 73.53%)",
+          "name": "even-palette-purple-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.10": {
+          "value": "rgb(18% 0% 30%)",
+          "name": "even-palette-purple-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.1": {
+          "value": "rgb(100% 92% 96%)",
+          "name": "even-palette-pink-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.2": {
+          "value": "rgb(99.6% 92.4% 94.8%)",
+          "name": "even-palette-pink-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.3": {
+          "value": "rgb(98.92% 89.08% 92.36%)",
+          "name": "even-palette-pink-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.4": {
+          "value": "rgb(97.84% 84.16% 88.492%)",
+          "name": "even-palette-pink-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.5": {
+          "value": "rgb(96% 72% 80%)",
+          "name": "even-palette-pink-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.6": {
+          "value": "rgb(93.25% 52.75% 65.575%)",
+          "name": "even-palette-pink-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.7": {
+          "value": "rgb(91.6% 24.4% 51.28%)",
+          "name": "even-palette-pink-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.8": {
+          "value": "rgb(87.26% 14.74% 43.748%)",
+          "name": "even-palette-pink-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.9": {
+          "value": "rgb(74.25% 15.75% 39.15%)",
+          "name": "even-palette-pink-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.10": {
+          "value": "rgb(26.1% 3.9% 13.89%)",
+          "name": "even-palette-pink-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.1": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-palette-background-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.2": {
+          "value": "rgb(98% 98% 98%)",
+          "name": "even-palette-background-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.dimension.0": {
+          "value": "0rem",
+          "name": "even-dimension-0",
+          "reference": null,
+          "description": "0px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.2": {
+          "value": "0.125rem",
+          "name": "even-dimension-2",
+          "reference": null,
+          "description": "2px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.4": {
+          "value": "0.25rem",
+          "name": "even-dimension-4",
+          "reference": null,
+          "description": "4px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.8": {
+          "value": "0.5rem",
+          "name": "even-dimension-8",
+          "reference": null,
+          "description": "8px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.12": {
+          "value": "0.75rem",
+          "name": "even-dimension-12",
+          "reference": null,
+          "description": "12px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.16": {
+          "value": "1rem",
+          "name": "even-dimension-16",
+          "reference": null,
+          "description": "16px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.20": {
+          "value": "1.25rem",
+          "name": "even-dimension-20",
+          "reference": null,
+          "description": "20px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.24": {
+          "value": "1.5rem",
+          "name": "even-dimension-24",
+          "reference": null,
+          "description": "24px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.32": {
+          "value": "2rem",
+          "name": "even-dimension-32",
+          "reference": null,
+          "description": "32px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.40": {
+          "value": "2.5rem",
+          "name": "even-dimension-40",
+          "reference": null,
+          "description": "40px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.48": {
+          "value": "3rem",
+          "name": "even-dimension-48",
+          "reference": null,
+          "description": "48px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.64": {
+          "value": "4rem",
+          "name": "even-dimension-64",
+          "reference": null,
+          "description": "64px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.96": {
+          "value": "6rem",
+          "name": "even-dimension-96",
+          "reference": null,
+          "description": "96px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.128": {
+          "value": "8rem",
+          "name": "even-dimension-128",
+          "reference": null,
+          "description": "128px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.192": {
+          "value": "12rem",
+          "name": "even-dimension-192",
+          "reference": null,
+          "description": "192px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.256": {
+          "value": "16rem",
+          "name": "even-dimension-256",
+          "reference": null,
+          "description": "256px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.384": {
+          "value": "24rem",
+          "name": "even-dimension-384",
+          "reference": null,
+          "description": "384px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.512": {
+          "value": "32rem",
+          "name": "even-dimension-512",
+          "reference": null,
+          "description": "512px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.640": {
+          "value": "40rem",
+          "name": "even-dimension-640",
+          "reference": null,
+          "description": "640px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.768": {
+          "value": "48rem",
+          "name": "even-dimension-768",
+          "reference": null,
+          "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.overlay.scrim": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-scrim",
+          "reference": null,
+          "description": "Translucent black for modal dimming in either theme.",
+          "type": "color"
+        },
+        "decision.color.surface.page": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-surface-page",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.secondary": {
+          "value": "rgb(98% 98% 98%)",
+          "name": "even-surface-secondary",
+          "reference": "options.color.background.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.control": {
+          "value": "rgb(95% 95% 95%)",
+          "name": "even-surface-control",
+          "reference": "options.color.gray.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.hover": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-surface-hover",
+          "reference": "options.color.gray.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.active": {
+          "value": "rgb(90% 90% 90%)",
+          "name": "even-surface-active",
+          "reference": "options.color.gray.3",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.link": {
+          "value": "rgb(0% 40.6% 84%)",
+          "name": "even-text-link",
+          "reference": "options.color.blue.9",
+          "description": "Navigational text links on page and secondary surfaces.",
+          "type": "color"
+        },
+        "decision.color.text.primary": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-text-primary",
+          "reference": "options.color.gray.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.secondary": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-text-secondary",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.default": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-border-default",
+          "reference": "options.color.gray.4",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.hover": {
+          "value": "rgb(79% 79% 79%)",
+          "name": "even-border-hover",
+          "reference": "options.color.gray.5",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.active": {
+          "value": "rgb(66% 66% 66%)",
+          "name": "even-border-active",
+          "reference": "options.color.gray.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.control": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-border-control",
+          "reference": "options.color.gray.8",
+          "description": "Essential boundary: tested separately from decorative borders.",
+          "type": "color"
+        },
+        "decision.color.focus.ring": {
+          "value": "rgb(0% 40.6% 84%)",
+          "name": "even-focus-ring",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.background": {
+          "value": "rgb(92% 96% 100%)",
+          "name": "even-selection-background",
+          "reference": "options.color.blue.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.foreground": {
+          "value": "rgb(0% 14.5% 30%)",
+          "name": "even-selection-foreground",
+          "reference": "options.color.blue.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.background": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-action-background",
+          "reference": "options.color.gray.10",
+          "description": "Even uses a neutral solid action; this is a product decision, not a Geist prescription.",
+          "type": "color"
+        },
+        "decision.color.action.hover": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-action-hover",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.foreground": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-action-foreground",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.surface": {
+          "value": "rgb(100% 94% 94%)",
+          "name": "even-status-error-surface",
+          "reference": "options.color.red.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.text": {
+          "value": "rgb(79.68% 16.32% 18.432%)",
+          "name": "even-status-error-text",
+          "reference": "options.color.red.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.border": {
+          "value": "rgb(97.1% 44.9% 45.77%)",
+          "name": "even-status-error-border",
+          "reference": "options.color.red.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.surface": {
+          "value": "rgb(100% 96.5% 90%)",
+          "name": "even-status-warning-surface",
+          "reference": "options.color.amber.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.text": {
+          "value": "rgb(64% 32% 0%)",
+          "name": "even-status-warning-text",
+          "reference": "options.color.amber.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.border": {
+          "value": "rgb(96.2% 68.84% 27.8%)",
+          "name": "even-status-warning-border",
+          "reference": "options.color.amber.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.surface": {
+          "value": "rgb(93.6% 98.4% 93.6%)",
+          "name": "even-status-success-surface",
+          "reference": "options.color.green.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.text": {
+          "value": "rgb(16% 48% 22.9333333333%)",
+          "name": "even-status-success-text",
+          "reference": "options.color.green.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.border": {
+          "value": "rgb(42.4% 85.6% 46%)",
+          "name": "even-status-success-border",
+          "reference": "options.color.green.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.surface": {
+          "value": "rgb(94% 96.8% 100%)",
+          "name": "even-status-info-surface",
+          "reference": "options.color.blue.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.text": {
+          "value": "rgb(0% 40.6% 84%)",
+          "name": "even-status-info-text",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.border": {
+          "value": "rgb(32% 68.2666666667% 100%)",
+          "name": "even-status-info-border",
+          "reference": "options.color.blue.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.overlay.backdrop": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-backdrop",
+          "reference": "options.overlay.scrim",
+          "description": "Dim the workspace behind a modal. No content is placed directly on this translucent surface.",
+          "type": "color"
+        },
+        "decision.size.icon.small": {
+          "value": "0.75rem",
+          "name": "even-size-icon-small",
+          "reference": "options.dimension.12",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.default": {
+          "value": "1rem",
+          "name": "even-size-icon-default",
+          "reference": "options.dimension.16",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.large": {
+          "value": "1.5rem",
+          "name": "even-size-icon-large",
+          "reference": "options.dimension.24",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.control.compact": {
+          "value": "2rem",
+          "name": "even-size-control-compact",
+          "reference": "options.dimension.32",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.default": {
+          "value": "2.5rem",
+          "name": "even-size-control-default",
+          "reference": "options.dimension.40",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.comfortable": {
+          "value": "3rem",
+          "name": "even-size-control-comfortable",
+          "reference": "options.dimension.48",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.panel.preferred": {
+          "value": "24rem",
+          "name": "even-size-panel-preferred",
+          "reference": "options.dimension.384",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation.preferred": {
+          "value": "16rem",
+          "name": "even-size-navigation-preferred",
+          "reference": "options.dimension.256",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.radius.control": {
+          "value": "0.25rem",
+          "name": "even-size-radius-control",
+          "reference": "options.dimension.4",
+          "description": "Corner radius for controls and small surfaces.",
+          "type": "dimension"
+        },
+        "decision.size.radius.panel": {
+          "value": "0.5rem",
+          "name": "even-size-radius-panel",
+          "reference": "options.dimension.8",
+          "description": "Corner radius for floating panels.",
+          "type": "dimension"
+        },
+        "decision.space.gap.tight": {
+          "value": "0.25rem",
+          "name": "even-space-gap-tight",
+          "reference": "options.dimension.4",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.related": {
+          "value": "0.5rem",
+          "name": "even-space-gap-related",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.group": {
+          "value": "1rem",
+          "name": "even-space-gap-group",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.section": {
+          "value": "1.5rem",
+          "name": "even-space-gap-section",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.compact": {
+          "value": "0.5rem",
+          "name": "even-space-inset-compact",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.default": {
+          "value": "1rem",
+          "name": "even-space-inset-default",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.spacious": {
+          "value": "1.5rem",
+          "name": "even-space-inset-spacious",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        }
+      },
+      "p3": {
+        "options.color.gray.1": {
+          "value": "rgb(95% 95% 95%)",
+          "name": "even-palette-gray-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.2": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-palette-gray-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.3": {
+          "value": "rgb(90% 90% 90%)",
+          "name": "even-palette-gray-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.4": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-palette-gray-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.5": {
+          "value": "rgb(79% 79% 79%)",
+          "name": "even-palette-gray-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.6": {
+          "value": "rgb(66% 66% 66%)",
+          "name": "even-palette-gray-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.7": {
+          "value": "rgb(56% 56% 56%)",
+          "name": "even-palette-gray-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.8": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-palette-gray-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.9": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-palette-gray-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.10": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-palette-gray-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.1": {
+          "value": "rgb(0% 0% 0% / 0.050980392157)",
+          "name": "even-palette-gray-alpha-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.2": {
+          "value": "rgb(0% 0% 0% / 0.078431372549)",
+          "name": "even-palette-gray-alpha-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.3": {
+          "value": "rgb(0% 0% 0% / 0.101960784314)",
+          "name": "even-palette-gray-alpha-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.4": {
+          "value": "rgb(0% 0% 0% / 0.078431372549)",
+          "name": "even-palette-gray-alpha-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.5": {
+          "value": "rgb(0% 0% 0% / 0.211764705882)",
+          "name": "even-palette-gray-alpha-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.6": {
+          "value": "rgb(0% 0% 0% / 0.341176470588)",
+          "name": "even-palette-gray-alpha-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.7": {
+          "value": "rgb(0% 0% 0% / 0.439215686275)",
+          "name": "even-palette-gray-alpha-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.8": {
+          "value": "rgb(0% 0% 0% / 0.509803921569)",
+          "name": "even-palette-gray-alpha-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.9": {
+          "value": "rgb(0% 0% 0% / 0.701960784314)",
+          "name": "even-palette-gray-alpha-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.10": {
+          "value": "rgb(0% 0% 0% / 0.909803921569)",
+          "name": "even-palette-gray-alpha-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.1": {
+          "value": "oklch(97.32% 0.0141 251.56)",
+          "name": "even-palette-blue-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.2": {
+          "value": "oklch(96.29% 0.0195 250.59)",
+          "name": "even-palette-blue-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.3": {
+          "value": "oklch(94.58% 0.0293 249.849)",
+          "name": "even-palette-blue-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.4": {
+          "value": "oklch(91.58% 0.0473 245.116)",
+          "name": "even-palette-blue-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.5": {
+          "value": "oklch(82.75% 0.0979 248.48)",
+          "name": "even-palette-blue-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.6": {
+          "value": "oklch(73.08% 0.1583 248.133)",
+          "name": "even-palette-blue-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.7": {
+          "value": "oklch(57.61% 0.2508 258.23)",
+          "name": "even-palette-blue-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.8": {
+          "value": "oklch(51.51% 0.2399 257.85)",
+          "name": "even-palette-blue-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.9": {
+          "value": "oklch(53.18% 0.2399 256.99)",
+          "name": "even-palette-blue-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.10": {
+          "value": "oklch(26.67% 0.1099 254.34)",
+          "name": "even-palette-blue-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.1": {
+          "value": "oklch(96.5% 0.0223 13.09)",
+          "name": "even-palette-red-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.2": {
+          "value": "oklch(95.41% 0.0299 14.2526)",
+          "name": "even-palette-red-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.3": {
+          "value": "oklch(94.33% 0.0369 15.0115)",
+          "name": "even-palette-red-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.4": {
+          "value": "oklch(91.51% 0.0471 19.8)",
+          "name": "even-palette-red-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.5": {
+          "value": "oklch(84.47% 0.1018 17.71)",
+          "name": "even-palette-red-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.6": {
+          "value": "oklch(71.12% 0.1881 21.22)",
+          "name": "even-palette-red-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.7": {
+          "value": "oklch(62.56% 0.2524 23.03)",
+          "name": "even-palette-red-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.8": {
+          "value": "oklch(58.19% 0.2482 25.15)",
+          "name": "even-palette-red-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.9": {
+          "value": "oklch(54.99% 0.232 25.29)",
+          "name": "even-palette-red-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.10": {
+          "value": "oklch(24.8% 0.1041 18.86)",
+          "name": "even-palette-red-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.1": {
+          "value": "oklch(97.48% 0.0331 85.79)",
+          "name": "even-palette-amber-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.2": {
+          "value": "oklch(96.81% 0.0495 90.2423)",
+          "name": "even-palette-amber-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.3": {
+          "value": "oklch(95.93% 0.0636 90.52)",
+          "name": "even-palette-amber-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.4": {
+          "value": "oklch(91.02% 0.1322 88.25)",
+          "name": "even-palette-amber-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.5": {
+          "value": "oklch(86.55% 0.1583 79.63)",
+          "name": "even-palette-amber-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.6": {
+          "value": "oklch(80.25% 0.1953 73.59)",
+          "name": "even-palette-amber-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.7": {
+          "value": "oklch(81.87% 0.1969 76.46)",
+          "name": "even-palette-amber-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.8": {
+          "value": "oklch(77.21% 0.1991 64.28)",
+          "name": "even-palette-amber-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.9": {
+          "value": "oklch(52.79% 0.1496 54.65)",
+          "name": "even-palette-amber-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.10": {
+          "value": "oklch(30.83% 0.099 45.48)",
+          "name": "even-palette-amber-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.1": {
+          "value": "oklch(97.59% 0.0289 145.42)",
+          "name": "even-palette-green-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.2": {
+          "value": "oklch(96.92% 0.037 147.15)",
+          "name": "even-palette-green-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.3": {
+          "value": "oklch(94.6% 0.0674 144.23)",
+          "name": "even-palette-green-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.4": {
+          "value": "oklch(91.49% 0.0976 146.24)",
+          "name": "even-palette-green-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.5": {
+          "value": "oklch(85.45% 0.1627 146.3)",
+          "name": "even-palette-green-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.6": {
+          "value": "oklch(80.25% 0.214 145.18)",
+          "name": "even-palette-green-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.7": {
+          "value": "oklch(64.58% 0.1746 147.27)",
+          "name": "even-palette-green-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.8": {
+          "value": "oklch(57.81% 0.1507 147.5)",
+          "name": "even-palette-green-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.9": {
+          "value": "oklch(51.75% 0.1453 147.65)",
+          "name": "even-palette-green-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.10": {
+          "value": "oklch(29.15% 0.1197 147.38)",
+          "name": "even-palette-green-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.1": {
+          "value": "oklch(97.72% 0.0359 186.7)",
+          "name": "even-palette-teal-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.2": {
+          "value": "oklch(97.06% 0.0347 180.66)",
+          "name": "even-palette-teal-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.3": {
+          "value": "oklch(94.92% 0.0478 182.07)",
+          "name": "even-palette-teal-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.4": {
+          "value": "oklch(92.76% 0.0718 183.78)",
+          "name": "even-palette-teal-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.5": {
+          "value": "oklch(86.88% 0.1344 182.42)",
+          "name": "even-palette-teal-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.6": {
+          "value": "oklch(81.5% 0.161 178.96)",
+          "name": "even-palette-teal-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.7": {
+          "value": "oklch(64.92% 0.1572 181.95)",
+          "name": "even-palette-teal-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.8": {
+          "value": "oklch(57.53% 0.1392 181.66)",
+          "name": "even-palette-teal-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.9": {
+          "value": "oklch(52.08% 0.1251 182.93)",
+          "name": "even-palette-teal-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.10": {
+          "value": "oklch(32.11% 0.0788 179.82)",
+          "name": "even-palette-teal-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.1": {
+          "value": "oklch(96.65% 0.0244 312.189)",
+          "name": "even-palette-purple-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.2": {
+          "value": "oklch(96.73% 0.0228 309.8)",
+          "name": "even-palette-purple-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.3": {
+          "value": "oklch(94.85% 0.0364 310.15)",
+          "name": "even-palette-purple-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.4": {
+          "value": "oklch(91.77% 0.0614 312.82)",
+          "name": "even-palette-purple-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.5": {
+          "value": "oklch(81.26% 0.1409 310.8)",
+          "name": "even-palette-purple-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.6": {
+          "value": "oklch(72.07% 0.2083 308.19)",
+          "name": "even-palette-purple-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.7": {
+          "value": "oklch(55.5% 0.3008 306.12)",
+          "name": "even-palette-purple-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.8": {
+          "value": "oklch(48.58% 0.2638 305.73)",
+          "name": "even-palette-purple-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.9": {
+          "value": "oklch(47.18% 0.2579 304)",
+          "name": "even-palette-purple-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.10": {
+          "value": "oklch(23.96% 0.13 305.66)",
+          "name": "even-palette-purple-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.1": {
+          "value": "oklch(95.69% 0.0359 344.622)",
+          "name": "even-palette-pink-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.2": {
+          "value": "oklch(95.71% 0.0321 353.14)",
+          "name": "even-palette-pink-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.3": {
+          "value": "oklch(93.83% 0.0451 356.29)",
+          "name": "even-palette-pink-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.4": {
+          "value": "oklch(91.12% 0.0573 358.82)",
+          "name": "even-palette-pink-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.5": {
+          "value": "oklch(84.28% 0.0915 356.99)",
+          "name": "even-palette-pink-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.6": {
+          "value": "oklch(74.33% 0.1547 0.24)",
+          "name": "even-palette-pink-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.7": {
+          "value": "oklch(63.52% 0.238 1.01)",
+          "name": "even-palette-pink-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.8": {
+          "value": "oklch(59.51% 0.2339 4.21)",
+          "name": "even-palette-pink-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.9": {
+          "value": "oklch(53.5% 0.2058 2.84)",
+          "name": "even-palette-pink-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.10": {
+          "value": "oklch(26% 0.0977 359)",
+          "name": "even-palette-pink-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.1": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-palette-background-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.2": {
+          "value": "rgb(98% 98% 98%)",
+          "name": "even-palette-background-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.dimension.0": {
+          "value": "0rem",
+          "name": "even-dimension-0",
+          "reference": null,
+          "description": "0px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.2": {
+          "value": "0.125rem",
+          "name": "even-dimension-2",
+          "reference": null,
+          "description": "2px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.4": {
+          "value": "0.25rem",
+          "name": "even-dimension-4",
+          "reference": null,
+          "description": "4px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.8": {
+          "value": "0.5rem",
+          "name": "even-dimension-8",
+          "reference": null,
+          "description": "8px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.12": {
+          "value": "0.75rem",
+          "name": "even-dimension-12",
+          "reference": null,
+          "description": "12px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.16": {
+          "value": "1rem",
+          "name": "even-dimension-16",
+          "reference": null,
+          "description": "16px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.20": {
+          "value": "1.25rem",
+          "name": "even-dimension-20",
+          "reference": null,
+          "description": "20px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.24": {
+          "value": "1.5rem",
+          "name": "even-dimension-24",
+          "reference": null,
+          "description": "24px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.32": {
+          "value": "2rem",
+          "name": "even-dimension-32",
+          "reference": null,
+          "description": "32px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.40": {
+          "value": "2.5rem",
+          "name": "even-dimension-40",
+          "reference": null,
+          "description": "40px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.48": {
+          "value": "3rem",
+          "name": "even-dimension-48",
+          "reference": null,
+          "description": "48px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.64": {
+          "value": "4rem",
+          "name": "even-dimension-64",
+          "reference": null,
+          "description": "64px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.96": {
+          "value": "6rem",
+          "name": "even-dimension-96",
+          "reference": null,
+          "description": "96px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.128": {
+          "value": "8rem",
+          "name": "even-dimension-128",
+          "reference": null,
+          "description": "128px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.192": {
+          "value": "12rem",
+          "name": "even-dimension-192",
+          "reference": null,
+          "description": "192px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.256": {
+          "value": "16rem",
+          "name": "even-dimension-256",
+          "reference": null,
+          "description": "256px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.384": {
+          "value": "24rem",
+          "name": "even-dimension-384",
+          "reference": null,
+          "description": "384px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.512": {
+          "value": "32rem",
+          "name": "even-dimension-512",
+          "reference": null,
+          "description": "512px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.640": {
+          "value": "40rem",
+          "name": "even-dimension-640",
+          "reference": null,
+          "description": "640px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.768": {
+          "value": "48rem",
+          "name": "even-dimension-768",
+          "reference": null,
+          "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.overlay.scrim": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-scrim",
+          "reference": null,
+          "description": "Translucent black for modal dimming in either theme.",
+          "type": "color"
+        },
+        "decision.color.surface.page": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-surface-page",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.secondary": {
+          "value": "rgb(98% 98% 98%)",
+          "name": "even-surface-secondary",
+          "reference": "options.color.background.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.control": {
+          "value": "rgb(95% 95% 95%)",
+          "name": "even-surface-control",
+          "reference": "options.color.gray.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.hover": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-surface-hover",
+          "reference": "options.color.gray.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.active": {
+          "value": "rgb(90% 90% 90%)",
+          "name": "even-surface-active",
+          "reference": "options.color.gray.3",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.link": {
+          "value": "oklch(53.18% 0.2399 256.99)",
+          "name": "even-text-link",
+          "reference": "options.color.blue.9",
+          "description": "Navigational text links on page and secondary surfaces.",
+          "type": "color"
+        },
+        "decision.color.text.primary": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-text-primary",
+          "reference": "options.color.gray.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.secondary": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-text-secondary",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.default": {
+          "value": "rgb(92% 92% 92%)",
+          "name": "even-border-default",
+          "reference": "options.color.gray.4",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.hover": {
+          "value": "rgb(79% 79% 79%)",
+          "name": "even-border-hover",
+          "reference": "options.color.gray.5",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.active": {
+          "value": "rgb(66% 66% 66%)",
+          "name": "even-border-active",
+          "reference": "options.color.gray.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.control": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-border-control",
+          "reference": "options.color.gray.8",
+          "description": "Essential boundary: tested separately from decorative borders.",
+          "type": "color"
+        },
+        "decision.color.focus.ring": {
+          "value": "oklch(53.18% 0.2399 256.99)",
+          "name": "even-focus-ring",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.background": {
+          "value": "oklch(96.29% 0.0195 250.59)",
+          "name": "even-selection-background",
+          "reference": "options.color.blue.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.foreground": {
+          "value": "oklch(26.67% 0.1099 254.34)",
+          "name": "even-selection-foreground",
+          "reference": "options.color.blue.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.background": {
+          "value": "rgb(9% 9% 9%)",
+          "name": "even-action-background",
+          "reference": "options.color.gray.10",
+          "description": "Even uses a neutral solid action; this is a product decision, not a Geist prescription.",
+          "type": "color"
+        },
+        "decision.color.action.hover": {
+          "value": "rgb(30% 30% 30%)",
+          "name": "even-action-hover",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.foreground": {
+          "value": "rgb(100% 100% 100%)",
+          "name": "even-action-foreground",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.surface": {
+          "value": "oklch(96.5% 0.0223 13.09)",
+          "name": "even-status-error-surface",
+          "reference": "options.color.red.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.text": {
+          "value": "oklch(54.99% 0.232 25.29)",
+          "name": "even-status-error-text",
+          "reference": "options.color.red.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.border": {
+          "value": "oklch(71.12% 0.1881 21.22)",
+          "name": "even-status-error-border",
+          "reference": "options.color.red.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.surface": {
+          "value": "oklch(97.48% 0.0331 85.79)",
+          "name": "even-status-warning-surface",
+          "reference": "options.color.amber.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.text": {
+          "value": "oklch(52.79% 0.1496 54.65)",
+          "name": "even-status-warning-text",
+          "reference": "options.color.amber.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.border": {
+          "value": "oklch(80.25% 0.1953 73.59)",
+          "name": "even-status-warning-border",
+          "reference": "options.color.amber.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.surface": {
+          "value": "oklch(97.59% 0.0289 145.42)",
+          "name": "even-status-success-surface",
+          "reference": "options.color.green.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.text": {
+          "value": "oklch(51.75% 0.1453 147.65)",
+          "name": "even-status-success-text",
+          "reference": "options.color.green.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.border": {
+          "value": "oklch(80.25% 0.214 145.18)",
+          "name": "even-status-success-border",
+          "reference": "options.color.green.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.surface": {
+          "value": "oklch(97.32% 0.0141 251.56)",
+          "name": "even-status-info-surface",
+          "reference": "options.color.blue.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.text": {
+          "value": "oklch(53.18% 0.2399 256.99)",
+          "name": "even-status-info-text",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.border": {
+          "value": "oklch(73.08% 0.1583 248.133)",
+          "name": "even-status-info-border",
+          "reference": "options.color.blue.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.overlay.backdrop": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-backdrop",
+          "reference": "options.overlay.scrim",
+          "description": "Dim the workspace behind a modal. No content is placed directly on this translucent surface.",
+          "type": "color"
+        },
+        "decision.size.icon.small": {
+          "value": "0.75rem",
+          "name": "even-size-icon-small",
+          "reference": "options.dimension.12",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.default": {
+          "value": "1rem",
+          "name": "even-size-icon-default",
+          "reference": "options.dimension.16",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.large": {
+          "value": "1.5rem",
+          "name": "even-size-icon-large",
+          "reference": "options.dimension.24",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.control.compact": {
+          "value": "2rem",
+          "name": "even-size-control-compact",
+          "reference": "options.dimension.32",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.default": {
+          "value": "2.5rem",
+          "name": "even-size-control-default",
+          "reference": "options.dimension.40",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.comfortable": {
+          "value": "3rem",
+          "name": "even-size-control-comfortable",
+          "reference": "options.dimension.48",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.panel.preferred": {
+          "value": "24rem",
+          "name": "even-size-panel-preferred",
+          "reference": "options.dimension.384",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation.preferred": {
+          "value": "16rem",
+          "name": "even-size-navigation-preferred",
+          "reference": "options.dimension.256",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.radius.control": {
+          "value": "0.25rem",
+          "name": "even-size-radius-control",
+          "reference": "options.dimension.4",
+          "description": "Corner radius for controls and small surfaces.",
+          "type": "dimension"
+        },
+        "decision.size.radius.panel": {
+          "value": "0.5rem",
+          "name": "even-size-radius-panel",
+          "reference": "options.dimension.8",
+          "description": "Corner radius for floating panels.",
+          "type": "dimension"
+        },
+        "decision.space.gap.tight": {
+          "value": "0.25rem",
+          "name": "even-space-gap-tight",
+          "reference": "options.dimension.4",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.related": {
+          "value": "0.5rem",
+          "name": "even-space-gap-related",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.group": {
+          "value": "1rem",
+          "name": "even-space-gap-group",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.section": {
+          "value": "1.5rem",
+          "name": "even-space-gap-section",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.compact": {
+          "value": "0.5rem",
+          "name": "even-space-inset-compact",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.default": {
+          "value": "1rem",
+          "name": "even-space-inset-default",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.spacious": {
+          "value": "1.5rem",
+          "name": "even-space-inset-spacious",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        }
+      }
+    },
+    "dark": {
+      "srgb": {
+        "options.color.gray.1": {
+          "value": "rgb(10% 10% 10%)",
+          "name": "even-palette-gray-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.2": {
+          "value": "rgb(12% 12% 12%)",
+          "name": "even-palette-gray-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.3": {
+          "value": "rgb(16% 16% 16%)",
+          "name": "even-palette-gray-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.4": {
+          "value": "rgb(18% 18% 18%)",
+          "name": "even-palette-gray-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.5": {
+          "value": "rgb(27% 27% 27%)",
+          "name": "even-palette-gray-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.6": {
+          "value": "rgb(53% 53% 53%)",
+          "name": "even-palette-gray-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.7": {
+          "value": "rgb(56% 56% 56%)",
+          "name": "even-palette-gray-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.8": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-palette-gray-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.9": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-palette-gray-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.10": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-palette-gray-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.1": {
+          "value": "rgb(100% 100% 100% / 0.058823529412)",
+          "name": "even-palette-gray-alpha-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.2": {
+          "value": "rgb(100% 100% 100% / 0.090196078431)",
+          "name": "even-palette-gray-alpha-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.3": {
+          "value": "rgb(100% 100% 100% / 0.129411764706)",
+          "name": "even-palette-gray-alpha-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.4": {
+          "value": "rgb(100% 100% 100% / 0.141176470588)",
+          "name": "even-palette-gray-alpha-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.5": {
+          "value": "rgb(100% 100% 100% / 0.239215686275)",
+          "name": "even-palette-gray-alpha-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.6": {
+          "value": "rgb(100% 100% 100% / 0.509803921569)",
+          "name": "even-palette-gray-alpha-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.7": {
+          "value": "rgb(100% 100% 100% / 0.541176470588)",
+          "name": "even-palette-gray-alpha-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.8": {
+          "value": "rgb(100% 100% 100% / 0.470588235294)",
+          "name": "even-palette-gray-alpha-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.9": {
+          "value": "rgb(100% 100% 100% / 0.611764705882)",
+          "name": "even-palette-gray-alpha-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.10": {
+          "value": "rgb(100% 100% 100% / 0.921568627451)",
+          "name": "even-palette-gray-alpha-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.1": {
+          "value": "rgb(6% 10.8% 18%)",
+          "name": "even-palette-blue-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.2": {
+          "value": "rgb(6.15% 13.82% 23.85%)",
+          "name": "even-palette-blue-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.3": {
+          "value": "rgb(5.8% 18.58% 34.2%)",
+          "name": "even-palette-blue-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.4": {
+          "value": "rgb(5.06% 21.804% 40.94%)",
+          "name": "even-palette-blue-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.5": {
+          "value": "rgb(3.78% 26.226% 50.22%)",
+          "name": "even-palette-blue-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.6": {
+          "value": "rgb(0% 56.6666666667% 100%)",
+          "name": "even-palette-blue-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.7": {
+          "value": "rgb(0% 44.8% 96%)",
+          "name": "even-palette-blue-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.8": {
+          "value": "rgb(0% 38.2666666667% 82%)",
+          "name": "even-palette-blue-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.9": {
+          "value": "rgb(32% 66% 100%)",
+          "name": "even-palette-blue-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.10": {
+          "value": "rgb(92% 96.5333333333% 100%)",
+          "name": "even-palette-blue-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.1": {
+          "value": "rgb(16.44% 7.56% 8.004%)",
+          "name": "even-palette-red-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.2": {
+          "value": "rgb(23.36% 8.64% 9.376%)",
+          "name": "even-palette-red-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.3": {
+          "value": "rgb(33.88% 10.12% 11.704%)",
+          "name": "even-palette-red-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.4": {
+          "value": "rgb(40.3% 11.7% 13.13%)",
+          "name": "even-palette-red-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.5": {
+          "value": "rgb(51.2% 12.8% 14.72%)",
+          "name": "even-palette-red-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.6": {
+          "value": "rgb(89.75% 28.25% 30.3%)",
+          "name": "even-palette-red-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.7": {
+          "value": "rgb(89.75% 28.25% 30.3%)",
+          "name": "even-palette-red-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.8": {
+          "value": "rgb(85.12% 18.88% 21.088%)",
+          "name": "even-palette-red-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.9": {
+          "value": "rgb(100% 38% 40.0666666667%)",
+          "name": "even-palette-red-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.10": {
+          "value": "rgb(99.6% 92.4% 93.24%)",
+          "name": "even-palette-red-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.1": {
+          "value": "rgb(16% 9.3333333333% 0%)",
+          "name": "even-palette-amber-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.2": {
+          "value": "rgb(20% 10.6666666667% 0%)",
+          "name": "even-palette-amber-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.3": {
+          "value": "rgb(30% 16.5% 0%)",
+          "name": "even-palette-amber-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.4": {
+          "value": "rgb(34% 19.8333333333% 0%)",
+          "name": "even-palette-amber-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.5": {
+          "value": "rgb(42.02% 25.3366666667% 1.98%)",
+          "name": "even-palette-amber-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.6": {
+          "value": "rgb(90.65% 61.495% 7.35%)",
+          "name": "even-palette-amber-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.7": {
+          "value": "rgb(100% 69.9% 14%)",
+          "name": "even-palette-amber-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.8": {
+          "value": "rgb(100% 60% 4%)",
+          "name": "even-palette-amber-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.9": {
+          "value": "rgb(95% 63.5% 5%)",
+          "name": "even-palette-amber-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.10": {
+          "value": "rgb(99.58% 95.1933333333% 86.42%)",
+          "name": "even-palette-amber-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.1": {
+          "value": "rgb(4.5% 13.5% 6.9%)",
+          "name": "even-palette-green-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.2": {
+          "value": "rgb(6% 18% 9.4%)",
+          "name": "even-palette-green-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.3": {
+          "value": "rgb(7% 21% 10.7333333333%)",
+          "name": "even-palette-green-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.4": {
+          "value": "rgb(4.8% 27.2% 10.4%)",
+          "name": "even-palette-green-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.5": {
+          "value": "rgb(6.9% 39.1% 14.95%)",
+          "name": "even-palette-green-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.6": {
+          "value": "rgb(10.2% 57.8% 22.1%)",
+          "name": "even-palette-green-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.7": {
+          "value": "rgb(27.14% 64.86% 34.0553333333%)",
+          "name": "even-palette-green-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.8": {
+          "value": "rgb(22.23% 55.77% 28.938%)",
+          "name": "even-palette-green-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.9": {
+          "value": "rgb(38.51% 75.49% 45.2896666667%)",
+          "name": "even-palette-green-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.10": {
+          "value": "rgb(89.62% 98.38% 91.956%)",
+          "name": "even-palette-green-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.1": {
+          "value": "rgb(1.54% 12.46% 10.458%)",
+          "name": "even-palette-teal-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.2": {
+          "value": "rgb(2.34% 15.66% 13.44%)",
+          "name": "even-palette-teal-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.3": {
+          "value": "rgb(3.25% 22.75% 19.825%)",
+          "name": "even-palette-teal-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.4": {
+          "value": "rgb(1.95% 24.05% 20.735%)",
+          "name": "even-palette-teal-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.5": {
+          "value": "rgb(3% 37% 32.4666666667%)",
+          "name": "even-palette-teal-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.6": {
+          "value": "rgb(4.8% 59.2% 51.9466666667%)",
+          "name": "even-palette-teal-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.7": {
+          "value": "rgb(7.2% 64.8% 58.08%)",
+          "name": "even-palette-teal-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.8": {
+          "value": "rgb(5.1% 54.9% 49.09%)",
+          "name": "even-palette-teal-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.9": {
+          "value": "rgb(4.1% 77.9% 70.52%)",
+          "name": "even-palette-teal-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.10": {
+          "value": "rgb(88.03% 97.97% 95.6506666667%)",
+          "name": "even-palette-teal-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.1": {
+          "value": "rgb(13.56% 8.4% 15.6%)",
+          "name": "even-palette-purple-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.2": {
+          "value": "rgb(18.2293333333% 9.92% 22.08%)",
+          "name": "even-palette-purple-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.3": {
+          "value": "rgb(26.036% 12.88% 33.12%)",
+          "name": "even-palette-purple-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.4": {
+          "value": "rgb(31.0053333333% 15.12% 40.88%)",
+          "name": "even-palette-purple-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.5": {
+          "value": "rgb(37.2866666667% 17.85% 52.15%)",
+          "name": "even-palette-purple-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.6": {
+          "value": "rgb(55.564% 30.54% 77.46%)",
+          "name": "even-palette-purple-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.7": {
+          "value": "rgb(55.564% 30.54% 77.46%)",
+          "name": "even-palette-purple-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.8": {
+          "value": "rgb(46.41% 23.85% 66.15%)",
+          "name": "even-palette-purple-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.9": {
+          "value": "rgb(74.8666666667% 47.8% 94.2%)",
+          "name": "even-palette-purple-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.10": {
+          "value": "rgb(97.0706666667% 93.08% 98.92%)",
+          "name": "even-palette-purple-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.1": {
+          "value": "rgb(15.84% 8.16% 11.36%)",
+          "name": "even-palette-pink-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.2": {
+          "value": "rgb(22.88% 9.12% 14.8533333333%)",
+          "name": "even-palette-pink-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.3": {
+          "value": "rgb(30.87% 11.13% 19.355%)",
+          "name": "even-palette-pink-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.4": {
+          "value": "rgb(33.22% 10.78% 20.13%)",
+          "name": "even-palette-pink-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.5": {
+          "value": "rgb(42.39% 11.61% 24.435%)",
+          "name": "even-palette-pink-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.6": {
+          "value": "rgb(70% 10% 34%)",
+          "name": "even-palette-pink-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.7": {
+          "value": "rgb(91.6% 24.4% 51.28%)",
+          "name": "even-palette-pink-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.8": {
+          "value": "rgb(87.26% 14.74% 43.748%)",
+          "name": "even-palette-pink-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.9": {
+          "value": "rgb(96.7% 37.3% 56.11%)",
+          "name": "even-palette-pink-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.10": {
+          "value": "rgb(99.6% 92.4% 95.64%)",
+          "name": "even-palette-pink-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.1": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-palette-background-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.2": {
+          "value": "rgb(0% 0% 0%)",
+          "name": "even-palette-background-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.dimension.0": {
+          "value": "0rem",
+          "name": "even-dimension-0",
+          "reference": null,
+          "description": "0px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.2": {
+          "value": "0.125rem",
+          "name": "even-dimension-2",
+          "reference": null,
+          "description": "2px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.4": {
+          "value": "0.25rem",
+          "name": "even-dimension-4",
+          "reference": null,
+          "description": "4px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.8": {
+          "value": "0.5rem",
+          "name": "even-dimension-8",
+          "reference": null,
+          "description": "8px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.12": {
+          "value": "0.75rem",
+          "name": "even-dimension-12",
+          "reference": null,
+          "description": "12px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.16": {
+          "value": "1rem",
+          "name": "even-dimension-16",
+          "reference": null,
+          "description": "16px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.20": {
+          "value": "1.25rem",
+          "name": "even-dimension-20",
+          "reference": null,
+          "description": "20px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.24": {
+          "value": "1.5rem",
+          "name": "even-dimension-24",
+          "reference": null,
+          "description": "24px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.32": {
+          "value": "2rem",
+          "name": "even-dimension-32",
+          "reference": null,
+          "description": "32px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.40": {
+          "value": "2.5rem",
+          "name": "even-dimension-40",
+          "reference": null,
+          "description": "40px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.48": {
+          "value": "3rem",
+          "name": "even-dimension-48",
+          "reference": null,
+          "description": "48px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.64": {
+          "value": "4rem",
+          "name": "even-dimension-64",
+          "reference": null,
+          "description": "64px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.96": {
+          "value": "6rem",
+          "name": "even-dimension-96",
+          "reference": null,
+          "description": "96px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.128": {
+          "value": "8rem",
+          "name": "even-dimension-128",
+          "reference": null,
+          "description": "128px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.192": {
+          "value": "12rem",
+          "name": "even-dimension-192",
+          "reference": null,
+          "description": "192px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.256": {
+          "value": "16rem",
+          "name": "even-dimension-256",
+          "reference": null,
+          "description": "256px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.384": {
+          "value": "24rem",
+          "name": "even-dimension-384",
+          "reference": null,
+          "description": "384px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.512": {
+          "value": "32rem",
+          "name": "even-dimension-512",
+          "reference": null,
+          "description": "512px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.640": {
+          "value": "40rem",
+          "name": "even-dimension-640",
+          "reference": null,
+          "description": "640px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.768": {
+          "value": "48rem",
+          "name": "even-dimension-768",
+          "reference": null,
+          "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.overlay.scrim": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-scrim",
+          "reference": null,
+          "description": "Translucent black for modal dimming in either theme.",
+          "type": "color"
+        },
+        "decision.color.surface.page": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-surface-page",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.secondary": {
+          "value": "rgb(0% 0% 0%)",
+          "name": "even-surface-secondary",
+          "reference": "options.color.background.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.control": {
+          "value": "rgb(10% 10% 10%)",
+          "name": "even-surface-control",
+          "reference": "options.color.gray.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.hover": {
+          "value": "rgb(12% 12% 12%)",
+          "name": "even-surface-hover",
+          "reference": "options.color.gray.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.active": {
+          "value": "rgb(16% 16% 16%)",
+          "name": "even-surface-active",
+          "reference": "options.color.gray.3",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.link": {
+          "value": "rgb(32% 66% 100%)",
+          "name": "even-text-link",
+          "reference": "options.color.blue.9",
+          "description": "Navigational text links on page and secondary surfaces.",
+          "type": "color"
+        },
+        "decision.color.text.primary": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-text-primary",
+          "reference": "options.color.gray.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.secondary": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-text-secondary",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.default": {
+          "value": "rgb(18% 18% 18%)",
+          "name": "even-border-default",
+          "reference": "options.color.gray.4",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.hover": {
+          "value": "rgb(27% 27% 27%)",
+          "name": "even-border-hover",
+          "reference": "options.color.gray.5",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.active": {
+          "value": "rgb(53% 53% 53%)",
+          "name": "even-border-active",
+          "reference": "options.color.gray.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.control": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-border-control",
+          "reference": "options.color.gray.8",
+          "description": "Essential boundary: tested separately from decorative borders.",
+          "type": "color"
+        },
+        "decision.color.focus.ring": {
+          "value": "rgb(32% 66% 100%)",
+          "name": "even-focus-ring",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.background": {
+          "value": "rgb(6.15% 13.82% 23.85%)",
+          "name": "even-selection-background",
+          "reference": "options.color.blue.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.foreground": {
+          "value": "rgb(92% 96.5333333333% 100%)",
+          "name": "even-selection-foreground",
+          "reference": "options.color.blue.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.background": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-action-background",
+          "reference": "options.color.gray.10",
+          "description": "Even uses a neutral solid action; this is a product decision, not a Geist prescription.",
+          "type": "color"
+        },
+        "decision.color.action.hover": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-action-hover",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.foreground": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-action-foreground",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.surface": {
+          "value": "rgb(16.44% 7.56% 8.004%)",
+          "name": "even-status-error-surface",
+          "reference": "options.color.red.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.text": {
+          "value": "rgb(100% 38% 40.0666666667%)",
+          "name": "even-status-error-text",
+          "reference": "options.color.red.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.border": {
+          "value": "rgb(89.75% 28.25% 30.3%)",
+          "name": "even-status-error-border",
+          "reference": "options.color.red.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.surface": {
+          "value": "rgb(16% 9.3333333333% 0%)",
+          "name": "even-status-warning-surface",
+          "reference": "options.color.amber.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.text": {
+          "value": "rgb(95% 63.5% 5%)",
+          "name": "even-status-warning-text",
+          "reference": "options.color.amber.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.border": {
+          "value": "rgb(90.65% 61.495% 7.35%)",
+          "name": "even-status-warning-border",
+          "reference": "options.color.amber.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.surface": {
+          "value": "rgb(4.5% 13.5% 6.9%)",
+          "name": "even-status-success-surface",
+          "reference": "options.color.green.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.text": {
+          "value": "rgb(38.51% 75.49% 45.2896666667%)",
+          "name": "even-status-success-text",
+          "reference": "options.color.green.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.border": {
+          "value": "rgb(10.2% 57.8% 22.1%)",
+          "name": "even-status-success-border",
+          "reference": "options.color.green.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.surface": {
+          "value": "rgb(6% 10.8% 18%)",
+          "name": "even-status-info-surface",
+          "reference": "options.color.blue.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.text": {
+          "value": "rgb(32% 66% 100%)",
+          "name": "even-status-info-text",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.border": {
+          "value": "rgb(0% 56.6666666667% 100%)",
+          "name": "even-status-info-border",
+          "reference": "options.color.blue.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.overlay.backdrop": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-backdrop",
+          "reference": "options.overlay.scrim",
+          "description": "Dim the workspace behind a modal. No content is placed directly on this translucent surface.",
+          "type": "color"
+        },
+        "decision.size.icon.small": {
+          "value": "0.75rem",
+          "name": "even-size-icon-small",
+          "reference": "options.dimension.12",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.default": {
+          "value": "1rem",
+          "name": "even-size-icon-default",
+          "reference": "options.dimension.16",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.large": {
+          "value": "1.5rem",
+          "name": "even-size-icon-large",
+          "reference": "options.dimension.24",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.control.compact": {
+          "value": "2rem",
+          "name": "even-size-control-compact",
+          "reference": "options.dimension.32",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.default": {
+          "value": "2.5rem",
+          "name": "even-size-control-default",
+          "reference": "options.dimension.40",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.comfortable": {
+          "value": "3rem",
+          "name": "even-size-control-comfortable",
+          "reference": "options.dimension.48",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.panel.preferred": {
+          "value": "24rem",
+          "name": "even-size-panel-preferred",
+          "reference": "options.dimension.384",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation.preferred": {
+          "value": "16rem",
+          "name": "even-size-navigation-preferred",
+          "reference": "options.dimension.256",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.radius.control": {
+          "value": "0.25rem",
+          "name": "even-size-radius-control",
+          "reference": "options.dimension.4",
+          "description": "Corner radius for controls and small surfaces.",
+          "type": "dimension"
+        },
+        "decision.size.radius.panel": {
+          "value": "0.5rem",
+          "name": "even-size-radius-panel",
+          "reference": "options.dimension.8",
+          "description": "Corner radius for floating panels.",
+          "type": "dimension"
+        },
+        "decision.space.gap.tight": {
+          "value": "0.25rem",
+          "name": "even-space-gap-tight",
+          "reference": "options.dimension.4",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.related": {
+          "value": "0.5rem",
+          "name": "even-space-gap-related",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.group": {
+          "value": "1rem",
+          "name": "even-space-gap-group",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.section": {
+          "value": "1.5rem",
+          "name": "even-space-gap-section",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.compact": {
+          "value": "0.5rem",
+          "name": "even-space-inset-compact",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.default": {
+          "value": "1rem",
+          "name": "even-space-inset-default",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.spacious": {
+          "value": "1.5rem",
+          "name": "even-space-inset-spacious",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        }
+      },
+      "p3": {
+        "options.color.gray.1": {
+          "value": "rgb(10% 10% 10%)",
+          "name": "even-palette-gray-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.2": {
+          "value": "rgb(12% 12% 12%)",
+          "name": "even-palette-gray-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.3": {
+          "value": "rgb(16% 16% 16%)",
+          "name": "even-palette-gray-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.4": {
+          "value": "rgb(18% 18% 18%)",
+          "name": "even-palette-gray-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.5": {
+          "value": "rgb(27% 27% 27%)",
+          "name": "even-palette-gray-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.6": {
+          "value": "rgb(53% 53% 53%)",
+          "name": "even-palette-gray-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.7": {
+          "value": "rgb(56% 56% 56%)",
+          "name": "even-palette-gray-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.8": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-palette-gray-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.9": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-palette-gray-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray.10": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-palette-gray-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.1": {
+          "value": "rgb(100% 100% 100% / 0.058823529412)",
+          "name": "even-palette-gray-alpha-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.2": {
+          "value": "rgb(100% 100% 100% / 0.090196078431)",
+          "name": "even-palette-gray-alpha-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.3": {
+          "value": "rgb(100% 100% 100% / 0.129411764706)",
+          "name": "even-palette-gray-alpha-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.4": {
+          "value": "rgb(100% 100% 100% / 0.141176470588)",
+          "name": "even-palette-gray-alpha-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.5": {
+          "value": "rgb(100% 100% 100% / 0.239215686275)",
+          "name": "even-palette-gray-alpha-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.6": {
+          "value": "rgb(100% 100% 100% / 0.509803921569)",
+          "name": "even-palette-gray-alpha-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.7": {
+          "value": "rgb(100% 100% 100% / 0.541176470588)",
+          "name": "even-palette-gray-alpha-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.8": {
+          "value": "rgb(100% 100% 100% / 0.470588235294)",
+          "name": "even-palette-gray-alpha-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.9": {
+          "value": "rgb(100% 100% 100% / 0.611764705882)",
+          "name": "even-palette-gray-alpha-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.gray-alpha.10": {
+          "value": "rgb(100% 100% 100% / 0.921568627451)",
+          "name": "even-palette-gray-alpha-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.1": {
+          "value": "oklch(22.17% 0.069 259.89)",
+          "name": "even-palette-blue-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.2": {
+          "value": "oklch(25.45% 0.0811 255.8)",
+          "name": "even-palette-blue-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.3": {
+          "value": "oklch(30.86% 0.1022 255.21)",
+          "name": "even-palette-blue-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.4": {
+          "value": "oklch(34.1% 0.121 254.74)",
+          "name": "even-palette-blue-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.5": {
+          "value": "oklch(38.5% 0.1403 254.4)",
+          "name": "even-palette-blue-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.6": {
+          "value": "oklch(64.94% 0.1982 251.813)",
+          "name": "even-palette-blue-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.7": {
+          "value": "oklch(57.61% 0.2321 258.23)",
+          "name": "even-palette-blue-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.8": {
+          "value": "oklch(51.51% 0.2307 257.85)",
+          "name": "even-palette-blue-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.9": {
+          "value": "oklch(71.7% 0.1648 250.794)",
+          "name": "even-palette-blue-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.blue.10": {
+          "value": "oklch(96.75% 0.0179 242.423)",
+          "name": "even-palette-blue-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.1": {
+          "value": "oklch(22.1% 0.0657 15.11)",
+          "name": "even-palette-red-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.2": {
+          "value": "oklch(25.93% 0.0834 19.02)",
+          "name": "even-palette-red-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.3": {
+          "value": "oklch(31.47% 0.1105 20.96)",
+          "name": "even-palette-red-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.4": {
+          "value": "oklch(35.27% 0.1273 21.23)",
+          "name": "even-palette-red-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.5": {
+          "value": "oklch(40.68% 0.1479 23.16)",
+          "name": "even-palette-red-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.6": {
+          "value": "oklch(62.56% 0.2277 23.03)",
+          "name": "even-palette-red-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.7": {
+          "value": "oklch(62.56% 0.2234 23.03)",
+          "name": "even-palette-red-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.8": {
+          "value": "oklch(58.01% 0.227 25.12)",
+          "name": "even-palette-red-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.9": {
+          "value": "oklch(69.96% 0.2136 22.03)",
+          "name": "even-palette-red-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.red.10": {
+          "value": "oklch(95.6% 0.0293 6.61)",
+          "name": "even-palette-red-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.1": {
+          "value": "oklch(22.46% 0.0538 76.04)",
+          "name": "even-palette-amber-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.2": {
+          "value": "oklch(24.95% 0.0642 64.78)",
+          "name": "even-palette-amber-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.3": {
+          "value": "oklch(32.34% 0.0837 63.83)",
+          "name": "even-palette-amber-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.4": {
+          "value": "oklch(35.53% 0.0903 66.2971)",
+          "name": "even-palette-amber-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.5": {
+          "value": "oklch(41.55% 0.1044 67.98)",
+          "name": "even-palette-amber-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.6": {
+          "value": "oklch(75.04% 0.1737 74.49)",
+          "name": "even-palette-amber-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.7": {
+          "value": "oklch(81.87% 0.1969 76.46)",
+          "name": "even-palette-amber-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.8": {
+          "value": "oklch(77.21% 0.1991 64.28)",
+          "name": "even-palette-amber-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.9": {
+          "value": "oklch(77.21% 0.1991 64.28)",
+          "name": "even-palette-amber-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.amber.10": {
+          "value": "oklch(96.7% 0.0418 84.59)",
+          "name": "even-palette-amber-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.1": {
+          "value": "oklch(23.09% 0.0716 149.68)",
+          "name": "even-palette-green-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.2": {
+          "value": "oklch(27.12% 0.0895 150.09)",
+          "name": "even-palette-green-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.3": {
+          "value": "oklch(29.84% 0.096 149.25)",
+          "name": "even-palette-green-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.4": {
+          "value": "oklch(34.39% 0.1039 147.78)",
+          "name": "even-palette-green-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.5": {
+          "value": "oklch(44.19% 0.1484 147.2)",
+          "name": "even-palette-green-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.6": {
+          "value": "oklch(58.11% 0.1815 146.55)",
+          "name": "even-palette-green-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.7": {
+          "value": "oklch(64.58% 0.199 147.27)",
+          "name": "even-palette-green-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.8": {
+          "value": "oklch(57.81% 0.1776 147.5)",
+          "name": "even-palette-green-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.9": {
+          "value": "oklch(73.1% 0.2158 148.29)",
+          "name": "even-palette-green-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.green.10": {
+          "value": "oklch(96.76% 0.056 154.18)",
+          "name": "even-palette-green-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.1": {
+          "value": "oklch(22.1% 0.0544 178.74)",
+          "name": "even-palette-teal-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.2": {
+          "value": "oklch(25.06% 0.062 178.76)",
+          "name": "even-palette-teal-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.3": {
+          "value": "oklch(31.5% 0.0767 180.99)",
+          "name": "even-palette-teal-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.4": {
+          "value": "oklch(32.43% 0.0763 180.13)",
+          "name": "even-palette-teal-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.5": {
+          "value": "oklch(43.35% 0.1055 180.97)",
+          "name": "even-palette-teal-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.6": {
+          "value": "oklch(60.71% 0.1485 180.24)",
+          "name": "even-palette-teal-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.7": {
+          "value": "oklch(64.92% 0.1403 181.95)",
+          "name": "even-palette-teal-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.8": {
+          "value": "oklch(57.53% 0.1392 181.66)",
+          "name": "even-palette-teal-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.9": {
+          "value": "oklch(74.56% 0.1765 182.8)",
+          "name": "even-palette-teal-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.teal.10": {
+          "value": "oklch(96.46% 0.056 180.29)",
+          "name": "even-palette-teal-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.1": {
+          "value": "oklch(22.34% 0.0779 316.87)",
+          "name": "even-palette-purple-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.2": {
+          "value": "oklch(25.91% 0.0921 314.41)",
+          "name": "even-palette-purple-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.3": {
+          "value": "oklch(31.98% 0.1219 312.41)",
+          "name": "even-palette-purple-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.4": {
+          "value": "oklch(35.93% 0.1504 309.78)",
+          "name": "even-palette-purple-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.5": {
+          "value": "oklch(40.99% 0.1721 307.92)",
+          "name": "even-palette-purple-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.6": {
+          "value": "oklch(55.5% 0.2191 306.12)",
+          "name": "even-palette-purple-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.7": {
+          "value": "oklch(55.5% 0.2186 306.12)",
+          "name": "even-palette-purple-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.8": {
+          "value": "oklch(48.58% 0.2102 305.73)",
+          "name": "even-palette-purple-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.9": {
+          "value": "oklch(69.87% 0.2037 309.51)",
+          "name": "even-palette-purple-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.purple.10": {
+          "value": "oklch(96.1% 0.0304 316.46)",
+          "name": "even-palette-purple-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.1": {
+          "value": "oklch(22.67% 0.0628 354.73)",
+          "name": "even-palette-pink-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.2": {
+          "value": "oklch(26.2% 0.0859 356.68)",
+          "name": "even-palette-pink-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.3": {
+          "value": "oklch(31.15% 0.1067 355.93)",
+          "name": "even-palette-pink-3",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.4": {
+          "value": "oklch(32.13% 0.1174 356.71)",
+          "name": "even-palette-pink-4",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.5": {
+          "value": "oklch(37.01% 0.1453 358.39)",
+          "name": "even-palette-pink-5",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.6": {
+          "value": "oklch(50.33% 0.2089 4.33)",
+          "name": "even-palette-pink-6",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.7": {
+          "value": "oklch(63.52% 0.2346 1.01)",
+          "name": "even-palette-pink-7",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.8": {
+          "value": "oklch(59.51% 0.2429 4.21)",
+          "name": "even-palette-pink-8",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.9": {
+          "value": "oklch(69.36% 0.2223 3.91)",
+          "name": "even-palette-pink-9",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.pink.10": {
+          "value": "oklch(95.74% 0.0326 350.08)",
+          "name": "even-palette-pink-10",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.1": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-palette-background-1",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.color.background.2": {
+          "value": "rgb(0% 0% 0%)",
+          "name": "even-palette-background-2",
+          "reference": null,
+          "description": "",
+          "type": "color"
+        },
+        "options.dimension.0": {
+          "value": "0rem",
+          "name": "even-dimension-0",
+          "reference": null,
+          "description": "0px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.2": {
+          "value": "0.125rem",
+          "name": "even-dimension-2",
+          "reference": null,
+          "description": "2px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.4": {
+          "value": "0.25rem",
+          "name": "even-dimension-4",
+          "reference": null,
+          "description": "4px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.8": {
+          "value": "0.5rem",
+          "name": "even-dimension-8",
+          "reference": null,
+          "description": "8px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.12": {
+          "value": "0.75rem",
+          "name": "even-dimension-12",
+          "reference": null,
+          "description": "12px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.16": {
+          "value": "1rem",
+          "name": "even-dimension-16",
+          "reference": null,
+          "description": "16px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.20": {
+          "value": "1.25rem",
+          "name": "even-dimension-20",
+          "reference": null,
+          "description": "20px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.24": {
+          "value": "1.5rem",
+          "name": "even-dimension-24",
+          "reference": null,
+          "description": "24px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.32": {
+          "value": "2rem",
+          "name": "even-dimension-32",
+          "reference": null,
+          "description": "32px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.40": {
+          "value": "2.5rem",
+          "name": "even-dimension-40",
+          "reference": null,
+          "description": "40px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.48": {
+          "value": "3rem",
+          "name": "even-dimension-48",
+          "reference": null,
+          "description": "48px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.64": {
+          "value": "4rem",
+          "name": "even-dimension-64",
+          "reference": null,
+          "description": "64px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.96": {
+          "value": "6rem",
+          "name": "even-dimension-96",
+          "reference": null,
+          "description": "96px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.128": {
+          "value": "8rem",
+          "name": "even-dimension-128",
+          "reference": null,
+          "description": "128px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.192": {
+          "value": "12rem",
+          "name": "even-dimension-192",
+          "reference": null,
+          "description": "192px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.256": {
+          "value": "16rem",
+          "name": "even-dimension-256",
+          "reference": null,
+          "description": "256px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.384": {
+          "value": "24rem",
+          "name": "even-dimension-384",
+          "reference": null,
+          "description": "384px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.512": {
+          "value": "32rem",
+          "name": "even-dimension-512",
+          "reference": null,
+          "description": "512px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.640": {
+          "value": "40rem",
+          "name": "even-dimension-640",
+          "reference": null,
+          "description": "640px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.dimension.768": {
+          "value": "48rem",
+          "name": "even-dimension-768",
+          "reference": null,
+          "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
+          "type": "dimension"
+        },
+        "options.overlay.scrim": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-scrim",
+          "reference": null,
+          "description": "Translucent black for modal dimming in either theme.",
+          "type": "color"
+        },
+        "decision.color.surface.page": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-surface-page",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.secondary": {
+          "value": "rgb(0% 0% 0%)",
+          "name": "even-surface-secondary",
+          "reference": "options.color.background.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.control": {
+          "value": "rgb(10% 10% 10%)",
+          "name": "even-surface-control",
+          "reference": "options.color.gray.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.hover": {
+          "value": "rgb(12% 12% 12%)",
+          "name": "even-surface-hover",
+          "reference": "options.color.gray.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.surface.active": {
+          "value": "rgb(16% 16% 16%)",
+          "name": "even-surface-active",
+          "reference": "options.color.gray.3",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.link": {
+          "value": "oklch(71.7% 0.1648 250.794)",
+          "name": "even-text-link",
+          "reference": "options.color.blue.9",
+          "description": "Navigational text links on page and secondary surfaces.",
+          "type": "color"
+        },
+        "decision.color.text.primary": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-text-primary",
+          "reference": "options.color.gray.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.text.secondary": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-text-secondary",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.default": {
+          "value": "rgb(18% 18% 18%)",
+          "name": "even-border-default",
+          "reference": "options.color.gray.4",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.hover": {
+          "value": "rgb(27% 27% 27%)",
+          "name": "even-border-hover",
+          "reference": "options.color.gray.5",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.active": {
+          "value": "rgb(53% 53% 53%)",
+          "name": "even-border-active",
+          "reference": "options.color.gray.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.border.control": {
+          "value": "rgb(49% 49% 49%)",
+          "name": "even-border-control",
+          "reference": "options.color.gray.8",
+          "description": "Essential boundary: tested separately from decorative borders.",
+          "type": "color"
+        },
+        "decision.color.focus.ring": {
+          "value": "oklch(71.7% 0.1648 250.794)",
+          "name": "even-focus-ring",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.background": {
+          "value": "oklch(25.45% 0.0811 255.8)",
+          "name": "even-selection-background",
+          "reference": "options.color.blue.2",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.selection.foreground": {
+          "value": "oklch(96.75% 0.0179 242.423)",
+          "name": "even-selection-foreground",
+          "reference": "options.color.blue.10",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.background": {
+          "value": "rgb(93% 93% 93%)",
+          "name": "even-action-background",
+          "reference": "options.color.gray.10",
+          "description": "Even uses a neutral solid action; this is a product decision, not a Geist prescription.",
+          "type": "color"
+        },
+        "decision.color.action.hover": {
+          "value": "rgb(63% 63% 63%)",
+          "name": "even-action-hover",
+          "reference": "options.color.gray.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.action.foreground": {
+          "value": "rgb(4% 4% 4%)",
+          "name": "even-action-foreground",
+          "reference": "options.color.background.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.surface": {
+          "value": "oklch(22.1% 0.0657 15.11)",
+          "name": "even-status-error-surface",
+          "reference": "options.color.red.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.text": {
+          "value": "oklch(69.96% 0.2136 22.03)",
+          "name": "even-status-error-text",
+          "reference": "options.color.red.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.error.border": {
+          "value": "oklch(62.56% 0.2277 23.03)",
+          "name": "even-status-error-border",
+          "reference": "options.color.red.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.surface": {
+          "value": "oklch(22.46% 0.0538 76.04)",
+          "name": "even-status-warning-surface",
+          "reference": "options.color.amber.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.text": {
+          "value": "oklch(77.21% 0.1991 64.28)",
+          "name": "even-status-warning-text",
+          "reference": "options.color.amber.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.warning.border": {
+          "value": "oklch(75.04% 0.1737 74.49)",
+          "name": "even-status-warning-border",
+          "reference": "options.color.amber.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.surface": {
+          "value": "oklch(23.09% 0.0716 149.68)",
+          "name": "even-status-success-surface",
+          "reference": "options.color.green.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.text": {
+          "value": "oklch(73.1% 0.2158 148.29)",
+          "name": "even-status-success-text",
+          "reference": "options.color.green.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.success.border": {
+          "value": "oklch(58.11% 0.1815 146.55)",
+          "name": "even-status-success-border",
+          "reference": "options.color.green.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.surface": {
+          "value": "oklch(22.17% 0.069 259.89)",
+          "name": "even-status-info-surface",
+          "reference": "options.color.blue.1",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.text": {
+          "value": "oklch(71.7% 0.1648 250.794)",
+          "name": "even-status-info-text",
+          "reference": "options.color.blue.9",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.status.info.border": {
+          "value": "oklch(64.94% 0.1982 251.813)",
+          "name": "even-status-info-border",
+          "reference": "options.color.blue.6",
+          "description": "",
+          "type": "color"
+        },
+        "decision.color.overlay.backdrop": {
+          "value": "rgb(0% 0% 0% / 0.64)",
+          "name": "even-overlay-backdrop",
+          "reference": "options.overlay.scrim",
+          "description": "Dim the workspace behind a modal. No content is placed directly on this translucent surface.",
+          "type": "color"
+        },
+        "decision.size.icon.small": {
+          "value": "0.75rem",
+          "name": "even-size-icon-small",
+          "reference": "options.dimension.12",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.default": {
+          "value": "1rem",
+          "name": "even-size-icon-default",
+          "reference": "options.dimension.16",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.icon.large": {
+          "value": "1.5rem",
+          "name": "even-size-icon-large",
+          "reference": "options.dimension.24",
+          "description": "Icon dimensions.",
+          "type": "dimension"
+        },
+        "decision.size.control.compact": {
+          "value": "2rem",
+          "name": "even-size-control-compact",
+          "reference": "options.dimension.32",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.default": {
+          "value": "2.5rem",
+          "name": "even-size-control-default",
+          "reference": "options.dimension.40",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.control.comfortable": {
+          "value": "3rem",
+          "name": "even-size-control-comfortable",
+          "reference": "options.dimension.48",
+          "description": "Minimum height; allow content to grow.",
+          "type": "dimension"
+        },
+        "decision.size.panel.preferred": {
+          "value": "24rem",
+          "name": "even-size-panel-preferred",
+          "reference": "options.dimension.384",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation.preferred": {
+          "value": "16rem",
+          "name": "even-size-navigation-preferred",
+          "reference": "options.dimension.256",
+          "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.radius.control": {
+          "value": "0.25rem",
+          "name": "even-size-radius-control",
+          "reference": "options.dimension.4",
+          "description": "Corner radius for controls and small surfaces.",
+          "type": "dimension"
+        },
+        "decision.size.radius.panel": {
+          "value": "0.5rem",
+          "name": "even-size-radius-panel",
+          "reference": "options.dimension.8",
+          "description": "Corner radius for floating panels.",
+          "type": "dimension"
+        },
+        "decision.space.gap.tight": {
+          "value": "0.25rem",
+          "name": "even-space-gap-tight",
+          "reference": "options.dimension.4",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.related": {
+          "value": "0.5rem",
+          "name": "even-space-gap-related",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.group": {
+          "value": "1rem",
+          "name": "even-space-gap-group",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.gap.section": {
+          "value": "1.5rem",
+          "name": "even-space-gap-section",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.compact": {
+          "value": "0.5rem",
+          "name": "even-space-inset-compact",
+          "reference": "options.dimension.8",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.default": {
+          "value": "1rem",
+          "name": "even-space-inset-default",
+          "reference": "options.dimension.16",
+          "description": "",
+          "type": "dimension"
+        },
+        "decision.space.inset.spacious": {
+          "value": "1.5rem",
+          "name": "even-space-inset-spacious",
+          "reference": "options.dimension.24",
+          "description": "",
+          "type": "dimension"
+        }
+      }
+    }
+  },
+  "source": {
+    "url": "https://vercel.com/geist/colors",
+    "retrieved": "2026-11-13",
+    "stylesheets": [
+      "/vc-ap-b3331f/_next/static/immutable/chunks/37uvw8gnf1avs.css",
+      "/vc-ap-b3331f/_next/static/immutable/chunks/32sjzx2_xsk_o.css",
+      "/vc-ap-b3331f/_next/static/immutable/chunks/4370_3q36hxmr.css"
+    ]
+  }
+}

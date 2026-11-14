@@ -1,0 +1,38 @@
+{
+  "decision": {
+    "space": {
+      "gap": {
+        "tight": {
+          "$type": "dimension",
+          "$value": "{options.dimension.4}"
+        },
+        "related": {
+          "$type": "dimension",
+          "$value": "{options.dimension.8}"
+        },
+        "group": {
+          "$type": "dimension",
+          "$value": "{options.dimension.16}"
+        },
+        "section": {
+          "$type": "dimension",
+          "$value": "{options.dimension.24}"
+        }
+      },
+      "inset": {
+        "compact": {
+          "$type": "dimension",
+          "$value": "{options.dimension.8}"
+        },
+        "default": {
+          "$type": "dimension",
+          "$value": "{options.dimension.16}"
+        },
+        "spacious": {
+          "$type": "dimension",
+          "$value": "{options.dimension.24}"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,529 @@
+{
+  "$description": "Geist light p3 palette snapshot. Source values, not product decisions.",
+  "$extensions": {
+    "com.even.provenance": {
+      "url": "https://vercel.com/geist/colors",
+      "retrieved": "2026-11-13",
+      "stylesheets": [
+        "/vc-ap-b3331f/_next/static/immutable/chunks/37uvw8gnf1avs.css",
+        "/vc-ap-b3331f/_next/static/immutable/chunks/32sjzx2_xsk_o.css",
+        "/vc-ap-b3331f/_next/static/immutable/chunks/4370_3q36hxmr.css"
+      ]
+    }
+  },
+  "options": {
+    "color": {
+      "blue": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9732, 0.0141, 251.56],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9629, 0.0195, 250.59],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9458, 0.0293, 249.849],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9158, 0.0473, 245.116],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8275, 0.0979, 248.48],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.7308, 0.1583, 248.133],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5761, 0.2508, 258.23],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5151, 0.2399, 257.85],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5318, 0.2399, 256.99],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.2667, 0.1099, 254.34],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "red": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.965, 0.0223, 13.09],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9541, 0.0299, 14.2526],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9433, 0.0369, 15.0115],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9151, 0.0471, 19.8],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8447, 0.1018, 17.71],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.7112, 0.1881, 21.22],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.6256, 0.2524, 23.03],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5819, 0.2482, 25.15],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5499, 0.232, 25.29],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.248, 0.1041, 18.86],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "amber": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9748, 0.0331, 85.79],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9681, 0.0495, 90.2423],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9593, 0.0636, 90.52],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9102, 0.1322, 88.25],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8655, 0.1583, 79.63],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8025, 0.1953, 73.59],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8187, 0.1969, 76.46],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.7721, 0.1991, 64.28],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5279, 0.1496, 54.65],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.3083, 0.099, 45.48],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "green": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9759, 0.0289, 145.42],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9692, 0.037, 147.15],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.946, 0.0674, 144.23],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9149, 0.0976, 146.24],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8545, 0.1627, 146.3],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8025, 0.214, 145.18],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.6458, 0.1746, 147.27],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5781, 0.1507, 147.5],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5175, 0.1453, 147.65],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.2915, 0.1197, 147.38],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "teal": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9772, 0.0359, 186.7],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9706, 0.0347, 180.66],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9492, 0.0478, 182.07],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9276, 0.0718, 183.78],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8688, 0.1344, 182.42],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.815, 0.161, 178.96],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.6492, 0.1572, 181.95],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5753, 0.1392, 181.66],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5208, 0.1251, 182.93],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.3211, 0.0788, 179.82],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "purple": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9665, 0.0244, 312.189],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9673, 0.0228, 309.8],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9485, 0.0364, 310.15],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9177, 0.0614, 312.82],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8126, 0.1409, 310.8],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.7207, 0.2083, 308.19],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.555, 0.3008, 306.12],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.4858, 0.2638, 305.73],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.4718, 0.2579, 304],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.2396, 0.13, 305.66],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      },
+      "pink": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9569, 0.0359, 344.622],
+            "alpha": 1
+          }
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9571, 0.0321, 353.14],
+            "alpha": 1
+          }
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9383, 0.0451, 356.29],
+            "alpha": 1
+          }
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.9112, 0.0573, 358.82],
+            "alpha": 1
+          }
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.8428, 0.0915, 356.99],
+            "alpha": 1
+          }
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.7433, 0.1547, 0.24],
+            "alpha": 1
+          }
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.6352, 0.238, 1.01],
+            "alpha": 1
+          }
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.5951, 0.2339, 4.21],
+            "alpha": 1
+          }
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.535, 0.2058, 2.84],
+            "alpha": 1
+          }
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [0.26, 0.0977, 359],
+            "alpha": 1
+          }
+        },
+        "$type": "color"
+      }
+    }
+  }
+}
