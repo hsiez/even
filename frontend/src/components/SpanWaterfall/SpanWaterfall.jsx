@@ -1,6 +1,6 @@
 import "../components.css";
 import React from "react";
-import { createContext, useContext, useId } from "react";
+import { createContext, useContext, useId, useState } from "react";
 import { useControllable } from "../state";
 import { Duration } from "../Duration/Duration";
 const Context = createContext(null);
@@ -75,6 +75,7 @@ export function spanForest(spans) {
 }
 function Tree({ label = "Execution spans" }) {
   const { spans, selected, select, expanded, expand, id } = useWaterfall();
+  const [focusedSpanId, setFocusedSpanId] = useState();
   const roots = spanForest(spans);
   const visible = [];
   function collect(nodes) {
@@ -84,9 +85,13 @@ function Tree({ label = "Execution spans" }) {
     }
   }
   collect(roots);
-  const active = visible.some((node) => node.span.spanId === selected)
-    ? selected
-    : visible[0]?.span.spanId;
+  const isVisible = (spanId) =>
+    visible.some((node) => node.span.spanId === spanId);
+  const active = isVisible(focusedSpanId)
+    ? focusedSpanId
+    : isVisible(selected)
+      ? selected
+      : visible[0]?.span.spanId;
   function toggle(spanId, open) {
     expand((previous) =>
       open
@@ -107,6 +112,10 @@ function Tree({ label = "Execution spans" }) {
             id={`${id}-${key}`}
             data-span-id={span.spanId}
             tabIndex={active === span.spanId ? 0 : -1}
+            onFocus={(event) => {
+              if (event.target === event.currentTarget)
+                setFocusedSpanId(span.spanId);
+            }}
             aria-labelledby={`${id}-${key}-label`}
             aria-selected={selected === span.spanId}
             aria-expanded={children.length ? isExpanded : undefined}
@@ -182,9 +191,6 @@ function Tree({ label = "Execution spans" }) {
         }
         if (event.key === "Enter" || event.key === " ") select(spanId);
         if (target) {
-          items.forEach((item) => {
-            item.tabIndex = item === target ? 0 : -1;
-          });
           target.focus();
         }
         if (

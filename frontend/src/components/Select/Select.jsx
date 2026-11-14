@@ -33,7 +33,7 @@ export function Select({
           <BaseSelect.Value />
           <BaseSelect.Icon aria-hidden="true">▾</BaseSelect.Icon>
         </BaseSelect.Trigger>
-        <BaseSelect.Portal>
+        <BaseSelect.Portal className="even-overlay-portal">
           <BaseSelect.Positioner className="even-positioner">
             <BaseSelect.Popup className="even-popup even-select-popup">
               <BaseSelect.List>

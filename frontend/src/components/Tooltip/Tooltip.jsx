@@ -7,7 +7,7 @@ const Popup = styledPart(BaseTooltip.Popup, "even-popup even-tooltip-popup");
 
 function Content({ children, side = "top", ...props }) {
   return (
-    <BaseTooltip.Portal>
+    <BaseTooltip.Portal className="even-overlay-portal">
       <BaseTooltip.Positioner className="even-positioner" side={side}>
         <Popup {...props}>{children}</Popup>
       </BaseTooltip.Positioner>

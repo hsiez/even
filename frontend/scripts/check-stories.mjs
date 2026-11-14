@@ -211,6 +211,201 @@ try {
   await hint.waitFor();
   await page.keyboard.press("Escape");
   await hint.waitFor({ state: "hidden" });
+
+  // Mixed keyboard/pointer selection must leave exactly one tree tab stop.
+  await page.goto(
+    `${base}/iframe.html?id=workbench-spanwaterfall--default&viewMode=story`,
+  );
+  await page
+    .getByRole("treeitem", { name: "Agent activation", exact: true })
+    .focus();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("ArrowDown");
+  await page.getByRole("button", { name: "Model call", exact: true }).click();
+  assert.deepEqual(
+    await page
+      .getByRole("treeitem")
+      .evaluateAll((items) =>
+        items
+          .filter((item) => item.tabIndex === 0)
+          .map((item) => item.dataset.spanId),
+      ),
+    ["tool"],
+    "Tree remembers arrow focus independently of timeline selection",
+  );
+
+  for (const theme of themes) {
+    await page.setViewportSize({ width: 1000, height: 750 });
+    await page.goto(
+      `${base}/iframe.html?id=primitives-dialog--nested-overlays&viewMode=story&globals=theme:${theme}`,
+    );
+    await page
+      .getByRole("button", { name: "Open outer popover", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Open nested dialog", exact: true })
+      .click();
+    const nestedDialog = page.getByRole("dialog", {
+      name: "Nested dialog",
+      exact: true,
+    });
+    await nestedDialog.waitFor();
+    const parentPopup = page
+      .locator(".even-popover-popup")
+      .filter({ has: page.getByText("Outer popover", { exact: true }) });
+    const overlap = await nestedDialog.evaluate(
+      (modal, parent) => {
+        const a = modal.getBoundingClientRect(),
+          b = parent.getBoundingClientRect();
+        const left = Math.max(a.left, b.left),
+          right = Math.min(a.right, b.right);
+        const top = Math.max(a.top, b.top),
+          bottom = Math.min(a.bottom, b.bottom);
+        return {
+          intersects: right > left && bottom > top,
+          modalAbove: modal.contains(
+            document.elementFromPoint((left + right) / 2, (top + bottom) / 2),
+          ),
+        };
+      },
+      await parentPopup.elementHandle(),
+    );
+    assert.equal(
+      overlap.intersects,
+      true,
+      "Regression fixture actually overlaps the parent popup and modal",
+    );
+    assert.equal(
+      overlap.modalAbove,
+      true,
+      "Nested dialog paints above its parent popover",
+    );
+
+    await nestedDialog.getByRole("combobox", { name: "Trace outcome" }).click();
+    const errorsOption = page.getByRole("option", {
+      name: "Errors only",
+      exact: true,
+    });
+    await errorsOption.waitFor();
+    await page.waitForFunction(
+      (node) => {
+        const r = node.getBoundingClientRect();
+        return node.contains(
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2),
+        );
+      },
+      await errorsOption.elementHandle(),
+    );
+    assert.equal(
+      await errorsOption.evaluate((node) => {
+        const r = node.getBoundingClientRect();
+        return node.contains(
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2),
+        );
+      }),
+      true,
+      "Select popup paints above its parent dialog",
+    );
+    await errorsOption.click();
+    await page
+      .getByRole("option", { name: "Errors only", exact: true })
+      .waitFor({ state: "hidden" });
+    await nestedDialog
+      .getByRole("button", { name: "Open dialog popover", exact: true })
+      .click();
+    const childPopup = page.getByRole("dialog", {
+      name: "Dialog popover",
+      exact: true,
+    });
+    await childPopup.waitFor();
+    // Positioning/focus settle after the popup first becomes visible.
+    await page.waitForFunction(
+      (node) => {
+        const r = node.getBoundingClientRect();
+        return node.contains(
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2),
+        );
+      },
+      await childPopup.elementHandle(),
+    );
+    assert.equal(
+      await childPopup.evaluate((node) => {
+        const r = node.getBoundingClientRect();
+        return node.contains(
+          document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2),
+        );
+      }),
+      true,
+      "Child popover paints above the modal",
+    );
+    await page.addScriptTag({ content: axe });
+    const nestedViolations = await page.evaluate(async () =>
+      (
+        await window.axe.run(document.body, {
+          rules: { region: { enabled: false } },
+        })
+      ).violations.map((item) => item.id),
+    );
+    assert.deepEqual(nestedViolations, [], "Nested overlay accessibility");
+    await childPopup
+      .getByRole("button", { name: "Close dialog popover", exact: true })
+      .click();
+    await nestedDialog
+      .getByRole("button", { name: "Close nested dialog", exact: true })
+      .click();
+    await nestedDialog.waitFor({ state: "hidden" });
+    await page
+      .getByRole("button", { name: "Open nested dialog", exact: true })
+      .waitFor();
+
+    await page.goto(
+      `${base}/iframe.html?id=workbench-conversation--late-execution-links&viewMode=story&globals=theme:${theme}`,
+    );
+    const log = page.getByRole("log");
+    await log.waitFor();
+    await page
+      .getByRole("button", { name: "Resolve execution links", exact: true })
+      .click();
+    await page
+      .getByRole("link", { name: "View execution 3", exact: true })
+      .waitFor();
+    await page.waitForFunction(
+      (node) => node.scrollHeight - node.scrollTop - node.clientHeight < 1,
+      await log.elementHandle(),
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Follow latest activity" })
+        .count(),
+      0,
+    );
+    await page
+      .getByRole("button", { name: "Reset execution links", exact: true })
+      .click();
+    await log.hover();
+    await page.mouse.wheel(0, -5000);
+    await page.waitForFunction(
+      (node) => node.scrollTop < 1,
+      await log.elementHandle(),
+    );
+    await page
+      .getByRole("button", { name: "Resolve execution links", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Follow latest activity" })
+      .waitFor();
+    assert.equal(
+      await log.evaluate((node) => node.scrollTop),
+      0,
+      "Late trace links preserve the reader's position",
+    );
+    await page.getByRole("button", { name: "Follow latest activity" }).click();
+    await page.waitForFunction(
+      (node) => node.scrollHeight - node.scrollTop - node.clientHeight < 1,
+      await log.elementHandle(),
+    );
+  }
+  await page.setViewportSize({ width: 1280, height: 720 });
   // Exercise decisions on actual consumers, portal inheritance and responsive layout.
   for (const theme of themes) {
     await page.setViewportSize({ width: 1440, height: 900 });

@@ -7,7 +7,7 @@ const Popup = styledPart(BaseDialog.Popup, "even-popup even-dialog-popup");
 
 function Content({ children, ...props }) {
   return (
-    <BaseDialog.Portal>
+    <BaseDialog.Portal className="even-overlay-portal">
       <BaseDialog.Backdrop className="even-dialog-backdrop" />
       <BaseDialog.Viewport className="even-dialog-viewport">
         <Popup {...props}>{children}</Popup>

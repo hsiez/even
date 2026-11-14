@@ -7,7 +7,7 @@ const Popup = styledPart(BaseMenu.Popup, "even-popup even-menu-popup");
 
 function Content({ children, side = "bottom", align = "start", ...props }) {
   return (
-    <BaseMenu.Portal>
+    <BaseMenu.Portal className="even-overlay-portal">
       <BaseMenu.Positioner
         className="even-positioner"
         side={side}

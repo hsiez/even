@@ -129,8 +129,15 @@
     justify-content: space-between;
     text-align: start;
   }
-  :where(.even-positioner) {
+  /* Base UI nests child portals in the parent portal. Each portal isolates its
+     own backdrop/popup levels; child portals then sit above those local levels. */
+  :where(.even-overlay-portal) {
+    position: relative;
+    isolation: isolate;
     z-index: 50;
+  }
+  :where(.even-positioner) {
+    z-index: 1;
   }
   :where(.even-popup) {
     padding: var(--even-space-inset-default);
@@ -160,13 +167,13 @@
   :where(.even-dialog-backdrop) {
     position: fixed;
     inset: 0;
-    z-index: 40;
+    z-index: 0;
     background: var(--even-overlay-backdrop);
   }
   :where(.even-dialog-viewport) {
     position: fixed;
     inset: 0;
-    z-index: 41;
+    z-index: 1;
     display: grid;
     place-items: center;
     overflow: auto;

@@ -23,6 +23,6 @@
 - Format code with `npx prettier --write src .storybook scripts vite.config.js style-dictionary.config.js tokens`. Keep examples and API contracts current when behavior changes.
 
 - Tooltip follows Base UI’s supplementary visual-hint contract. Give its trigger an accessible name; put essential information in visible descriptions or a Popover. Do not assume the popup supplies a screen-reader name/description.
-- Include portal content in accessibility audits. Test overlays in Chromium for focus containment (modal dialogs), Escape dismissal, and trigger focus restoration.
+- Include portal content in accessibility audits. Test overlays in Chromium for focus containment (modal dialogs), Escape dismissal, and trigger focus restoration. Verify nested overlays in both directions (floating control inside a dialog, dialog opened from a floating control); preserve portal stacking contexts instead of assigning global priorities by component type.
 
 - JSON in `tokens/options` and `tokens/decisions` is the token source of truth. No component-token layer or public/private classification. Style Dictionary builds `src/tokens/generated/tokens.css` and `token-manifest.json`; do not edit generated files. Run `npm run tokens:generate` after source changes, commit outputs with sources, and run freshness/contrast checks. Storybook displays output; it does not compile tokens. Use decision tokens in component styles. Add a missing decision with a clear purpose rather than selecting palette steps in component CSS.

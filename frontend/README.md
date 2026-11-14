@@ -61,6 +61,8 @@ Ordinary, unlayered consumer CSS overrides library defaults; inline styles work 
 
 The responsive workbench puts the inspector below the results when space is limited, stacks navigation on small screens, and contains table overflow in named keyboard-focusable regions. Base UI remains responsible for modal focus and overlay dismissal. Motion has not been added.
 
+Overlay portals create nested stacking contexts. A child portal sits above its parent's popup/backdrop, regardless of whether the child is a dialog, popover, menu, select, or tooltip. Keep popup/backdrop levels local to their portal rather than assigning global priority by component type. **Primitives / Dialog / Nested Overlays** demonstrates both nesting directions.
+
 ## Component contracts
 
 | Component | Responsibility and state contract |
@@ -91,12 +93,12 @@ The responsive workbench puts the inspector below the results when space is limi
 | FilterBar | `{id,label}` active filters; removal sends an ID; clear is a separate callback. |
 | TraceTable | Semantic table of **summary view models**, explicit open buttons, controlled selection. Sort controls emit `{key,direction}`; caller sorts and filters data. Unknown values remain unknown. |
 | TraceSummary | Trace-wide summary view model; does not filter totals by selected span or session. |
-| SpanWaterfall | Root owns selection/expanded IDs unless controlled. Tree and Timeline share spans and selection through context. Tree arrows move focus, Right/Left expand/collapse, Enter/Space select. Expansion does not select. Missing-parent and cyclic spans stay visible. Timeline currently presents timing in a styled table. |
+| SpanWaterfall | Root owns selection/expanded IDs unless controlled. Tree and Timeline share spans and selection through context. Tree tracks keyboard focus separately from selection and keeps one tab stop. Arrows move focus, Right/Left expand/collapse, Enter/Space select. Expansion does not select. Missing-parent and cyclic spans stay visible. Timeline currently presents timing in a styled table. |
 | SpanDetails | Supplied selected span or empty prompt; recorded status, duration, attributes, error detail. |
 | AttributeList | Key/value semantics, local case-insensitive filter, exact serialized copy. Attributes should be JSON-compatible (bigint supported). |
 | PayloadViewer | `undefined` means not captured; empty string means empty; malformed JSON remains plain text. Content is never inserted as HTML. Copy preserves original string. |
 | SessionSelector | Controlled current-launch sessions and create callback; busy/error state. Does not imply historical session import. |
-| Conversation | Message list with unique stable IDs; later entries with the same ID replace content in its original position. Preserves reading position when scrolled away and offers explicit follow. The message log has a bounded scroll container. Remount with a session key when changing sessions. No token-by-token announcements. |
+| Conversation | Message list with unique stable IDs; later entries with the same ID replace content in its original position. Observes rendered content changes, including asynchronous execution actions and size changes, to follow activity or preserve reading position and offer explicit follow. The message log has a bounded scroll container. Remount with a session key when changing sessions. No token-by-token announcements. |
 | MessageComposer | Local draft, `onSend(text)` promise, parent `pending`/`disabled` support. Button submits; Enter inserts newline. Blocks duplicate requests; retains draft on failure and text edited during a pending send. Remount with session key to isolate drafts. |
 | ViewExecutionAction | Explicit caller-provided trace mappings and `hrefForTrace(id)`; pending/missing/multiple mappings. Never guesses a prompt-to-trace relationship. |
 

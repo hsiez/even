@@ -73,3 +73,43 @@ test("associates child groups with their parent and keeps selection local to the
   expect(root).toHaveFocus();
   expect(select).toHaveBeenCalledTimes(1);
 });
+
+test("keeps one tree tab stop when arrow focus and timeline selection differ", async () => {
+  const user = userEvent.setup();
+  const { rerender } = render(
+    <SpanWaterfall spans={spans} defaultExpandedSpanIds={["root"]}>
+      <SpanWaterfall.Tree />
+      <SpanWaterfall.Timeline />
+    </SpanWaterfall>,
+  );
+  await user.tab();
+  await user.keyboard("{ArrowDown}{ArrowDown}");
+  const focused = screen.getByRole("treeitem", {
+    name: "Read deployment logs",
+  });
+  expect(focused).toHaveFocus();
+  await user.click(
+    screen.getByRole("button", { name: "Model call", exact: true }),
+  );
+  const tabStops = () =>
+    screen.getAllByRole("treeitem").filter((item) => item.tabIndex === 0);
+  expect(tabStops()).toEqual([focused]);
+  expect(screen.getByRole("treeitem", { name: "Model call" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  // Unrelated parent updates must not erase the remembered keyboard focus.
+  rerender(
+    <SpanWaterfall spans={[...spans]} defaultExpandedSpanIds={["root"]}>
+      <SpanWaterfall.Tree />
+      <SpanWaterfall.Timeline />
+    </SpanWaterfall>,
+  );
+  expect(tabStops()).toEqual([focused]);
+  await user.click(
+    screen.getByRole("button", { name: "Collapse Agent activation" }),
+  );
+  expect(tabStops()).toEqual([
+    screen.getByRole("treeitem", { name: "Agent activation" }),
+  ]);
+});
