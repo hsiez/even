@@ -16,7 +16,9 @@ test("shows both theme scopes, palette provenance, roles and validated pairings"
     });
     expect(region).toHaveAttribute("data-even-theme", theme);
     expect(
-      within(region).getByRole("link", { name: "Source: Geist colors" }),
+      within(region).getByRole("link", {
+        name: "Role structure reference: Geist colors",
+      }),
     ).toHaveAttribute("href", "https://vercel.com/geist/colors");
     expect(
       within(region).getByRole("table", {
@@ -26,6 +28,18 @@ test("shows both theme scopes, palette provenance, roles and validated pairings"
     expect(within(region).getAllByText(/4.5:1 · Pass/).length).toBeGreaterThan(
       0,
     );
+    expect(
+      within(region).getByRole("table", { name: "Matching fill foregrounds" }),
+    ).toBeVisible();
     expect(within(region).queryByText(/· Fail/)).toBeNull();
+    const alphaRow = within(region)
+      .getByRole("rowheader", { name: /gray-alpha/ })
+      .closest("tr");
+    expect(within(alphaRow).getAllByText(/% opacity \(sRGB\)/)).toHaveLength(
+      10,
+    );
+    expect(
+      within(region).getByText(/only for shadows or overlays/),
+    ).toBeVisible();
   }
 });

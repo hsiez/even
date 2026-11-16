@@ -18,6 +18,7 @@ export function TraceTable({
   columnWidths,
   defaultColumnWidths,
   onColumnWidthsChange,
+  "aria-label": regionLabel = "Recorded trace results",
 }) {
   const tableId = useId();
   const tableRef = useRef(null);
@@ -32,7 +33,7 @@ export function TraceTable({
       className="even-table-scroll"
       tabIndex={0}
       role="region"
-      aria-label="Recorded trace results"
+      aria-label={regionLabel}
     >
       <table
         ref={tableRef}

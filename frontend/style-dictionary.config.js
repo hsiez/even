@@ -8,6 +8,8 @@ const sourcePath = (name) =>
 export function tokenCssName(path) {
   if (path[0] === "options" && path[1] === "color")
     return ["even", "palette", ...path.slice(2)].join("-");
+  if (path[0] === "options" && path[1] === "onFill")
+    return ["even", "palette", ...path.slice(2), "foreground"].join("-");
   if (path[0] === "options" && path[1] === "dimension")
     return ["even", "dimension", ...path.slice(2)].join("-");
   if (path[0] === "decision" && path[1] === "color")
@@ -20,9 +22,11 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
     throw new Error("Unknown theme or gamut.");
   const base = [
     sourcePath(`options/colors.${theme}.json`),
+    sourcePath(`options/gray-alpha.${theme}.json`),
     sourcePath("options/dimensions.json"),
     sourcePath("options/fonts.json"),
     sourcePath("options/overlays.json"),
+    sourcePath("options/shadows.json"),
     sourcePath("decisions/*.json"),
   ];
   return {
@@ -31,7 +35,10 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
       ? { source: base }
       : {
           include: base,
-          source: [sourcePath(`options/colors.${theme}.p3.json`)],
+          source: [
+            sourcePath(`options/colors.${theme}.p3.json`),
+            sourcePath(`options/gray-alpha.${theme}.p3.json`),
+          ],
         }),
     log: {
       verbosity: "silent",
@@ -69,6 +76,7 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
           "even/color-css",
           "size/rem",
           "fontFamily/css",
+          "shadow/css/shorthand",
         ],
         files: [
           {
@@ -77,8 +85,10 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
             ...(gamut === "p3"
               ? {
                   filter: (token) =>
-                    token.filePath ===
-                    sourcePath(`options/colors.${theme}.p3.json`),
+                    [
+                      sourcePath(`options/colors.${theme}.p3.json`),
+                      sourcePath(`options/gray-alpha.${theme}.p3.json`),
+                    ].includes(token.filePath),
                 }
               : {}),
             options: {

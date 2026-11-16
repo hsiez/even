@@ -28,7 +28,7 @@
     justify-content: center;
     gap: var(--even-space-gap-related);
     min-height: var(--even-size-control-default);
-    padding: var(--even-space-gap-tight) var(--even-space-inset-default);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-default);
     border: 1px solid var(--even-border-control);
     border-radius: var(--even-size-radius-control);
     background: var(--even-surface-control);
@@ -36,6 +36,10 @@
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
+  }
+  :where(.even-button[data-variant="ghost"]) {
+    background: transparent;
+    border-color: transparent;
   }
   :where(.even-button:hover:not(:disabled):not([data-disabled])) {
     background: var(--even-surface-hover);
@@ -46,7 +50,7 @@
   :where(.even-button[data-variant="primary"]) {
     background: var(--even-action-background);
     color: var(--even-action-foreground);
-    border-color: var(--even-action-background);
+    border-color: var(--even-action-border);
   }
   :where(
     .even-button[data-variant="primary"]:hover:not(:disabled):not(
@@ -54,11 +58,8 @@
       )
   ) {
     background: var(--even-action-hover);
-    border-color: var(--even-action-hover);
-  }
-  :where(.even-button[data-variant="ghost"]) {
-    background: transparent;
-    border-color: transparent;
+    border-color: var(--even-action-border);
+    color: var(--even-action-hover-foreground);
   }
   :where(.even-button[data-size="compact"]) {
     min-height: var(--even-size-control-compact);
@@ -111,12 +112,12 @@
   :where(.even-input:hover:not(:disabled)) {
     background: var(--even-surface-control);
   }
-  :where(.even-input::placeholder) {
+  :where(.even-input)::placeholder {
     color: var(--even-text-secondary);
     opacity: 1;
   }
   :where(.even-input[aria-invalid="true"]) {
-    border-color: var(--even-status-error-text);
+    border-color: var(--even-border-invalid);
   }
   :where(.even-help) {
     margin: 0;
@@ -146,6 +147,7 @@
     border-radius: var(--even-size-radius-panel);
     background: var(--even-surface-page);
     color: var(--even-text-primary);
+    box-shadow: var(--even-shadow-floating);
     max-height: var(--available-height, 90dvh);
     max-width: min(
       var(--available-width, 100vw),
@@ -181,7 +183,7 @@
     padding: var(--even-space-inset-default);
   }
   :where(.even-menu-popup, .even-select-popup) {
-    padding: var(--even-space-gap-tight);
+    padding: var(--even-space-inset-tight);
     min-width: var(--anchor-width);
   }
   :where(.even-menu-item) {
@@ -190,7 +192,7 @@
     justify-content: space-between;
     gap: var(--even-space-gap-group);
     min-height: var(--even-size-control-compact);
-    padding: var(--even-space-gap-tight) var(--even-space-inset-compact);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
     border-radius: var(--even-size-radius-control);
     cursor: pointer;
   }
@@ -243,7 +245,7 @@
   }
   :where(.even-tab[data-active]) {
     color: var(--even-selection-foreground);
-    border-color: var(--even-focus-ring);
+    border-color: var(--even-selection-indicator);
   }
   :where(.even-tab[data-disabled]) {
     opacity: 0.55;
@@ -254,7 +256,7 @@
     border-bottom: 0;
   }
   :where(.even-tab-panel) {
-    padding-block: var(--even-space-gap-group);
+    padding-block: var(--even-space-inset-default);
   }
   :where(.even-tab-panel[hidden], .even-disclosure-panel[hidden]) {
     display: none;
@@ -339,7 +341,7 @@
     margin-bottom: var(--even-space-gap-group);
   }
   :where(.even-trace-toolbar > .even-field) {
-    flex: 1 1 var(--even-size-navigation-preferred);
+    flex: 1 1 var(--even-size-field-preferred);
   }
   :where(.even-filter-bar, .even-filter-bar ul, .even-filter-bar li) {
     display: flex;
@@ -492,7 +494,7 @@
     .even-column-resizer:hover,
     .even-column-resizer[data-resizing]
   )::after {
-    border-color: var(--even-focus-ring);
+    border-color: var(--even-border-interaction);
   }
   :where(.even-column-resizer):focus-visible {
     outline: 2px solid var(--even-focus-ring);
@@ -528,6 +530,9 @@
     padding: var(--even-space-inset-compact);
     border: 0;
     border-radius: 0;
+    /* The row supplies hover/selection surfaces; keep the full-cell action clear. */
+    background: transparent;
+    color: inherit;
     justify-content: flex-start;
     text-align: start;
   }
@@ -564,24 +569,25 @@
   }
   :where(.even-table tr[data-selected]) {
     background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
   }
   :where(.even-trace-status) {
     display: inline-block;
-    padding: var(--even-space-gap-tight) var(--even-space-inset-compact);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
     border-radius: var(--even-size-radius-control);
     font-size: 0.8125rem;
   }
   :where(.even-trace-status[data-state="error"]) {
     color: var(--even-status-error-text);
-    background: var(--even-status-error-surface);
+    background: var(--even-status-error-compact-surface);
   }
   :where(.even-trace-status[data-state="complete"]) {
     color: var(--even-status-success-text);
-    background: var(--even-status-success-surface);
+    background: var(--even-status-success-compact-surface);
   }
   :where(.even-trace-status[data-state="unknown"]) {
     color: var(--even-text-secondary);
-    background: var(--even-surface-control);
+    background: var(--even-surface-active);
   }
   :where(.even-detail-section) {
     margin-bottom: var(--even-space-gap-section);
@@ -608,9 +614,9 @@
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     margin: 0;
-    font:
-      0.8125rem/1.6 ui-monospace,
-      monospace;
+    font-family: var(--even-font-data);
+    font-size: 0.8125rem;
+    line-height: 1.6;
   }
   :where(.even-payload) {
     background: var(--even-surface-control);
@@ -624,7 +630,7 @@
     padding: 0;
   }
   :where(.even-span-tree ul) {
-    padding-left: var(--even-space-gap-group);
+    padding-left: var(--even-space-inset-default);
   }
   :where(.even-span-tree [role="treeitem"]) {
     display: flex;

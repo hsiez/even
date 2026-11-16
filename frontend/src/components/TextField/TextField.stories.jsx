@@ -13,6 +13,7 @@ export const Default = {
         value={value}
         onChange={(event) => setValue(event.target.value)}
         description="Search recorded operations"
+        placeholder="Inspect deployment"
       />
     );
   },

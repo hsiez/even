@@ -9,11 +9,11 @@ The source of truth is now [`frontend/tokens`](../../tokens/README.md): JSON opt
 
 ## Color contract
 
-The Geist snapshot was retrieved 2026-11-13; provenance is recorded in the option JSON. Original values were converted to DTCG color objects without materially changing the palette. Step 1 corresponds to Geist's `--ds-*-100`, step 10 to `--ds-*-1000`. The two background steps are separate page/surface colors. Wide-gamut overrides remain conditional on P3 capability and OKLCH support.
+The supplied **P3-first OKLCH palette v1.1.0 (V2)** is the active component palette. It has eight opaque ten-step families and two separate page canvases in each theme. The original bundle’s version, import date, SHA-256, and fixed hue anchors are recorded in the option JSON; see [the source guide](../../tokens/README.md#active-color-provenance-and-contracts). Geist is a role-structure reference, not the source of these color values.
 
-Geist's component steps 1–3 are backgrounds, 4–6 borders, 7–8 strong fills, 9–10 secondary/primary text and icons. Gray-alpha depends on compositing and is not covered by opaque contrast guarantees.
+Steps 1–3 are backgrounds, 4–5 decorative borders, 6 meaningful borders/focus, 7–8 strong fills, and 9–10 text/icons. `neutral` replaces `gray`; the supplementary `gray-alpha` scale is derived from those neutrals for shadows or overlays where the background should show through. Its P3 representation uses zero-chroma OKLCH with alpha; sRGB fallbacks are generated alongside it. Opaque neutral remains the default for text, icons, fills, borders and dividers. `options.onFill.<family>.7/8` supplies explicit text colors for strong fills; never assume white or reuse steps 9/10 over a fill. Backgrounds remain independent of the ten-step scales.
 
-Even's current decisions keep solid actions neutral, focus/selection blue, and error/warning/success/info red/amber/green/blue. Decorative borders are intentionally subtle; use the separately tested `border.control` for necessary boundaries. Color must never be the only status cue.
+Even keeps primary actions neutral, focus/selection blue, and error/warning/success/info red/amber/green/blue. Actions use neutral 7/8 and their paired foregrounds; filled boundaries use the step-9 `fill.border` decisions, including a persistent `action.border`. Subtle control boundaries and focus retain step 6. The modal scrim remains a separate overlay option. Color must never be the only status cue.
 
 `contrastPairs` lists specific approved pairings: text targets 4.5:1; focus and control boundaries target 3:1 against their listed adjacent surfaces. Tests use Color.js WCAG contrast for sRGB and wide-gamut values. This does not establish whole-component accessibility or approve arbitrary combinations. Chromium contrast auditing is enabled for every story in both themes, including portalled content.
 

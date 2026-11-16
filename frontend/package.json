@@ -11,7 +11,8 @@
     "test:browser": "node scripts/check-stories.mjs",
     "format:check": "prettier --check src tokens .storybook scripts vite.config.js style-dictionary.config.js",
     "tokens:generate": "node scripts/build-tokens.mjs",
-    "tokens:check": "node scripts/build-tokens.mjs --check",
+    "tokens:derive-alpha": "node scripts/derive-gray-alpha.mjs",
+    "tokens:check": "node scripts/derive-gray-alpha.mjs --check && node scripts/build-tokens.mjs --check",
     "tokens:watch": "node --watch --watch-path=tokens --watch-path=style-dictionary.config.js scripts/build-tokens.mjs"
   },
   "devDependencies": {

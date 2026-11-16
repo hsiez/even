@@ -42,13 +42,18 @@ Components select **decisions**, not palette steps or dimension options:
 | --- | --- |
 | Input surface, label, essential boundary | `surface.page`, `text.primary`, `border.control` |
 | Solid primary action | `action.background`, `action.hover`, `action.foreground` |
-| Keyboard focus and selected items | `focus.ring`, `selection.background`, `selection.foreground` |
-| Related controls and panel padding | `space.gap.related`, `space.inset.default` |
+| Keyboard focus | `focus.ring` |
+| Selected items and persistent markers | `selection.background`, `selection.foreground`, `selection.indicator` |
+| Pointer interaction and invalid boundaries | `border.interaction`, `border.invalid` |
+| Related controls and panel padding | `space.gap.related`, `space.inset.default`; small internal padding uses `space.inset.tight` |
 | Compact/default control height | `size.control.compact`, `size.control.default` |
-| Navigation and inspector widths | `size.navigation.preferred`, `size.panel.preferred` |
+| Navigation, inspector and flexible field widths | `size.navigation.preferred`, `size.panel.preferred`, `size.field.preferred` |
+| Floating surface elevation | `shadow.floating` → shared translucent-black cast shadow for menus, selects, popovers, tooltips and dialog panels |
 | Corners and modal dimming | `size.radius.control`, `size.radius.panel`, `overlay.backdrop` |
-| Trace table technical data | `font.data` → Geist Mono, with monospace fallbacks |
+| Trace table technical data, payloads and code | `font.data` → Geist Mono, with monospace fallbacks |
 | Agent and Operation names and headers | `font.ui` → system sans-serif |
+| Compact status labels | `status.<tone>.compact-surface` (step 3), `status.<tone>.text` (step 9); unknown uses `surface.active` and `text.secondary` |
+| Larger notices | `status.<tone>.surface` (step 1), `status.<tone>.text`, `status.<tone>.border` |
 | Trace zebra rows | `surface.page`, `surface.secondary` (continuous across trace and reload rows) |
 
 If a purpose is missing, add a useful decision in JSON and regenerate. Fixed 1px borders, focus outline widths, responsive breakpoints, and provisional system-font UI typography remain ordinary CSS. Table typography uses the `font.data` decision; a broader typography scale has not been designed yet. No new component-token layer is introduced.
@@ -64,11 +69,15 @@ Ordinary, unlayered consumer CSS overrides library defaults; inline styles work 
 
 The responsive workbench puts the inspector below the results when space is limited, stacks navigation on small screens, and contains table overflow in named keyboard-focusable regions. Base UI remains responsible for modal focus and overlay dismissal. Motion has not been added.
 
+Floating menus, selects, popovers, tooltips and dialog panels share `shadow.floating` through `.even-popup`. This soft translucent-black shadow is the same in both themes; borders provide the persistent edge. Gray-alpha white overlays in dark mode remain separate from black cast shadows. Review **Primitives / Popover / Initially Open** and the nested overlay story.
+
 Overlay portals create nested stacking contexts. A child portal sits above its parent's popup/backdrop, regardless of whether the child is a dialog, popover, menu, select, or tooltip. Keep popup/backdrop levels local to their portal rather than assigning global priority by component type. **Primitives / Dialog / Nested Overlays** demonstrates both nesting directions.
 
 ## Trace column sizing
 
 `TraceTable` uses the self-hosted Geist Mono variable font through `decision.font.data`, with Agent and Operation columns using the regular system sans-serif through `decision.font.ui`. Those exceptions include their headers and the Operation cell button. Font assets ship with the frontend via `@fontsource-variable/geist-mono`; no runtime font CDN is needed. Other UI controls keep their existing appearance through the same UI-font decision.
+
+Pass `aria-label` to give the results scroll region a distinct accessible name when composing multiple tables; the default is “Recorded trace results.”
 
 `TraceTable` keeps column widths locally by default. Pass `defaultColumnWidths` for initial overrides, or `columnWidths` with `onColumnWidthsChange` for controlled widths. Keys are `startedAt`, `durationMs`, `agent`, `operation`, and `calls`; override values are finite CSS-pixel numbers, clamped to each column’s limits. Passing an empty controlled map restores defaults. Outcome has no handle and fills the remaining space with a minimum width.
 
@@ -87,7 +96,7 @@ Drag a header’s right divider, or focus it and use Left/Right (8px), Shift+Lef
 | WorkbenchLayout | Renders one named main landmark plus supplied navigation/inspector slots. Responsive CSS stacks the inspector/navigation when space is limited. No routing or application state. |
 | Sidebar | Named navigation landmark; content supplied by caller. |
 | InspectorPanel | Nonmodal aside with Header, Body, Close parts. Parent owns `open`/`onClose`; focuses on opening and restores focus when closing if focus was inside. Optional `returnFocusRef`. No focus trap. |
-| Button | Base UI button, defaults to `type="button"`; `pending` exposes busy state and disables activation. `variant`: secondary (default), primary, ghost. `size`: default, compact, comfortable. |
+| Button | Base UI button, defaults to `type="button"`; `pending` exposes busy state and disables activation. `variant`: secondary (default), primary, ghost. `size`: default, compact, comfortable. Ghost actions use transparent resting surfaces and neutral hover/pressed surfaces. |
 | IconButton | Button with required `label` and decorative icon children. |
 | TextField | Base UI Field/Input composition with associated `description` and `error`; normal input props including controlled value. |
 | Select | Base UI select composition with `{value,label,disabled}` options and `onValueChange(value)`. The trigger is a button with combobox semantics; options live in a portal. Supports controlled/uncontrolled selection. |
@@ -103,12 +112,12 @@ Drag a header’s right divider, or focus it and use Left/Right (8px), Shift+Lef
 | CopyButton | Clipboard operation with pending, success, and failure feedback; value changes invalidate outdated results. |
 | Timestamp | Valid date-like `value`; UTC by default with explicit timezone in displayed text; unknown values shown honestly. |
 | Duration | Nonnegative finite milliseconds, including zero; missing/invalid values are unknown. |
-| TraceStatus | Recorded errors take precedence; only explicit `complete` supports a completed outcome. Absence of errors alone does not mean success. |
+| TraceStatus | Recorded errors take precedence; only explicit `complete` supports a completed outcome. Absence of errors alone does not mean success. Compact labels use a stronger tint than larger notices; **Surface Hierarchy** compares them. |
 | AgentSelector | Controlled agent selection from `{id,name?}` data; unknown IDs yield a prompt; empty inventory disables selection. |
 | AgentNavigation | Agent-scoped encoded links for traces/playground; caller owns current route. |
 | TraceToolbar | Controlled query and filter callbacks, refresh busy state, children for additional filter controls. No query parser, polling, or fetching. |
 | FilterBar | `{id,label}` active filters; removal sends an ID; clear is a separate callback. |
-| TraceTable | Semantic table of **summary view models**, explicit open buttons, controlled selection. A native button fills each Operation cell, including its padding area; headers and row values share left text alignment and are vertically centered. Sort controls emit `{key,direction}`; caller sorts and filters data, placing unknown start times last. Optional `reloads` contains observed `{id,type:"agent.reloaded",observedAt}` occurrences. The table merges/deduplicates valid markers into Started sorting in either direction, without changing trace order or attributing revisions. Other sorts omit markers and explain this in the caption. A marker spans all columns with a centered label between decorative rules and participates in the continuous zebra pattern; marker-only timelines are supported. Unknown values remain unknown. |
+| TraceTable | Semantic table of **summary view models**, explicit open buttons, controlled selection. Selected row text and its Operation action use the selection foreground; outcome labels keep their status colors. The Operation action exposes the row surface during hover and focus. A native button fills each Operation cell, including its padding area; headers and row values share left text alignment and are vertically centered. Sort controls emit `{key,direction}`; caller sorts and filters data, placing unknown start times last. Optional `reloads` contains observed `{id,type:"agent.reloaded",observedAt}` occurrences. The table merges/deduplicates valid markers into Started sorting in either direction, without changing trace order or attributing revisions. Other sorts omit markers and explain this in the caption. A marker spans all columns with a centered label between decorative rules and participates in the continuous zebra pattern; marker-only timelines are supported. Unknown values remain unknown. |
 | TraceSummary | Trace-wide summary view model; does not filter totals by selected span or session. |
 | SpanWaterfall | Root owns selection/expanded IDs unless controlled. Tree and Timeline share spans and selection through context. Tree tracks keyboard focus separately from selection and keeps one tab stop. Arrows move focus, Right/Left expand/collapse, Enter/Space select. Expansion does not select. Missing-parent and cyclic spans stay visible. Timeline currently presents timing in a styled table. |
 | SpanDetails | Supplied selected span or empty prompt; recorded status, duration, attributes, error detail. |
@@ -147,6 +156,8 @@ No shadcn source, theme, CSS framework, or decorative motion was added. Base UI�
 
 ## Token foundations
 
-See [color tokens](./src/tokens/README.md) and **Foundations / Colors** in Storybook for the Geist-based light/dark grid, semantic aliases, wide-gamut overrides, and contrast pairings. Shared component styles consume decision tokens; the host opts into a theme with `data-even-theme`. See [JSON options and decisions](./tokens/README.md) for the shared dimension scale, spacing/sizing decisions, and Style Dictionary pipeline. **Foundations / Dimensions** previews them. Run `npm run tokens:generate` after JSON changes; `npm test` checks both generated CSS and manifest freshness.
+See [color tokens](./src/tokens/README.md) and **Foundations / Colors** in Storybook for the custom OKLCH light/dark grid, semantic aliases, wide-gamut overrides, and contrast pairings. Shared component styles consume decision tokens; the host opts into a theme with `data-even-theme`. See [JSON options and decisions](./tokens/README.md) for the shared dimension scale, spacing/sizing decisions, and Style Dictionary pipeline. **Foundations / Dimensions** previews them. The accepted V2 palette (bundle 1.1.0) is active across components, with paired fill labels and persistent filled-action boundaries; the temporary revision comparison has been removed. Run `npm run tokens:generate` after JSON changes; `npm test` checks both generated CSS and manifest freshness.
 
 Style Dictionary currently carries a low-severity transitive `deepmerge` advisory in its build tooling. There is no nonbreaking upstream fix available at this writing; the suggested forced downgrade removes current DTCG support. Only repository-owned token JSON is compiled. Revisit the dependency when a compatible fix is published; do not downgrade the pipeline blindly.
+
+The supplementary gray-alpha scale is documented in **Foundations / Colors** with split-background swatches. Use it through semantic decisions only for shadows or overlays that need background blending; opaque neutrals remain the component default. See [the token guide](tokens/README.md#gray-alpha-derivation-and-usage) for derivation and regeneration.

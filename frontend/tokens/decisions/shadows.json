@@ -1,0 +1,11 @@
+{
+  "decision": {
+    "shadow": {
+      "floating": {
+        "$type": "shadow",
+        "$value": "{options.shadow.soft}",
+        "$description": "Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index."
+      }
+    }
+  }
+}

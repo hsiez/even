@@ -1,7 +1,7 @@
 {
   "options": {
     "overlay": {
-      "$description": "Even overlay options supplement the Geist color grid.",
+      "$description": "Even overlay options supplement the opaque color palette.",
       "scrim": {
         "$type": "color",
         "$value": {

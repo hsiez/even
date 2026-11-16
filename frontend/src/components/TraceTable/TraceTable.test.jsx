@@ -189,3 +189,18 @@ test("reload-only timelines remain visible and nonchronological sorts omit marke
   ).toBeVisible();
   expect(screen.getAllByRole("row")).toHaveLength(5);
 });
+
+test("multiple trace result regions accept distinct accessible labels", () => {
+  render(
+    <>
+      <TraceTable traces={[]} aria-label="First result set" />
+      <TraceTable traces={[]} aria-label="Second result set" />
+    </>,
+  );
+  expect(
+    screen.getByRole("region", { name: "First result set" }),
+  ).toBeVisible();
+  expect(
+    screen.getByRole("region", { name: "Second result set" }),
+  ).toBeVisible();
+});

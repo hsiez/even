@@ -20,6 +20,11 @@
         }
       },
       "inset": {
+        "tight": {
+          "$type": "dimension",
+          "$value": "{options.dimension.4}",
+          "$description": "Small internal padding; independent of gaps between elements."
+        },
         "compact": {
           "$type": "dimension",
           "$value": "{options.dimension.8}"
