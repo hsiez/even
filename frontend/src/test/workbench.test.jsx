@@ -48,3 +48,19 @@ test("creates an isolated playground session and sends text through the composer
   await user.click(screen.getByRole("button", { name: "New session" }));
   expect(screen.getByRole("log")).not.toHaveTextContent("Inspect deployment");
 });
+
+test("demonstrates a reload occurrence and keeps chronological markers out of duration sorting", async () => {
+  const user = userEvent.setup();
+  render(<WorkbenchFixture />);
+  expect(screen.getAllByText("Agent reloaded")).toHaveLength(1);
+  await user.click(
+    screen.getByRole("button", { name: "Simulate reload (fixture)" }),
+  );
+  expect(screen.getAllByText("Agent reloaded")).toHaveLength(2);
+  const rows = screen.getAllByRole("row");
+  expect(rows[1]).toHaveTextContent("Agent reloaded");
+  await user.click(
+    screen.getByRole("button", { name: "Duration", exact: true }),
+  );
+  expect(screen.queryByText("Agent reloaded")).toBeNull();
+});

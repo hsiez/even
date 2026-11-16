@@ -115,6 +115,10 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-font-mono:
+    "Geist Mono Variable", ui-monospace, monospace; /** Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono. */
+  --even-font-sans:
+    system-ui, sans-serif; /** System sans-serif stack for interface labels and readable text. */
   --even-overlay-scrim: rgb(
     0% 0% 0% / 0.64
   ); /** Translucent black for modal dimming in either theme. */
@@ -188,6 +192,12 @@
   --even-space-inset-compact: var(--even-dimension-8);
   --even-space-inset-default: var(--even-dimension-16);
   --even-space-inset-spacious: var(--even-dimension-24);
+  --even-font-data: var(
+    --even-font-mono
+  ); /** Font family for dense technical and tabular data. */
+  --even-font-ui: var(
+    --even-font-sans
+  ); /** Font family for interface labels, names, and readable text. */
 }
 
 [data-even-theme="dark"] {
@@ -306,6 +316,10 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-font-mono:
+    "Geist Mono Variable", ui-monospace, monospace; /** Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono. */
+  --even-font-sans:
+    system-ui, sans-serif; /** System sans-serif stack for interface labels and readable text. */
   --even-overlay-scrim: rgb(
     0% 0% 0% / 0.64
   ); /** Translucent black for modal dimming in either theme. */
@@ -379,6 +393,12 @@
   --even-space-inset-compact: var(--even-dimension-8);
   --even-space-inset-default: var(--even-dimension-16);
   --even-space-inset-spacious: var(--even-dimension-24);
+  --even-font-data: var(
+    --even-font-mono
+  ); /** Font family for dense technical and tabular data. */
+  --even-font-ui: var(
+    --even-font-sans
+  ); /** Font family for interface labels, names, and readable text. */
 }
 
 @media (color-gamut: p3) {

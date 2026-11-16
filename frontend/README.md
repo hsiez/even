@@ -47,8 +47,11 @@ Components select **decisions**, not palette steps or dimension options:
 | Compact/default control height | `size.control.compact`, `size.control.default` |
 | Navigation and inspector widths | `size.navigation.preferred`, `size.panel.preferred` |
 | Corners and modal dimming | `size.radius.control`, `size.radius.panel`, `overlay.backdrop` |
+| Trace table technical data | `font.data` → Geist Mono, with monospace fallbacks |
+| Agent and Operation names and headers | `font.ui` → system sans-serif |
+| Trace zebra rows | `surface.page`, `surface.secondary` (continuous across trace and reload rows) |
 
-If a purpose is missing, add a useful decision in JSON and regenerate. Fixed 1px borders, focus outline widths, responsive breakpoints, and provisional system-font typography remain ordinary CSS; the typography foundation has not been designed yet. No new component-token layer is introduced.
+If a purpose is missing, add a useful decision in JSON and regenerate. Fixed 1px borders, focus outline widths, responsive breakpoints, and provisional system-font UI typography remain ordinary CSS. Table typography uses the `font.data` decision; a broader typography scale has not been designed yet. No new component-token layer is introduced.
 
 ```jsx
 <Button variant="primary" size="compact" className="launch-action"
@@ -62,6 +65,20 @@ Ordinary, unlayered consumer CSS overrides library defaults; inline styles work 
 The responsive workbench puts the inspector below the results when space is limited, stacks navigation on small screens, and contains table overflow in named keyboard-focusable regions. Base UI remains responsible for modal focus and overlay dismissal. Motion has not been added.
 
 Overlay portals create nested stacking contexts. A child portal sits above its parent's popup/backdrop, regardless of whether the child is a dialog, popover, menu, select, or tooltip. Keep popup/backdrop levels local to their portal rather than assigning global priority by component type. **Primitives / Dialog / Nested Overlays** demonstrates both nesting directions.
+
+## Trace column sizing
+
+`TraceTable` uses the self-hosted Geist Mono variable font through `decision.font.data`, with Agent and Operation columns using the regular system sans-serif through `decision.font.ui`. Those exceptions include their headers and the Operation cell button. Font assets ship with the frontend via `@fontsource-variable/geist-mono`; no runtime font CDN is needed. Other UI controls keep their existing appearance through the same UI-font decision.
+
+`TraceTable` keeps column widths locally by default. Pass `defaultColumnWidths` for initial overrides, or `columnWidths` with `onColumnWidthsChange` for controlled widths. Keys are `startedAt`, `durationMs`, `agent`, `operation`, and `calls`; override values are finite CSS-pixel numbers, clamped to each column’s limits. Passing an empty controlled map restores defaults. Outcome has no handle and fills the remaining space with a minimum width.
+
+Preferred/minimum widths live in the component’s `columns.js`; defaults use rem and track root text sizing. User adjustments are runtime state, rather than design tokens. Existing control-size, border, inset, and focus decisions style the handles. A native `colgroup` and fixed table layout size every row together; excess width stays in the scroll container. Cell text stays on one line and uses a fixed right-edge ellipsis when it overflows, including inside the full-cell Operation button. An internal `CellOverflow` masks complete graphemes at measured text boundaries and reserves room for a decorative marker anchored to the right inset; full text remains in the DOM and accessible names.
+
+Drag a header’s right divider, or focus it and use Left/Right (8px), Shift+Left/Right (32px), Home (minimum), and End (maximum). Escape cancels an active drag. Resizing does not sort or select traces. **Controlled Column Widths** and **Narrow With Long Content** stories demonstrate state ownership, resets, and ellipsis.
+
+**Character Ellipsis** demonstrates the standard overflow treatment with long labels and emoji. Drag Operation’s divider or use its keyboard controls; widen it to restore the full text. This is component presentation with no motion or new design tokens. The full semantic content stays mounted; ResizeObserver and font loading update the mask. Native ellipsis is a fallback where measurement is unavailable or for right-to-left content.
+
+**Inline Ellipsis Experiment** previews native inline ellipsis on the existing resizable table. The marker follows the visible text; the remaining gap is after the marker. Its toggle compares with current fixed-marker behavior. The scoped Storybook stylesheet overrides presentation only; component defaults and typography are unchanged.
 
 ## Component contracts
 
@@ -91,7 +108,7 @@ Overlay portals create nested stacking contexts. A child portal sits above its p
 | AgentNavigation | Agent-scoped encoded links for traces/playground; caller owns current route. |
 | TraceToolbar | Controlled query and filter callbacks, refresh busy state, children for additional filter controls. No query parser, polling, or fetching. |
 | FilterBar | `{id,label}` active filters; removal sends an ID; clear is a separate callback. |
-| TraceTable | Semantic table of **summary view models**, explicit open buttons, controlled selection. Sort controls emit `{key,direction}`; caller sorts and filters data. Unknown values remain unknown. |
+| TraceTable | Semantic table of **summary view models**, explicit open buttons, controlled selection. A native button fills each Operation cell, including its padding area; headers and row values share left text alignment and are vertically centered. Sort controls emit `{key,direction}`; caller sorts and filters data, placing unknown start times last. Optional `reloads` contains observed `{id,type:"agent.reloaded",observedAt}` occurrences. The table merges/deduplicates valid markers into Started sorting in either direction, without changing trace order or attributing revisions. Other sorts omit markers and explain this in the caption. A marker spans all columns with a centered label between decorative rules and participates in the continuous zebra pattern; marker-only timelines are supported. Unknown values remain unknown. |
 | TraceSummary | Trace-wide summary view model; does not filter totals by selected span or session. |
 | SpanWaterfall | Root owns selection/expanded IDs unless controlled. Tree and Timeline share spans and selection through context. Tree tracks keyboard focus separately from selection and keeps one tab stop. Arrows move focus, Right/Left expand/collapse, Enter/Space select. Expansion does not select. Missing-parent and cyclic spans stay visible. Timeline currently presents timing in a styled table. |
 | SpanDetails | Supplied selected span or empty prompt; recorded status, duration, attributes, error detail. |
@@ -111,6 +128,8 @@ Span components accept Eve-shaped `spanId`, `parentSpanId`, `name`, `startTimeNs
 Messages are `{id,role,content,executionAction?}` presentation data, not raw Eve events. Future integration must normalize events, handle replay/deduplication, and verify execution mappings. Traces can contain multiple sessions; session filtering must not silently strip the trace's other spans.
 
 `test/fixtures.js` and `test/WorkbenchFixture.jsx` are demonstrative fixtures only. No business logic or network clients are hidden in generic components.
+
+For reload markers, the host polls `/api/v1/agents/:agentId/reloads` and supplies its `reloads` array alongside trace summaries. Fetching, authentication, observation availability, and any time-range filtering belong to the host, outside `TraceTable`. Marker timestamps are observation times; rows do not claim code-version membership. **Workbench / TraceTable / Reload Timeline** demonstrates chronological sorting and the existing two surface backgrounds. **Workbench / WorkbenchLayout / Composed Explorer** has an explicitly labeled **Simulate reload (fixture)** control. These stories remain fixture-based; this library does not yet ship a browser host connected to the backend.
 
 ## Dependency notes
 

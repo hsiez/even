@@ -1,4 +1,5 @@
 import { createSessions, parseCursor, replayEvents } from './sessions.js';
+import { createReloadMonitor } from './reloads.js';
 import { once } from 'node:events';
 import polka from 'polka';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
@@ -8,6 +9,7 @@ export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
   const expected = Buffer.from('Bearer ' + token);
   const app = polka();
   const sessions = createSessions(adapter, { eveHeaders });
+  const reloads = createReloadMonitor(adapter);
   function json(response, status, value) {
     response.writeHead(status, { 'content-type': 'application/json', 'cache-control': 'no-store' });
     response.end(JSON.stringify(value, (_, item) => typeof item === 'bigint' ? item.toString() : item));
@@ -46,6 +48,13 @@ export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
     try {
       const trace = await adapter.traces(request.params.traceId, request.params.agentId);
       json(response, trace ? 200 : 404, trace ?? { error: 'Trace not found' });
+    } catch (error) {
+      json(response, error.status ?? 500, { error: error.message });
+    }
+  });
+  app.get('/api/v1/agents/:agentId/reloads', async (request, response) => {
+    try {
+      json(response, 200, await reloads.list(request.params.agentId));
     } catch (error) {
       json(response, error.status ?? 500, { error: error.message });
     }
@@ -127,6 +136,7 @@ export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
     async close() {
       const closed = new Promise((resolve, reject) => app.server.close(error => error ? reject(error) : resolve()));
       app.server.closeAllConnections();
+      await reloads.close();
       await sessions.close();
       await closed;
     },

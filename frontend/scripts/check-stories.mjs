@@ -21,6 +21,7 @@ const types = {
   ".json": "application/json",
   ".css": "text/css",
   ".svg": "image/svg+xml",
+  ".woff2": "font/woff2",
 };
 const server = createServer(async (request, response) => {
   try {
@@ -74,6 +75,7 @@ try {
         false,
         story.id,
       );
+      await page.evaluate(() => document.fonts.ready);
       await page.addScriptTag({ content: axe });
       const violations = await page.evaluate(
         async (auditColor) =>
@@ -408,6 +410,641 @@ try {
   await page.setViewportSize({ width: 1280, height: 720 });
   // Exercise decisions on actual consumers, portal inheritance and responsive layout.
   for (const theme of themes) {
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
+    );
+    await page.getByText("Agent reloaded", { exact: true }).waitFor();
+    await page.waitForFunction(
+      (value) => document.documentElement.dataset.evenTheme === value,
+      theme,
+    );
+    await page.mouse.move(0, 0);
+    const traceRows = page.locator(
+      '.even-trace-table tr[data-row-kind="trace"]',
+    );
+    // Measure rendered text, including text inside sortable headers and badges.
+    // Checking cell boxes alone misses nested control-padding regressions.
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 720 });
+      const offsets = await page
+        .locator(".even-trace-table")
+        .evaluate((table) => {
+          function textBounds(element) {
+            const walker = document.createTreeWalker(
+              element,
+              NodeFilter.SHOW_TEXT,
+            );
+            const rectangles = [];
+            let node;
+            while ((node = walker.nextNode())) {
+              if (!node.textContent.trim()) continue;
+              const range = document.createRange();
+              range.selectNodeContents(node);
+              rectangles.push(range.getBoundingClientRect());
+            }
+            const top = Math.min(...rectangles.map((rect) => rect.top));
+            const bottom = Math.max(...rectangles.map((rect) => rect.bottom));
+            return {
+              left: Math.min(...rectangles.map((rect) => rect.left)),
+              top,
+              height: bottom - top,
+            };
+          }
+          const headers = [...table.querySelectorAll("thead th")];
+          return [...table.querySelectorAll('[data-row-kind="trace"]')].flatMap(
+            (row) =>
+              headers.map((header, index) => ({
+                column: header.textContent,
+                delta:
+                  textBounds(row.cells[index]).left - textBounds(header).left,
+                verticalDelta:
+                  textBounds(row.cells[index]).top +
+                  textBounds(row.cells[index]).height / 2 -
+                  (textBounds(row.cells[3]).top +
+                    textBounds(row.cells[3]).height / 2),
+              })),
+          );
+        });
+      for (const offset of offsets) {
+        assert.ok(
+          Math.abs(offset.delta) < 0.5,
+          `${theme}, ${width}px: ${offset.column} text aligns with its header (offset ${offset.delta}px)`,
+        );
+        assert.ok(
+          Math.abs(offset.verticalDelta) <= 1,
+          `${theme}, ${width}px: ${offset.column} text is vertically centered with the Operation label (offset ${offset.verticalDelta}px)`,
+        );
+      }
+      const coverage = await traceRows.evaluateAll((rows) =>
+        rows.map((row) => {
+          const cell = row.cells[3].getBoundingClientRect();
+          const button = row.cells[3]
+            .querySelector("button")
+            .getBoundingClientRect();
+          return Math.max(
+            Math.abs(cell.left - button.left),
+            Math.abs(cell.top - button.top),
+            Math.abs(cell.right - button.right),
+            Math.abs(cell.bottom - button.bottom),
+          );
+        }),
+      );
+      for (const gap of coverage)
+        assert.ok(
+          gap <= 0.75,
+          `${theme}, ${width}px: Operation target fills its cell (largest gap ${gap}px)`,
+        );
+    }
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.getByRole("button", { name: "Started", exact: true }).focus();
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Started", exact: true })
+        .evaluate((node) => getComputedStyle(node).outlineStyle),
+      "solid",
+      "Table header actions retain keyboard focus indicators",
+    );
+    const backgrounds = await page
+      .locator(".even-trace-table tbody tr")
+      .evaluateAll((rows) =>
+        rows.map((row) => getComputedStyle(row).backgroundColor),
+      );
+    assert.equal(backgrounds.length, 5);
+    for (const [index, background] of backgrounds.entries()) {
+      const expected = resolveColor(
+        theme,
+        index % 2 === 0 ? "surface.page" : "surface.secondary",
+      );
+      assert.ok(
+        new Color(background).deltaE(new Color(expected), "OK") < 0.01,
+        "Reload markers participate in the continuous zebra pattern",
+      );
+    }
+    assert.equal(
+      await page.locator(".even-trace-reload td").getAttribute("colspan"),
+      "6",
+    );
+    const operationCell = traceRows.first().locator("td").nth(3);
+    const cellBounds = await operationCell.boundingBox();
+    await operationCell.click({
+      position: { x: cellBounds.width - 2, y: cellBounds.height - 2 },
+    });
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Investigate deployment", exact: true })
+        .getAttribute("aria-pressed"),
+      "true",
+      "Clicking the empty cell edge selects the trace",
+    );
+    const selection = await traceRows
+      .first()
+      .evaluate((row) => getComputedStyle(row).backgroundColor);
+    assert.ok(
+      new Color(selection).deltaE(
+        new Color(resolveColor(theme, "selection.background")),
+        "OK",
+      ) < 0.01,
+      "Selection overrides zebra backgrounds",
+    );
+    await page.keyboard.press("Tab");
+    const keyboardOperation = page.getByRole("button", {
+      name: "Read deployment status",
+      exact: true,
+    });
+    await keyboardOperation.focus();
+    const focusStyle = await keyboardOperation.evaluate((node) => ({
+      outline: getComputedStyle(node).outlineStyle,
+      offset: getComputedStyle(node).outlineOffset,
+    }));
+    assert.deepEqual(
+      focusStyle,
+      { outline: "solid", offset: "-2px" },
+      "Full-cell keyboard focus remains visible inside the cell",
+    );
+    await page.keyboard.press("Enter");
+    assert.equal(
+      await keyboardOperation.getAttribute("aria-pressed"),
+      "true",
+      "Operation cells retain native keyboard activation",
+    );
+    await page.getByRole("button", { name: "Started", exact: true }).click();
+    assert.match(await traceRows.first().innerText(), /Inspect permissions/);
+    await page.getByRole("button", { name: "Duration", exact: true }).click();
+    assert.equal(
+      await page.getByText("Agent reloaded", { exact: true }).count(),
+      0,
+      "Duration sorting omits chronological reload markers",
+    );
+
+    // Resize controls change native column geometry, including every body row.
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
+    );
+    const table = page.locator(".even-trace-table");
+    const operationHandle = page.getByRole("separator", {
+      name: "Resize Operation column",
+      exact: true,
+    });
+    await operationHandle.waitFor();
+    assert.equal(await page.getByRole("separator").count(), 5);
+    assert.equal(
+      await page
+        .getByRole("separator", { name: "Resize Outcome column" })
+        .count(),
+      0,
+    );
+    await page.evaluate(async () => {
+      await document.fonts.load('500 14px "Geist Mono Variable"');
+      await document.fonts.ready;
+    });
+    const dataFont = await table.evaluate((node) => {
+      const operation = node.querySelector(".even-trace-operation-action");
+      const agent = node.querySelector('td[data-column-id="agent"]');
+      const duration = node.querySelector(
+        '[data-row-kind="trace"] td:nth-child(2)',
+      );
+      const probe = document.createElement("span");
+      // The font shorthand may be empty when tabular numerals are enabled.
+      const durationStyle = getComputedStyle(duration);
+      for (const property of [
+        "fontFamily",
+        "fontSize",
+        "fontWeight",
+        "fontStyle",
+        "fontVariantNumeric",
+      ])
+        probe.style[property] = durationStyle[property];
+      probe.style.position = "absolute";
+      probe.style.visibility = "hidden";
+      probe.textContent = "Wi";
+      document.body.append(probe);
+      const range = document.createRange();
+      range.setStart(probe.firstChild, 0);
+      range.setEnd(probe.firstChild, 1);
+      const wide = range.getBoundingClientRect().width;
+      range.setStart(probe.firstChild, 1);
+      range.setEnd(probe.firstChild, 2);
+      const narrow = range.getBoundingClientRect().width;
+      probe.remove();
+      return {
+        family: getComputedStyle(node).fontFamily,
+        durationFamily: getComputedStyle(duration).fontFamily,
+        operationFamily: getComputedStyle(operation).fontFamily,
+        agentFamily: getComputedStyle(agent).fontFamily,
+        operationHeaderFamily: getComputedStyle(
+          node.querySelector('th[data-column-id="operation"]'),
+        ).fontFamily,
+        agentHeaderFamily: getComputedStyle(
+          node.querySelector('th[data-column-id="agent"]'),
+        ).fontFamily,
+        loaded: [...document.fonts].some(
+          (face) =>
+            face.family.includes("Geist Mono Variable") &&
+            face.status === "loaded",
+        ),
+        wide,
+        narrow,
+      };
+    });
+    assert.equal(
+      dataFont.loaded,
+      true,
+      "The bundled Geist Mono asset actually loads",
+    );
+    assert.ok(dataFont.family.includes("Geist Mono Variable"));
+    assert.ok(dataFont.durationFamily.includes("Geist Mono Variable"));
+    for (const family of [
+      dataFont.operationFamily,
+      dataFont.agentFamily,
+      dataFont.operationHeaderFamily,
+      dataFont.agentHeaderFamily,
+    ]) {
+      assert.ok(
+        family.includes("system-ui") && !family.includes("Geist Mono"),
+        "Agent and Operation use the UI font, including headers and the cell button",
+      );
+    }
+    assert.ok(
+      Math.abs(dataFont.wide - dataFont.narrow) < 0.1 && dataFont.wide > 0,
+      "Wide and narrow Latin characters have equal advances in the loaded table font",
+    );
+    const initialGeometry = await table.evaluate((node) => ({
+      widths: [...node.querySelectorAll("thead th")].map(
+        (header) => header.getBoundingClientRect().width,
+      ),
+      rowHeight: Math.max(
+        ...[...node.querySelectorAll('[data-row-kind="trace"]')].map(
+          (row) => row.getBoundingClientRect().height,
+        ),
+      ),
+    }));
+    let grip = await operationHandle.boundingBox();
+    await page.mouse.move(grip.x + grip.width - 2, grip.y + grip.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(grip.x + grip.width + 78, grip.y + grip.height + 60, {
+      steps: 5,
+    });
+    await page.mouse.up();
+    const resized = await table.evaluate((node) => ({
+      widths: [...node.querySelectorAll("thead th")].map(
+        (header) => header.getBoundingClientRect().width,
+      ),
+      cells: [...node.querySelectorAll('[data-row-kind="trace"]')].map(
+        (row) => row.cells[3].getBoundingClientRect().width,
+      ),
+    }));
+    assert.ok(
+      Math.abs(resized.widths[3] - initialGeometry.widths[3] - 80) < 1,
+      "Captured pointer drag works outside the header",
+    );
+    for (const index of [0, 1, 2, 4])
+      assert.ok(
+        Math.abs(resized.widths[index] - initialGeometry.widths[index]) < 1,
+        "Resizing preserves other adjustable widths",
+      );
+    for (const width of resized.cells)
+      assert.ok(
+        Math.abs(width - resized.widths[3]) < 1,
+        "Every row follows its native column width",
+      );
+    await operationHandle.focus();
+    await page.keyboard.press("Home");
+    const minimum = Number(await operationHandle.getAttribute("aria-valuemin"));
+    assert.equal(
+      Number(await operationHandle.getAttribute("aria-valuenow")),
+      minimum,
+    );
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      Number(await operationHandle.getAttribute("aria-valuenow")),
+      minimum,
+    );
+    await page.keyboard.press("ArrowRight");
+    assert.equal(
+      Number(await operationHandle.getAttribute("aria-valuenow")),
+      minimum + 8,
+    );
+    assert.equal(
+      await operationHandle.evaluate(
+        (node) => getComputedStyle(node).outlineStyle,
+      ),
+      "solid",
+    );
+    const beforeCancel = Number(
+      await operationHandle.getAttribute("aria-valuenow"),
+    );
+    grip = await operationHandle.boundingBox();
+    await page.mouse.move(grip.x + grip.width - 2, grip.y + grip.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(grip.x + grip.width + 48, grip.y + grip.height / 2, {
+      steps: 3,
+    });
+    await page.keyboard.press("Escape");
+    await page.mouse.up();
+    assert.equal(
+      Number(await operationHandle.getAttribute("aria-valuenow")),
+      beforeCancel,
+      "Escape cancels an active resize",
+    );
+    assert.equal(await operationHandle.getAttribute("data-resizing"), null);
+    assert.equal(
+      await page
+        .getByRole("columnheader", { name: "Started", exact: true })
+        .getAttribute("aria-sort"),
+      "descending",
+      "Resizing does not sort",
+    );
+
+    // Rem-based defaults track the root text size; explicit widths remain CSS pixels.
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
+    );
+    await page
+      .getByRole("separator", { name: "Resize Started column" })
+      .waitFor();
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = "20px";
+    });
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector('[aria-label="Resize Started column"]')
+          ?.getAttribute("aria-valuenow") === "360",
+    );
+
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--controlled-column-widths&viewMode=story&globals=theme:${theme}`,
+    );
+    const controlledHandle = page.getByRole("separator", {
+      name: "Resize Duration column",
+    });
+    await controlledHandle.focus();
+    await page.keyboard.press("ArrowRight");
+    assert.equal(await controlledHandle.getAttribute("aria-valuenow"), "168");
+    await page.getByRole("button", { name: "Reset column widths" }).click();
+    assert.equal(await controlledHandle.getAttribute("aria-valuenow"), "128");
+
+    await page.setViewportSize({ width: 390, height: 720 });
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--narrow-with-long-content&viewMode=story&globals=theme:${theme}`,
+    );
+    await page
+      .getByRole("separator", { name: "Resize Operation column" })
+      .waitFor();
+    const narrow = await page
+      .locator(".even-table-scroll")
+      .evaluate((viewport) => {
+        const node = viewport.querySelector("table");
+        const operationText = node.querySelector(
+          '[data-row-kind="trace"] .even-trace-operation-action .even-trace-cell-content',
+        );
+        return {
+          contained: document.documentElement.scrollWidth <= window.innerWidth,
+          scrollable: viewport.scrollWidth > viewport.clientWidth,
+          tableWidth: node.getBoundingClientRect().width,
+          scrollWidth: viewport.scrollWidth,
+          clipped: operationText.scrollWidth > operationText.clientWidth,
+          rowHeight: Math.max(
+            ...[...node.querySelectorAll('[data-row-kind="trace"]')].map(
+              (row) => row.getBoundingClientRect().height,
+            ),
+          ),
+        };
+      });
+    assert.equal(narrow.contained, true);
+    assert.equal(narrow.scrollable, true);
+    assert.equal(narrow.clipped, true);
+    assert.ok(
+      Math.abs(narrow.scrollWidth - narrow.tableWidth) < 1,
+      "Long content stays inside fixed columns",
+    );
+    assert.ok(
+      narrow.rowHeight <= initialGeometry.rowHeight + 1,
+      "Long values do not wrap or increase row height",
+    );
+
+    // Anchored ellipsis masks whole graphemes and preserves full accessible labels.
+    await page.setViewportSize({ width: 1400, height: 800 });
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--character-ellipsis&viewMode=story&globals=theme:${theme}`,
+    );
+    const ellipsisHandle = page.getByRole("separator", {
+      name: "Resize Operation column",
+      exact: true,
+    });
+    await ellipsisHandle.waitFor();
+    const ellipsisOperation = page.getByRole("button", {
+      name: "Investigate deployment failure across production",
+      exact: true,
+    });
+    const operationText = ellipsisOperation.locator(".even-trace-cell-content");
+    assert.equal(
+      await operationText.evaluate(
+        (node) => node.scrollWidth > node.clientWidth,
+      ),
+      true,
+    );
+    await operationText.locator(".even-cell-overflow-marker").waitFor();
+    const markers = await page
+      .locator(".even-trace-operation .even-cell-overflow")
+      .evaluateAll((nodes) =>
+        nodes.map((node) => ({
+          right: node.getBoundingClientRect().right,
+          markerRight: node
+            .querySelector(".even-cell-overflow-marker")
+            .getBoundingClientRect().right,
+          overflow: node.hasAttribute("data-overflow"),
+        })),
+      );
+    assert.ok(
+      markers.every(
+        (item) =>
+          item.overflow && Math.abs(item.right - item.markerRight) < 0.1,
+      ),
+      "Ellipses sit at the same right inset, regardless of the last visible glyph",
+    );
+    assert.ok(
+      markers.every(
+        (item) => Math.abs(item.markerRight - markers[0].markerRight) < 0.1,
+      ),
+    );
+    const native = await operationText.evaluate((root) => {
+      const text = root.querySelector(".even-cell-overflow-text");
+      const origin = text.getBoundingClientRect().left;
+      const range = document.createRange();
+      const glyphs = [
+        ...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(
+          text.textContent,
+        ),
+      ].map(({ index, segment }) => {
+        range.setStart(text.firstChild, index);
+        range.setEnd(text.firstChild, index + segment.length);
+        const rect = range.getBoundingClientRect();
+        return { left: rect.left - origin, right: rect.right - origin };
+      });
+      return {
+        glyphs,
+        origin,
+        marker: root
+          .querySelector(".even-cell-overflow-marker")
+          .getBoundingClientRect().width,
+        inset:
+          root.closest("td").getBoundingClientRect().width -
+          root.getBoundingClientRect().width,
+      };
+    });
+    async function resizeEllipsis(width) {
+      const current = await page
+        .locator('th[data-column-id="operation"]')
+        .evaluate((node) => node.getBoundingClientRect().width);
+      const grip = await ellipsisHandle.boundingBox();
+      const x = grip.x + grip.width - 2,
+        y = grip.y + grip.height / 2;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      await page.mouse.move(x + width - current, y, { steps: 4 });
+      await page.mouse.up();
+    }
+    const textPlane = operationText.locator(".even-cell-overflow-text");
+    // Widths between two character edges must paint the same complete prefix.
+    for (const fraction of [0.25, 0.75]) {
+      await resizeEllipsis(
+        native.inset +
+          native.marker +
+          native.glyphs[24].left +
+          (native.glyphs[24].right - native.glyphs[24].left) * fraction,
+      );
+      await page.waitForFunction(
+        ({ node, expected }) => {
+          const text = node.querySelector(".even-cell-overflow-text");
+          const hidden = parseFloat(text.style.clipPath.split(" ")[1]);
+          return (
+            Math.abs(text.getBoundingClientRect().width - hidden - expected) <
+            0.1
+          );
+        },
+        {
+          node: await operationText.elementHandle(),
+          expected: native.glyphs[23].right,
+        },
+      );
+    }
+    await resizeEllipsis(
+      native.inset + native.marker + native.glyphs[24].right + 0.5,
+    );
+    await page.waitForFunction(
+      ({ node, expected }) => {
+        const text = node.querySelector(".even-cell-overflow-text");
+        const hidden = parseFloat(text.style.clipPath.split(" ")[1]);
+        return (
+          Math.abs(text.getBoundingClientRect().width - hidden - expected) < 0.1
+        );
+      },
+      {
+        node: await operationText.elementHandle(),
+        expected: native.glyphs[24].right,
+      },
+    );
+    assert.ok(
+      Math.abs(
+        (await textPlane.evaluate(
+          (node) => node.getBoundingClientRect().left,
+        )) - native.origin,
+      ) < 0.1,
+      "The text stays anchored while the right-edge mask moves",
+    );
+    await ellipsisHandle.focus();
+    await page.keyboard.press("End");
+    assert.equal(
+      await operationText.evaluate(
+        (node) => node.scrollWidth > node.clientWidth,
+      ),
+      false,
+      "Widening restores the complete label",
+    );
+    await operationText
+      .locator(".even-cell-overflow-marker")
+      .waitFor({ state: "hidden" });
+    await page
+      .getByRole("button", { name: "Reset column width", exact: true })
+      .click();
+    assert.equal(await ellipsisHandle.getAttribute("aria-valuenow"), "200");
+    assert.equal(
+      await operationText.evaluate(
+        (node) => node.scrollWidth > node.clientWidth,
+      ),
+      true,
+    );
+    assert.equal(
+      await ellipsisOperation.count(),
+      1,
+      "Truncation preserves the full accessible label",
+    );
+    await ellipsisOperation.click();
+    assert.equal(await ellipsisOperation.getAttribute("aria-pressed"), "true");
+    assert.equal(
+      await page
+        .getByRole("button", {
+          name: "Read deployment logs 👩🏽‍💻 and retry",
+          exact: true,
+        })
+        .count(),
+      1,
+    );
+
+    // Native inline ellipsis is an isolated story, with a live baseline toggle.
+    await page.goto(
+      `${base}/iframe.html?id=workbench-tracetable--inline-ellipsis-experiment&viewMode=story&globals=theme:${theme}`,
+    );
+    const inlineToggle = page.getByRole("button", {
+      name: "Inline ellipsis",
+      exact: true,
+    });
+    const inlineHandle = page.getByRole("separator", {
+      name: "Resize Operation column",
+      exact: true,
+    });
+    const inlineOperation = page.getByRole("button", {
+      name: "Investigate deployment failure across production",
+      exact: true,
+    });
+    const inlineText = inlineOperation.locator(".even-cell-overflow-text");
+    await inlineToggle.waitFor();
+    assert.equal(await inlineToggle.getAttribute("aria-pressed"), "true");
+    assert.equal(
+      await inlineText.evaluate((node) => node.scrollWidth > node.clientWidth),
+      true,
+    );
+    await inlineHandle.focus();
+    await page.keyboard.press("End");
+    assert.equal(
+      await inlineText.evaluate((node) => node.scrollWidth > node.clientWidth),
+      false,
+      "Widening restores the full inline label",
+    );
+    await page
+      .getByRole("button", { name: "Reset column width", exact: true })
+      .click();
+    assert.equal(
+      await inlineText.evaluate((node) => node.scrollWidth > node.clientWidth),
+      true,
+    );
+    await inlineToggle.click();
+    await inlineOperation
+      .locator(".even-cell-overflow-marker")
+      .waitFor({ state: "visible" });
+    assert.equal(await inlineToggle.getAttribute("aria-pressed"), "false");
+    await inlineToggle.click();
+    await inlineOperation
+      .locator(".even-cell-overflow-marker")
+      .waitFor({ state: "hidden" });
+    await inlineOperation.click();
+    assert.equal(
+      await inlineOperation.getAttribute("aria-pressed"),
+      "true",
+      "Inline overflow preserves full-cell activation and complete accessible names",
+    );
+
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(
       `${base}/iframe.html?id=primitives-button--variants-and-sizes&viewMode=story&globals=theme:${theme}`,

@@ -1,6 +1,6 @@
 # Token consumers and generated outputs
 
-The source of truth is now [`frontend/tokens`](../../tokens/README.md): JSON options and decisions for colors, spacing and sizing. Read that guide for the scale, provenance, naming and Style Dictionary build process.
+The source of truth is now [`frontend/tokens`](../../tokens/README.md): JSON options and decisions for colors, spacing, sizing and the technical-data font family. Read that guide for the scale, provenance, naming and Style Dictionary build process.
 
 - `generated/tokens.css`: generated opt-in CSS custom properties. Do not edit by hand.
 - `generated/token-manifest.json`: generated resolved values, alias relationships, descriptions and CSS names for documentation/tests. Do not edit by hand.

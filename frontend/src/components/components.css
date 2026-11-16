@@ -1,3 +1,4 @@
+@import "@fontsource-variable/geist-mono";
 @import "../tokens/generated/tokens.css";
 
 /* Consumers can override this layer with an ordinary className or inline style.
@@ -15,7 +16,7 @@
     .even-notice
   ) {
     box-sizing: border-box;
-    font-family: system-ui, sans-serif;
+    font-family: var(--even-font-ui, system-ui, sans-serif);
     font-size: 0.875rem;
     line-height: 1.5;
     color: var(--even-text-primary);
@@ -414,7 +415,151 @@
   :where(.even-table td) {
     font-variant-numeric: tabular-nums;
   }
-  :where(.even-table tbody tr:hover) {
+  :where(.even-trace-table tbody td) {
+    border-bottom: 0;
+  }
+  :where(.even-trace-table) {
+    table-layout: fixed;
+    font-family: var(--even-font-data);
+  }
+  :where(.even-trace-table .even-button) {
+    font-family: inherit;
+  }
+  :where(
+    .even-trace-table [data-column-id="agent"],
+    .even-trace-table [data-column-id="operation"]
+  ) {
+    font-family: var(--even-font-ui);
+  }
+  :where(.even-trace-table th) {
+    position: relative;
+  }
+  :where(.even-trace-table th[data-resizable]) {
+    padding-inline-end: calc(
+      var(--even-space-inset-compact) + var(--even-size-control-compact)
+    );
+  }
+  :where(.even-trace-cell-content, .even-trace-header-content) {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  :where(.even-cell-overflow) {
+    position: relative;
+    width: 100%;
+    text-overflow: clip;
+  }
+  :where(.even-cell-overflow-text) {
+    display: block;
+    width: max-content;
+  }
+  :where(.even-cell-overflow-marker) {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block: 0;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  :where(.even-cell-overflow[data-overflow] > .even-cell-overflow-marker) {
+    visibility: visible;
+  }
+  :where(.even-cell-overflow[data-native-overflow] > .even-cell-overflow-text) {
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :where(.even-column-resizer) {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block: 0;
+    width: var(--even-size-control-compact);
+    cursor: col-resize;
+    touch-action: none;
+    user-select: none;
+  }
+  :where(.even-column-resizer)::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block: var(--even-space-inset-compact);
+    border-inline-end: 1px solid var(--even-border-control);
+  }
+  :where(
+    .even-column-resizer:hover,
+    .even-column-resizer[data-resizing]
+  )::after {
+    border-color: var(--even-focus-ring);
+  }
+  :where(.even-column-resizer):focus-visible {
+    outline: 2px solid var(--even-focus-ring);
+    outline-offset: -2px;
+  }
+  :where(.even-trace-table th, .even-trace-table td) {
+    vertical-align: middle;
+  }
+  /* Cells establish the text inset; nested controls must not add it twice. */
+  :where(.even-trace-table .even-trace-text-action) {
+    max-width: 100%;
+    padding-inline-start: 0;
+    border: 0;
+    justify-content: flex-start;
+    text-align: start;
+  }
+  :where(.even-trace-table .even-trace-outcome) {
+    padding-inline-start: 0;
+  }
+  :where(.even-trace-table .even-trace-operation) {
+    padding: 0;
+    /* A definite cell height lets the button stretch to the row's actual height.
+       Its content/minimum still participates in native table sizing. */
+    height: 1px;
+  }
+  :where(.even-trace-table .even-trace-operation-action) {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: calc(
+      var(--even-size-control-compact) + 2 * var(--even-space-inset-compact)
+    );
+    padding: var(--even-space-inset-compact);
+    border: 0;
+    border-radius: 0;
+    justify-content: flex-start;
+    text-align: start;
+  }
+  :where(.even-trace-table tr[data-stripe="base"]) {
+    background: var(--even-surface-page);
+  }
+  :where(.even-trace-table tr[data-stripe="alternate"]) {
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-trace-reload > td) {
+    padding-block: var(--even-space-inset-default);
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-reload-content) {
+    display: flex;
+    align-items: center;
+    gap: var(--even-space-gap-group);
+    text-align: center;
+  }
+  :where(.even-trace-reload-content)::before,
+  :where(.even-trace-reload-content)::after {
+    content: "";
+    flex: 1;
+    border-top: 1px dashed var(--even-border-default);
+  }
+  :where(.even-trace-reload-content > span) {
+    min-width: 0;
+  }
+  :where(.even-trace-reload strong) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-table tbody tr:not([data-row-kind="reload"]):hover) {
     background: var(--even-surface-hover);
   }
   :where(.even-table tr[data-selected]) {
@@ -589,7 +734,11 @@
     outline: 2px solid var(--even-focus-ring);
     outline-offset: 2px;
   }
-  :where(.even-tab, .even-menu-item):focus-visible {
+  :where(
+    .even-tab,
+    .even-menu-item,
+    .even-trace-operation-action
+  ):focus-visible {
     outline-offset: -2px;
   }
   @media (max-width: 75rem) {

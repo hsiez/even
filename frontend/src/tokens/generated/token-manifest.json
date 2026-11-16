@@ -786,6 +786,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.font.mono": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-mono",
+          "reference": null,
+          "description": "Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono.",
+          "type": "fontFamily"
+        },
+        "options.font.sans": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-sans",
+          "reference": null,
+          "description": "System sans-serif stack for interface labels and readable text.",
+          "type": "fontFamily"
+        },
         "options.overlay.scrim": {
           "value": "rgb(0% 0% 0% / 0.64)",
           "name": "even-overlay-scrim",
@@ -1128,6 +1142,20 @@
           "reference": "options.dimension.24",
           "description": "",
           "type": "dimension"
+        },
+        "decision.font.data": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-data",
+          "reference": "options.font.mono",
+          "description": "Font family for dense technical and tabular data.",
+          "type": "fontFamily"
+        },
+        "decision.font.ui": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-ui",
+          "reference": "options.font.sans",
+          "description": "Font family for interface labels, names, and readable text.",
+          "type": "fontFamily"
         }
       },
       "p3": {
@@ -1915,6 +1943,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.font.mono": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-mono",
+          "reference": null,
+          "description": "Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono.",
+          "type": "fontFamily"
+        },
+        "options.font.sans": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-sans",
+          "reference": null,
+          "description": "System sans-serif stack for interface labels and readable text.",
+          "type": "fontFamily"
+        },
         "options.overlay.scrim": {
           "value": "rgb(0% 0% 0% / 0.64)",
           "name": "even-overlay-scrim",
@@ -2257,6 +2299,20 @@
           "reference": "options.dimension.24",
           "description": "",
           "type": "dimension"
+        },
+        "decision.font.data": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-data",
+          "reference": "options.font.mono",
+          "description": "Font family for dense technical and tabular data.",
+          "type": "fontFamily"
+        },
+        "decision.font.ui": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-ui",
+          "reference": "options.font.sans",
+          "description": "Font family for interface labels, names, and readable text.",
+          "type": "fontFamily"
         }
       }
     },
@@ -3046,6 +3102,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.font.mono": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-mono",
+          "reference": null,
+          "description": "Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono.",
+          "type": "fontFamily"
+        },
+        "options.font.sans": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-sans",
+          "reference": null,
+          "description": "System sans-serif stack for interface labels and readable text.",
+          "type": "fontFamily"
+        },
         "options.overlay.scrim": {
           "value": "rgb(0% 0% 0% / 0.64)",
           "name": "even-overlay-scrim",
@@ -3388,6 +3458,20 @@
           "reference": "options.dimension.24",
           "description": "",
           "type": "dimension"
+        },
+        "decision.font.data": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-data",
+          "reference": "options.font.mono",
+          "description": "Font family for dense technical and tabular data.",
+          "type": "fontFamily"
+        },
+        "decision.font.ui": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-ui",
+          "reference": "options.font.sans",
+          "description": "Font family for interface labels, names, and readable text.",
+          "type": "fontFamily"
         }
       },
       "p3": {
@@ -4175,6 +4259,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.font.mono": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-mono",
+          "reference": null,
+          "description": "Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono.",
+          "type": "fontFamily"
+        },
+        "options.font.sans": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-sans",
+          "reference": null,
+          "description": "System sans-serif stack for interface labels and readable text.",
+          "type": "fontFamily"
+        },
         "options.overlay.scrim": {
           "value": "rgb(0% 0% 0% / 0.64)",
           "name": "even-overlay-scrim",
@@ -4517,6 +4615,20 @@
           "reference": "options.dimension.24",
           "description": "",
           "type": "dimension"
+        },
+        "decision.font.data": {
+          "value": "'Geist Mono Variable', ui-monospace, monospace",
+          "name": "even-font-data",
+          "reference": "options.font.mono",
+          "description": "Font family for dense technical and tabular data.",
+          "type": "fontFamily"
+        },
+        "decision.font.ui": {
+          "value": "system-ui, sans-serif",
+          "name": "even-font-ui",
+          "reference": "options.font.sans",
+          "description": "Font family for interface labels, names, and readable text.",
+          "type": "fontFamily"
         }
       }
     }
