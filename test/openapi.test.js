@@ -16,6 +16,14 @@ test('OpenAPI validates and covers every implemented route', async () => {
 
 test('HTTP inspection and error responses conform to OpenAPI', async t => {
   const server = await startServer({
+    selectAgent(id) {
+      if (id !== 'root') throw Object.assign(new Error('Unknown agent'), { status: 400 });
+      return { id, appRoot: '/fixture' };
+    },
+    async internal(path) {
+      if (path.endsWith('dev-server-state.js')) return { DevelopmentServerState: class { async read() {} } };
+      return { async readDevelopmentRuntimeArtifactsRevision() {} };
+    },
     inventory: async () => ({agents:[{id:'root',appRoot:'/fixture'}]}),
     traces: async id => id === undefined ? [] : undefined,
   });
@@ -25,6 +33,7 @@ test('HTTP inspection and error responses conform to OpenAPI', async t => {
     ['/agents','get',{}], ['/agents','get',{...auth,origin:'https://example.com'}],
     ['/agents','get',auth], ['/sessions','get',auth],
     ['/agents/root/traces','get',auth], ['/agents/root/traces/'+'a'.repeat(32),'get',auth],
+    ['/agents/root/reloads','get',{}], ['/agents/root/reloads','get',auth],
     ['/sessions','post',auth,'{}'],
     ['/sessions','post',{...auth,'content-type':'application/json'},'{'],
     ['/sessions','post',{...auth,'content-type':'application/json'},' '.repeat(65537)],

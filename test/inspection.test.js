@@ -21,6 +21,16 @@ test('real Eve inspection never evaluates authored modules or creates runtime st
   assert.deepEqual(await adapter.traces(), []);
   assert.deepEqual(await readdir(project), before);
   await assert.rejects(access(join(project, '.eve')));
+  const server = await startServer(adapter);
+  try {
+    const result = await fetch(server.url + '/api/v1/agents/root/reloads', { headers: { authorization: 'Bearer ' + server.token } });
+    const observation = await result.json();
+    assert.equal(result.status, 200);
+    assert.equal(observation.available, false);
+    assert.deepEqual(observation.reloads, []);
+    assert.deepEqual(await readdir(project), before);
+    await assert.rejects(access(join(project, '.eve')));
+  } finally { await server.close(); }
   const child = await loadEve(join(project, 'agent'));
   const nested = await child.inventory();
   assert.ok(nested.agents.every(agent => isWithin(child.project, agent.appRoot) && isWithin(child.project, agent.agentRoot)));

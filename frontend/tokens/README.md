@@ -20,6 +20,7 @@ Style Dictionary loads and merges JSON, resolves aliases (failing on missing/cir
 
 - `colors.light.json` / `colors.dark.json`: Geist palette snapshot with source/retrieval metadata. Background has two steps; each other family has ten. DTCG color objects preserve color space, coordinates and alpha.
 - `colors.light.p3.json` / `colors.dark.p3.json`: chromatic overrides. Style Dictionary includes the fallback source and applies these as higher-priority source values. CSS overrides are gated by P3 media capability and OKLCH support.
+- `fonts.json`: the self-hosted Geist Mono variable font stack (`options.font.mono`) and system sans-serif stack (`options.font.sans`). Its Fontsource package supplies local font assets; no runtime font CDN is used.
 - `overlays.json`: Even’s supplementary translucent black scrim option (not part of the Geist grid).
 - `dimensions.json`: shared dimension scale for spacing and sizing: `0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512, 640, 768` px-equivalents at a 16px root.
 
@@ -51,6 +52,7 @@ References:
 
 - `colors.json`: semantic aliases for surfaces, text, actions, selection/focus and status. Same names in both themes; values follow the theme's options.
 - `spacing.json`: relationships (`gap.tight`, `gap.related`, `gap.group`, `gap.section`) and insets (`compact`, `default`, `spacious`).
+- `typography.json`: `decision.font.data` selects the monospace stack for dense technical and tabular data. TraceTable consumes the generated `--even-font-data`. `decision.font.ui` selects the system sans-serif stack for UI text, including Agent and Operation columns and their headers. Other typography properties remain provisional.
 - `sizing.json`: icon dimensions, control minimum heights, and preferred panel/navigation widths, and control/panel corner radii.
 
 ```json

@@ -127,6 +127,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /agents/{agentId}/reloads:
+    get:
+      operationId: listObservedReloads
+      description: Starts passive observation of the selected application's existing
+        local Eve development server, then samples it about once per second during
+        this Even launch. Returns observed reload occurrences, oldest first. The
+        first available sample establishes a baseline. No host is started and no
+        authored code is imported or compiled. Missed/intermediate reloads cannot
+        be reconstructed; observedAt is observation time, not file-save time.
+        History is held in memory for this launch and contains no revision IDs.
+      parameters:
+        - *a4
+      responses:
+        "200":
+          description: Observed reloads; available is false when the local server cannot be read.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reloads"
+        "400":
+          description: Invalid agent selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "500":
+          description: Observation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /sessions:
     get:
       operationId: listSessions
@@ -455,6 +488,33 @@ components:
             $ref: "#/components/schemas/Trace"
       required:
         - traces
+      additionalProperties: false
+    Reload:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          const: agent.reloaded
+        observedAt:
+          type: string
+          format: date-time
+      required: [id, type, observedAt]
+      additionalProperties: false
+    Reloads:
+      type: object
+      properties:
+        observingSince:
+          type: string
+          format: date-time
+        available:
+          type: boolean
+        reloads:
+          type: array
+          items:
+            $ref: "#/components/schemas/Reload"
+      required: [observingSince, available, reloads]
       additionalProperties: false
     EveEvent:
       type: object

@@ -27,10 +27,15 @@ All routes use the prefix `/api/v1`.
 | GET | /sessions/:sessionId/events | Live SSE carrying unchanged Eve event payloads and metadata |
 | GET | /agents/:agentId/traces | Recorded local Eve traces |
 | GET | /agents/:agentId/traces/:traceId | One recorded trace |
+| GET | /agents/:agentId/reloads | Reload occurrences observed during this Even launch |
 
 POST bodies require JSON and are limited to 64 KiB. Unknown fields are rejected. Message input currently supports text strings.
 
 Event IDs are `line:index` positions from Eve's durable stream. Reconnect with `Last-Event-ID` or `?after=line:index`. Replay starts after that event, including any remaining events in the same line. Use `?follow=false` for a finite replay through the observed durable tail. If the upstream stream ends before that tail, Even emits an SSE error; reconnect with the last received event ID to resume. Trace nanosecond values are serialized as decimal strings.
+
+The first `GET /agents/:agentId/reloads` starts passive observation of that application's existing local Eve server. Even samples Eve's runtime token about once per second and returns `{observingSince, available, reloads}`. Each occurrence is `{id, type: "agent.reloaded", observedAt}`; records are oldest first. The first successful sample establishes a baseline, and an unavailable sample does not count as a reload. Observation also works for an Eve server started separately from Even. It never starts a host, imports authored code, requests a rebuild, or modifies Eve.
+
+Reload markers mean Even observed a new runtime snapshot, not that a file was saved or a particular trace used a particular version. Several rebuilds between samples can appear as one occurrence. The history starts when requested, lives in memory for this Even launch, and is separate from Eve's durable session event stream. Revision tokens are only compared internally and are not returned or retained as version history. A UI can poll this endpoint alongside trace lists and merge markers by `observedAt`; no code snapshots, diffs, or trace-to-version associations are created.
 
 ## Execution and trust
 

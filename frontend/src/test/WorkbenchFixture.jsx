@@ -13,7 +13,8 @@ import { Tabs } from "../components/Tabs/Tabs";
 import { SessionSelector } from "../components/SessionSelector/SessionSelector";
 import { MessageComposer } from "../components/MessageComposer/MessageComposer";
 import { Conversation } from "../components/Conversation/Conversation";
-import { agents, trace } from "./fixtures";
+import { Button } from "../components/Button/Button";
+import { agents, traceHistory, observedReloads } from "./fixtures";
 
 // Demonstrates composition with deterministic data, not a live Eve connection.
 export function WorkbenchFixture() {
@@ -28,13 +29,24 @@ export function WorkbenchFixture() {
   const [sessions, setSessions] = useState([]);
   const [sessionId, setSessionId] = useState("");
   const [messages, setMessages] = useState({});
-  const traces = [trace].filter(
-    (item) =>
-      item.agentNames.includes(agent) &&
-      `${item.traceId} ${item.label}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
-  );
+  const [reloads, setReloads] = useState(observedReloads);
+  const traces = traceHistory
+    .filter(
+      (item) =>
+        item.agentNames.includes(agent) &&
+        `${item.traceId} ${item.label}`
+          .toLowerCase()
+          .includes(query.toLowerCase()),
+    )
+    .sort((a, b) => {
+      const direction = sort.direction === "ascending" ? 1 : -1;
+      return (
+        direction *
+        (sort.key === "startedAt"
+          ? new Date(a.startedAt) - new Date(b.startedAt)
+          : a.durationMs - b.durationMs)
+      );
+    });
   return (
     <WorkbenchLayout
       navigation={
@@ -94,18 +106,42 @@ export function WorkbenchFixture() {
             query={query}
             onQueryChange={setQuery}
             onRefresh={() => {}}
-          />
+          >
+            <Button
+              disabled={agent !== "support"}
+              onClick={() =>
+                setReloads((previous) => [
+                  ...previous,
+                  {
+                    id: `fixture-reload-${previous.length + 1}`,
+                    type: "agent.reloaded",
+                    observedAt: new Date(
+                      Math.max(
+                        ...traceHistory.map((item) =>
+                          Date.parse(item.startedAt),
+                        ),
+                        ...previous.map((item) => Date.parse(item.observedAt)),
+                      ) + 60_000,
+                    ).toISOString(),
+                  },
+                ])
+              }
+            >
+              Simulate reload (fixture)
+            </Button>
+          </TraceToolbar>
           <ResultsState
             state={traces.length ? "ready" : query ? "no-matches" : "empty"}
           >
             <TraceTable
               traces={traces}
+              reloads={agent === "support" ? reloads : []}
               sort={sort}
               onSortChange={setSort}
               selectedTraceId={selected?.traceId}
-              onSelectTrace={() => {
+              onSelectTrace={(id) => {
                 setSpanId(undefined);
-                setSelected(trace);
+                setSelected(traceHistory.find((item) => item.traceId === id));
               }}
             />
           </ResultsState>

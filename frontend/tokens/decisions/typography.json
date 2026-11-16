@@ -1,0 +1,16 @@
+{
+  "decision": {
+    "font": {
+      "data": {
+        "$type": "fontFamily",
+        "$value": "{options.font.mono}",
+        "$description": "Font family for dense technical and tabular data."
+      },
+      "ui": {
+        "$type": "fontFamily",
+        "$value": "{options.font.sans}",
+        "$description": "Font family for interface labels, names, and readable text."
+      }
+    }
+  }
+}

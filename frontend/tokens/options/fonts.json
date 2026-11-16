@@ -1,0 +1,16 @@
+{
+  "options": {
+    "font": {
+      "mono": {
+        "$type": "fontFamily",
+        "$value": ["Geist Mono Variable", "ui-monospace", "monospace"],
+        "$description": "Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono."
+      },
+      "sans": {
+        "$type": "fontFamily",
+        "$value": ["system-ui", "sans-serif"],
+        "$description": "System sans-serif stack for interface labels and readable text."
+      }
+    }
+  }
+}

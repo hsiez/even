@@ -21,6 +21,7 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
   const base = [
     sourcePath(`options/colors.${theme}.json`),
     sourcePath("options/dimensions.json"),
+    sourcePath("options/fonts.json"),
     sourcePath("options/overlays.json"),
     sourcePath("decisions/*.json"),
   ];
@@ -63,7 +64,12 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
     },
     platforms: {
       css: {
-        transforms: ["even/name", "even/color-css", "size/rem"],
+        transforms: [
+          "even/name",
+          "even/color-css",
+          "size/rem",
+          "fontFamily/css",
+        ],
         files: [
           {
             destination: "tokens.css",

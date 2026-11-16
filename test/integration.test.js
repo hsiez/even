@@ -1,7 +1,8 @@
 import { checkResponse, checkSchema } from './helpers/contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, cp, symlink, rm } from 'node:fs/promises';
+import { mkdtemp, cp, symlink, rm, readFile, writeFile } from 'node:fs/promises';
+import { setTimeout as delay } from 'node:timers/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { loadEve } from '../src/eve-adapter.js';
@@ -58,4 +59,23 @@ test('real Eve delivers messages, replays events and records traces through HTTP
   const traces = await (await fetch(server.url + '/api/v1/agents/root/traces', { headers })).json();
   checkResponse('/agents/{agentId}/traces', 'get', 200, traces);
   assert.ok(traces.traces.some(trace => trace.conversationIds.includes(session.id)));
+
+  const reloadUrl = server.url + '/api/v1/agents/root/reloads';
+  const baseline = await (await fetch(reloadUrl, { headers })).json();
+  checkResponse('/agents/{agentId}/reloads', 'get', 200, baseline);
+  assert.equal(baseline.available, true);
+  assert.deepEqual(baseline.reloads, []);
+  const agentPath = join(project, 'agent/agent.js');
+  const source = await readFile(agentPath, 'utf8');
+  await writeFile(agentPath, source.replaceAll('Even fixture reply', 'Even fixture reply after reload'));
+  let observed;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    observed = await (await fetch(reloadUrl, { headers })).json();
+    if (observed.reloads.length) break;
+    await delay(100);
+  }
+  checkResponse('/agents/{agentId}/reloads', 'get', 200, observed);
+  assert.equal(observed.reloads.length, 1, JSON.stringify(observed));
+  assert.equal(observed.reloads[0].type, 'agent.reloaded');
+  assert.equal((await (await fetch(reloadUrl, { headers })).json()).reloads.length, 1);
 });

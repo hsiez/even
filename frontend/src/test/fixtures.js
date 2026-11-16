@@ -41,6 +41,34 @@ export const trace = {
   complete: true,
   spans,
 };
+export const traceHistory = [
+  trace,
+  {
+    ...trace,
+    traceId: "b".repeat(32),
+    label: "Inspect agent configuration",
+    startedAt: "2026-11-12T18:41:20Z",
+  },
+  {
+    ...trace,
+    traceId: "c".repeat(32),
+    label: "Read deployment status",
+    startedAt: "2026-11-12T18:40:30Z",
+  },
+  {
+    ...trace,
+    traceId: "d".repeat(32),
+    label: "Inspect permissions",
+    startedAt: "2026-11-12T18:39:10Z",
+  },
+];
+export const observedReloads = [
+  {
+    id: "fixture-reload-1",
+    type: "agent.reloaded",
+    observedAt: "2026-11-12T18:41:00Z",
+  },
+];
 export const agents = [
   { id: "support", name: "Support" },
   { id: "research", name: "Research" },
