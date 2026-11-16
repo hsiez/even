@@ -1,0 +1,101 @@
+{
+  "$extensions": {
+    "com.even.derivation": {
+      "source": "colors.dark.p3.json",
+      "scale": "options.color.neutral",
+      "canvas": "options.color.background.1",
+      "ink": "oklch(1 0 0)",
+      "method": "Zero-chroma OKLCH endpoints; solve encoded-sRGB source-over for alpha, rounded to 6 decimals.",
+      "usage": "Shadows or overlays where the background should show through. Dark white-alpha overlays lighten; cast shadows and modal dimming require black.",
+      "skill": "https://github.com/jakubkrehel/oklch-skill"
+    }
+  },
+  "options": {
+    "color": {
+      "gray-alpha": {
+        "1": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.073166
+          },
+          "$description": "Translucent equivalent of neutral.1 over background.1."
+        },
+        "2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.105975
+          },
+          "$description": "Translucent equivalent of neutral.2 over background.1."
+        },
+        "3": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.139564
+          },
+          "$description": "Translucent equivalent of neutral.3 over background.1."
+        },
+        "4": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.197141
+          },
+          "$description": "Translucent equivalent of neutral.4 over background.1."
+        },
+        "5": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.268638
+          },
+          "$description": "Translucent equivalent of neutral.5 over background.1."
+        },
+        "6": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.47036
+          },
+          "$description": "Translucent equivalent of neutral.6 over background.1."
+        },
+        "7": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.523013
+          },
+          "$description": "Translucent equivalent of neutral.7 over background.1."
+        },
+        "8": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.589956
+          },
+          "$description": "Translucent equivalent of neutral.8 over background.1."
+        },
+        "9": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.699516
+          },
+          "$description": "Translucent equivalent of neutral.9 over background.1."
+        },
+        "10": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [1, 0, 0],
+            "alpha": 0.912368
+          },
+          "$description": "Translucent equivalent of neutral.10 over background.1."
+        },
+        "$type": "color",
+        "$description": "Gray-alpha for shadows or overlays when the background must show through. Matches neutral steps over background.1; use opaque neutral by default."
+      }
+    }
+  }
+}

@@ -5,8 +5,14 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import assert from "node:assert/strict";
 import Color from "colorjs.io";
+import { checkDecisionUsage } from "./check-decision-usage.mjs";
 import {
   contrastPairs,
+  scaleNames,
+  componentScales,
+  paletteVariable,
+  onFillVariable,
+  resolveOnFill,
   resolveColor,
   semanticVariable,
   themes,
@@ -1054,6 +1060,22 @@ try {
       exact: true,
     });
     await primary.waitFor();
+    const expectedActionBorder = new Color(
+      resolveColor(theme, "action.border"),
+    );
+    assert.ok(
+      new Color(
+        await primary.evaluate((node) => getComputedStyle(node).borderTopColor),
+      ).deltaE(expectedActionBorder, "OK") < 0.00001,
+    );
+    await primary.hover();
+    assert.ok(
+      new Color(
+        await primary.evaluate((node) => getComputedStyle(node).borderTopColor),
+      ).deltaE(expectedActionBorder, "OK") < 0.00001,
+      "Filled action keeps its semantic boundary on hover",
+    );
+    await page.mouse.move(0, 0);
     assert.equal(
       await primary.evaluate((node) => getComputedStyle(node).minHeight),
       "32px",
@@ -1097,6 +1119,34 @@ try {
     );
 
     await page.goto(
+      `${base}/iframe.html?id=primitives-textfield--default&viewMode=story&globals=theme:${theme}`,
+    );
+    const placeholderInput = page.getByPlaceholder("Inspect deployment", {
+      exact: true,
+    });
+    await placeholderInput.waitFor();
+    const placeholder = await placeholderInput.evaluate((node) => ({
+      color: getComputedStyle(node, "::placeholder").color,
+      opacity: getComputedStyle(node, "::placeholder").opacity,
+      background: getComputedStyle(node).backgroundColor,
+    }));
+    assert.equal(placeholder.opacity, "1");
+    assert.ok(
+      new Color(placeholder.color).deltaE(
+        new Color(resolveColor(theme, "text.secondary")),
+        "OK",
+      ) < 0.00001,
+      "Placeholder uses the secondary-text decision rather than the browser default",
+    );
+    assert.ok(
+      Color.contrastWCAG21(
+        new Color(placeholder.color),
+        new Color(placeholder.background),
+      ) >= 4.5,
+      "Visible placeholder text meets AA contrast",
+    );
+
+    await page.goto(
       `${base}/iframe.html?id=primitives-dialog--initially-open&viewMode=story&globals=theme:${theme}`,
     );
     const popup = page.getByRole("dialog", { name: "Agent settings" });
@@ -1131,6 +1181,7 @@ try {
   }
   await page.setViewportSize({ width: 1280, height: 720 });
   // Verify real CSS resolution in both gamuts, including nested theme boundaries.
+  for (const theme of themes) await checkDecisionUsage(page, base, theme);
   const session = await page.context().newCDPSession(page);
   for (const gamut of ["srgb", "p3"]) {
     await session.send("Emulation.setEmulatedMedia", {
@@ -1159,6 +1210,91 @@ try {
       "Tokens must not leak to an unthemed document",
     );
     for (const theme of themes) {
+      const paletteChecks = [
+        ...scaleNames.flatMap((family) =>
+          (family === "background"
+            ? [1, 2]
+            : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+          ).map((step) => ({
+            variable: paletteVariable(family, step),
+            expected: resolveColor(theme, `${family}.${step}`, gamut),
+          })),
+        ),
+        ...componentScales.flatMap((family) =>
+          [7, 8].map((step) => ({
+            variable: onFillVariable(family, step),
+            expected: resolveOnFill(theme, family, step, gamut),
+          })),
+        ),
+      ];
+      const renderedPalette = await page
+        .locator(`section[data-even-theme="${theme}"]`)
+        .evaluate(
+          (scope, checks) =>
+            checks.map((check) => {
+              const swatch = document.createElement("span");
+              swatch.style.backgroundColor = `var(${check.variable})`;
+              scope.append(swatch);
+              const value = getComputedStyle(swatch).backgroundColor;
+              swatch.remove();
+              return value;
+            }),
+          paletteChecks,
+        );
+      paletteChecks.forEach((check, index) => {
+        assert.ok(
+          new Color(renderedPalette[index]).deltaE(
+            new Color(check.expected),
+            "OK",
+          ) < 0.00001,
+          `${theme} ${gamut}: ${check.variable} must render the authored palette value`,
+        );
+        assert.ok(
+          Math.abs(
+            new Color(renderedPalette[index]).alpha -
+              new Color(check.expected).alpha,
+          ) <=
+            (renderedPalette[index].startsWith("rgba(") ? 1 / 255 : 0.000001),
+          `${theme} ${gamut}: ${check.variable} preserves alpha within browser serialization precision`,
+        );
+      });
+      // Paint the browser-resolved alpha over the browser-resolved canvas.
+      const composites = await page
+        .locator(`section[data-even-theme="${theme}"]`)
+        .evaluate((scope) => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 1;
+          canvas.height = 1;
+          const context = canvas.getContext("2d");
+          const sample = document.createElement("span");
+          scope.append(sample);
+          const read = (variable) => {
+            sample.style.backgroundColor = `var(${variable})`;
+            return getComputedStyle(sample).backgroundColor;
+          };
+          const background = read("--even-palette-background-1");
+          const results = Array.from({ length: 10 }, (_, index) => {
+            context.clearRect(0, 0, 1, 1);
+            context.fillStyle = background;
+            context.fillRect(0, 0, 1, 1);
+            context.fillStyle = read(`--even-palette-gray-alpha-${index + 1}`);
+            context.fillRect(0, 0, 1, 1);
+            return [...context.getImageData(0, 0, 1, 1).data];
+          });
+          sample.remove();
+          return results;
+        });
+      composites.forEach((pixel, index) => {
+        const expected = new Color(
+          resolveColor(theme, `neutral.${index + 1}`, gamut),
+        ).to("srgb").coords;
+        expected.forEach((channel, component) =>
+          assert.ok(
+            Math.abs(pixel[component] - Math.round(channel * 255)) <= 1,
+            `${theme} ${gamut}: gray-alpha.${index + 1} composites to neutral.${index + 1} within one 8-bit level`,
+          ),
+        );
+      });
       const actual = await page
         .locator(`section[data-even-theme="${theme}"]`)
         .evaluate(

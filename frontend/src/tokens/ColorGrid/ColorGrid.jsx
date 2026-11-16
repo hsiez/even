@@ -1,47 +1,58 @@
 import React from "react";
 import Color from "colorjs.io";
-import {
-  palettes,
-  wideGamutPalettes,
-  themes,
-  scaleNames,
-  stepRoles,
-  semanticColors,
-  contrastPairs,
-  paletteVariable,
-  semanticVariable,
-  resolveColor,
-  source,
-} from "../colors";
+import * as currentColors from "../colors";
 import "../generated/tokens.css";
 import "./ColorGrid.css";
 
-export function ColorGrid({ theme = "light" }) {
+export function ColorGrid({ theme = "light", style, label }) {
+  const {
+    palettes,
+    wideGamutPalettes,
+    themes,
+    scaleNames,
+    componentScales,
+    onFillVariable,
+    resolveOnFill,
+    stepRoles,
+    semanticColors,
+    contrastPairs,
+    paletteVariable,
+    semanticVariable,
+    resolveColor,
+    source,
+  } = currentColors;
   if (!themes.includes(theme))
     throw new Error("ColorGrid theme must be light or dark.");
   return (
     <section
       className="even-color-grid"
       data-even-theme={theme}
-      aria-label={`${theme} color tokens`}
+      style={style}
+      aria-label={label ?? `${theme} color tokens`}
     >
       <header>
         <h2>{theme === "light" ? "Light" : "Dark"} color tokens</h2>
         <p>
-          Geist palette snapshot · {source.retrieved}. Numbered steps describe
-          jobs, not a simple light-to-dark ramp.
+          {source.name} · v{source.version} · imported {source.imported}.
+          Numbered steps describe jobs, not a simple light-to-dark ramp.
         </p>
         <p>
           Swatches use wide-gamut overrides on supported displays. Values below
           each swatch are the sRGB fallback, followed by the optional wide-gamut
           value.
         </p>
-        <a href={source.url}>Source: Geist colors</a>
+        <p>
+          Custom colors use fixed hue anchors and role curves. Geist supplies
+          the role structure, not the color values.
+        </p>
+        <a href={source.roleReference}>
+          Role structure reference: Geist colors
+        </a>
       </header>
       <div
         className="even-color-grid__scroll"
         role="region"
-        aria-label={`${theme} palette grid`}
+        aria-label={`${label ?? theme} palette grid`}
         tabIndex={0}
       >
         <table>
@@ -59,8 +70,13 @@ export function ColorGrid({ theme = "light" }) {
           </thead>
           <tbody>
             {scaleNames.map((family) => (
-              <tr key={family}>
-                <th scope="row">{family}</th>
+              <tr key={family} data-scale={family}>
+                <th scope="row">
+                  {family}
+                  {family === "gray-alpha" && (
+                    <small>Blend-only equivalents of neutral steps</small>
+                  )}
+                </th>
                 {Array.from({ length: 10 }, (_, index) => {
                   const step = index + 1;
                   const value = palettes[theme][family][step];
@@ -70,15 +86,29 @@ export function ColorGrid({ theme = "light" }) {
                       {value ? (
                         <>
                           <div
-                            className="even-color-grid__swatch"
+                            className={
+                              family === "gray-alpha"
+                                ? "even-color-grid__alpha-base"
+                                : undefined
+                            }
                             aria-hidden="true"
-                            style={{
-                              backgroundColor: `var(${paletteVariable(family, step)})`,
-                            }}
-                          />
+                          >
+                            <div
+                              className="even-color-grid__swatch"
+                              style={{
+                                backgroundColor: `var(${paletteVariable(family, step)})`,
+                              }}
+                            />
+                          </div>
                           <code>{paletteVariable(family, step)}</code>
                           <small>{value}</small>
                           {wide && <small>{wide}</small>}
+                          {family === "gray-alpha" && (
+                            <small>
+                              {(new Color(value).alpha * 100).toFixed(2)}%
+                              opacity (sRGB)
+                            </small>
+                          )}
                         </>
                       ) : (
                         <span>Not applicable</span>
@@ -93,9 +123,77 @@ export function ColorGrid({ theme = "light" }) {
       </div>
       <p>
         Background steps 1–2 are page/surface backgrounds, separate from the
-        ten-step component scales. Gray-alpha swatches are composited over the
-        page surface; their appearance depends on the surface beneath them.
+        ten-step component scales. The component scales are opaque. Gray-alpha
+        is only for shadows or overlays where the background should show
+        through; its split swatches show the page canvas on the left and blue
+        step 3 on the right. Over the page canvas each step matches its opaque
+        neutral. Dark-theme white-alpha lightens overlays; cast shadows and
+        modal dimming need black, so the modal scrim remains separate. Steps 4–5
+        are subtle decorative borders; use step 6 for a meaningful boundary.
+        Filled surfaces use their explicit foreground below.
       </p>
+      <details open>
+        <summary>Strong fills and their paired foregrounds</summary>
+        <p>
+          Steps 7 and 8 have explicit foregrounds for each theme and family. Do
+          not assume white text or reuse text steps 9–10 on a strong fill.
+        </p>
+        <table>
+          <caption>Matching fill foregrounds</caption>
+          <thead>
+            <tr>
+              <th scope="col">Fill</th>
+              <th scope="col">Foreground</th>
+              <th scope="col">Example</th>
+              <th scope="col">sRGB / wide gamut ratio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {componentScales.flatMap((family) =>
+              [7, 8].map((step) => {
+                const ratios = ["srgb", "p3"].map((gamut) =>
+                  Color.contrastWCAG21(
+                    new Color(resolveOnFill(theme, family, step, gamut)),
+                    new Color(resolveColor(theme, `${family}.${step}`, gamut)),
+                  ),
+                );
+                return (
+                  <tr key={`${family}-${step}`}>
+                    <th scope="row">
+                      {family}.{step}
+                    </th>
+                    <td>
+                      <code>{onFillVariable(family, step)}</code>
+                      <small>{resolveOnFill(theme, family, step)}</small>
+                    </td>
+                    <td>
+                      <span
+                        className="even-color-grid__pair"
+                        style={{
+                          backgroundColor: `var(${paletteVariable(family, step)})`,
+                          color: `var(${onFillVariable(family, step)})`,
+                          border: resolveColor(theme, `fill.border.${family}`)
+                            ? `1px solid var(${semanticVariable(`fill.border.${family}`)})`
+                            : undefined,
+                        }}
+                      >
+                        Recorded execution
+                      </span>
+                    </td>
+                    <td>
+                      {ratios
+                        .map((ratio) => `${ratio.toFixed(2)}:1`)
+                        .join(" / ")}{" "}
+                      ·{" "}
+                      {ratios.every((ratio) => ratio >= 4.5) ? "Pass" : "Fail"}
+                    </td>
+                  </tr>
+                );
+              }),
+            )}
+          </tbody>
+        </table>
+      </details>
       <details>
         <summary>Semantic aliases</summary>
         <table>

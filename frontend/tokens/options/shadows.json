@@ -1,0 +1,26 @@
+{
+  "options": {
+    "shadow": {
+      "ink": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0, 0, 0],
+          "alpha": 0.16
+        },
+        "$description": "Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming."
+      },
+      "soft": {
+        "$type": "shadow",
+        "$value": {
+          "color": "{options.shadow.ink}",
+          "offsetX": "{options.dimension.0}",
+          "offsetY": "{options.dimension.4}",
+          "blur": "{options.dimension.16}",
+          "spread": "{options.dimension.0}"
+        },
+        "$description": "Soft cast shadow: 0/4/16/0px equivalents at a 16px root."
+      }
+    }
+  }
+}

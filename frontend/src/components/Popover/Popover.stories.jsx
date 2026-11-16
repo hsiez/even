@@ -26,6 +26,14 @@ export const Default = {
   },
 };
 export const InitiallyOpen = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Floating panels share a soft translucent-black cast shadow in both themes. Switch themes to review the shadow and the persistent panel boundary.",
+      },
+    },
+  },
   render: function Example() {
     const [value, setValue] = useState("");
     return (

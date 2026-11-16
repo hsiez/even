@@ -8,7 +8,7 @@
     sans-serif;
 }
 .even-color-grid a {
-  color: var(--even-focus-ring);
+  color: var(--even-text-link);
 }
 .even-color-grid small {
   display: block;
@@ -41,6 +41,13 @@
 }
 .even-color-grid__swatch {
   height: 3rem;
+}
+.even-color-grid__alpha-base {
+  background: linear-gradient(
+    to right,
+    var(--even-surface-page) 50%,
+    var(--even-palette-blue-3) 50%
+  );
 }
 .even-color-grid__pair {
   display: inline-block;

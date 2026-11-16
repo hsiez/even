@@ -28,6 +28,27 @@ export const Empty = {
   },
 };
 
+export const SelectedRow = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Selected text and the Operation action share the selection foreground. Outcome labels retain their own status colors; hover and keyboard focus preserve the row’s selection surface.",
+      },
+    },
+  },
+  render: function Example() {
+    const [selected, setSelected] = useState(trace.traceId);
+    return (
+      <TraceTable
+        traces={traceHistory}
+        selectedTraceId={selected}
+        onSelectTrace={setSelected}
+      />
+    );
+  },
+};
+
 export const ReloadTimeline = {
   render: function Example() {
     const [selected, setSelected] = useState();

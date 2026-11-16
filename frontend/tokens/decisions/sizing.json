@@ -60,6 +60,13 @@
           "$value": "{options.dimension.8}",
           "$description": "Corner radius for floating panels."
         }
+      },
+      "field": {
+        "preferred": {
+          "$type": "dimension",
+          "$value": "{options.dimension.256}",
+          "$description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width."
+        }
       }
     }
   }

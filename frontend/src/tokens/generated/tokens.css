@@ -3,98 +3,298 @@
   color-scheme: light;
 }
 [data-even-theme="light"] {
-  --even-palette-gray-1: rgb(95% 95% 95%);
-  --even-palette-gray-2: rgb(92% 92% 92%);
-  --even-palette-gray-3: rgb(90% 90% 90%);
-  --even-palette-gray-4: rgb(92% 92% 92%);
-  --even-palette-gray-5: rgb(79% 79% 79%);
-  --even-palette-gray-6: rgb(66% 66% 66%);
-  --even-palette-gray-7: rgb(56% 56% 56%);
-  --even-palette-gray-8: rgb(49% 49% 49%);
-  --even-palette-gray-9: rgb(30% 30% 30%);
-  --even-palette-gray-10: rgb(9% 9% 9%);
-  --even-palette-gray-alpha-1: rgb(0% 0% 0% / 0.050980392157);
-  --even-palette-gray-alpha-2: rgb(0% 0% 0% / 0.078431372549);
-  --even-palette-gray-alpha-3: rgb(0% 0% 0% / 0.101960784314);
-  --even-palette-gray-alpha-4: rgb(0% 0% 0% / 0.078431372549);
-  --even-palette-gray-alpha-5: rgb(0% 0% 0% / 0.211764705882);
-  --even-palette-gray-alpha-6: rgb(0% 0% 0% / 0.341176470588);
-  --even-palette-gray-alpha-7: rgb(0% 0% 0% / 0.439215686275);
-  --even-palette-gray-alpha-8: rgb(0% 0% 0% / 0.509803921569);
-  --even-palette-gray-alpha-9: rgb(0% 0% 0% / 0.701960784314);
-  --even-palette-gray-alpha-10: rgb(0% 0% 0% / 0.909803921569);
-  --even-palette-blue-1: rgb(94% 96.8% 100%);
-  --even-palette-blue-2: rgb(92% 96% 100%);
-  --even-palette-blue-3: rgb(88% 94% 100%);
-  --even-palette-blue-4: rgb(80% 90.3333333333% 100%);
-  --even-palette-blue-5: rgb(60% 80.6666666667% 100%);
-  --even-palette-blue-6: rgb(32% 68.2666666667% 100%);
-  --even-palette-blue-7: rgb(0% 44.8% 96%);
-  --even-palette-blue-8: rgb(0% 38.2666666667% 82%);
-  --even-palette-blue-9: rgb(0% 40.6% 84%);
-  --even-palette-blue-10: rgb(0% 14.5% 30%);
-  --even-palette-red-1: rgb(100% 94% 94%);
-  --even-palette-red-2: rgb(100% 92% 92%);
-  --even-palette-red-3: rgb(100% 90% 90%);
-  --even-palette-red-4: rgb(99.2% 84.8% 84.8%);
-  --even-palette-red-5: rgb(97.3% 72.7% 72.7%);
-  --even-palette-red-6: rgb(97.1% 44.9% 45.77%);
-  --even-palette-red-7: rgb(89.75% 28.25% 30.3%);
-  --even-palette-red-8: rgb(85.6% 18.4% 20.64%);
-  --even-palette-red-9: rgb(79.68% 16.32% 18.432%);
-  --even-palette-red-10: rgb(22.35% 7.65% 8.875%);
-  --even-palette-amber-1: rgb(100% 96.5% 90%);
-  --even-palette-amber-2: rgb(100% 95.7333333333% 84%);
-  --even-palette-amber-3: rgb(99.6% 94.16% 80.4%);
-  --even-palette-amber-4: rgb(100% 86.8% 56%);
-  --even-palette-amber-5: rgb(100% 78.7333333333% 42%);
-  --even-palette-amber-6: rgb(96.2% 68.84% 27.8%);
-  --even-palette-amber-7: rgb(100% 69.9% 14%);
-  --even-palette-amber-8: rgb(100% 60% 4%);
-  --even-palette-amber-9: rgb(64% 32% 0%);
-  --even-palette-amber-10: rgb(30.43% 12.5233333333% 3.57%);
-  --even-palette-green-1: rgb(93.6% 98.4% 93.6%);
-  --even-palette-green-2: rgb(92% 98% 92%);
-  --even-palette-green-3: rgb(85.6% 96.4% 85.6%);
-  --even-palette-green-4: rgb(77.6% 94.4% 78.16%);
-  --even-palette-green-5: rgb(60% 90% 62%);
-  --even-palette-green-6: rgb(42.4% 85.6% 46%);
-  --even-palette-green-7: rgb(27.14% 64.86% 34.0553333333%);
-  --even-palette-green-8: rgb(22.23% 55.77% 28.938%);
-  --even-palette-green-9: rgb(16% 48% 22.9333333333%);
-  --even-palette-green-10: rgb(10.65% 19.35% 11.81%);
-  --even-palette-teal-1: rgb(93.2% 98.8% 97.7733333333%);
-  --even-palette-teal-2: rgb(89.8% 98.2% 96.38%);
-  --even-palette-teal-3: rgb(83% 97% 94.2%);
-  --even-palette-teal-4: rgb(74.5% 95.5% 92%);
-  --even-palette-teal-5: rgb(52.4% 91.6% 85.0666666667%);
-  --even-palette-teal-6: rgb(26.9% 87.1% 77.0666666667%);
-  --even-palette-teal-7: rgb(7.2% 64.8% 58.08%);
-  --even-palette-teal-8: rgb(5.1% 54.9% 49.09%);
-  --even-palette-teal-9: rgb(2.25% 47.75% 43.2%);
-  --even-palette-teal-10: rgb(2.6% 23.4% 20.28%);
-  --even-palette-purple-1: rgb(97.6% 94% 100%);
-  --even-palette-purple-2: rgb(97.609% 94.39% 99.61%);
-  --even-palette-purple-3: rgb(95.52% 91.1% 98.9%);
-  --even-palette-purple-4: rgb(93.136% 86.32% 97.68%);
-  --even-palette-purple-5: rgb(83.68% 69.4% 94.6%);
-  --even-palette-purple-6: rgb(74.944% 53.56% 92.44%);
-  --even-palette-purple-7: rgb(55.564% 30.54% 77.46%);
-  --even-palette-purple-8: rgb(46.41% 23.85% 66.15%);
-  --even-palette-purple-9: rgb(47.0706666667% 12.47% 73.53%);
-  --even-palette-purple-10: rgb(18% 0% 30%);
-  --even-palette-pink-1: rgb(100% 92% 96%);
-  --even-palette-pink-2: rgb(99.6% 92.4% 94.8%);
-  --even-palette-pink-3: rgb(98.92% 89.08% 92.36%);
-  --even-palette-pink-4: rgb(97.84% 84.16% 88.492%);
-  --even-palette-pink-5: rgb(96% 72% 80%);
-  --even-palette-pink-6: rgb(93.25% 52.75% 65.575%);
-  --even-palette-pink-7: rgb(91.6% 24.4% 51.28%);
-  --even-palette-pink-8: rgb(87.26% 14.74% 43.748%);
-  --even-palette-pink-9: rgb(74.25% 15.75% 39.15%);
-  --even-palette-pink-10: rgb(26.1% 3.9% 13.89%);
-  --even-palette-background-1: rgb(100% 100% 100%);
-  --even-palette-background-2: rgb(98% 98% 98%);
+  --even-palette-blue-1: rgb(
+    94.9019607843% 96.862745098% 100%
+  ); /** background */
+  --even-palette-blue-2: rgb(
+    89.4117647059% 94.1176470588% 100%
+  ); /** background-hover */
+  --even-palette-blue-3: rgb(
+    83.137254902% 90.1960784314% 100%
+  ); /** background-active */
+  --even-palette-blue-4: rgb(67.8431372549% 81.9607843137% 100%); /** border */
+  --even-palette-blue-5: rgb(
+    47.4509803922% 70.5882352941% 100%
+  ); /** border-hover */
+  --even-palette-blue-6: rgb(
+    0% 49.8039215686% 95.6862745098%
+  ); /** border-active */
+  --even-palette-blue-7: rgb(47.4509803922% 70.5882352941% 100%); /** fill */
+  --even-palette-blue-8: rgb(
+    38.8235294118% 65.8823529412% 100%
+  ); /** fill-hover */
+  --even-palette-blue-9: rgb(0% 30.5882352941% 60.7843137255%); /** text */
+  --even-palette-blue-10: rgb(
+    0% 12.9411764706% 28.2352941176%
+  ); /** text-strong */
+  --even-palette-green-1: rgb(
+    89.8039215686% 99.6078431373% 92.9411764706%
+  ); /** background */
+  --even-palette-green-2: rgb(
+    80.3921568627% 98.8235294118% 86.2745098039%
+  ); /** background-hover */
+  --even-palette-green-3: rgb(
+    68.2352941176% 97.6470588235% 78.431372549%
+  ); /** background-active */
+  --even-palette-green-4: rgb(
+    48.2352941176% 91.3725490196% 64.7058823529%
+  ); /** border */
+  --even-palette-green-5: rgb(
+    14.1176470588% 81.9607843137% 48.6274509804%
+  ); /** border-hover */
+  --even-palette-green-6: rgb(
+    0% 58.431372549% 32.9411764706%
+  ); /** border-active */
+  --even-palette-green-7: rgb(0% 88.2352941176% 51.3725490196%); /** fill */
+  --even-palette-green-8: rgb(
+    0% 83.137254902% 48.2352941176%
+  ); /** fill-hover */
+  --even-palette-green-9: rgb(0% 37.6470588235% 20.7843137255%); /** text */
+  --even-palette-green-10: rgb(
+    0% 16.4705882353% 7.8431372549%
+  ); /** text-strong */
+  --even-palette-amber-1: rgb(
+    100% 96.4705882353% 90.1960784314%
+  ); /** background */
+  --even-palette-amber-2: rgb(
+    100% 92.5490196078% 80.3921568627%
+  ); /** background-hover */
+  --even-palette-amber-3: rgb(
+    100% 87.8431372549% 67.8431372549%
+  ); /** background-active */
+  --even-palette-amber-4: rgb(
+    99.2156862745% 76.4705882353% 34.1176470588%
+  ); /** border */
+  --even-palette-amber-5: rgb(
+    89.8039215686% 64.3137254902% 0%
+  ); /** border-hover */
+  --even-palette-amber-6: rgb(
+    65.8823529412% 46.6666666667% 0%
+  ); /** border-active */
+  --even-palette-amber-7: rgb(99.2156862745% 70.9803921569% 0%); /** fill */
+  --even-palette-amber-8: rgb(
+    93.7254901961% 67.0588235294% 0%
+  ); /** fill-hover */
+  --even-palette-amber-9: rgb(41.1764705882% 28.6274509804% 0%); /** text */
+  --even-palette-amber-10: rgb(
+    18.0392156863% 11.7647058824% 0%
+  ); /** text-strong */
+  --even-palette-red-1: rgb(
+    100% 95.6862745098% 95.2941176471%
+  ); /** background */
+  --even-palette-red-2: rgb(
+    100% 91.3725490196% 90.1960784314%
+  ); /** background-hover */
+  --even-palette-red-3: rgb(
+    100% 85.8823529412% 84.3137254902%
+  ); /** background-active */
+  --even-palette-red-4: rgb(100% 72.9411764706% 70.1960784314%); /** border */
+  --even-palette-red-5: rgb(
+    100% 54.1176470588% 50.9803921569%
+  ); /** border-hover */
+  --even-palette-red-6: rgb(
+    91.7647058824% 23.5294117647% 24.7058823529%
+  ); /** border-active */
+  --even-palette-red-7: rgb(100% 44.3137254902% 41.9607843137%); /** fill */
+  --even-palette-red-8: rgb(
+    100% 34.5098039216% 33.3333333333%
+  ); /** fill-hover */
+  --even-palette-red-9: rgb(60% 0% 8.62745098039%); /** text */
+  --even-palette-red-10: rgb(
+    27.8431372549% 0% 1.96078431373%
+  ); /** text-strong */
+  --even-palette-teal-1: rgb(
+    86.6666666667% 100% 98.8235294118%
+  ); /** background */
+  --even-palette-teal-2: rgb(
+    73.7254901961% 99.2156862745% 97.2549019608%
+  ); /** background-hover */
+  --even-palette-teal-3: rgb(
+    56.4705882353% 98.0392156863% 95.2941176471%
+  ); /** background-active */
+  --even-palette-teal-4: rgb(
+    17.6470588235% 91.7647058824% 88.6274509804%
+  ); /** border */
+  --even-palette-teal-5: rgb(
+    0% 79.6078431373% 76.4705882353%
+  ); /** border-hover */
+  --even-palette-teal-6: rgb(
+    0% 56.862745098% 54.9019607843%
+  ); /** border-active */
+  --even-palette-teal-7: rgb(0% 83.9215686275% 80.7843137255%); /** fill */
+  --even-palette-teal-8: rgb(
+    0% 78.8235294118% 76.0784313725%
+  ); /** fill-hover */
+  --even-palette-teal-9: rgb(0% 36.0784313725% 34.9019607843%); /** text */
+  --even-palette-teal-10: rgb(
+    0% 15.6862745098% 14.9019607843%
+  ); /** text-strong */
+  --even-palette-purple-1: rgb(
+    97.6470588235% 95.6862745098% 100%
+  ); /** background */
+  --even-palette-purple-2: rgb(
+    95.2941176471% 91.7647058824% 100%
+  ); /** background-hover */
+  --even-palette-purple-3: rgb(
+    92.5490196078% 86.6666666667% 100%
+  ); /** background-active */
+  --even-palette-purple-4: rgb(
+    86.2745098039% 74.9019607843% 100%
+  ); /** border */
+  --even-palette-purple-5: rgb(
+    78.431372549% 58.8235294118% 100%
+  ); /** border-hover */
+  --even-palette-purple-6: rgb(
+    64.3137254902% 35.2941176471% 91.3725490196%
+  ); /** border-active */
+  --even-palette-purple-7: rgb(79.2156862745% 60.7843137255% 100%); /** fill */
+  --even-palette-purple-8: rgb(
+    76.4705882353% 54.1176470588% 100%
+  ); /** fill-hover */
+  --even-palette-purple-9: rgb(
+    42.7450980392% 1.96078431373% 67.8431372549%
+  ); /** text */
+  --even-palette-purple-10: rgb(
+    18.0392156863% 3.92156862745% 29.0196078431%
+  ); /** text-strong */
+  --even-palette-pink-1: rgb(
+    100% 95.2941176471% 97.2549019608%
+  ); /** background */
+  --even-palette-pink-2: rgb(
+    100% 90.5882352941% 94.5098039216%
+  ); /** background-hover */
+  --even-palette-pink-3: rgb(
+    100% 84.7058823529% 91.3725490196%
+  ); /** background-active */
+  --even-palette-pink-4: rgb(100% 70.5882352941% 84.3137254902%); /** border */
+  --even-palette-pink-5: rgb(
+    100% 49.8039215686% 75.2941176471%
+  ); /** border-hover */
+  --even-palette-pink-6: rgb(
+    85.8823529412% 24.3137254902% 59.6078431373%
+  ); /** border-active */
+  --even-palette-pink-7: rgb(100% 49.8039215686% 75.2941176471%); /** fill */
+  --even-palette-pink-8: rgb(
+    100% 39.6078431373% 72.1568627451%
+  ); /** fill-hover */
+  --even-palette-pink-9: rgb(56.4705882353% 0% 36.4705882353%); /** text */
+  --even-palette-pink-10: rgb(
+    25.8823529412% 0% 15.6862745098%
+  ); /** text-strong */
+  --even-palette-neutral-1: rgb(
+    96.862745098% 96.862745098% 96.862745098%
+  ); /** background */
+  --even-palette-neutral-2: rgb(
+    93.3333333333% 93.3333333333% 93.3333333333%
+  ); /** background-hover */
+  --even-palette-neutral-3: rgb(
+    89.4117647059% 89.4117647059% 89.4117647059%
+  ); /** background-active */
+  --even-palette-neutral-4: rgb(
+    80.7843137255% 80.7843137255% 80.7843137255%
+  ); /** border */
+  --even-palette-neutral-5: rgb(
+    69.4117647059% 69.4117647059% 69.4117647059%
+  ); /** border-hover */
+  --even-palette-neutral-6: rgb(
+    50.1960784314% 50.1960784314% 50.1960784314%
+  ); /** border-active */
+  --even-palette-neutral-7: rgb(
+    44.3137254902% 44.3137254902% 44.3137254902%
+  ); /** fill */
+  --even-palette-neutral-8: rgb(
+    37.6470588235% 37.6470588235% 37.6470588235%
+  ); /** fill-hover */
+  --even-palette-neutral-9: rgb(
+    31.3725490196% 31.3725490196% 31.3725490196%
+  ); /** text */
+  --even-palette-neutral-10: rgb(
+    13.3333333333% 13.3333333333% 13.3333333333%
+  ); /** text-strong */
+  --even-palette-background-1: rgb(
+    98.8235294118% 98.8235294118% 98.8235294118%
+  ); /** Page canvas */
+  --even-palette-background-2: rgb(
+    96.0784313725% 96.0784313725% 96.0784313725%
+  ); /** Secondary canvas */
+  --even-palette-gray-alpha-1: rgb(
+    0% 0% 0% / 0.019841
+  ); /** Translucent equivalent of neutral.1 over background.1. */
+  --even-palette-gray-alpha-2: rgb(
+    0% 0% 0% / 0.055556
+  ); /** Translucent equivalent of neutral.2 over background.1. */
+  --even-palette-gray-alpha-3: rgb(
+    0% 0% 0% / 0.095238
+  ); /** Translucent equivalent of neutral.3 over background.1. */
+  --even-palette-gray-alpha-4: rgb(
+    0% 0% 0% / 0.18254
+  ); /** Translucent equivalent of neutral.4 over background.1. */
+  --even-palette-gray-alpha-5: rgb(
+    0% 0% 0% / 0.297619
+  ); /** Translucent equivalent of neutral.5 over background.1. */
+  --even-palette-gray-alpha-6: rgb(
+    0% 0% 0% / 0.492063
+  ); /** Translucent equivalent of neutral.6 over background.1. */
+  --even-palette-gray-alpha-7: rgb(
+    0% 0% 0% / 0.551587
+  ); /** Translucent equivalent of neutral.7 over background.1. */
+  --even-palette-gray-alpha-8: rgb(
+    0% 0% 0% / 0.619048
+  ); /** Translucent equivalent of neutral.8 over background.1. */
+  --even-palette-gray-alpha-9: rgb(
+    0% 0% 0% / 0.68254
+  ); /** Translucent equivalent of neutral.9 over background.1. */
+  --even-palette-gray-alpha-10: rgb(
+    0% 0% 0% / 0.865079
+  ); /** Translucent equivalent of neutral.10 over background.1. */
+  --even-palette-blue-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for blue step 7; use only with its matching fill. */
+  --even-palette-blue-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for blue step 8; use only with its matching fill. */
+  --even-palette-green-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for green step 7; use only with its matching fill. */
+  --even-palette-green-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for green step 8; use only with its matching fill. */
+  --even-palette-amber-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for amber step 7; use only with its matching fill. */
+  --even-palette-amber-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for amber step 8; use only with its matching fill. */
+  --even-palette-red-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for red step 7; use only with its matching fill. */
+  --even-palette-red-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for red step 8; use only with its matching fill. */
+  --even-palette-teal-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for teal step 7; use only with its matching fill. */
+  --even-palette-teal-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for teal step 8; use only with its matching fill. */
+  --even-palette-purple-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for purple step 7; use only with its matching fill. */
+  --even-palette-purple-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for purple step 8; use only with its matching fill. */
+  --even-palette-pink-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for pink step 7; use only with its matching fill. */
+  --even-palette-pink-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for pink step 8; use only with its matching fill. */
+  --even-palette-neutral-7-foreground: rgb(
+    100% 100% 100%
+  ); /** Foreground for neutral step 7; use only with its matching fill. */
+  --even-palette-neutral-8-foreground: rgb(
+    100% 100% 100%
+  ); /** Foreground for neutral step 8; use only with its matching fill. */
   --even-dimension-0: 0rem; /** 0px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-2: 0.125rem; /** 2px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-4: 0.25rem; /** 4px equivalent at a 16px root; do not fix the user's root font size. */
@@ -122,45 +322,106 @@
   --even-overlay-scrim: rgb(
     0% 0% 0% / 0.64
   ); /** Translucent black for modal dimming in either theme. */
+  --even-shadow-ink: oklch(
+    0% 0 0 / 0.16
+  ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
+  --even-shadow-soft: var(--even-dimension-0) var(--even-dimension-4)
+    var(--even-dimension-16) var(--even-dimension-0) var(--even-shadow-ink); /** Soft cast shadow: 0/4/16/0px equivalents at a 16px root. */
   --even-surface-page: var(--even-palette-background-1);
   --even-surface-secondary: var(--even-palette-background-2);
-  --even-surface-control: var(--even-palette-gray-1);
-  --even-surface-hover: var(--even-palette-gray-2);
-  --even-surface-active: var(--even-palette-gray-3);
+  --even-surface-control: var(--even-palette-neutral-1);
+  --even-surface-hover: var(--even-palette-neutral-2);
+  --even-surface-active: var(--even-palette-neutral-3);
   --even-text-link: var(
     --even-palette-blue-9
   ); /** Navigational text links on page and secondary surfaces. */
-  --even-text-primary: var(--even-palette-gray-10);
-  --even-text-secondary: var(--even-palette-gray-9);
-  --even-border-default: var(--even-palette-gray-4);
-  --even-border-hover: var(--even-palette-gray-5);
-  --even-border-active: var(--even-palette-gray-6);
+  --even-text-primary: var(--even-palette-neutral-10);
+  --even-text-secondary: var(--even-palette-neutral-9);
+  --even-border-default: var(--even-palette-neutral-4);
+  --even-border-hover: var(--even-palette-neutral-5);
+  --even-border-active: var(--even-palette-neutral-6);
   --even-border-control: var(
-    --even-palette-gray-8
-  ); /** Essential boundary: tested separately from decorative borders. */
-  --even-focus-ring: var(--even-palette-blue-9);
+    --even-palette-neutral-6
+  ); /** Step 6 is the meaningful control boundary; steps 4–5 remain decorative. */
+  --even-border-interaction: var(
+    --even-palette-blue-6
+  ); /** Emphasized edge during pointer hover or drag, independent of keyboard focus. */
+  --even-border-invalid: var(
+    --even-palette-red-9
+  ); /** Invalid input boundary, independent of error message text. */
+  --even-focus-ring: var(--even-palette-blue-6);
   --even-selection-background: var(--even-palette-blue-2);
   --even-selection-foreground: var(--even-palette-blue-10);
+  --even-selection-indicator: var(
+    --even-palette-blue-6
+  ); /** Persistent mark for the selected item, independent of keyboard focus. */
   --even-action-background: var(
-    --even-palette-gray-10
-  ); /** Even uses a neutral solid action; this is a product decision, not a Geist prescription. */
-  --even-action-hover: var(--even-palette-gray-9);
-  --even-action-foreground: var(--even-palette-background-1);
-  --even-status-error-surface: var(--even-palette-red-1);
+    --even-palette-neutral-7
+  ); /** Neutral primary-action fill, using the palette’s strong-fill role. */
+  --even-action-hover: var(--even-palette-neutral-8);
+  --even-action-foreground: var(--even-palette-neutral-7-foreground);
+  --even-action-hover-foreground: var(
+    --even-palette-neutral-8-foreground
+  ); /** Foreground paired explicitly with the hovered action fill. */
+  --even-status-error-surface: var(
+    --even-palette-red-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-error-text: var(--even-palette-red-9);
   --even-status-error-border: var(--even-palette-red-6);
-  --even-status-warning-surface: var(--even-palette-amber-1);
+  --even-status-error-compact-surface: var(
+    --even-palette-red-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-warning-surface: var(
+    --even-palette-amber-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-warning-text: var(--even-palette-amber-9);
   --even-status-warning-border: var(--even-palette-amber-6);
-  --even-status-success-surface: var(--even-palette-green-1);
+  --even-status-warning-compact-surface: var(
+    --even-palette-amber-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-success-surface: var(
+    --even-palette-green-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-success-text: var(--even-palette-green-9);
   --even-status-success-border: var(--even-palette-green-6);
-  --even-status-info-surface: var(--even-palette-blue-1);
+  --even-status-success-compact-surface: var(
+    --even-palette-green-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-info-surface: var(
+    --even-palette-blue-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-info-text: var(--even-palette-blue-9);
   --even-status-info-border: var(--even-palette-blue-6);
+  --even-status-info-compact-surface: var(
+    --even-palette-blue-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
   --even-overlay-backdrop: var(
     --even-overlay-scrim
   ); /** Dim the workspace behind a modal. No content is placed directly on this translucent surface. */
+  --even-fill-border-blue: var(
+    --even-palette-blue-9
+  ); /** Visible edge for blue strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-green: var(
+    --even-palette-green-9
+  ); /** Visible edge for green strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-amber: var(
+    --even-palette-amber-9
+  ); /** Visible edge for amber strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-red: var(
+    --even-palette-red-9
+  ); /** Visible edge for red strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-teal: var(
+    --even-palette-teal-9
+  ); /** Visible edge for teal strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-purple: var(
+    --even-palette-purple-9
+  ); /** Visible edge for purple strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-pink: var(
+    --even-palette-pink-9
+  ); /** Visible edge for pink strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-neutral: var(
+    --even-palette-neutral-9
+  ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -185,10 +446,16 @@
   --even-size-radius-panel: var(
     --even-dimension-8
   ); /** Corner radius for floating panels. */
+  --even-size-field-preferred: var(
+    --even-dimension-256
+  ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
   --even-space-gap-tight: var(--even-dimension-4);
   --even-space-gap-related: var(--even-dimension-8);
   --even-space-gap-group: var(--even-dimension-16);
   --even-space-gap-section: var(--even-dimension-24);
+  --even-space-inset-tight: var(
+    --even-dimension-4
+  ); /** Small internal padding; independent of gaps between elements. */
   --even-space-inset-compact: var(--even-dimension-8);
   --even-space-inset-default: var(--even-dimension-16);
   --even-space-inset-spacious: var(--even-dimension-24);
@@ -198,104 +465,306 @@
   --even-font-ui: var(
     --even-font-sans
   ); /** Font family for interface labels, names, and readable text. */
+  --even-action-border: var(
+    --even-fill-border-neutral
+  ); /** Persistent boundary for filled primary actions, including hover. */
+  --even-shadow-floating: var(
+    --even-shadow-soft
+  ); /** Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index. */
 }
 
 [data-even-theme="dark"] {
   color-scheme: dark;
 }
 [data-even-theme="dark"] {
-  --even-palette-gray-1: rgb(10% 10% 10%);
-  --even-palette-gray-2: rgb(12% 12% 12%);
-  --even-palette-gray-3: rgb(16% 16% 16%);
-  --even-palette-gray-4: rgb(18% 18% 18%);
-  --even-palette-gray-5: rgb(27% 27% 27%);
-  --even-palette-gray-6: rgb(53% 53% 53%);
-  --even-palette-gray-7: rgb(56% 56% 56%);
-  --even-palette-gray-8: rgb(49% 49% 49%);
-  --even-palette-gray-9: rgb(63% 63% 63%);
-  --even-palette-gray-10: rgb(93% 93% 93%);
-  --even-palette-gray-alpha-1: rgb(100% 100% 100% / 0.058823529412);
-  --even-palette-gray-alpha-2: rgb(100% 100% 100% / 0.090196078431);
-  --even-palette-gray-alpha-3: rgb(100% 100% 100% / 0.129411764706);
-  --even-palette-gray-alpha-4: rgb(100% 100% 100% / 0.141176470588);
-  --even-palette-gray-alpha-5: rgb(100% 100% 100% / 0.239215686275);
-  --even-palette-gray-alpha-6: rgb(100% 100% 100% / 0.509803921569);
-  --even-palette-gray-alpha-7: rgb(100% 100% 100% / 0.541176470588);
-  --even-palette-gray-alpha-8: rgb(100% 100% 100% / 0.470588235294);
-  --even-palette-gray-alpha-9: rgb(100% 100% 100% / 0.611764705882);
-  --even-palette-gray-alpha-10: rgb(100% 100% 100% / 0.921568627451);
-  --even-palette-blue-1: rgb(6% 10.8% 18%);
-  --even-palette-blue-2: rgb(6.15% 13.82% 23.85%);
-  --even-palette-blue-3: rgb(5.8% 18.58% 34.2%);
-  --even-palette-blue-4: rgb(5.06% 21.804% 40.94%);
-  --even-palette-blue-5: rgb(3.78% 26.226% 50.22%);
-  --even-palette-blue-6: rgb(0% 56.6666666667% 100%);
-  --even-palette-blue-7: rgb(0% 44.8% 96%);
-  --even-palette-blue-8: rgb(0% 38.2666666667% 82%);
-  --even-palette-blue-9: rgb(32% 66% 100%);
-  --even-palette-blue-10: rgb(92% 96.5333333333% 100%);
-  --even-palette-red-1: rgb(16.44% 7.56% 8.004%);
-  --even-palette-red-2: rgb(23.36% 8.64% 9.376%);
-  --even-palette-red-3: rgb(33.88% 10.12% 11.704%);
-  --even-palette-red-4: rgb(40.3% 11.7% 13.13%);
-  --even-palette-red-5: rgb(51.2% 12.8% 14.72%);
-  --even-palette-red-6: rgb(89.75% 28.25% 30.3%);
-  --even-palette-red-7: rgb(89.75% 28.25% 30.3%);
-  --even-palette-red-8: rgb(85.12% 18.88% 21.088%);
-  --even-palette-red-9: rgb(100% 38% 40.0666666667%);
-  --even-palette-red-10: rgb(99.6% 92.4% 93.24%);
-  --even-palette-amber-1: rgb(16% 9.3333333333% 0%);
-  --even-palette-amber-2: rgb(20% 10.6666666667% 0%);
-  --even-palette-amber-3: rgb(30% 16.5% 0%);
-  --even-palette-amber-4: rgb(34% 19.8333333333% 0%);
-  --even-palette-amber-5: rgb(42.02% 25.3366666667% 1.98%);
-  --even-palette-amber-6: rgb(90.65% 61.495% 7.35%);
-  --even-palette-amber-7: rgb(100% 69.9% 14%);
-  --even-palette-amber-8: rgb(100% 60% 4%);
-  --even-palette-amber-9: rgb(95% 63.5% 5%);
-  --even-palette-amber-10: rgb(99.58% 95.1933333333% 86.42%);
-  --even-palette-green-1: rgb(4.5% 13.5% 6.9%);
-  --even-palette-green-2: rgb(6% 18% 9.4%);
-  --even-palette-green-3: rgb(7% 21% 10.7333333333%);
-  --even-palette-green-4: rgb(4.8% 27.2% 10.4%);
-  --even-palette-green-5: rgb(6.9% 39.1% 14.95%);
-  --even-palette-green-6: rgb(10.2% 57.8% 22.1%);
-  --even-palette-green-7: rgb(27.14% 64.86% 34.0553333333%);
-  --even-palette-green-8: rgb(22.23% 55.77% 28.938%);
-  --even-palette-green-9: rgb(38.51% 75.49% 45.2896666667%);
-  --even-palette-green-10: rgb(89.62% 98.38% 91.956%);
-  --even-palette-teal-1: rgb(1.54% 12.46% 10.458%);
-  --even-palette-teal-2: rgb(2.34% 15.66% 13.44%);
-  --even-palette-teal-3: rgb(3.25% 22.75% 19.825%);
-  --even-palette-teal-4: rgb(1.95% 24.05% 20.735%);
-  --even-palette-teal-5: rgb(3% 37% 32.4666666667%);
-  --even-palette-teal-6: rgb(4.8% 59.2% 51.9466666667%);
-  --even-palette-teal-7: rgb(7.2% 64.8% 58.08%);
-  --even-palette-teal-8: rgb(5.1% 54.9% 49.09%);
-  --even-palette-teal-9: rgb(4.1% 77.9% 70.52%);
-  --even-palette-teal-10: rgb(88.03% 97.97% 95.6506666667%);
-  --even-palette-purple-1: rgb(13.56% 8.4% 15.6%);
-  --even-palette-purple-2: rgb(18.2293333333% 9.92% 22.08%);
-  --even-palette-purple-3: rgb(26.036% 12.88% 33.12%);
-  --even-palette-purple-4: rgb(31.0053333333% 15.12% 40.88%);
-  --even-palette-purple-5: rgb(37.2866666667% 17.85% 52.15%);
-  --even-palette-purple-6: rgb(55.564% 30.54% 77.46%);
-  --even-palette-purple-7: rgb(55.564% 30.54% 77.46%);
-  --even-palette-purple-8: rgb(46.41% 23.85% 66.15%);
-  --even-palette-purple-9: rgb(74.8666666667% 47.8% 94.2%);
-  --even-palette-purple-10: rgb(97.0706666667% 93.08% 98.92%);
-  --even-palette-pink-1: rgb(15.84% 8.16% 11.36%);
-  --even-palette-pink-2: rgb(22.88% 9.12% 14.8533333333%);
-  --even-palette-pink-3: rgb(30.87% 11.13% 19.355%);
-  --even-palette-pink-4: rgb(33.22% 10.78% 20.13%);
-  --even-palette-pink-5: rgb(42.39% 11.61% 24.435%);
-  --even-palette-pink-6: rgb(70% 10% 34%);
-  --even-palette-pink-7: rgb(91.6% 24.4% 51.28%);
-  --even-palette-pink-8: rgb(87.26% 14.74% 43.748%);
-  --even-palette-pink-9: rgb(96.7% 37.3% 56.11%);
-  --even-palette-pink-10: rgb(99.6% 92.4% 95.64%);
-  --even-palette-background-1: rgb(4% 4% 4%);
-  --even-palette-background-2: rgb(0% 0% 0%);
+  --even-palette-blue-1: rgb(
+    10.9803921569% 18.431372549% 27.4509803922%
+  ); /** background */
+  --even-palette-blue-2: rgb(
+    9.80392156863% 21.568627451% 36.0784313725%
+  ); /** background-hover */
+  --even-palette-blue-3: rgb(
+    6.66666666667% 24.7058823529% 45.8823529412%
+  ); /** background-active */
+  --even-palette-blue-4: rgb(
+    0.78431372549% 30.5882352941% 60.3921568627%
+  ); /** border */
+  --even-palette-blue-5: rgb(
+    0% 38.0392156863% 74.5098039216%
+  ); /** border-hover */
+  --even-palette-blue-6: rgb(
+    13.7254901961% 54.5098039216% 100%
+  ); /** border-active */
+  --even-palette-blue-7: rgb(47.4509803922% 70.5882352941% 100%); /** fill */
+  --even-palette-blue-8: rgb(
+    55.6862745098% 74.9019607843% 100%
+  ); /** fill-hover */
+  --even-palette-blue-9: rgb(61.1764705882% 78.0392156863% 100%); /** text */
+  --even-palette-blue-10: rgb(
+    87.4509803922% 92.9411764706% 100%
+  ); /** text-strong */
+  --even-palette-green-1: rgb(
+    9.01960784314% 20.7843137255% 13.7254901961%
+  ); /** background */
+  --even-palette-green-2: rgb(
+    4.3137254902% 25.8823529412% 14.5098039216%
+  ); /** background-hover */
+  --even-palette-green-3: rgb(
+    0% 30.1960784314% 16.0784313725%
+  ); /** background-active */
+  --even-palette-green-4: rgb(0% 37.6470588235% 20.7843137255%); /** border */
+  --even-palette-green-5: rgb(
+    0% 46.6666666667% 25.8823529412%
+  ); /** border-hover */
+  --even-palette-green-6: rgb(
+    0% 64.7058823529% 36.862745098%
+  ); /** border-active */
+  --even-palette-green-7: rgb(0% 88.2352941176% 51.3725490196%); /** fill */
+  --even-palette-green-8: rgb(
+    0% 93.7254901961% 54.5098039216%
+  ); /** fill-hover */
+  --even-palette-green-9: rgb(
+    7.8431372549% 90.9803921569% 53.3333333333%
+  ); /** text */
+  --even-palette-green-10: rgb(
+    71.7647058824% 100% 81.1764705882%
+  ); /** text-strong */
+  --even-palette-amber-1: rgb(
+    23.137254902% 16.862745098% 5.09803921569%
+  ); /** background */
+  --even-palette-amber-2: rgb(
+    28.6274509804% 19.6078431373% 0%
+  ); /** background-hover */
+  --even-palette-amber-3: rgb(
+    33.3333333333% 22.7450980392% 0%
+  ); /** background-active */
+  --even-palette-amber-4: rgb(41.1764705882% 28.6274509804% 0%); /** border */
+  --even-palette-amber-5: rgb(
+    50.9803921569% 35.6862745098% 0%
+  ); /** border-hover */
+  --even-palette-amber-6: rgb(
+    71.7647058824% 50.9803921569% 0%
+  ); /** border-active */
+  --even-palette-amber-7: rgb(99.2156862745% 70.9803921569% 0%); /** fill */
+  --even-palette-amber-8: rgb(
+    100% 76.862745098% 34.9019607843%
+  ); /** fill-hover */
+  --even-palette-amber-9: rgb(99.2156862745% 70.9803921569% 0%); /** text */
+  --even-palette-amber-10: rgb(
+    100% 90.9803921569% 76.0784313725%
+  ); /** text-strong */
+  --even-palette-red-1: rgb(
+    26.6666666667% 13.7254901961% 12.9411764706%
+  ); /** background */
+  --even-palette-red-2: rgb(
+    34.1176470588% 14.5098039216% 13.3333333333%
+  ); /** background-hover */
+  --even-palette-red-3: rgb(
+    42.7450980392% 13.7254901961% 13.3333333333%
+  ); /** background-active */
+  --even-palette-red-4: rgb(
+    55.2941176471% 14.1176470588% 14.5098039216%
+  ); /** border */
+  --even-palette-red-5: rgb(
+    70.1960784314% 13.3333333333% 15.6862745098%
+  ); /** border-hover */
+  --even-palette-red-6: rgb(
+    96.4705882353% 28.2352941176% 28.6274509804%
+  ); /** border-active */
+  --even-palette-red-7: rgb(100% 44.3137254902% 41.9607843137%); /** fill */
+  --even-palette-red-8: rgb(
+    100% 52.9411764706% 49.8039215686%
+  ); /** fill-hover */
+  --even-palette-red-9: rgb(100% 67.0588235294% 63.9215686275%); /** text */
+  --even-palette-red-10: rgb(
+    100% 89.4117647059% 88.2352941176%
+  ); /** text-strong */
+  --even-palette-teal-1: rgb(
+    1.17647058824% 21.1764705882% 20%
+  ); /** background */
+  --even-palette-teal-2: rgb(
+    0% 25.0980392157% 23.9215686275%
+  ); /** background-hover */
+  --even-palette-teal-3: rgb(
+    0% 29.0196078431% 27.8431372549%
+  ); /** background-active */
+  --even-palette-teal-4: rgb(0% 36.0784313725% 34.9019607843%); /** border */
+  --even-palette-teal-5: rgb(
+    0% 45.0980392157% 43.137254902%
+  ); /** border-hover */
+  --even-palette-teal-6: rgb(0% 62.3529411765% 60%); /** border-active */
+  --even-palette-teal-7: rgb(0% 83.9215686275% 80.7843137255%); /** fill */
+  --even-palette-teal-8: rgb(
+    0% 89.0196078431% 85.4901960784%
+  ); /** fill-hover */
+  --even-palette-teal-9: rgb(0% 88.2352941176% 84.7058823529%); /** text */
+  --even-palette-teal-10: rgb(
+    63.5294117647% 100% 97.2549019608%
+  ); /** text-strong */
+  --even-palette-purple-1: rgb(
+    20.3921568627% 15.2941176471% 25.8823529412%
+  ); /** background */
+  --even-palette-purple-2: rgb(
+    25.0980392157% 16.862745098% 33.3333333333%
+  ); /** background-hover */
+  --even-palette-purple-3: rgb(
+    30.1960784314% 18.0392156863% 41.9607843137%
+  ); /** background-active */
+  --even-palette-purple-4: rgb(
+    38.431372549% 21.1764705882% 54.9019607843%
+  ); /** border */
+  --even-palette-purple-5: rgb(
+    48.6274509804% 24.3137254902% 70.1960784314%
+  ); /** border-hover */
+  --even-palette-purple-6: rgb(
+    68.2352941176% 39.6078431373% 95.6862745098%
+  ); /** border-active */
+  --even-palette-purple-7: rgb(79.2156862745% 60.7843137255% 100%); /** fill */
+  --even-palette-purple-8: rgb(
+    82.3529411765% 67.0588235294% 100%
+  ); /** fill-hover */
+  --even-palette-purple-9: rgb(83.5294117647% 69.4117647059% 100%); /** text */
+  --even-palette-purple-10: rgb(
+    94.5098039216% 90.1960784314% 100%
+  ); /** text-strong */
+  --even-palette-pink-1: rgb(
+    25.4901960784% 13.7254901961% 19.2156862745%
+  ); /** background */
+  --even-palette-pink-2: rgb(
+    32.1568627451% 14.5098039216% 23.5294117647%
+  ); /** background-hover */
+  --even-palette-pink-3: rgb(
+    40% 13.7254901961% 27.8431372549%
+  ); /** background-active */
+  --even-palette-pink-4: rgb(
+    51.7647058824% 14.5098039216% 35.2941176471%
+  ); /** border */
+  --even-palette-pink-5: rgb(
+    65.8823529412% 14.5098039216% 44.3137254902%
+  ); /** border-hover */
+  --even-palette-pink-6: rgb(
+    90.5882352941% 29.0196078431% 63.5294117647%
+  ); /** border-active */
+  --even-palette-pink-7: rgb(100% 49.8039215686% 75.2941176471%); /** fill */
+  --even-palette-pink-8: rgb(
+    100% 58.431372549% 78.8235294118%
+  ); /** fill-hover */
+  --even-palette-pink-9: rgb(100% 63.9215686275% 81.1764705882%); /** text */
+  --even-palette-pink-10: rgb(
+    100% 88.6274509804% 93.3333333333%
+  ); /** text-strong */
+  --even-palette-neutral-1: rgb(
+    16.862745098% 16.862745098% 16.862745098%
+  ); /** background */
+  --even-palette-neutral-2: rgb(20% 20% 20%); /** background-hover */
+  --even-palette-neutral-3: rgb(
+    22.7450980392% 22.7450980392% 22.7450980392%
+  ); /** background-active */
+  --even-palette-neutral-4: rgb(
+    28.2352941176% 28.2352941176% 28.2352941176%
+  ); /** border */
+  --even-palette-neutral-5: rgb(
+    34.5098039216% 34.5098039216% 34.5098039216%
+  ); /** border-hover */
+  --even-palette-neutral-6: rgb(
+    52.5490196078% 52.5490196078% 52.5490196078%
+  ); /** border-active */
+  --even-palette-neutral-7: rgb(
+    57.2549019608% 57.2549019608% 57.2549019608%
+  ); /** fill */
+  --even-palette-neutral-8: rgb(
+    63.137254902% 63.137254902% 63.137254902%
+  ); /** fill-hover */
+  --even-palette-neutral-9: rgb(
+    72.9411764706% 72.9411764706% 72.9411764706%
+  ); /** text */
+  --even-palette-neutral-10: rgb(
+    92.1568627451% 92.1568627451% 92.1568627451%
+  ); /** text-strong */
+  --even-palette-background-1: rgb(
+    10.5882352941% 10.5882352941% 10.5882352941%
+  ); /** Page canvas */
+  --even-palette-background-2: rgb(
+    14.1176470588% 14.1176470588% 14.1176470588%
+  ); /** Secondary canvas */
+  --even-palette-gray-alpha-1: rgb(
+    100% 100% 100% / 0.070175
+  ); /** Translucent equivalent of neutral.1 over background.1. */
+  --even-palette-gray-alpha-2: rgb(
+    100% 100% 100% / 0.105263
+  ); /** Translucent equivalent of neutral.2 over background.1. */
+  --even-palette-gray-alpha-3: rgb(
+    100% 100% 100% / 0.135965
+  ); /** Translucent equivalent of neutral.3 over background.1. */
+  --even-palette-gray-alpha-4: rgb(
+    100% 100% 100% / 0.197368
+  ); /** Translucent equivalent of neutral.4 over background.1. */
+  --even-palette-gray-alpha-5: rgb(
+    100% 100% 100% / 0.267544
+  ); /** Translucent equivalent of neutral.5 over background.1. */
+  --even-palette-gray-alpha-6: rgb(
+    100% 100% 100% / 0.469298
+  ); /** Translucent equivalent of neutral.6 over background.1. */
+  --even-palette-gray-alpha-7: rgb(
+    100% 100% 100% / 0.52193
+  ); /** Translucent equivalent of neutral.7 over background.1. */
+  --even-palette-gray-alpha-8: rgb(
+    100% 100% 100% / 0.587719
+  ); /** Translucent equivalent of neutral.8 over background.1. */
+  --even-palette-gray-alpha-9: rgb(
+    100% 100% 100% / 0.697368
+  ); /** Translucent equivalent of neutral.9 over background.1. */
+  --even-palette-gray-alpha-10: rgb(
+    100% 100% 100% / 0.912281
+  ); /** Translucent equivalent of neutral.10 over background.1. */
+  --even-palette-blue-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for blue step 7; use only with its matching fill. */
+  --even-palette-blue-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for blue step 8; use only with its matching fill. */
+  --even-palette-green-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for green step 7; use only with its matching fill. */
+  --even-palette-green-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for green step 8; use only with its matching fill. */
+  --even-palette-amber-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for amber step 7; use only with its matching fill. */
+  --even-palette-amber-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for amber step 8; use only with its matching fill. */
+  --even-palette-red-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for red step 7; use only with its matching fill. */
+  --even-palette-red-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for red step 8; use only with its matching fill. */
+  --even-palette-teal-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for teal step 7; use only with its matching fill. */
+  --even-palette-teal-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for teal step 8; use only with its matching fill. */
+  --even-palette-purple-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for purple step 7; use only with its matching fill. */
+  --even-palette-purple-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for purple step 8; use only with its matching fill. */
+  --even-palette-pink-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for pink step 7; use only with its matching fill. */
+  --even-palette-pink-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for pink step 8; use only with its matching fill. */
+  --even-palette-neutral-7-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for neutral step 7; use only with its matching fill. */
+  --even-palette-neutral-8-foreground: rgb(
+    0% 0% 0%
+  ); /** Foreground for neutral step 8; use only with its matching fill. */
   --even-dimension-0: 0rem; /** 0px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-2: 0.125rem; /** 2px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-4: 0.25rem; /** 4px equivalent at a 16px root; do not fix the user's root font size. */
@@ -323,45 +792,106 @@
   --even-overlay-scrim: rgb(
     0% 0% 0% / 0.64
   ); /** Translucent black for modal dimming in either theme. */
+  --even-shadow-ink: oklch(
+    0% 0 0 / 0.16
+  ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
+  --even-shadow-soft: var(--even-dimension-0) var(--even-dimension-4)
+    var(--even-dimension-16) var(--even-dimension-0) var(--even-shadow-ink); /** Soft cast shadow: 0/4/16/0px equivalents at a 16px root. */
   --even-surface-page: var(--even-palette-background-1);
   --even-surface-secondary: var(--even-palette-background-2);
-  --even-surface-control: var(--even-palette-gray-1);
-  --even-surface-hover: var(--even-palette-gray-2);
-  --even-surface-active: var(--even-palette-gray-3);
+  --even-surface-control: var(--even-palette-neutral-1);
+  --even-surface-hover: var(--even-palette-neutral-2);
+  --even-surface-active: var(--even-palette-neutral-3);
   --even-text-link: var(
     --even-palette-blue-9
   ); /** Navigational text links on page and secondary surfaces. */
-  --even-text-primary: var(--even-palette-gray-10);
-  --even-text-secondary: var(--even-palette-gray-9);
-  --even-border-default: var(--even-palette-gray-4);
-  --even-border-hover: var(--even-palette-gray-5);
-  --even-border-active: var(--even-palette-gray-6);
+  --even-text-primary: var(--even-palette-neutral-10);
+  --even-text-secondary: var(--even-palette-neutral-9);
+  --even-border-default: var(--even-palette-neutral-4);
+  --even-border-hover: var(--even-palette-neutral-5);
+  --even-border-active: var(--even-palette-neutral-6);
   --even-border-control: var(
-    --even-palette-gray-8
-  ); /** Essential boundary: tested separately from decorative borders. */
-  --even-focus-ring: var(--even-palette-blue-9);
+    --even-palette-neutral-6
+  ); /** Step 6 is the meaningful control boundary; steps 4–5 remain decorative. */
+  --even-border-interaction: var(
+    --even-palette-blue-6
+  ); /** Emphasized edge during pointer hover or drag, independent of keyboard focus. */
+  --even-border-invalid: var(
+    --even-palette-red-9
+  ); /** Invalid input boundary, independent of error message text. */
+  --even-focus-ring: var(--even-palette-blue-6);
   --even-selection-background: var(--even-palette-blue-2);
   --even-selection-foreground: var(--even-palette-blue-10);
+  --even-selection-indicator: var(
+    --even-palette-blue-6
+  ); /** Persistent mark for the selected item, independent of keyboard focus. */
   --even-action-background: var(
-    --even-palette-gray-10
-  ); /** Even uses a neutral solid action; this is a product decision, not a Geist prescription. */
-  --even-action-hover: var(--even-palette-gray-9);
-  --even-action-foreground: var(--even-palette-background-1);
-  --even-status-error-surface: var(--even-palette-red-1);
+    --even-palette-neutral-7
+  ); /** Neutral primary-action fill, using the palette’s strong-fill role. */
+  --even-action-hover: var(--even-palette-neutral-8);
+  --even-action-foreground: var(--even-palette-neutral-7-foreground);
+  --even-action-hover-foreground: var(
+    --even-palette-neutral-8-foreground
+  ); /** Foreground paired explicitly with the hovered action fill. */
+  --even-status-error-surface: var(
+    --even-palette-red-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-error-text: var(--even-palette-red-9);
   --even-status-error-border: var(--even-palette-red-6);
-  --even-status-warning-surface: var(--even-palette-amber-1);
+  --even-status-error-compact-surface: var(
+    --even-palette-red-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-warning-surface: var(
+    --even-palette-amber-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-warning-text: var(--even-palette-amber-9);
   --even-status-warning-border: var(--even-palette-amber-6);
-  --even-status-success-surface: var(--even-palette-green-1);
+  --even-status-warning-compact-surface: var(
+    --even-palette-amber-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-success-surface: var(
+    --even-palette-green-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-success-text: var(--even-palette-green-9);
   --even-status-success-border: var(--even-palette-green-6);
-  --even-status-info-surface: var(--even-palette-blue-1);
+  --even-status-success-compact-surface: var(
+    --even-palette-green-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
+  --even-status-info-surface: var(
+    --even-palette-blue-1
+  ); /** Subtle background for notices and larger status regions. */
   --even-status-info-text: var(--even-palette-blue-9);
   --even-status-info-border: var(--even-palette-blue-6);
+  --even-status-info-compact-surface: var(
+    --even-palette-blue-3
+  ); /** Stronger tint for compact status labels, following Geist’s small-element background guidance. */
   --even-overlay-backdrop: var(
     --even-overlay-scrim
   ); /** Dim the workspace behind a modal. No content is placed directly on this translucent surface. */
+  --even-fill-border-blue: var(
+    --even-palette-blue-9
+  ); /** Visible edge for blue strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-green: var(
+    --even-palette-green-9
+  ); /** Visible edge for green strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-amber: var(
+    --even-palette-amber-9
+  ); /** Visible edge for amber strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-red: var(
+    --even-palette-red-9
+  ); /** Visible edge for red strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-teal: var(
+    --even-palette-teal-9
+  ); /** Visible edge for teal strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-purple: var(
+    --even-palette-purple-9
+  ); /** Visible edge for purple strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-pink: var(
+    --even-palette-pink-9
+  ); /** Visible edge for pink strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-fill-border-neutral: var(
+    --even-palette-neutral-9
+  ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -386,10 +916,16 @@
   --even-size-radius-panel: var(
     --even-dimension-8
   ); /** Corner radius for floating panels. */
+  --even-size-field-preferred: var(
+    --even-dimension-256
+  ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
   --even-space-gap-tight: var(--even-dimension-4);
   --even-space-gap-related: var(--even-dimension-8);
   --even-space-gap-group: var(--even-dimension-16);
   --even-space-gap-section: var(--even-dimension-24);
+  --even-space-inset-tight: var(
+    --even-dimension-4
+  ); /** Small internal padding; independent of gaps between elements. */
   --even-space-inset-compact: var(--even-dimension-8);
   --even-space-inset-default: var(--even-dimension-16);
   --even-space-inset-spacious: var(--even-dimension-24);
@@ -399,154 +935,246 @@
   --even-font-ui: var(
     --even-font-sans
   ); /** Font family for interface labels, names, and readable text. */
+  --even-action-border: var(
+    --even-fill-border-neutral
+  ); /** Persistent boundary for filled primary actions, including hover. */
+  --even-shadow-floating: var(
+    --even-shadow-soft
+  ); /** Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index. */
 }
 
 @media (color-gamut: p3) {
   @supports (color: oklch(0% 0 0)) {
     [data-even-theme="light"] {
-      --even-palette-blue-1: oklch(97.32% 0.0141 251.56);
-      --even-palette-blue-2: oklch(96.29% 0.0195 250.59);
-      --even-palette-blue-3: oklch(94.58% 0.0293 249.849);
-      --even-palette-blue-4: oklch(91.58% 0.0473 245.116);
-      --even-palette-blue-5: oklch(82.75% 0.0979 248.48);
-      --even-palette-blue-6: oklch(73.08% 0.1583 248.133);
-      --even-palette-blue-7: oklch(57.61% 0.2508 258.23);
-      --even-palette-blue-8: oklch(51.51% 0.2399 257.85);
-      --even-palette-blue-9: oklch(53.18% 0.2399 256.99);
-      --even-palette-blue-10: oklch(26.67% 0.1099 254.34);
-      --even-palette-red-1: oklch(96.5% 0.0223 13.09);
-      --even-palette-red-2: oklch(95.41% 0.0299 14.2526);
-      --even-palette-red-3: oklch(94.33% 0.0369 15.0115);
-      --even-palette-red-4: oklch(91.51% 0.0471 19.8);
-      --even-palette-red-5: oklch(84.47% 0.1018 17.71);
-      --even-palette-red-6: oklch(71.12% 0.1881 21.22);
-      --even-palette-red-7: oklch(62.56% 0.2524 23.03);
-      --even-palette-red-8: oklch(58.19% 0.2482 25.15);
-      --even-palette-red-9: oklch(54.99% 0.232 25.29);
-      --even-palette-red-10: oklch(24.8% 0.1041 18.86);
-      --even-palette-amber-1: oklch(97.48% 0.0331 85.79);
-      --even-palette-amber-2: oklch(96.81% 0.0495 90.2423);
-      --even-palette-amber-3: oklch(95.93% 0.0636 90.52);
-      --even-palette-amber-4: oklch(91.02% 0.1322 88.25);
-      --even-palette-amber-5: oklch(86.55% 0.1583 79.63);
-      --even-palette-amber-6: oklch(80.25% 0.1953 73.59);
-      --even-palette-amber-7: oklch(81.87% 0.1969 76.46);
-      --even-palette-amber-8: oklch(77.21% 0.1991 64.28);
-      --even-palette-amber-9: oklch(52.79% 0.1496 54.65);
-      --even-palette-amber-10: oklch(30.83% 0.099 45.48);
-      --even-palette-green-1: oklch(97.59% 0.0289 145.42);
-      --even-palette-green-2: oklch(96.92% 0.037 147.15);
-      --even-palette-green-3: oklch(94.6% 0.0674 144.23);
-      --even-palette-green-4: oklch(91.49% 0.0976 146.24);
-      --even-palette-green-5: oklch(85.45% 0.1627 146.3);
-      --even-palette-green-6: oklch(80.25% 0.214 145.18);
-      --even-palette-green-7: oklch(64.58% 0.1746 147.27);
-      --even-palette-green-8: oklch(57.81% 0.1507 147.5);
-      --even-palette-green-9: oklch(51.75% 0.1453 147.65);
-      --even-palette-green-10: oklch(29.15% 0.1197 147.38);
-      --even-palette-teal-1: oklch(97.72% 0.0359 186.7);
-      --even-palette-teal-2: oklch(97.06% 0.0347 180.66);
-      --even-palette-teal-3: oklch(94.92% 0.0478 182.07);
-      --even-palette-teal-4: oklch(92.76% 0.0718 183.78);
-      --even-palette-teal-5: oklch(86.88% 0.1344 182.42);
-      --even-palette-teal-6: oklch(81.5% 0.161 178.96);
-      --even-palette-teal-7: oklch(64.92% 0.1572 181.95);
-      --even-palette-teal-8: oklch(57.53% 0.1392 181.66);
-      --even-palette-teal-9: oklch(52.08% 0.1251 182.93);
-      --even-palette-teal-10: oklch(32.11% 0.0788 179.82);
-      --even-palette-purple-1: oklch(96.65% 0.0244 312.189);
-      --even-palette-purple-2: oklch(96.73% 0.0228 309.8);
-      --even-palette-purple-3: oklch(94.85% 0.0364 310.15);
-      --even-palette-purple-4: oklch(91.77% 0.0614 312.82);
-      --even-palette-purple-5: oklch(81.26% 0.1409 310.8);
-      --even-palette-purple-6: oklch(72.07% 0.2083 308.19);
-      --even-palette-purple-7: oklch(55.5% 0.3008 306.12);
-      --even-palette-purple-8: oklch(48.58% 0.2638 305.73);
-      --even-palette-purple-9: oklch(47.18% 0.2579 304);
-      --even-palette-purple-10: oklch(23.96% 0.13 305.66);
-      --even-palette-pink-1: oklch(95.69% 0.0359 344.622);
-      --even-palette-pink-2: oklch(95.71% 0.0321 353.14);
-      --even-palette-pink-3: oklch(93.83% 0.0451 356.29);
-      --even-palette-pink-4: oklch(91.12% 0.0573 358.82);
-      --even-palette-pink-5: oklch(84.28% 0.0915 356.99);
-      --even-palette-pink-6: oklch(74.33% 0.1547 0.24);
-      --even-palette-pink-7: oklch(63.52% 0.238 1.01);
-      --even-palette-pink-8: oklch(59.51% 0.2339 4.21);
-      --even-palette-pink-9: oklch(53.5% 0.2058 2.84);
-      --even-palette-pink-10: oklch(26% 0.0977 359);
+      --even-palette-blue-1: oklch(97.5% 0.0131811 255); /** background */
+      --even-palette-blue-2: oklch(95% 0.0265774 255); /** background-hover */
+      --even-palette-blue-3: oklch(92% 0.0429412 255); /** background-active */
+      --even-palette-blue-4: oklch(85% 0.0823686 255); /** border */
+      --even-palette-blue-5: oklch(76% 0.1356653 255); /** border-hover */
+      --even-palette-blue-6: oklch(60.5% 0.21 255); /** border-active */
+      --even-palette-blue-7: oklch(76% 0.1302387 255); /** fill */
+      --even-palette-blue-8: oklch(72.5% 0.1508995 255); /** fill-hover */
+      --even-palette-blue-9: oklch(43% 0.1811073 255); /** text */
+      --even-palette-blue-10: oklch(25% 0.105295 255); /** text-strong */
+      --even-palette-green-1: oklch(97.5% 0.035 155); /** background */
+      --even-palette-green-2: oklch(95% 0.065 155); /** background-hover */
+      --even-palette-green-3: oklch(92% 0.1 155); /** background-active */
+      --even-palette-green-4: oklch(85% 0.14 155); /** border */
+      --even-palette-green-5: oklch(76% 0.18 155); /** border-hover */
+      --even-palette-green-6: oklch(58.7% 0.2010039 155); /** border-active */
+      --even-palette-green-7: oklch(80% 0.2629829 155); /** fill */
+      --even-palette-green-8: oklch(76.5% 0.2514774 155); /** fill-hover */
+      --even-palette-green-9: oklch(43% 0.147243 155); /** text */
+      --even-palette-green-10: oklch(25% 0.0856065 155); /** text-strong */
+      --even-palette-amber-1: oklch(97.5% 0.0281941 80); /** background */
+      --even-palette-amber-2: oklch(95% 0.0570494 80); /** background-hover */
+      --even-palette-amber-3: oklch(92% 0.0926146 80); /** background-active */
+      --even-palette-amber-4: oklch(85% 0.14 80); /** border */
+      --even-palette-amber-5: oklch(76% 0.18 80); /** border-hover */
+      --even-palette-amber-6: oklch(60.4% 0.1439992 80); /** border-active */
+      --even-palette-amber-7: oklch(82% 0.1876758 80); /** fill */
+      --even-palette-amber-8: oklch(78.5% 0.1796652 80); /** fill-hover */
+      --even-palette-amber-9: oklch(43% 0.102516 80); /** text */
+      --even-palette-amber-10: oklch(25% 0.0596024 80); /** text-strong */
+      --even-palette-red-1: oklch(97.5% 0.0158785 25); /** background */
+      --even-palette-red-2: oklch(95% 0.0323803 25); /** background-hover */
+      --even-palette-red-3: oklch(92% 0.0530676 25); /** background-active */
+      --even-palette-red-4: oklch(85% 0.1055448 25); /** border */
+      --even-palette-red-5: oklch(76% 0.18 25); /** border-hover */
+      --even-palette-red-6: oklch(62% 0.21 25); /** border-active */
+      --even-palette-red-7: oklch(72% 0.2133052 25); /** fill */
+      --even-palette-red-8: oklch(68.5% 0.2484174 25); /** fill-hover */
+      --even-palette-red-9: oklch(43% 0.196482 25); /** text */
+      --even-palette-red-10: oklch(25% 0.11 25); /** text-strong */
+      --even-palette-teal-1: oklch(97.5% 0.035 190); /** background */
+      --even-palette-teal-2: oklch(95% 0.065 190); /** background-hover */
+      --even-palette-teal-3: oklch(92% 0.1 190); /** background-active */
+      --even-palette-teal-4: oklch(85% 0.14 190); /** border */
+      --even-palette-teal-5: oklch(76% 0.1768422 190); /** border-hover */
+      --even-palette-teal-6: oklch(59.3% 0.1379835 190); /** border-active */
+      --even-palette-teal-7: oklch(79% 0.1764699 190); /** fill */
+      --even-palette-teal-8: oklch(75.5% 0.1686516 190); /** fill-hover */
+      --even-palette-teal-9: oklch(43% 0.1000555 190); /** text */
+      --even-palette-teal-10: oklch(25% 0.0581718 190); /** text-strong */
+      --even-palette-purple-1: oklch(97.5% 0.0163022 305); /** background */
+      --even-palette-purple-2: oklch(95% 0.0328926 305); /** background-hover */
+      --even-palette-purple-3: oklch(
+        92% 0.0531886 305
+      ); /** background-active */
+      --even-palette-purple-4: oklch(85% 0.1022248 305); /** border */
+      --even-palette-purple-5: oklch(76% 0.1688036 305); /** border-hover */
+      --even-palette-purple-6: oklch(62% 0.21 305); /** border-active */
+      --even-palette-purple-7: oklch(77% 0.1547595 305); /** fill */
+      --even-palette-purple-8: oklch(73.5% 0.1804892 305); /** fill-hover */
+      --even-palette-purple-9: oklch(43% 0.22 305); /** text */
+      --even-palette-purple-10: oklch(25% 0.11 305); /** text-strong */
+      --even-palette-pink-1: oklch(97.5% 0.0191651 350); /** background */
+      --even-palette-pink-2: oklch(95% 0.0391287 350); /** background-hover */
+      --even-palette-pink-3: oklch(92% 0.064225 350); /** background-active */
+      --even-palette-pink-4: oklch(85% 0.1282532 350); /** border */
+      --even-palette-pink-5: oklch(76% 0.18 350); /** border-hover */
+      --even-palette-pink-6: oklch(62% 0.21 350); /** border-active */
+      --even-palette-pink-7: oklch(76% 0.2151436 350); /** fill */
+      --even-palette-pink-8: oklch(72.5% 0.2556487 350); /** fill-hover */
+      --even-palette-pink-9: oklch(43% 0.200971 350); /** text */
+      --even-palette-pink-10: oklch(25% 0.11 350); /** text-strong */
+      --even-palette-neutral-1: oklch(97.5% 0 0); /** background */
+      --even-palette-neutral-2: oklch(95% 0 0); /** background-hover */
+      --even-palette-neutral-3: oklch(92% 0 0); /** background-active */
+      --even-palette-neutral-4: oklch(85% 0 0); /** border */
+      --even-palette-neutral-5: oklch(76% 0 0); /** border-hover */
+      --even-palette-neutral-6: oklch(60.1% 0 0); /** border-active */
+      --even-palette-neutral-7: oklch(55% 0 0); /** fill */
+      --even-palette-neutral-8: oklch(49% 0 0); /** fill-hover */
+      --even-palette-neutral-9: oklch(43% 0 0); /** text */
+      --even-palette-neutral-10: oklch(25% 0 0); /** text-strong */
+      --even-palette-background-1: oklch(99% 0 0); /** Page canvas */
+      --even-palette-background-2: oklch(97% 0 0); /** Secondary canvas */
+      --even-palette-gray-alpha-1: oklch(
+        0% 0 0 / 0.019957
+      ); /** Translucent equivalent of neutral.1 over background.1. */
+      --even-palette-gray-alpha-2: oklch(
+        0% 0 0 / 0.053048
+      ); /** Translucent equivalent of neutral.2 over background.1. */
+      --even-palette-gray-alpha-3: oklch(
+        0% 0 0 / 0.09247
+      ); /** Translucent equivalent of neutral.3 over background.1. */
+      --even-palette-gray-alpha-4: oklch(
+        0% 0 0 / 0.183196
+      ); /** Translucent equivalent of neutral.4 over background.1. */
+      --even-palette-gray-alpha-5: oklch(
+        0% 0 0 / 0.297108
+      ); /** Translucent equivalent of neutral.5 over background.1. */
+      --even-palette-gray-alpha-6: oklch(
+        0% 0 0 / 0.490011
+      ); /** Translucent equivalent of neutral.6 over background.1. */
+      --even-palette-gray-alpha-7: oklch(
+        0% 0 0 / 0.549369
+      ); /** Translucent equivalent of neutral.7 over background.1. */
+      --even-palette-gray-alpha-8: oklch(
+        0% 0 0 / 0.61745
+      ); /** Translucent equivalent of neutral.8 over background.1. */
+      --even-palette-gray-alpha-9: oklch(
+        0% 0 0 / 0.683474
+      ); /** Translucent equivalent of neutral.9 over background.1. */
+      --even-palette-gray-alpha-10: oklch(
+        0% 0 0 / 0.866745
+      ); /** Translucent equivalent of neutral.10 over background.1. */
     }
 
     [data-even-theme="dark"] {
-      --even-palette-blue-1: oklch(22.17% 0.069 259.89);
-      --even-palette-blue-2: oklch(25.45% 0.0811 255.8);
-      --even-palette-blue-3: oklch(30.86% 0.1022 255.21);
-      --even-palette-blue-4: oklch(34.1% 0.121 254.74);
-      --even-palette-blue-5: oklch(38.5% 0.1403 254.4);
-      --even-palette-blue-6: oklch(64.94% 0.1982 251.813);
-      --even-palette-blue-7: oklch(57.61% 0.2321 258.23);
-      --even-palette-blue-8: oklch(51.51% 0.2307 257.85);
-      --even-palette-blue-9: oklch(71.7% 0.1648 250.794);
-      --even-palette-blue-10: oklch(96.75% 0.0179 242.423);
-      --even-palette-red-1: oklch(22.1% 0.0657 15.11);
-      --even-palette-red-2: oklch(25.93% 0.0834 19.02);
-      --even-palette-red-3: oklch(31.47% 0.1105 20.96);
-      --even-palette-red-4: oklch(35.27% 0.1273 21.23);
-      --even-palette-red-5: oklch(40.68% 0.1479 23.16);
-      --even-palette-red-6: oklch(62.56% 0.2277 23.03);
-      --even-palette-red-7: oklch(62.56% 0.2234 23.03);
-      --even-palette-red-8: oklch(58.01% 0.227 25.12);
-      --even-palette-red-9: oklch(69.96% 0.2136 22.03);
-      --even-palette-red-10: oklch(95.6% 0.0293 6.61);
-      --even-palette-amber-1: oklch(22.46% 0.0538 76.04);
-      --even-palette-amber-2: oklch(24.95% 0.0642 64.78);
-      --even-palette-amber-3: oklch(32.34% 0.0837 63.83);
-      --even-palette-amber-4: oklch(35.53% 0.0903 66.2971);
-      --even-palette-amber-5: oklch(41.55% 0.1044 67.98);
-      --even-palette-amber-6: oklch(75.04% 0.1737 74.49);
-      --even-palette-amber-7: oklch(81.87% 0.1969 76.46);
-      --even-palette-amber-8: oklch(77.21% 0.1991 64.28);
-      --even-palette-amber-9: oklch(77.21% 0.1991 64.28);
-      --even-palette-amber-10: oklch(96.7% 0.0418 84.59);
-      --even-palette-green-1: oklch(23.09% 0.0716 149.68);
-      --even-palette-green-2: oklch(27.12% 0.0895 150.09);
-      --even-palette-green-3: oklch(29.84% 0.096 149.25);
-      --even-palette-green-4: oklch(34.39% 0.1039 147.78);
-      --even-palette-green-5: oklch(44.19% 0.1484 147.2);
-      --even-palette-green-6: oklch(58.11% 0.1815 146.55);
-      --even-palette-green-7: oklch(64.58% 0.199 147.27);
-      --even-palette-green-8: oklch(57.81% 0.1776 147.5);
-      --even-palette-green-9: oklch(73.1% 0.2158 148.29);
-      --even-palette-green-10: oklch(96.76% 0.056 154.18);
-      --even-palette-teal-1: oklch(22.1% 0.0544 178.74);
-      --even-palette-teal-2: oklch(25.06% 0.062 178.76);
-      --even-palette-teal-3: oklch(31.5% 0.0767 180.99);
-      --even-palette-teal-4: oklch(32.43% 0.0763 180.13);
-      --even-palette-teal-5: oklch(43.35% 0.1055 180.97);
-      --even-palette-teal-6: oklch(60.71% 0.1485 180.24);
-      --even-palette-teal-7: oklch(64.92% 0.1403 181.95);
-      --even-palette-teal-8: oklch(57.53% 0.1392 181.66);
-      --even-palette-teal-9: oklch(74.56% 0.1765 182.8);
-      --even-palette-teal-10: oklch(96.46% 0.056 180.29);
-      --even-palette-purple-1: oklch(22.34% 0.0779 316.87);
-      --even-palette-purple-2: oklch(25.91% 0.0921 314.41);
-      --even-palette-purple-3: oklch(31.98% 0.1219 312.41);
-      --even-palette-purple-4: oklch(35.93% 0.1504 309.78);
-      --even-palette-purple-5: oklch(40.99% 0.1721 307.92);
-      --even-palette-purple-6: oklch(55.5% 0.2191 306.12);
-      --even-palette-purple-7: oklch(55.5% 0.2186 306.12);
-      --even-palette-purple-8: oklch(48.58% 0.2102 305.73);
-      --even-palette-purple-9: oklch(69.87% 0.2037 309.51);
-      --even-palette-purple-10: oklch(96.1% 0.0304 316.46);
-      --even-palette-pink-1: oklch(22.67% 0.0628 354.73);
-      --even-palette-pink-2: oklch(26.2% 0.0859 356.68);
-      --even-palette-pink-3: oklch(31.15% 0.1067 355.93);
-      --even-palette-pink-4: oklch(32.13% 0.1174 356.71);
-      --even-palette-pink-5: oklch(37.01% 0.1453 358.39);
-      --even-palette-pink-6: oklch(50.33% 0.2089 4.33);
-      --even-palette-pink-7: oklch(63.52% 0.2346 1.01);
-      --even-palette-pink-8: oklch(59.51% 0.2429 4.21);
-      --even-palette-pink-9: oklch(69.36% 0.2223 3.91);
-      --even-palette-pink-10: oklch(95.74% 0.0326 350.08);
+      --even-palette-blue-1: oklch(30% 0.05 255); /** background */
+      --even-palette-blue-2: oklch(33.5% 0.075 255); /** background-hover */
+      --even-palette-blue-3: oklch(37% 0.105 255); /** background-active */
+      --even-palette-blue-4: oklch(43% 0.14 255); /** border */
+      --even-palette-blue-5: oklch(50% 0.18 255); /** border-hover */
+      --even-palette-blue-6: oklch(64.3% 0.2093318 255); /** border-active */
+      --even-palette-blue-7: oklch(76% 0.1302387 255); /** fill */
+      --even-palette-blue-8: oklch(79.5% 0.1100051 255); /** fill-hover */
+      --even-palette-blue-9: oklch(82% 0.0998069 255); /** text */
+      --even-palette-blue-10: oklch(94% 0.0319969 255); /** text-strong */
+      --even-palette-green-1: oklch(30% 0.05 155); /** background */
+      --even-palette-green-2: oklch(33.5% 0.075 155); /** background-hover */
+      --even-palette-green-3: oklch(37% 0.105 155); /** background-active */
+      --even-palette-green-4: oklch(43% 0.14 155); /** border */
+      --even-palette-green-5: oklch(50% 0.1712128 155); /** border-hover */
+      --even-palette-green-6: oklch(63.3% 0.21 155); /** border-active */
+      --even-palette-green-7: oklch(80% 0.2629829 155); /** fill */
+      --even-palette-green-8: oklch(83.5% 0.2744884 155); /** fill-hover */
+      --even-palette-green-9: oklch(82% 0.2 155); /** text */
+      --even-palette-green-10: oklch(94% 0.1 155); /** text-strong */
+      --even-palette-amber-1: oklch(30% 0.05 80); /** background */
+      --even-palette-amber-2: oklch(33.5% 0.075 80); /** background-hover */
+      --even-palette-amber-3: oklch(37% 0.0882114 80); /** background-active */
+      --even-palette-amber-4: oklch(43% 0.102516 80); /** border */
+      --even-palette-amber-5: oklch(50% 0.1192046 80); /** border-hover */
+      --even-palette-amber-6: oklch(64.3% 0.1532971 80); /** border-active */
+      --even-palette-amber-7: oklch(82% 0.1876758 80); /** fill */
+      --even-palette-amber-8: oklch(85.5% 0.1666842 80); /** fill-hover */
+      --even-palette-amber-9: oklch(82% 0.1954956 80); /** text */
+      --even-palette-amber-10: oklch(94% 0.0687869 80); /** text-strong */
+      --even-palette-red-1: oklch(30% 0.05 25); /** background */
+      --even-palette-red-2: oklch(33.5% 0.075 25); /** background-hover */
+      --even-palette-red-3: oklch(37% 0.105 25); /** background-active */
+      --even-palette-red-4: oklch(43% 0.14 25); /** border */
+      --even-palette-red-5: oklch(50% 0.18 25); /** border-hover */
+      --even-palette-red-6: oklch(65.3% 0.21 25); /** border-active */
+      --even-palette-red-7: oklch(72% 0.2133052 25); /** fill */
+      --even-palette-red-8: oklch(75.5% 0.1804565 25); /** fill-hover */
+      --even-palette-red-9: oklch(82% 0.1300588 25); /** text */
+      --even-palette-red-10: oklch(94% 0.0391655 25); /** text-strong */
+      --even-palette-teal-1: oklch(30% 0.05 190); /** background */
+      --even-palette-teal-2: oklch(33.5% 0.075 190); /** background-hover */
+      --even-palette-teal-3: oklch(37% 0.0860943 190); /** background-active */
+      --even-palette-teal-4: oklch(43% 0.1000555 190); /** border */
+      --even-palette-teal-5: oklch(50% 0.1163436 190); /** border-hover */
+      --even-palette-teal-6: oklch(63.4% 0.1475236 190); /** border-active */
+      --even-palette-teal-7: oklch(79% 0.1764699 190); /** fill */
+      --even-palette-teal-8: oklch(82.5% 0.1842882 190); /** fill-hover */
+      --even-palette-teal-9: oklch(82% 0.1908034 190); /** text */
+      --even-palette-teal-10: oklch(94% 0.1 190); /** text-strong */
+      --even-palette-purple-1: oklch(30% 0.05 305); /** background */
+      --even-palette-purple-2: oklch(33.5% 0.075 305); /** background-hover */
+      --even-palette-purple-3: oklch(37% 0.105 305); /** background-active */
+      --even-palette-purple-4: oklch(43% 0.14 305); /** border */
+      --even-palette-purple-5: oklch(50% 0.18 305); /** border-hover */
+      --even-palette-purple-6: oklch(65.2% 0.21 305); /** border-active */
+      --even-palette-purple-7: oklch(77% 0.1547595 305); /** fill */
+      --even-palette-purple-8: oklch(80.5% 0.1296128 305); /** fill-hover */
+      --even-palette-purple-9: oklch(82% 0.1239728 305); /** text */
+      --even-palette-purple-10: oklch(94% 0.0396108 305); /** text-strong */
+      --even-palette-pink-1: oklch(30% 0.05 350); /** background */
+      --even-palette-pink-2: oklch(33.5% 0.075 350); /** background-hover */
+      --even-palette-pink-3: oklch(37% 0.105 350); /** background-active */
+      --even-palette-pink-4: oklch(43% 0.14 350); /** border */
+      --even-palette-pink-5: oklch(50% 0.18 350); /** border-hover */
+      --even-palette-pink-6: oklch(65.4% 0.21 350); /** border-active */
+      --even-palette-pink-7: oklch(76% 0.2151436 350); /** fill */
+      --even-palette-pink-8: oklch(79.5% 0.1774107 350); /** fill-hover */
+      --even-palette-pink-9: oklch(82% 0.1583515 350); /** text */
+      --even-palette-pink-10: oklch(94% 0.0473512 350); /** text-strong */
+      --even-palette-neutral-1: oklch(29% 0 0); /** background */
+      --even-palette-neutral-2: oklch(32% 0 0); /** background-hover */
+      --even-palette-neutral-3: oklch(35% 0 0); /** background-active */
+      --even-palette-neutral-4: oklch(40% 0 0); /** border */
+      --even-palette-neutral-5: oklch(46% 0 0); /** border-hover */
+      --even-palette-neutral-6: oklch(62% 0 0); /** border-active */
+      --even-palette-neutral-7: oklch(66% 0 0); /** fill */
+      --even-palette-neutral-8: oklch(71% 0 0); /** fill-hover */
+      --even-palette-neutral-9: oklch(79% 0 0); /** text */
+      --even-palette-neutral-10: oklch(94% 0 0); /** text-strong */
+      --even-palette-background-1: oklch(22% 0 0); /** Page canvas */
+      --even-palette-background-2: oklch(26% 0 0); /** Secondary canvas */
+      --even-palette-gray-alpha-1: oklch(
+        100% 0 0 / 0.073166
+      ); /** Translucent equivalent of neutral.1 over background.1. */
+      --even-palette-gray-alpha-2: oklch(
+        100% 0 0 / 0.105975
+      ); /** Translucent equivalent of neutral.2 over background.1. */
+      --even-palette-gray-alpha-3: oklch(
+        100% 0 0 / 0.139564
+      ); /** Translucent equivalent of neutral.3 over background.1. */
+      --even-palette-gray-alpha-4: oklch(
+        100% 0 0 / 0.197141
+      ); /** Translucent equivalent of neutral.4 over background.1. */
+      --even-palette-gray-alpha-5: oklch(
+        100% 0 0 / 0.268638
+      ); /** Translucent equivalent of neutral.5 over background.1. */
+      --even-palette-gray-alpha-6: oklch(
+        100% 0 0 / 0.47036
+      ); /** Translucent equivalent of neutral.6 over background.1. */
+      --even-palette-gray-alpha-7: oklch(
+        100% 0 0 / 0.523013
+      ); /** Translucent equivalent of neutral.7 over background.1. */
+      --even-palette-gray-alpha-8: oklch(
+        100% 0 0 / 0.589956
+      ); /** Translucent equivalent of neutral.8 over background.1. */
+      --even-palette-gray-alpha-9: oklch(
+        100% 0 0 / 0.699516
+      ); /** Translucent equivalent of neutral.9 over background.1. */
+      --even-palette-gray-alpha-10: oklch(
+        100% 0 0 / 0.912368
+      ); /** Translucent equivalent of neutral.10 over background.1. */
     }
   }
 }
