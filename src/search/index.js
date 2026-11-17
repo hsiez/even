@@ -7,7 +7,7 @@ import { matchExcerpt, parseTraceQuery } from './query.js';
 
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 // Bump when extraction or canonical-operation interpretation changes.
-const projectionVersion = 1;
+const projectionVersion = 2;
 const fingerprintFiles = (files) =>
   hash(JSON.stringify([projectionVersion, files]));
 const scopedFields = ['output', 'error', 'arguments'];

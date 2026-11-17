@@ -7,6 +7,33 @@ import {
   searchSuggestions,
 } from "./traceSearch";
 const find = (query) => searchTraces(previewTraces, parseTraceQuery(query));
+test("searches recorded strings literally without JSON coercion", () => {
+  const trace = {
+    traceId: "literal-values",
+    spans: [
+      {
+        spanId: "tool",
+        name: "Lookup",
+        attributes: {
+          "gen_ai.tool.name": "lookup",
+          "gen_ai.tool.call.result": JSON.stringify({
+            keyword: "null",
+            invoice: "1234567890123456789",
+            notation: "1e3",
+          }),
+        },
+      },
+    ],
+  };
+  for (const query of [
+    "output:null",
+    "output:1234567890123456789",
+    "output:1e3",
+  ])
+    expect(searchTraces([trace], parseTraceQuery(query))).toHaveLength(1);
+  for (const query of ["output:1234567890123456800", "output:1000"])
+    expect(searchTraces([trace], parseTraceQuery(query))).toHaveLength(0);
+});
 test("binds tool status to the named operation, while has:error is trace wide", () => {
   const failed = find("tool:read_logs tool.status:error");
   const any = find("tool:read_logs has:error");

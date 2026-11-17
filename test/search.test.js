@@ -12,6 +12,7 @@ import {
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { TraceSearchIndex, validateSearch } from '../src/search/index.js';
 import { parseTraceQuery } from '../src/search/query.js';
 import { startServer } from '../src/server.js';
@@ -277,6 +278,54 @@ test('literal matching handles Unicode, quotes, short strings, punctuation, and 
     (await index.search({ q: 'context:"deploy preview"' })).total,
     1
   );
+});
+
+test('literal payload strings survive indexing and old projections rebuild without source changes', async (t) => {
+  const f = await fixture(t);
+  await f.write(id(70), [
+    tool(70, 'lookup', false, {
+      keyword: 'null',
+      invoice: '1234567890123456789',
+      notation: '1e3',
+      quoted: '"quoted"',
+    }),
+  ]);
+  let index = f.create();
+  for (const q of [
+    'output:null',
+    'output:1234567890123456789',
+    'output:1e3',
+    'output:"\\"quoted\\""',
+  ]) {
+    const result = await index.search({ q });
+    assert.equal(result.total, 1, q);
+    assert.equal(result.coverage.complete, true);
+  }
+  for (const q of ['output:1234567890123456800', 'output:1000'])
+    assert.equal((await index.search({ q })).total, 0, q);
+
+  // Seed the previous projection's checkpoint and missing content. The spool
+  // stays unchanged, so recovery must come from projection version invalidation.
+  const files = await index.files(f.sources[0], id(70));
+  const oldFingerprint = createHash('sha256')
+    .update(JSON.stringify([1, files]))
+    .digest('hex');
+  const row = index.db
+    .prepare('SELECT pk FROM traces WHERE trace_id=?')
+    .get(id(70));
+  index.db.prepare('DELETE FROM documents WHERE trace_pk=?').run(row.pk);
+  index.db
+    .prepare('UPDATE traces SET fingerprint=? WHERE pk=?')
+    .run(oldFingerprint, row.pk);
+  const reads = f.reads();
+  f.close();
+  index = f.create();
+  const rebuilt = await index.search({ q: 'output:1234567890123456789' });
+  assert.equal(rebuilt.total, 1);
+  assert.ok(f.reads() > reads, 'Old checkpoints force a source re-read');
+  const after = f.reads();
+  await index.search({ q: 'output:null' });
+  assert.equal(f.reads(), after, 'The rebuilt projection is reusable');
 });
 
 test('metadata works without capture; source IDs scope identical trace IDs and session IDs are exact', async (t) => {

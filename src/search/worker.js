@@ -5,7 +5,7 @@ import { loadEve } from '../eve-adapter.js';
 import { TraceSearchIndex } from './index.js';
 
 let index;
-const ready = (async () => {
+async function initialize() {
   const adapter = await loadEve(workerData.project);
   const modules = await Promise.all([
     adapter.internal('tracing/local/trace-reader.js'),
@@ -27,19 +27,19 @@ const ready = (async () => {
   if (!info.isFile() || info.isSymbolicLink() || info.nlink !== 1)
     throw new Error('Search cache must be a regular, unlinked file.');
   await chmod(path, 0o600);
-  index = new TraceSearchIndex(
+  return new TraceSearchIndex(
     path,
     adapter.traceSources(),
     Object.assign({}, ...modules)
   );
-})();
-// Handle startup failure through the same request protocol; no unhandled rejection.
-ready.catch(() => {});
+}
 let queue = Promise.resolve();
 parentPort.on('message', ({ id, options }) => {
   queue = queue.then(async () => {
     try {
-      await ready;
+      // Requests are serialized. Retain only a successfully initialized index;
+      // a temporary lock or filesystem failure must be retryable next request.
+      index ??= await initialize();
       parentPort.postMessage({ id, result: await index.search(options) });
     } catch (error) {
       parentPort.postMessage({

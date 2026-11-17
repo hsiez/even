@@ -18,6 +18,7 @@ import { startServer } from '../src/server.js';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { checkResponse } from './helpers/contract.js';
+import { DatabaseSync } from 'node:sqlite';
 
 const attributes = (values) =>
   Object.entries(values).map(([key, value]) => ({
@@ -46,6 +47,52 @@ const rawSpan = (trace, n, name, attrs = {}, parent, code = 0) => ({
 });
 
 test(
+  'worker-backed search retries initialization after a temporary SQLite lock',
+  { skip: !process.env.EVEN_TEST_NODE_MODULES, timeout: 20000 },
+  async (t) => {
+    const project = await mkdtemp(join(tmpdir(), 'even-search-retry-'));
+    let server, blocking;
+    t.after(async () => {
+      await server?.close();
+      blocking?.close();
+      await rm(project, { recursive: true, force: true });
+    });
+    await cp(new URL('./fixtures/project/', import.meta.url), project, {
+      recursive: true,
+    });
+    await symlink(
+      resolve(process.env.EVEN_TEST_NODE_MODULES),
+      join(project, 'node_modules')
+    );
+    await writeFile(
+      join(project, 'agent/agent.js'),
+      'throw new Error("SEARCH MUST NOT EXECUTE AUTHORED MODULES"); export default {};'
+    );
+    await mkdir(join(project, '.even'));
+    blocking = new DatabaseSync(join(project, '.even/search-v1.sqlite'));
+    blocking.exec('BEGIN EXCLUSIVE; CREATE TABLE locked_startup (id INTEGER);');
+    server = await startServer(await loadEve(project));
+    const search = () =>
+      fetch(server.url + '/api/v1/traces/search', {
+        headers: { authorization: 'Bearer ' + server.token },
+      });
+    const failed = await search();
+    assert.equal(failed.status, 503);
+    assert.match((await failed.json()).error, /database is locked/);
+    blocking.exec('ROLLBACK');
+    blocking.close();
+    blocking = undefined;
+    for (const response of await Promise.all([search(), search()])) {
+      assert.equal(response.status, 200);
+      const result = await response.json();
+      assert.equal(result.total, 0);
+      assert.equal(result.coverage.complete, true);
+      checkResponse('/traces/search', 'get', response.status, result);
+    }
+  }
+);
+
+test(
   'installed Eve parsing, operation pairing and worker-backed HTTP search remain passive and durable',
   { skip: !process.env.EVEN_TEST_NODE_MODULES },
   async (t) => {
@@ -71,7 +118,9 @@ test(
       await mkdir(directory, { recursive: true });
       await writeFile(
         join(directory, span.spanId + '.otlp.json'),
-        JSON.stringify({ resourceSpans: [{ scopeSpans: [{ spans: [span] }] }] })
+        JSON.stringify({
+          resourceSpans: [{ scopeSpans: [{ spans: [span] }] }],
+        })
       );
     };
     const first = traceId(1),
