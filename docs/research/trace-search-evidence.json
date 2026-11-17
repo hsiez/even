@@ -1,0 +1,80 @@
+{
+  "researchDate": "2026-11-16",
+  "eveVersion": "1.0.0-rc.6",
+  "method": "Isolated Eve projects; deterministic local AI SDK model and synthetic tools; real sessions, CLI, tool execution and OTLP files. No external model calls.",
+  "captureOn": {
+    "traceCount": 5,
+    "spanCount": 28,
+    "sessionCount": 4,
+    "wholeTraceReadErrors": 2,
+    "sameOperationReadErrors": 1,
+    "testContentFieldHits": 37,
+    "testContentFields": [
+      "agent.channel.delivery.input",
+      "agent.session.title",
+      "ai.response.text",
+      "exception.message",
+      "exception.stacktrace",
+      "gen_ai.input.messages",
+      "gen_ai.output.messages",
+      "gen_ai.tool.call.result"
+    ]
+  },
+  "captureOff": {
+    "traceCount": 5,
+    "spanCount": 28,
+    "sessionCount": 4,
+    "wholeTraceReadErrors": 2,
+    "sameOperationReadErrors": 1,
+    "testContentFieldHits": 0,
+    "testContentFields": []
+  },
+  "retentionDefaults": {
+    "enabled": true,
+    "maxAgeMs": 604800000,
+    "maxTotalBytes": 536870912,
+    "retainCount": 20
+  },
+  "proof": {
+    "node": "v24.20.0",
+    "sqlite": "3.53.4",
+    "realTraces": 5,
+    "traceWideReadErrors": 2,
+    "sameOperationReadErrors": 1,
+    "originalToolOutputHits": 3,
+    "userInputOriginTraces": 1,
+    "copiedContextTraces": 2,
+    "unicode61MiddleWordHits": 0,
+    "trigram": {
+      "middle": 1,
+      "twoChars": 0
+    }
+  },
+  "benchmark": {
+    "traceCount": 10000,
+    "operationCount": 28000,
+    "documentCount": 86000,
+    "buildMs": 220.714541,
+    "fileBytes": 38035456,
+    "timings": {
+      "failedReadCount": {
+        "medianMs": 0.044999999999987494,
+        "p95Ms": 0.050749999999993634,
+        "rows": 1,
+        "count": 2000
+      },
+      "outputCount": {
+        "medianMs": 7.211041000000023,
+        "p95Ms": 7.843541000000016,
+        "rows": 1,
+        "count": 6000
+      },
+      "outputFirstPage": {
+        "medianMs": 0.10874999999998636,
+        "p95Ms": 0.12695900000005622,
+        "rows": 50
+      }
+    },
+    "limitations": "Five deterministic trace templates repeated 2000 times; single-transaction bulk build; warm SQLite cache; local timings exclude source discovery, parsing, API and UI. Not a production capacity test."
+  }
+}

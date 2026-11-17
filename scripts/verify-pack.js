@@ -55,11 +55,14 @@ try {
   assert.ok(replay.startsWith('id: ' + ids[2] + '\n'));
   const traces = await (await fetch(launch.url + '/api/v1/agents/root/traces', { headers })).json();
   assert.ok(traces.traces.some(trace => trace.conversationIds.includes(session.id)));
+  const search = await (await fetch(launch.url + '/api/v1/traces/search?q=' + encodeURIComponent('session:' + session.id), { headers })).json();
+  assert.ok(search.results.some(result => result.trace.sessionIds.includes(session.id)));
+  assert.equal(search.coverage.complete, true);
   const exited = once(child, 'exit');
   child.kill('SIGTERM');
   assert.equal((await exited)[0], 0);
   child = undefined;
-  console.log('Packed CLI verified: authentication, inventory, sessions, messaging, live events, replay, traces, shutdown.');
+  console.log('Packed CLI verified: authentication, inventory, sessions, messaging, live events, replay, traces, indexed search, shutdown.');
   console.log('Tarball contents: ' + packed.files.map(file => file.path).join(', '));
 } finally {
   child?.kill('SIGKILL');

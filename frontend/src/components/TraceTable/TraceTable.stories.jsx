@@ -8,6 +8,14 @@ import "./InlineEllipsisExperiment.css";
 export default { title: "Workbench/TraceTable", component: TraceTable };
 
 export const Default = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Hover the header row to reveal subtle column-resize dividers. Hover or drag a handle to emphasize it; keyboard focus reveals it without a pointer.",
+      },
+    },
+  },
   render: function Example() {
     const [value, setValue] = useState("");
     return (

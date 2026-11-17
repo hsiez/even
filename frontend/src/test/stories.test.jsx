@@ -3,9 +3,12 @@ import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
 import axe from "axe-core";
 
-const modules = import.meta.glob("../components/**/*.stories.jsx", {
-  eager: true,
-});
+const modules = import.meta.glob(
+  ["../components/**/*.stories.jsx", "../pages/**/*.stories.jsx"],
+  {
+    eager: true,
+  },
+);
 for (const [path, stories] of Object.entries(modules)) {
   for (const [name, story] of Object.entries(stories)) {
     if (name === "default") continue;

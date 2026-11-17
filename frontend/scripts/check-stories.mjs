@@ -6,6 +6,7 @@ import { chromium } from "playwright";
 import assert from "node:assert/strict";
 import Color from "colorjs.io";
 import { checkDecisionUsage } from "./check-decision-usage.mjs";
+import { checkHomePage } from "./check-home-page.mjs";
 import {
   contrastPairs,
   scaleNames,
@@ -103,6 +104,8 @@ try {
       page.off("pageerror", onError);
     }
   }
+  for (const theme of themes) await checkHomePage(page, base, theme, axe);
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchlayout--composed-explorer&viewMode=story`,
   );
@@ -674,6 +677,41 @@ try {
       Math.abs(dataFont.wide - dataFont.narrow) < 0.1 && dataFont.wide > 0,
       "Wide and narrow Latin characters have equal advances in the loaded table font",
     );
+    const resizeEdge = () =>
+      operationHandle.evaluate(
+        (node) => getComputedStyle(node, "::after").opacity,
+      );
+    await page.mouse.move(0, 0);
+    assert.equal(
+      await resizeEdge(),
+      "0",
+      "Resize dividers stay quiet outside the header",
+    );
+    await table.locator("thead tr").hover({ position: { x: 4, y: 4 } });
+    assert.deepEqual(
+      await table
+        .locator(".even-column-resizer")
+        .evaluateAll((nodes) =>
+          nodes.map((node) => getComputedStyle(node, "::after").opacity),
+        ),
+      ["1", "1", "1", "1", "1"],
+      "Hovering the header reveals every resize divider",
+    );
+    await page.mouse.move(0, 0);
+    assert.equal(
+      await resizeEdge(),
+      "0",
+      "Leaving the header hides the dividers again",
+    );
+    await operationHandle.focus();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      await resizeEdge(),
+      "1",
+      "Keyboard focus reveals a resize handle without hover",
+    );
+    await page.mouse.click(0, 0);
     const initialGeometry = await table.evaluate((node) => ({
       widths: [...node.querySelectorAll("thead th")].map(
         (header) => header.getBoundingClientRect().width,
@@ -690,6 +728,11 @@ try {
     await page.mouse.move(grip.x + grip.width + 78, grip.y + grip.height + 60, {
       steps: 5,
     });
+    assert.equal(
+      await resizeEdge(),
+      "1",
+      "An active drag stays visible outside the header",
+    );
     await page.mouse.up();
     const resized = await table.evaluate((node) => ({
       widths: [...node.querySelectorAll("thead th")].map(
@@ -1340,6 +1383,7 @@ try {
     const sample = document.createElement("div");
     sample.style.width = "var(--even-space-gap-related)";
     sample.style.minHeight = "var(--even-size-control-default)";
+    sample.style.border = "var(--even-size-border-control) solid transparent";
     scope.append(sample);
     document.body.append(scope);
     try {
@@ -1347,11 +1391,13 @@ try {
       const normal = {
         width: getComputedStyle(sample).width,
         height: getComputedStyle(sample).minHeight,
+        border: getComputedStyle(sample).borderTopWidth,
       };
       document.documentElement.style.fontSize = "20px";
       const enlarged = {
         width: getComputedStyle(sample).width,
         height: getComputedStyle(sample).minHeight,
+        border: getComputedStyle(sample).borderTopWidth,
       };
       return { normal, enlarged };
     } finally {
@@ -1360,8 +1406,8 @@ try {
     }
   });
   assert.deepEqual(dimensionMeasurements, {
-    normal: { width: "8px", height: "40px" },
-    enlarged: { width: "10px", height: "50px" },
+    normal: { width: "8px", height: "40px", border: "1px" },
+    enlarged: { width: "10px", height: "50px", border: "1px" },
   });
   // A nested light scope inside dark must rebind aliases instead of inheriting resolved dark values.
   const nested = await page.evaluate(() => {

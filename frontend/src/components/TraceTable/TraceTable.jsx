@@ -13,6 +13,7 @@ export function TraceTable({
   reloads = [],
   selectedTraceId,
   onSelectTrace,
+  renderOperationDetail,
   sort = { key: "startedAt", direction: "descending" },
   onSortChange,
   columnWidths,
@@ -153,10 +154,19 @@ export function TraceTable({
                     className="even-trace-operation-action"
                     variant="ghost"
                     size="compact"
+                    data-has-detail={!!renderOperationDetail || undefined}
                     aria-pressed={selectedTraceId === trace.traceId}
                     onClick={() => onSelectTrace(trace.traceId)}
                   >
                     <CellOverflow>{trace.label ?? trace.traceId}</CellOverflow>
+                    {renderOperationDetail && (
+                      <span
+                        className="even-trace-operation-detail"
+                        id={`${tableId}-${trace.traceId}-detail`}
+                      >
+                        {renderOperationDetail(trace)}
+                      </span>
+                    )}
                   </Button>
                 </td>
                 <td>

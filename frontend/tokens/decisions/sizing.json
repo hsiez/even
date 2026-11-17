@@ -67,6 +67,25 @@
           "$value": "{options.dimension.256}",
           "$description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width."
         }
+      },
+      "border": {
+        "control": {
+          "$type": "dimension",
+          "$value": "{options.stroke.thin}",
+          "$description": "Persistent control border width; keep unchanged between rest and focus to preserve geometry."
+        }
+      },
+      "focus": {
+        "inset": {
+          "$type": "dimension",
+          "$value": "{options.stroke.thin}",
+          "$description": "Additional inward emphasis for focus expressed through an inset shadow; adds no layout width."
+        },
+        "outline": {
+          "$type": "dimension",
+          "$value": "{options.stroke.strong}",
+          "$description": "Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset."
+        }
       }
     }
   }

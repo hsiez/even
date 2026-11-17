@@ -22,3 +22,12 @@ export const dimensionDecisions = Object.entries(tokens)
     reference: token.reference,
     description: token.description,
   }));
+
+export const strokeOptions = Object.entries(tokens)
+  .filter(([path]) => path.startsWith("options.stroke."))
+  .map(([path, token]) => ({
+    key: path.slice("options.".length),
+    variable: `--${token.name}`,
+    value: token.value,
+    description: token.description,
+  }));

@@ -26,6 +26,7 @@ export { Tabs } from "./Tabs/Tabs";
 export { TextField } from "./TextField/TextField";
 export { Timestamp } from "./Timestamp/Timestamp";
 export { Tooltip } from "./Tooltip/Tooltip";
+export { TraceSearch } from "./TraceSearch/TraceSearch";
 export { TraceStatus } from "./TraceStatus/TraceStatus";
 export { TraceSummary } from "./TraceSummary/TraceSummary";
 export { TraceTable } from "./TraceTable/TraceTable";

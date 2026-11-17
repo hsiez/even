@@ -333,6 +333,72 @@
   :where(.even-inspector-body) {
     padding: var(--even-space-inset-default);
   }
+  :where(.even-trace-search) {
+    margin: 0;
+  }
+  :where(.even-trace-search-input) {
+    position: relative;
+  }
+  :where(.even-trace-search-input > .even-input) {
+    border-width: var(--even-size-border-control);
+    padding-inline-end: var(--even-size-control-default);
+    font-family: var(--even-font-data);
+  }
+  :where(.even-trace-search-input > .even-button) {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block: 0;
+    padding-inline: var(--even-space-inset-compact);
+    min-width: var(--even-size-control-default);
+  }
+  :where(.even-trace-search-popup) {
+    width: var(--anchor-width);
+    padding: var(--even-space-inset-tight);
+  }
+  :where(.even-trace-search-heading, .even-trace-search-footer) {
+    color: var(--even-text-secondary);
+    margin: 0;
+    padding: var(--even-space-inset-compact);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-search-item) {
+    display: grid;
+    gap: var(--even-space-gap-tight);
+    padding: var(--even-space-inset-compact);
+    min-height: var(--even-size-control-default);
+    border-radius: var(--even-size-radius-control);
+    cursor: pointer;
+    overflow-wrap: anywhere;
+  }
+  :where(.even-trace-search-item code) {
+    font-family: var(--even-font-data);
+  }
+  :where(.even-trace-search-item > span) {
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-search-item[data-highlighted]) {
+    background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-search-item[data-highlighted] > span) {
+    color: inherit;
+  }
+  :where(.even-trace-search-popup .even-help) {
+    padding: var(--even-space-inset-compact);
+  }
+  :where(.even-trace-operation-action[data-has-detail]) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--even-space-gap-tight);
+  }
+  :where(.even-trace-operation-detail) {
+    display: block;
+    overflow: hidden;
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
   :where(.even-trace-toolbar) {
     display: flex;
     align-items: end;
@@ -488,10 +554,19 @@
     position: absolute;
     inset-inline-end: 0;
     inset-block: var(--even-space-inset-compact);
-    border-inline-end: 1px solid var(--even-border-control);
+    border-inline-end: 1px solid var(--even-border-default);
+    opacity: 0;
+  }
+  :where(
+    .even-trace-table thead tr:hover .even-column-resizer,
+    .even-column-resizer:focus-visible,
+    .even-column-resizer[data-resizing]
+  )::after {
+    opacity: 1;
   }
   :where(
     .even-column-resizer:hover,
+    .even-column-resizer:focus-visible,
     .even-column-resizer[data-resizing]
   )::after {
     border-color: var(--even-border-interaction);
@@ -747,6 +822,17 @@
   ):focus-visible {
     outline-offset: -2px;
   }
+  :where(.even-trace-search-input > .even-input):focus {
+    outline: none;
+    border-color: var(--even-border-focus);
+    box-shadow: inset 0 0 0 var(--even-size-focus-inset)
+      var(--even-border-focus);
+  }
+  :where(.even-trace-search-input > .even-input[aria-invalid="true"]):focus {
+    border-color: var(--even-border-invalid);
+    box-shadow: inset 0 0 0 var(--even-size-focus-inset)
+      var(--even-border-invalid);
+  }
   @media (max-width: 75rem) {
     :where(.even-workbench) {
       flex-wrap: wrap;
@@ -776,6 +862,12 @@
     }
     :where(.even-button, .even-input, .even-popup) {
       border-color: ButtonText;
+    }
+    :where(.even-trace-search-input > .even-input):focus {
+      border-color: Highlight;
+      box-shadow: none;
+      outline: var(--even-size-focus-outline) solid Highlight;
+      outline-offset: calc(-1 * var(--even-size-focus-outline));
     }
   }
 }

@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "dev": "npm run tokens:generate && vite --host 127.0.0.1 --port 5173",
+    "build": "npm run tokens:generate && vite build",
     "test": "npm run tokens:check && vitest run",
     "test:watch": "npm run tokens:generate && vitest",
     "storybook": "npm run tokens:generate && storybook dev -p 6006",

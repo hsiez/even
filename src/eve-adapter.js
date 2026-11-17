@@ -99,6 +99,7 @@ export async function loadEve(projectPath) {
     version: metadata.version,
     internal,
     selectAgent,
+    traceSources: () => [...agents.values()],
     environmentRoot: context?.environmentRoot ?? project,
     async traces(id, agentId, sessionId) {
       const agent = selectAgent(agentId);
