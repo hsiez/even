@@ -204,3 +204,23 @@ test("multiple trace result regions accept distinct accessible labels", () => {
     screen.getByRole("region", { name: "Second result set" }),
   ).toBeVisible();
 });
+
+test("operation detail stays part of the full-cell action and its accessible name", async () => {
+  const user = userEvent.setup();
+  const select = vi.fn();
+  render(
+    <TraceTable
+      traces={[{ traceId: "example", label: "Inspect logs" }]}
+      onSelectTrace={select}
+      renderOperationDetail={() => "Matched tool output: ECONNRESET"}
+    />,
+  );
+  const action = screen.getByRole("button", {
+    name: /Inspect logs/,
+  });
+  expect(action).toHaveAccessibleName(
+    expect.stringContaining("Matched tool output: ECONNRESET"),
+  );
+  await user.click(action);
+  expect(select).toHaveBeenCalledWith("example");
+});

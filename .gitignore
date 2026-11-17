@@ -4,3 +4,4 @@ node_modules/
 .even-startup.lock/
 frontend/storybook-static/
 frontend/coverage/
+frontend/dist/

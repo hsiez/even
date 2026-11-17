@@ -1,0 +1,18 @@
+/* Standalone application host; shared components never reset a consuming page. */
+html[data-even-theme] {
+  background: var(--even-surface-page);
+  color: var(--even-text-primary);
+  font-family: var(--even-font-ui);
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+* {
+  box-sizing: border-box;
+}

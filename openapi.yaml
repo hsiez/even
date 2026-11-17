@@ -17,7 +17,8 @@ paths:
   /agents:
     get:
       operationId: listAgents
-      description: Passive project-scoped discovery. Eve discovery fields are passed
+      description:
+        Passive project-scoped discovery. Eve discovery fields are passed
         through; runtime does not start execution.
       responses:
         "200":
@@ -33,7 +34,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         "403": &a3
-          description: Origin header present or Host is not a localhost IPv4 address and
+          description:
+            Origin header present or Host is not a localhost IPv4 address and
             port.
           content:
             application/json:
@@ -45,10 +47,84 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /traces/search:
+    get:
+      operationId: searchTraces
+      description:
+        Search a disposable local SQLite projection of recorded Eve traces.
+        Reconciles all workspace sources before each query without starting Eve.
+        Returns summaries and up to ten source excerpts per trace, never full spans.
+        Text is case-insensitive literal substring matching. Tags and text combine
+        with AND. Tool name, tool error status, and tool-scoped output/error terms
+        must match one canonical operation. Model history requires context:.
+        Source limits and read failures are reported through coverage.
+      parameters:
+        - name: q
+          in: query
+          description: Search query, at most 2000 characters and 32 terms. Empty lists traces.
+          schema:
+            type: string
+            maxLength: 2000
+            default: ""
+        - name: agentId
+          in: query
+          description: Exact workspace source ID. Omit to search all catalog members.
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Descending order with a stable tie break.
+          schema:
+            type: string
+            enum: [latest, duration, failures, inputTokens]
+            default: latest
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: cursor
+          in: query
+          description:
+            Opaque continuation for the same query, source scope and sort.
+            An index or source-availability change invalidates pagination.
+          schema:
+            type: string
+            maxLength: 2048
+      responses:
+        "200":
+          description: Matching trace summaries, excerpts, and refresh coverage.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraceSearch"
+        "400":
+          description: Invalid query, parameters, source ID, or mismatched cursor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401": *a2
+        "403": *a3
+        "409":
+          description: Search data changed. Restart without a cursor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Index or worker unavailable, or search queue full. Retry shortly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /agents/{agentId}/traces:
     get:
       operationId: listTraces
-      description: Full recorded traces. sessionId matches Eve session identifiers,
+      description:
+        Full recorded traces. sessionId matches Eve session identifiers,
         not conversation IDs. Matching traces retain all spans. Reading follows
         Eve spool symlinks and does not start execution.
       parameters:
@@ -88,7 +164,8 @@ paths:
   /agents/{agentId}/traces/{traceId}:
     get:
       operationId: getTrace
-      description: Full recorded trace. Empty, missing, malformed-only or invalid-ID
+      description:
+        Full recorded trace. Empty, missing, malformed-only or invalid-ID
         traces return 404. Eve span fields are passed through; bigint values
         serialize as decimal strings.
       parameters:
@@ -130,7 +207,8 @@ paths:
   /agents/{agentId}/reloads:
     get:
       operationId: listObservedReloads
-      description: Starts passive observation of the selected application's existing
+      description:
+        Starts passive observation of the selected application's existing
         local Eve development server, then samples it about once per second during
         this Even launch. Returns observed reload occurrences, oldest first. The
         first available sample establishes a baseline. No host is started and no
@@ -187,7 +265,8 @@ paths:
         "403": *a3
     post:
       operationId: createSession
-      description: Starts or attaches to the selected agent server. Attached servers
+      description:
+        Starts or attaches to the selected agent server. Attached servers
         retain existing configuration. agentId may be omitted only when
         inventory has exactly one agent.
       responses:
@@ -233,7 +312,8 @@ paths:
   /sessions/{sessionId}/messages:
     post:
       operationId: createMessage
-      description: Accept a nonblank message for delivery. Receipt does not imply
+      description:
+        Accept a nonblank message for delivery. Receipt does not imply
         completion; follow events.
       parameters:
         - &a5
@@ -291,7 +371,8 @@ paths:
   /sessions/{sessionId}/events:
     get:
       operationId: streamEvents
-      description: "SSE frames use event: eve, id: line:index and JSON data matching
+      description:
+        "SSE frames use event: eve, id: line:index and JSON data matching
         EveEvent. Replay excludes the cursor itself. Last-Event-ID takes
         precedence over after. Cursor integers must be safe JavaScript integers.
         follow=false ends at current history; otherwise follows live events. No
@@ -324,7 +405,8 @@ paths:
             default: "true"
       responses:
         "200":
-          description: SSE stream of Eve events; see operation description for framing and
+          description:
+            SSE stream of Eve events; see operation description for framing and
             replay.
           content:
             text/event-stream:
@@ -360,7 +442,8 @@ components:
     launchToken:
       type: http
       scheme: bearer
-      description: Even per-launch token printed by the CLI. Distinct from Eve channel
+      description:
+        Even per-launch token printed by the CLI. Distinct from Eve channel
         credentials.
   schemas:
     Error:
@@ -489,6 +572,179 @@ components:
       required:
         - traces
       additionalProperties: false
+    TraceSearch:
+      type: object
+      required: [results, total, nextCursor, coverage]
+      additionalProperties: false
+      properties:
+        results:
+          type: array
+          maxItems: 100
+          items:
+            type: object
+            required: [trace, matches, matchesTruncated]
+            additionalProperties: false
+            properties:
+              trace:
+                $ref: "#/components/schemas/SearchSummary"
+              matches:
+                type: array
+                maxItems: 10
+                items:
+                  $ref: "#/components/schemas/SearchMatch"
+              matchesTruncated:
+                type: boolean
+        total:
+          type: integer
+          minimum: 0
+        nextCursor:
+          type: [string, "null"]
+        coverage:
+          $ref: "#/components/schemas/SearchCoverage"
+    SearchSummary:
+      type: object
+      description:
+        Eve structural summary with workspace source and content availability.
+        No complete flag is inferred from ended spans or lack of errors.
+      required:
+        [
+          traceId,
+          agentId,
+          label,
+          startedAt,
+          durationMs,
+          spanCount,
+          agentNames,
+          sessionIds,
+          toolNames,
+          modelCalls,
+          toolCalls,
+          errorSpanCount,
+          inputTokens,
+          outputTokens,
+          contentAvailability,
+        ]
+      additionalProperties: true
+      properties:
+        traceId:
+          type: string
+          pattern: ^[a-f0-9]{32}$
+        agentId:
+          type: string
+        label:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        durationMs:
+          type: number
+          minimum: 0
+        spanCount:
+          type: integer
+          minimum: 0
+        agentNames:
+          type: array
+          items:
+            type: string
+        sessionIds:
+          type: array
+          items:
+            type: string
+        toolNames:
+          type: array
+          items:
+            type: string
+        modelCalls:
+          type: integer
+          minimum: 0
+        toolCalls:
+          type: integer
+          minimum: 0
+        errorSpanCount:
+          type: integer
+          minimum: 0
+        inputTokens:
+          type: number
+          minimum: 0
+        outputTokens:
+          type: number
+          minimum: 0
+        contentAvailability:
+          type: string
+          enum: [captured, not-recorded, unknown]
+    SearchMatch:
+      type: object
+      description:
+        Plain-text excerpt and its source. spanId points to the recorded
+        source; operationSpanId can differ when an execution inherits a wrapper error.
+        Render text as text, never HTML.
+      required: [field, excerpt, term]
+      additionalProperties: false
+      properties:
+        field:
+          type: string
+        excerpt:
+          type: string
+        term:
+          type: string
+        source:
+          type: string
+        spanId:
+          type: string
+        operationSpanId:
+          type: string
+        operation:
+          type: string
+        path:
+          type: string
+        eventIndex:
+          type: integer
+          minimum: 0
+    SearchCoverage:
+      type: object
+      required:
+        [
+          complete,
+          discoveredTraces,
+          indexedTraces,
+          unreadableSegments,
+          skippedTraces,
+          issues,
+          checkedAt,
+        ]
+      additionalProperties: false
+      properties:
+        complete:
+          type: boolean
+        discoveredTraces:
+          type: integer
+          minimum: 0
+        indexedTraces:
+          type: integer
+          minimum: 0
+        unreadableSegments:
+          type: integer
+          minimum: 0
+        skippedTraces:
+          type: integer
+          minimum: 0
+        checkedAt:
+          type: string
+          format: date-time
+        issues:
+          type: array
+          maxItems: 20
+          items:
+            type: object
+            required: [agentId, message]
+            additionalProperties: false
+            properties:
+              agentId:
+                type: string
+              traceId:
+                type: string
+              message:
+                type: string
     Reload:
       type: object
       properties:

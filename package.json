@@ -16,6 +16,8 @@
     "node": ">=24"
   },
   "scripts": {
+    "dev:ui": "npm --prefix frontend run dev",
+    "build:ui": "npm --prefix frontend run build",
     "start": "node src/cli.js",
     "test": "node --test test/*.test.js",
     "test:contract": "node --test test/openapi.test.js",

@@ -3,7 +3,11 @@ import { test, expect } from "vitest";
 import { readFile } from "node:fs/promises";
 import StyleDictionary from "style-dictionary";
 import { createTokenConfig } from "../../style-dictionary.config";
-import { dimensionOptions, dimensionDecisions } from "./dimensions";
+import {
+  dimensionOptions,
+  dimensionDecisions,
+  strokeOptions,
+} from "./dimensions";
 
 async function inMemory(tokens) {
   const config = createTokenConfig();
@@ -14,7 +18,7 @@ async function inMemory(tokens) {
     tokens,
   }).getPlatformTokens("css");
 }
-test("dimension options are rem values and decisions are JSON references into the same scale", async () => {
+test("dimension options are rem values and decisions reference rem layout or fixed-pixel stroke options", async () => {
   expect(dimensionOptions.map((token) => Number(token.key))).toEqual([
     0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512,
     640, 768,
@@ -22,10 +26,14 @@ test("dimension options are rem values and decisions are JSON references into th
   for (const token of dimensionOptions)
     expect(parseFloat(token.value) * 16).toBe(Number(token.key));
   for (const token of dimensionDecisions) {
-    expect(token.reference).toMatch(/^options\.dimension\.\d+$/);
+    expect(token.reference).toMatch(
+      /^options\.(dimension\.\d+|stroke\.(thin|strong))$/,
+    );
     expect(token.value).toBe(
-      dimensionOptions.find(
-        (option) => option.key === token.reference.split(".").at(-1),
+      [...dimensionOptions, ...strokeOptions].find(
+        (option) =>
+          token.reference ===
+          `options.${option.key.startsWith("stroke.") ? option.key : `dimension.${option.key}`}`,
       ).value,
     );
   }

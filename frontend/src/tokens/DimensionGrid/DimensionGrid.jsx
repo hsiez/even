@@ -1,5 +1,9 @@
 import React from "react";
-import { dimensionOptions, dimensionDecisions } from "../dimensions";
+import {
+  dimensionOptions,
+  dimensionDecisions,
+  strokeOptions,
+} from "../dimensions";
 import "../generated/tokens.css";
 import "../ColorGrid/ColorGrid.css";
 import "./DimensionGrid.css";
@@ -7,7 +11,7 @@ import "./DimensionGrid.css";
 export function DimensionGrid({ theme = "light", kind = "options" }) {
   const options = kind === "options";
   const rows = options
-    ? dimensionOptions
+    ? [...dimensionOptions, ...strokeOptions]
     : dimensionDecisions.filter((token) => token.category === kind);
   const title = options
     ? "Dimension options"
@@ -24,7 +28,8 @@ export function DimensionGrid({ theme = "light", kind = "options" }) {
       <p>
         One shared scale, mainly 4px increments. Fine adjustment: 2px. Larger
         steps spread apart. Values use rem; pixel equivalents below assume a
-        16px root, without setting that root size.
+        16px root, without setting that root size. Stroke options use fixed CSS
+        pixels for borders and focus indicators.
       </p>
       {!options && (
         <p>
@@ -49,7 +54,13 @@ export function DimensionGrid({ theme = "light", kind = "options" }) {
                 <code>{token.variable}</code>
               </th>
               <td>{token.value}</td>
-              <td>{options ? `${Number(token.key)}px` : token.reference}</td>
+              <td>
+                {options
+                  ? token.key.startsWith("stroke.")
+                    ? token.value
+                    : `${Number(token.key)}px`
+                  : token.reference}
+              </td>
               <td>
                 <span
                   className="even-dimension-grid__bar"

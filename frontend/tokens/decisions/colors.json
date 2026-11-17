@@ -41,7 +41,8 @@
       "border": {
         "default": {
           "$type": "color",
-          "$value": "{options.color.neutral.4}"
+          "$value": "{options.color.neutral.3}",
+          "$description": "Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control."
         },
         "hover": {
           "$type": "color",
@@ -55,6 +56,11 @@
           "$type": "color",
           "$value": "{options.color.neutral.6}",
           "$description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative."
+        },
+        "focus": {
+          "$type": "color",
+          "$value": "{options.color.neutral.9}",
+          "$description": "Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color."
         },
         "interaction": {
           "$type": "color",

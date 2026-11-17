@@ -1,10 +1,11 @@
 import { createSessions, parseCursor, replayEvents } from './sessions.js';
 import { createReloadMonitor } from './reloads.js';
+import { createTraceSearch } from './search/service.js';
 import { once } from 'node:events';
 import polka from 'polka';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 
-export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
+export async function startServer(adapter, { port = 0, eveHeaders, traceSearch = createTraceSearch(adapter) } = {}) {
   const token = randomBytes(32).toString('hex');
   const expected = Buffer.from('Bearer ' + token);
   const app = polka();
@@ -35,6 +36,21 @@ export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
     } catch (error) {
       json(response, 422, { error: error.message });
     }
+  });
+  app.get('/api/v1/traces/search', async (request, response) => {
+    try {
+      const query = new URL(request.url, 'http://localhost').searchParams;
+      const allowed = new Set(['q', 'agentId', 'sort', 'limit', 'cursor']);
+      for (const key of query.keys()) {
+        if (!allowed.has(key) || query.getAll(key).length !== 1) throw Object.assign(new Error('Unknown or repeated search parameter: ' + key), { status: 400 });
+      }
+      const input = Object.fromEntries(query);
+      if (input.limit !== undefined) {
+        if (!/^[1-9]\d*$/.test(input.limit)) throw Object.assign(new Error('limit must be an integer from 1 to 100.'), { status: 400 });
+        input.limit = Number(input.limit);
+      }
+      json(response, 200, await traceSearch.search(input));
+    } catch (error) { json(response, error.status ?? 503, { error: error.message }); }
   });
   app.get('/api/v1/agents/:agentId/traces', async (request, response) => {
     try {
@@ -136,6 +152,7 @@ export async function startServer(adapter, { port = 0, eveHeaders } = {}) {
     async close() {
       const closed = new Promise((resolve, reject) => app.server.close(error => error ? reject(error) : resolve()));
       app.server.closeAllConnections();
+      await traceSearch.close();
       await reloads.close();
       await sessions.close();
       await closed;

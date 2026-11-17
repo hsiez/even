@@ -35,3 +35,17 @@ test("changes search without clearing filters and prevents duplicate refresh", a
   );
   expect(screen.getByRole("button", { name: "Refreshing…" })).toBeDisabled();
 });
+
+test("omits refresh when no refresh action is available", () => {
+  render(<TraceToolbar query="" onQueryChange={() => {}} />);
+  expect(screen.queryByRole("button", { name: "Refresh" })).toBeNull();
+  expect(
+    screen.getByRole("searchbox", { name: "Search traces" }),
+  ).toBeVisible();
+});
+
+test("accepts a supplied search control without duplicating the default input", () => {
+  render(<TraceToolbar searchControl={<input aria-label="Custom search" />} />);
+  expect(screen.getByRole("textbox", { name: "Custom search" })).toBeVisible();
+  expect(screen.queryByRole("searchbox")).toBeNull();
+});

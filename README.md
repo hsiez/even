@@ -18,16 +18,17 @@ Even binds to 127.0.0.1. Tokens are random per launch and held in memory. Cross-
 
 All routes use the prefix `/api/v1`.
 
-| Method | Route | Behavior |
-| --- | --- | --- |
-| GET | /agents | Eve discovery manifest and diagnostics for the selected application, including its subagents |
-| GET | /sessions | Sessions created during this Even launch |
-| POST | /sessions | Create an idle Eve session with `{}` for a single agent or `{"agentId":"support"}` for a workspace member |
-| POST | /sessions/:sessionId/messages | Send `{"message":"hello"}`, returning an Eve delivery receipt |
-| GET | /sessions/:sessionId/events | Live SSE carrying unchanged Eve event payloads and metadata |
-| GET | /agents/:agentId/traces | Recorded local Eve traces |
-| GET | /agents/:agentId/traces/:traceId | One recorded trace |
-| GET | /agents/:agentId/reloads | Reload occurrences observed during this Even launch |
+| Method | Route                            | Behavior                                                                                                  |
+| ------ | -------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| GET    | /agents                          | Eve discovery manifest and diagnostics for the selected application, including its subagents              |
+| GET    | /sessions                        | Sessions created during this Even launch                                                                  |
+| POST   | /sessions                        | Create an idle Eve session with `{}` for a single agent or `{"agentId":"support"}` for a workspace member |
+| POST   | /sessions/:sessionId/messages    | Send `{"message":"hello"}`, returning an Eve delivery receipt                                             |
+| GET    | /sessions/:sessionId/events      | Live SSE carrying unchanged Eve event payloads and metadata                                               |
+| GET    | /traces/search                   | Search recorded traces across the workspace; paginated summaries and matching excerpts                    |
+| GET    | /agents/:agentId/traces          | Recorded local Eve traces                                                                                 |
+| GET    | /agents/:agentId/traces/:traceId | One recorded trace                                                                                        |
+| GET    | /agents/:agentId/reloads         | Reload occurrences observed during this Even launch                                                       |
 
 POST bodies require JSON and are limited to 64 KiB. Unknown fields are rejected. Message input currently supports text strings.
 
@@ -37,9 +38,76 @@ The first `GET /agents/:agentId/reloads` starts passive observation of that appl
 
 Reload markers mean Even observed a new runtime snapshot, not that a file was saved or a particular trace used a particular version. Several rebuilds between samples can appear as one occurrence. The history starts when requested, lives in memory for this Even launch, and is separate from Eve's durable session event stream. Revision tokens are only compared internally and are not returned or retained as version history. A UI can poll this endpoint alongside trace lists and merge markers by `observedAt`; no code snapshots, diffs, or trace-to-version associations are created.
 
+## Using the search bar
+
+The browser prototype runs at http://127.0.0.1:5173 after `npm run dev:ui`. Click **Search traces...** for examples and field suggestions. Type to preview matching rows, use Up/Down and Enter to choose a suggestion, and Escape to dismiss the menu. Enter also remembers a valid query in the page’s recent searches. Recent searches last for that page instance. Remove a filter chip to remove its term, use the clear action to clear the query, or **Reset view** to clear the query and agent scope.
+
+Use ordinary text when you do not need a field filter. Add `field:value` tags to narrow the question. Tags and plain text can be combined in one query:
+
+| Query                                    | What it finds                                                                           |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `deployment`                             | Literal text in trace labels, IDs, agent metadata or recorded content                   |
+| `"deployment failure"`                   | That exact phrase, including the space                                                  |
+| `tool:read_logs`                         | A trace containing the named tool                                                       |
+| `tool:read_logs ECONNRESET`              | The named tool plus matching text; tool results/errors must come from the matching call |
+| `tool:read_logs tool.status:error`       | A `read_logs` operation with a recorded error                                           |
+| `tool:read_logs has:error`               | A trace that used `read_logs` and has an error anywhere, possibly in a different tool   |
+| `output:"ECONNRESET"`                    | Text in an original tool result                                                         |
+| `input:"deploy preview"`                 | Text in the original incoming message                                                   |
+| `context:"deploy preview"`               | Text in model prompts, including copied conversation history                            |
+| `reply:"retry later"`                    | Text in recorded model output                                                           |
+| `error:"Permission denied"`              | Recorded status messages or exception messages/stacks                                   |
+| `agent:research duration:>3s`            | Matching agent membership and more than three seconds of elapsed trace time             |
+| `session:session-id`                     | An exact recorded session ID; a session can contain several traces                      |
+| `trace:0123456789abcdef0123456789abcdef` | An exact trace ID                                                                       |
+
+Agent names and tool/session/trace identifiers use exact, case-insensitive matching. `agent:` can match the workspace source ID or an agent name recorded inside a trace. The sidebar scopes the workspace source separately. Duration accepts `>`, `>=`, `<`, `<=` and `=` with `ms` or `s`, for example `duration:>=500ms`. Duration is elapsed trace time, not the sum of parallel tools’ durations.
+
+Every term must match (**AND**). Plain words are separate terms: `deployment failure` can find the words in different recorded fields, while `"deployment failure"` requires the phrase in one field. Text matching is a case-insensitive literal substring search: `CONNRESET` can match `ECONNRESET`, and punctuation is literal. It does not interpret regular expressions, SQL, FTS syntax, OR operators or natural-language questions. Quote a phrase containing spaces or a literal colon, such as `"https://example.com"`; escape a quote inside a phrase as `\"`.
+
+Bare text searches original incoming input, tool arguments/results, replies and errors, plus the trace’s label, ID and agent metadata. It excludes model prompt history unless you explicitly use `context:`. This prevents a tool result copied into later conversation context from silently becoming another original-output match. Serialized JSON payloads are decoded once and searched as their content values, not their property names; a phrase does not cross separate JSON values or messages. String values remain literal, including `null`, scientific notation, quoted text, and long numeric identifiers. When tool tags are present, tool status and tool-scoped payload terms must match one canonical operation, including when the same tool ran several times.
+
+Incomplete quotes, missing values, unknown fields and invalid durations show a validation message. The current query limit is 2000 characters and 32 terms. Only `error` is supported by `has:` and `tool.status:`. Missing timing cannot satisfy a numeric duration filter. A recorded tool error does not imply that the agent ultimately failed, and an ended span does not establish completion of the whole trace.
+
+Each matching row shows an excerpt and its source. Select the operation to open the best matching span in the inspector. **Why this trace matched** links to other matching spans. If content was not recorded, metadata can still match, but text search cannot recover absent prompts, outputs or error details.
+
+The browser remains explicitly **staging data**. The backend search below reads actual Eve files; connecting the browser host to that API is a separate integration step. The shared query parser lives in `src/search/query.js` so the two use the same syntax.
+
+## Backend trace search
+
+`GET /api/v1/traces/search` searches all workspace sources by default. It requires the same per-launch bearer token as other routes. Set `EVEN_URL` and `EVEN_TOKEN` to the `url` and `token` printed by Even, then query:
+
+```sh
+curl --get "$EVEN_URL/api/v1/traces/search" \
+  --header "Authorization: Bearer $EVEN_TOKEN" \
+  --data-urlencode 'q=tool:read_logs tool.status:error' \
+  --data-urlencode 'limit=50'
+```
+
+Optional parameters are `agentId` (exact catalog source), `sort` (`latest`, `duration`, `failures`, or `inputTokens`, descending), `limit` (1–100, default 50), and `cursor`. Empty `q` lists summaries. Unknown or repeated parameters are rejected. A successful response contains:
+
+- `results`: `{trace, matches, matchesTruncated}` entries. The trace is an Eve structural summary plus source `agentId`, label and content availability; full spans are loaded separately from the existing trace-detail route.
+- `matches`: up to ten plain-text excerpts per trace, with the matching field, term and, when available, source span ID, canonical operation ID, attribute/event source and JSON path. A wrapper’s error can have a different source span ID from its execution operation. Render excerpts as text, never HTML.
+- `total` and `nextCursor`: number of matching traces and an opaque continuation, or null at the end. Send the same query, source scope and sort with the cursor. A changed index or available source set returns HTTP 409; restart without a cursor. A malformed or unrelated cursor returns 400.
+- `coverage`: discovered/indexed trace counts, unreadable segments, skipped traces, a check timestamp and up to twenty issues. `complete:false` means results cover only the readable, supported portion. `matchesTruncated` concerns displayed evidence, not the trace count.
+
+`contentAvailability` is `captured` when some non-error content is present, `not-recorded` when content is absent and Eve recorded a disabled capture policy, otherwise `unknown`. It does not promise that every field was captured. Neither summaries nor search infer a successful completion flag from a lack of error spans.
+
+### How the backend searches
+
+Eve’s OTLP segment files remain the source of truth. A lazy worker uses the installed, version-checked Eve reader, summary and canonical-operation helpers to create a derived SQLite projection in `<selected-project>/.even/search-v1.sqlite`. Search does not start Eve, import authored agent modules, patch Eve or rewrite source trace files. A failed initialization, such as a temporary SQLite lock, returns an error for that request and is retried by the next search without restarting Even. The cache needs a writable `.even` directory; add `.even/` to the selected project’s gitignore. The database is created with owner-only file permissions and contains copies of searchable recorded content.
+
+The projection contains summaries, metadata memberships, canonical tool-operation metadata and captured content values with their source locations. It does not store another complete span tree. Structured filters use normal database indexes. SQLite’s trigram text index narrows candidates for strings of at least three Unicode code points; a final literal substring check determines the match. Short strings use the same literal check without trigram acceleration. The search bar never passes user input directly to SQL or FTS operators. Parsing and database work run in the worker so the HTTP server can continue serving other requests.
+
+Before each search, the worker reconciles the workspace spool. It compares segment filenames and file signatures, parses changed traces in bounded work, and transactionally replaces their projections. Unchanged traces reuse the persisted projection; changes to the extraction version automatically rebuild older projections on the next search. New spans can change operation pairing and totals, so the whole affected trace is recomputed through Eve’s helpers. Checkpoints are saved only with a successful transaction. Changed malformed segments cannot leave their old payloads searchable; valid portions remain available with incomplete coverage and unreadable segments are retried on later searches.
+
+Source pruning and removed segments are reflected on the next search. A source that cannot be listed is excluded from that response and reported through coverage. This is request-driven reconciliation, not a background watcher or an archive beyond Eve retention. Each trace has an indexing limit of 64 MiB of source segments, 10,000 segments and 40 content nesting levels; traces beyond these limits are omitted with an issue instead of silently returning complete coverage. Eve’s reader also skips individual segment files larger than 8 MiB. Source discovery still scans filesystem metadata on each search, even when payload parsing is skipped.
+
+The cache survives restarts. To rebuild it, stop Even and remove `.even/search-v1.sqlite` and any corresponding `-wal`/`-shm` files, then search again. SQLite rows and FTS entries are removed when traces are pruned; this is not a guarantee of forensic erasure from filesystems, backups or SQLite journals. Existing full-trace inspection remains separate and still uses Eve’s in-memory trace store.
+
 ## Execution and trust
 
-Inventory uses Eve's non-importing discovery API. Reading inventory or recorded traces does not start the execution host, import authored agent modules, or compile artifacts. The first session creation starts Eve through its existing development-server launcher in a child process. Eve owns compilation, workers, workflows, source watching, and shutdown. Even requests localhost binding and a free port. Even reads the selected application's Eve server record and checks the recorded localhost server. A usable server is attached; otherwise Even starts one. Startup is serialized between Even processes by a temporary `.even-startup.lock` in the application directory. A stale server record falls back to startup.
+Inventory uses Eve's non-importing discovery API. Reading inventory, recorded traces or search results does not start the execution host, import authored agent modules, or compile artifacts. The first session creation starts Eve through its existing development-server launcher in a child process. Eve owns compilation, workers, workflows, source watching, and shutdown. Even requests localhost binding and a free port. Even reads the selected application's Eve server record and checks the recorded localhost server. A usable server is attached; otherwise Even starts one. Startup is serialized between Even processes by a temporary `.even-startup.lock` in the application directory. A stale server record falls back to startup.
 
 **Attached servers retain their active configuration.** Even's host, port, and default-extension startup choices apply only to servers it starts. Attached servers can have different settings, including enabled development extensions. Closing Even leaves an attached server running. Closing Even stops a server it started, which also disconnects any other clients that subsequently attached to that server. Default development extensions are disabled for servers started by Even.
 
@@ -55,7 +123,7 @@ Select an Eve application, workspace root, or workspace member. A standalone app
 
 For a workspace, supply `{"agentId":"support"}` when creating a session. Omitting agentId selects the only agent when the catalog contains exactly one. Session listings include agentId. Trace routes are nested under `/agents/:agentId/traces`. Session lists support `?agentId=support` filtering. Each inventory agent includes `runtime` with `state` (`disconnected`, `starting`, `ready`, or `unavailable`), `ownership` (`started`, `attached`, or null), and the Eve server URL when available. Runtime readiness is checked when inventory is requested, with a one-second timeout; it is a point-in-time observation. Inspecting inventory does not start a server. Each agent starts or attaches independently on its first session request. The adapter is version-gated because the discovery and hosting APIs are internal. Other Eve versions fail with an explicit compatibility error.
 
-Browser UI, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
+A standalone staging browser UI is available for frontend review (see below). Serving a real-data browser UI from the backend, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
 
 ## Verification
 
@@ -65,13 +133,13 @@ EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules npm test
 EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules node scripts/verify-pack.js
 ```
 
-The integration fixture supplies a deterministic model through Eve's model interface. The tarball verifier runs `npm pack`, installs the tarball in a temporary directory, launches the installed `even` executable, and checks authentication, inventory, session creation, messaging, live events, replay, traces, and shutdown.
+The integration fixture supplies a deterministic model through Eve's model interface. The tarball verifier runs `npm pack`, installs the tarball in a temporary directory, launches the installed `even` executable, and checks authentication, inventory, session creation, messaging, live events, replay, traces, indexed search, and shutdown.
 
-Trace inspection reuses one project-installed Eve `TraceStore` per selected agent. Eve owns parsed-segment caching and incremental reads; Even adds no second span cache or database. Trace inspection operations queue separately for each agent so concurrent requests cannot observe partially loaded segments. Lists and details retain full trace objects, including spans. Empty or malformed traces are omitted until a valid segment is available. Segment files follow Eve's immutable spool naming and read behavior.
+Trace inspection reuses one project-installed Eve `TraceStore` per selected agent. Eve owns parsed-segment caching and incremental reads; Even adds no second full-span cache; indexed search uses the separate derived SQLite projection described above. Trace inspection operations queue separately for each agent so concurrent requests cannot observe partially loaded segments. Lists and details retain full trace objects, including spans. Empty or malformed traces are omitted until a valid segment is available. Segment files follow Eve's immutable spool naming and read behavior.
 
 Trace lists support `GET /api/v1/agents/:agentId/traces?sessionId=...`. This uses Eve's summary/query helpers to match recorded session identifiers (`agent.run.id`, falling back to `agent.session.id`), not conversation identifiers. A matching response contains the complete trace, including other sessions if they share that trace. Filtering does not import the recorded session into Even's live-session inventory.
 
-TODO: Bound retained trace memory. Eve's current store retains parsed spans and assembled traces without a size limit or eviction API. For now, these caches live for the Even process lifetime; browsing a large history can increase memory usage. Revisit Eve eviction support or an explicit store-lifetime policy before adding another cache. Filtering still scans the agent's trace history; this is not a persistent index.
+TODO: Bound retained trace memory. Eve's current store retains parsed spans and assembled traces without a size limit or eviction API. For now, these caches live for the Even process lifetime; browsing a large history can increase memory usage. Revisit Eve eviction support or an explicit store-lifetime policy before adding another cache. The legacy full-trace/session filter still scans the agent's trace history. Use `/traces/search` for the persistent, paginated summary projection.
 
 ## API contract
 
@@ -81,4 +149,4 @@ Update the contract in the same change as API behavior. `npm run test:contract` 
 
 ## Frontend component development
 
-The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. This library is not yet connected to the backend or shipped as a browser application.
+The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. The standalone staging home page can be started with `npm run dev:ui` and built with `npm run build:ui`. It opens the trace explorer with explicitly simulated data and a sample-trace generator. The frontend is not yet connected to the backend or included in the installed `even` package.

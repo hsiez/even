@@ -898,6 +898,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.stroke.thin": {
+          "value": "1px",
+          "name": "even-stroke-thin",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
+        "options.stroke.strong": {
+          "value": "2px",
+          "name": "even-stroke-strong",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
         "options.font.mono": {
           "value": "'Geist Mono Variable', ui-monospace, monospace",
           "name": "even-font-mono",
@@ -990,10 +1004,10 @@
           "type": "color"
         },
         "decision.color.border.default": {
-          "value": "rgb(80.7843137255% 80.7843137255% 80.7843137255%)",
+          "value": "rgb(89.4117647059% 89.4117647059% 89.4117647059%)",
           "name": "even-border-default",
-          "reference": "options.color.neutral.4",
-          "description": "",
+          "reference": "options.color.neutral.3",
+          "description": "Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control.",
           "type": "color"
         },
         "decision.color.border.hover": {
@@ -1015,6 +1029,13 @@
           "name": "even-border-control",
           "reference": "options.color.neutral.6",
           "description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative.",
+          "type": "color"
+        },
+        "decision.color.border.focus": {
+          "value": "rgb(31.3725490196% 31.3725490196% 31.3725490196%)",
+          "name": "even-border-focus",
+          "reference": "options.color.neutral.9",
+          "description": "Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color.",
           "type": "color"
         },
         "decision.color.border.interaction": {
@@ -1351,6 +1372,27 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.control": {
+          "value": "1px",
+          "name": "even-size-border-control",
+          "reference": "options.stroke.thin",
+          "description": "Persistent control border width; keep unchanged between rest and focus to preserve geometry.",
+          "type": "dimension"
+        },
+        "decision.size.focus.inset": {
+          "value": "1px",
+          "name": "even-size-focus-inset",
+          "reference": "options.stroke.thin",
+          "description": "Additional inward emphasis for focus expressed through an inset shadow; adds no layout width.",
+          "type": "dimension"
+        },
+        "decision.size.focus.outline": {
+          "value": "2px",
+          "name": "even-size-focus-outline",
+          "reference": "options.stroke.strong",
+          "description": "Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset.",
           "type": "dimension"
         },
         "decision.space.gap.tight": {
@@ -2321,6 +2363,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.stroke.thin": {
+          "value": "1px",
+          "name": "even-stroke-thin",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
+        "options.stroke.strong": {
+          "value": "2px",
+          "name": "even-stroke-strong",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
         "options.font.mono": {
           "value": "'Geist Mono Variable', ui-monospace, monospace",
           "name": "even-font-mono",
@@ -2413,10 +2469,10 @@
           "type": "color"
         },
         "decision.color.border.default": {
-          "value": "oklch(85% 0 0)",
+          "value": "oklch(92% 0 0)",
           "name": "even-border-default",
-          "reference": "options.color.neutral.4",
-          "description": "",
+          "reference": "options.color.neutral.3",
+          "description": "Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control.",
           "type": "color"
         },
         "decision.color.border.hover": {
@@ -2438,6 +2494,13 @@
           "name": "even-border-control",
           "reference": "options.color.neutral.6",
           "description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative.",
+          "type": "color"
+        },
+        "decision.color.border.focus": {
+          "value": "oklch(43% 0 0)",
+          "name": "even-border-focus",
+          "reference": "options.color.neutral.9",
+          "description": "Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color.",
           "type": "color"
         },
         "decision.color.border.interaction": {
@@ -2774,6 +2837,27 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.control": {
+          "value": "1px",
+          "name": "even-size-border-control",
+          "reference": "options.stroke.thin",
+          "description": "Persistent control border width; keep unchanged between rest and focus to preserve geometry.",
+          "type": "dimension"
+        },
+        "decision.size.focus.inset": {
+          "value": "1px",
+          "name": "even-size-focus-inset",
+          "reference": "options.stroke.thin",
+          "description": "Additional inward emphasis for focus expressed through an inset shadow; adds no layout width.",
+          "type": "dimension"
+        },
+        "decision.size.focus.outline": {
+          "value": "2px",
+          "name": "even-size-focus-outline",
+          "reference": "options.stroke.strong",
+          "description": "Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset.",
           "type": "dimension"
         },
         "decision.space.gap.tight": {
@@ -3746,6 +3830,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.stroke.thin": {
+          "value": "1px",
+          "name": "even-stroke-thin",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
+        "options.stroke.strong": {
+          "value": "2px",
+          "name": "even-stroke-strong",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
         "options.font.mono": {
           "value": "'Geist Mono Variable', ui-monospace, monospace",
           "name": "even-font-mono",
@@ -3838,10 +3936,10 @@
           "type": "color"
         },
         "decision.color.border.default": {
-          "value": "rgb(28.2352941176% 28.2352941176% 28.2352941176%)",
+          "value": "rgb(22.7450980392% 22.7450980392% 22.7450980392%)",
           "name": "even-border-default",
-          "reference": "options.color.neutral.4",
-          "description": "",
+          "reference": "options.color.neutral.3",
+          "description": "Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control.",
           "type": "color"
         },
         "decision.color.border.hover": {
@@ -3863,6 +3961,13 @@
           "name": "even-border-control",
           "reference": "options.color.neutral.6",
           "description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative.",
+          "type": "color"
+        },
+        "decision.color.border.focus": {
+          "value": "rgb(72.9411764706% 72.9411764706% 72.9411764706%)",
+          "name": "even-border-focus",
+          "reference": "options.color.neutral.9",
+          "description": "Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color.",
           "type": "color"
         },
         "decision.color.border.interaction": {
@@ -4199,6 +4304,27 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.control": {
+          "value": "1px",
+          "name": "even-size-border-control",
+          "reference": "options.stroke.thin",
+          "description": "Persistent control border width; keep unchanged between rest and focus to preserve geometry.",
+          "type": "dimension"
+        },
+        "decision.size.focus.inset": {
+          "value": "1px",
+          "name": "even-size-focus-inset",
+          "reference": "options.stroke.thin",
+          "description": "Additional inward emphasis for focus expressed through an inset shadow; adds no layout width.",
+          "type": "dimension"
+        },
+        "decision.size.focus.outline": {
+          "value": "2px",
+          "name": "even-size-focus-outline",
+          "reference": "options.stroke.strong",
+          "description": "Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset.",
           "type": "dimension"
         },
         "decision.space.gap.tight": {
@@ -5169,6 +5295,20 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.stroke.thin": {
+          "value": "1px",
+          "name": "even-stroke-thin",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
+        "options.stroke.strong": {
+          "value": "2px",
+          "name": "even-stroke-strong",
+          "reference": null,
+          "description": "",
+          "type": "dimension"
+        },
         "options.font.mono": {
           "value": "'Geist Mono Variable', ui-monospace, monospace",
           "name": "even-font-mono",
@@ -5261,10 +5401,10 @@
           "type": "color"
         },
         "decision.color.border.default": {
-          "value": "oklch(40% 0 0)",
+          "value": "oklch(35% 0 0)",
           "name": "even-border-default",
-          "reference": "options.color.neutral.4",
-          "description": "",
+          "reference": "options.color.neutral.3",
+          "description": "Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control.",
           "type": "color"
         },
         "decision.color.border.hover": {
@@ -5286,6 +5426,13 @@
           "name": "even-border-control",
           "reference": "options.color.neutral.6",
           "description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative.",
+          "type": "color"
+        },
+        "decision.color.border.focus": {
+          "value": "oklch(79% 0 0)",
+          "name": "even-border-focus",
+          "reference": "options.color.neutral.9",
+          "description": "Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color.",
           "type": "color"
         },
         "decision.color.border.interaction": {
@@ -5622,6 +5769,27 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.control": {
+          "value": "1px",
+          "name": "even-size-border-control",
+          "reference": "options.stroke.thin",
+          "description": "Persistent control border width; keep unchanged between rest and focus to preserve geometry.",
+          "type": "dimension"
+        },
+        "decision.size.focus.inset": {
+          "value": "1px",
+          "name": "even-size-focus-inset",
+          "reference": "options.stroke.thin",
+          "description": "Additional inward emphasis for focus expressed through an inset shadow; adds no layout width.",
+          "type": "dimension"
+        },
+        "decision.size.focus.outline": {
+          "value": "2px",
+          "name": "even-size-focus-outline",
+          "reference": "options.stroke.strong",
+          "description": "Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset.",
           "type": "dimension"
         },
         "decision.space.gap.tight": {

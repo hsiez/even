@@ -68,6 +68,12 @@ export const contrastPairs = [
       purpose: "Essential control boundary against this surface",
     },
     {
+      foreground: "border.focus",
+      background,
+      minimum: 3,
+      purpose: "In-place focus boundary against this surface",
+    },
+    {
       foreground: "border.invalid",
       background,
       minimum: 3,

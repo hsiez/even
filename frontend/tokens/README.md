@@ -26,6 +26,8 @@ Style Dictionary loads and merges JSON, resolves aliases (failing on missing/cir
 - `shadows.json`: zero-chroma OKLCH black cast-shadow ink at 16% alpha, plus a soft shadow geometry using dimension options. The same black ink works in both themes; it is separate from theme-dependent gray-alpha overlays and the stronger modal scrim.
 - `dimensions.json`: shared dimension scale for spacing and sizing: `0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512, 640, 768` px-equivalents at a 16px root.
 
+The same file defines fixed-pixel `options.stroke.thin` (1px) and `options.stroke.strong` (2px), separate from the rem layout scale. These resolve through `size.border.control`, `size.focus.inset`, and `size.focus.outline`. The search field combines its persistent border with an inset shadow for focus; forced-colors mode uses the outline width and its negative offset. These decisions are shown in Storybook’s Sizing story, and stroke options in Options.
+
 Dimension keys are stable labels for reference pixel equivalents; values use rem. For example:
 
 ```json
@@ -39,7 +41,7 @@ Dimension keys are stable labels for reference pixel equivalents; values use rem
 }
 ```
 
-Do not force `html { font-size: 16px }` to make the equivalents literal. Rem units let spacing and control minimum sizes follow root text sizing. Browser zoom enlarges both px and rem; their distinction is their relationship to the root font size. Borders and intentionally fixed details may use px when later introduced. Responsive widths remain layout decisions; panel tokens are preferred sizes, not inflexible widths.
+Do not force `html { font-size: 16px }` to make the equivalents literal. Rem units let spacing and control minimum sizes follow root text sizing. Browser zoom enlarges both px and rem; their distinction is their relationship to the root font size. Borders and focus strokes deliberately use fixed px options, independently of the rem layout scale. Responsive widths remain layout decisions; panel tokens are preferred sizes, not inflexible widths.
 
 This curated scale follows the Refactoring UI reference supplied in the design discussion: fine increments at the small end and more separation at the large end. Carbon uses multiples of 2/4/8 and a similar spacing progression; Atlassian includes fractional steps around its 8px base. Our exact set is an Even decision, not a verbatim requirement from either system.
 
@@ -52,11 +54,12 @@ References:
 
 ## Decisions
 
-- `colors.json`: semantic aliases for surfaces, text, actions, selection/focus and status. Same names in both themes; values follow the theme's options. Controls and focus use step 6. `selection.indicator` and `border.interaction` use blue step 6 for persistent selection marks and pointer-emphasized edges independently of `focus.ring`. `border.invalid` uses red step 9 independently of error text; neutral actions use fills 7/8 and their explicit on-fill foregrounds (including `action.hover-foreground`). Text uses 9/10. Strong-fill boundaries use `fill.border.<family>` (step 9), and filled actions use `action.border` for a persistent edge through hover. `neutral` replaces the former `gray` scale; the old Geist `gray-alpha` snapshot was removed; a new `gray-alpha` scale is derived from Even’s current neutrals as described below.
+- `colors.json`: semantic aliases for surfaces, text, actions, selection/focus and status. Same names in both themes; values follow the theme's options. Control boundaries and outer focus rings use step 6. In-place focus boundaries use neutral step 9 through `border.focus`, independently of `focus.ring`. `selection.indicator` and `border.interaction` use blue step 6 for persistent selection marks and pointer-emphasized edges independently of `focus.ring`. `border.invalid` uses red step 9 independently of error text; neutral actions use fills 7/8 and their explicit on-fill foregrounds (including `action.hover-foreground`). Text uses 9/10. Strong-fill boundaries use `fill.border.<family>` (step 9), and filled actions use `action.border` for a persistent edge through hover. `neutral` replaces the former `gray` scale; the old Geist `gray-alpha` snapshot was removed; a new `gray-alpha` scale is derived from Even’s current neutrals as described below.
+  `border.default` deliberately uses neutral step 3 for subtle layout and table-header dividers: lighter in light mode and darker in dark mode than the palette’s step-4 border. Meaningful control outlines continue to use `border.control` at step 6.
 - `shadows.json`: `shadow.floating` aliases the soft shadow option for menus, selects, popovers, tooltips and dialog panels. The decision includes offset, blur, spread and ink. Use visual purpose, rather than z-index, to decide where it applies.
 - `spacing.json`: relationships (`gap.tight`, `gap.related`, `gap.group`, `gap.section`) and insets (`tight`, `compact`, `default`, `spacious`). Gaps separate elements; insets provide internal padding. The small inset and tight gap both start at 4px-equivalent but can change independently.
 - `typography.json`: `decision.font.data` selects the monospace stack for dense technical and tabular data. TraceTable, payloads and code consume the generated `--even-font-data`. `decision.font.ui` selects the system sans-serif stack for UI text, including Agent and Operation columns and their headers. Other typography properties remain provisional.
-- `sizing.json`: icon dimensions, control minimum heights, preferred panel/navigation/field widths, and control/panel corner radii. Flexible fields use `size.field.preferred`, independent of navigation sizing.
+- `sizing.json`: icon dimensions, control minimum heights, preferred panel/navigation/field widths, control/panel corner radii, and shared border/focus widths. Flexible fields use `size.field.preferred`, independent of navigation sizing.
 
 ```json
 {

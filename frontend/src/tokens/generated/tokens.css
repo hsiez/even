@@ -315,6 +315,8 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-stroke-thin: 1px;
+  --even-stroke-strong: 2px;
   --even-font-mono:
     "Geist Mono Variable", ui-monospace, monospace; /** Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono. */
   --even-font-sans:
@@ -337,12 +339,17 @@
   ); /** Navigational text links on page and secondary surfaces. */
   --even-text-primary: var(--even-palette-neutral-10);
   --even-text-secondary: var(--even-palette-neutral-9);
-  --even-border-default: var(--even-palette-neutral-4);
+  --even-border-default: var(
+    --even-palette-neutral-3
+  ); /** Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control. */
   --even-border-hover: var(--even-palette-neutral-5);
   --even-border-active: var(--even-palette-neutral-6);
   --even-border-control: var(
     --even-palette-neutral-6
   ); /** Step 6 is the meaningful control boundary; steps 4–5 remain decorative. */
+  --even-border-focus: var(
+    --even-palette-neutral-9
+  ); /** Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color. */
   --even-border-interaction: var(
     --even-palette-blue-6
   ); /** Emphasized edge during pointer hover or drag, independent of keyboard focus. */
@@ -449,6 +456,15 @@
   --even-size-field-preferred: var(
     --even-dimension-256
   ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
+  --even-size-border-control: var(
+    --even-stroke-thin
+  ); /** Persistent control border width; keep unchanged between rest and focus to preserve geometry. */
+  --even-size-focus-inset: var(
+    --even-stroke-thin
+  ); /** Additional inward emphasis for focus expressed through an inset shadow; adds no layout width. */
+  --even-size-focus-outline: var(
+    --even-stroke-strong
+  ); /** Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset. */
   --even-space-gap-tight: var(--even-dimension-4);
   --even-space-gap-related: var(--even-dimension-8);
   --even-space-gap-group: var(--even-dimension-16);
@@ -785,6 +801,8 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-stroke-thin: 1px;
+  --even-stroke-strong: 2px;
   --even-font-mono:
     "Geist Mono Variable", ui-monospace, monospace; /** Self-hosted Geist Mono variable font with monospace fallbacks. Assets are supplied by @fontsource-variable/geist-mono. */
   --even-font-sans:
@@ -807,12 +825,17 @@
   ); /** Navigational text links on page and secondary surfaces. */
   --even-text-primary: var(--even-palette-neutral-10);
   --even-text-secondary: var(--even-palette-neutral-9);
-  --even-border-default: var(--even-palette-neutral-4);
+  --even-border-default: var(
+    --even-palette-neutral-3
+  ); /** Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control. */
   --even-border-hover: var(--even-palette-neutral-5);
   --even-border-active: var(--even-palette-neutral-6);
   --even-border-control: var(
     --even-palette-neutral-6
   ); /** Step 6 is the meaningful control boundary; steps 4–5 remain decorative. */
+  --even-border-focus: var(
+    --even-palette-neutral-9
+  ); /** Strong neutral boundary for an in-place focus treatment, independent of the outer focus.ring color. */
   --even-border-interaction: var(
     --even-palette-blue-6
   ); /** Emphasized edge during pointer hover or drag, independent of keyboard focus. */
@@ -919,6 +942,15 @@
   --even-size-field-preferred: var(
     --even-dimension-256
   ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
+  --even-size-border-control: var(
+    --even-stroke-thin
+  ); /** Persistent control border width; keep unchanged between rest and focus to preserve geometry. */
+  --even-size-focus-inset: var(
+    --even-stroke-thin
+  ); /** Additional inward emphasis for focus expressed through an inset shadow; adds no layout width. */
+  --even-size-focus-outline: var(
+    --even-stroke-strong
+  ); /** Visible focus outline width, including the inset system-color fallback when shadows are suppressed. Use its negative for an inward outline offset. */
   --even-space-gap-tight: var(--even-dimension-4);
   --even-space-gap-related: var(--even-dimension-8);
   --even-space-gap-group: var(--even-dimension-16);

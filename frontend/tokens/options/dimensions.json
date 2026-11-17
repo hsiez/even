@@ -143,6 +143,22 @@
       },
       "$type": "dimension",
       "$description": "Curated dimension options: mainly 4px multiples, a 2px fine adjustment, and progressively larger gaps. Shared by spacing and sizing decisions."
+    },
+    "stroke": {
+      "$type": "dimension",
+      "$description": "Fixed CSS-pixel stroke options for borders and focus indicators; independent of the rem-based layout scale.",
+      "thin": {
+        "$value": {
+          "value": 1,
+          "unit": "px"
+        }
+      },
+      "strong": {
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        }
+      }
     }
   }
 }

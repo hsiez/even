@@ -1,0 +1,269 @@
+/* Page composition only. Shared controls retain their token-backed defaults. */
+.even-home {
+  min-height: 100dvh;
+  border: 0;
+}
+.even-home > main {
+  padding: 0;
+}
+.even-home-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--even-space-gap-section);
+}
+.even-home-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--even-space-gap-related);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.even-home-mark {
+  display: grid;
+  place-items: center;
+  width: var(--even-size-control-compact);
+  height: var(--even-size-control-compact);
+  border: 1px solid var(--even-border-control);
+  border-radius: var(--even-size-radius-panel);
+  font-family: var(--even-font-data);
+  font-size: 1.25rem;
+}
+.even-home-workspace {
+  display: grid;
+  gap: var(--even-space-gap-tight);
+  overflow-wrap: anywhere;
+}
+.even-home-workspace > span,
+.even-home-agent-heading,
+.even-home-sidebar-note,
+.even-home-breadcrumb {
+  color: var(--even-text-secondary);
+}
+.even-home-agent-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.even-home-agent-heading h2 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.even-home-agents {
+  display: grid;
+  gap: var(--even-space-gap-tight);
+  list-style: none;
+  margin: calc(-1 * var(--even-space-gap-group)) 0 0;
+  padding: 0;
+}
+.even-home-agents .even-button {
+  justify-content: space-between;
+  width: 100%;
+  padding-inline: var(--even-space-inset-compact);
+  text-align: start;
+}
+.even-home-agents .even-button[aria-pressed="true"] {
+  background: var(--even-selection-background);
+  color: var(--even-selection-foreground);
+}
+.even-home-count {
+  font-family: var(--even-font-data);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.even-home-sidebar-note {
+  margin-block: auto 0;
+  font-size: 0.75rem;
+}
+.even-home-control-area {
+  background: var(--even-surface-secondary);
+  border-bottom: 1px solid var(--even-border-default);
+}
+.even-home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-group);
+  padding: var(--even-space-inset-default) var(--even-space-inset-spacious);
+  border-bottom: 1px solid var(--even-border-default);
+}
+.even-home-header h1 {
+  font-size: 1.75rem;
+  letter-spacing: -0.035em;
+}
+.even-home-breadcrumb {
+  margin: 0 0 var(--even-space-gap-related);
+  font-size: 0.75rem;
+}
+.even-home-breadcrumb span {
+  margin-inline: var(--even-space-gap-tight);
+}
+.even-home-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-related);
+}
+.even-home-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-related);
+}
+.even-home-data-label {
+  padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+  color: var(--even-text-secondary);
+  border: 1px solid var(--even-border-default);
+  border-radius: var(--even-size-radius-control);
+  font-size: 0.75rem;
+}
+.even-home-controls {
+  padding: var(--even-space-inset-default) var(--even-space-inset-spacious);
+}
+.even-home-results {
+  padding: var(--even-space-inset-default) var(--even-space-inset-default)
+    var(--even-space-inset-spacious);
+  min-width: 0;
+}
+.even-home .even-trace-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.even-home-results-status {
+  /* Announce changing search results without a visible count or layout row. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.even-home-control-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--even-space-gap-related);
+  min-height: var(--even-size-control-default);
+}
+.even-home-inspector-title {
+  margin: 0 0 var(--even-space-gap-group);
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 48rem) {
+  .even-home-sidebar {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--even-space-gap-group);
+  }
+  .even-home-brand {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+  }
+  .even-home-workspace,
+  .even-home-agent-heading,
+  .even-home-sidebar-note {
+    display: none;
+  }
+  .even-home-agents {
+    display: flex;
+    min-width: 0;
+    overflow-x: auto;
+    /* Leave room for the existing keyboard-focus outline inside the scroller. */
+    padding: var(--even-space-inset-tight);
+    margin: 0;
+  }
+  .even-home-agents li {
+    flex-shrink: 0;
+  }
+  .even-home-agents .even-button {
+    gap: var(--even-space-gap-related);
+  }
+  .even-home > main {
+    padding: 0;
+  }
+  .even-home-header,
+  .even-home-controls {
+    padding: var(--even-space-inset-default);
+  }
+}
+.even-home-controls .even-trace-search {
+  flex: 1 1 var(--even-size-field-preferred);
+}
+.even-home-controls .even-trace-toolbar {
+  align-items: start;
+  margin-bottom: 0;
+}
+.even-home-controls .even-trace-toolbar > .even-button {
+  align-self: center;
+}
+.even-home .even-trace-operation-detail > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.even-home mark {
+  color: var(--even-selection-foreground);
+  background: var(--even-selection-background);
+}
+.even-home-capture-note {
+  margin: var(--even-space-gap-related) 0 0;
+  font-size: 0.75rem;
+  color: var(--even-text-secondary);
+}
+.even-home-match-evidence {
+  margin-block: var(--even-space-gap-group);
+  padding: var(--even-space-inset-compact);
+  background: var(--even-surface-secondary);
+  border: 1px solid var(--even-border-default);
+  border-radius: var(--even-size-radius-control);
+}
+.even-home-match-evidence h3 {
+  margin-top: 0;
+}
+.even-home-match-evidence ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.even-home-match-evidence li + li {
+  margin-top: var(--even-space-gap-group);
+}
+.even-home-match-evidence .even-button {
+  text-align: start;
+  justify-content: start;
+  white-space: normal;
+}
+.even-home-match-evidence p {
+  margin-block: var(--even-space-gap-tight);
+  overflow-wrap: anywhere;
+}
+.even-home-match-evidence small {
+  overflow-wrap: anywhere;
+  color: var(--even-text-secondary);
+}
+@media (max-width: 48rem) {
+  .even-home-controls .even-trace-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .even-home-controls .even-trace-search {
+    flex: auto;
+  }
+  .even-home-controls .even-trace-toolbar > .even-button {
+    align-self: flex-start;
+  }
+}
