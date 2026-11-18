@@ -22,7 +22,7 @@ export const badRequest = (message) =>
   Object.assign(new Error(message), { status: 400 });
 
 export function validateSearch(options = {}) {
-  const { q = '', agentId, sort = 'latest', limit = 50, cursor } = options;
+  const { q = '', agentId, sort = 'latest', direction = 'descending', limit = 50, cursor } = options;
   const parsed = parseTraceQuery(q);
   if (parsed.error) throw badRequest(parsed.error);
   if (agentId !== undefined && (typeof agentId !== 'string' || !agentId))
@@ -33,12 +33,14 @@ export function validateSearch(options = {}) {
     );
   if (!Number.isInteger(limit) || limit < 1 || limit > 100)
     throw badRequest('limit must be an integer from 1 to 100.');
+  if (!['ascending', 'descending'].includes(direction))
+    throw badRequest('direction must be ascending or descending.');
   if (
     cursor !== undefined &&
     (typeof cursor !== 'string' || cursor.length > 2048)
   )
     throw badRequest('Invalid search cursor.');
-  return { q, agentId, sort, limit, cursor, parsed };
+  return { q, agentId, sort, direction, limit, cursor, parsed };
 }
 
 // Text matching remains literal substring matching. Trigrams narrow candidates
@@ -512,7 +514,7 @@ export class TraceSearchIndex {
     try {
       const state = this.db.prepare('SELECT * FROM state WHERE id=1').get();
       const identity = hash(
-        JSON.stringify([options.q, options.agentId, options.sort])
+        JSON.stringify([options.q, options.agentId, options.sort, options.direction])
       );
       const scopeHash = hash(JSON.stringify(scopes));
       let cursor;
@@ -554,12 +556,14 @@ export class TraceSearchIndex {
         .prepare(`SELECT COUNT(*) AS count FROM traces t WHERE ${where}`)
         .get(...params).count;
       const column = orderColumns[options.sort];
+      const comparison = options.direction === 'ascending' ? '>' : '<';
+      const direction = options.direction === 'ascending' ? 'ASC' : 'DESC';
       const paging = cursor
-        ? ` AND (t.${column} < ? OR (t.${column} = ? AND t.pk > ?))`
+        ? ` AND (t.${column} ${comparison} ? OR (t.${column} = ? AND t.pk > ?))`
         : '';
       const rows = this.db
         .prepare(
-          `SELECT t.* FROM traces t WHERE ${where}${paging} ORDER BY t.${column} DESC,t.pk ASC LIMIT ?`
+          `SELECT t.* FROM traces t WHERE ${where}${paging} ORDER BY t.${column} ${direction},t.pk ASC LIMIT ?`
         )
         .all(
           ...params,

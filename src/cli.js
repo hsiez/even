@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { loadEve } from './eve-adapter.js';
 import { startServer } from './server.js';
+import { openBrowser } from './open-browser.js';
 
 try {
   const { values } = parseArgs({
@@ -10,11 +11,12 @@ try {
       project: { type: 'string', default: process.cwd() },
       port: { type: 'string', default: '0' },
       'eve-headers': { type: 'string' },
+      'no-open': { type: 'boolean', default: false },
       help: { type: 'boolean', short: 'h' },
     },
   });
   if (values.help) {
-    console.log('Usage: even [--project PATH] [--port PORT] [--eve-headers JSON_FILE]\nStarts a localhost server with a fresh bearer token.');
+    console.log('Usage: even [--project PATH] [--port PORT] [--eve-headers JSON_FILE] [--no-open]\nStarts the local workbench and opens it in your browser.');
   } else {
     const port = Number(values.port);
     if (!/^\d+$/.test(values.port) || !Number.isInteger(port) || port > 65535) {
@@ -36,7 +38,10 @@ try {
     }
     const adapter = await loadEve(values.project);
     const server = await startServer(adapter, { port, eveHeaders });
-    console.log(JSON.stringify({ url: server.url, token: server.token, project: adapter.project, eveVersion: adapter.version }));
+    console.log(JSON.stringify({ url: server.url, browserUrl: server.browserUrl, token: server.token, project: adapter.project, eveVersion: adapter.version }));
+    if (!values['no-open']) openBrowser(server.browserUrl, {
+      onFailure: () => console.error('Could not open a browser automatically. Open the browserUrl printed above.'),
+    });
     let stopping = false;
     const stop = async () => {
       if (stopping) return;

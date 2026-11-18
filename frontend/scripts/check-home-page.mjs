@@ -137,15 +137,19 @@ export async function checkHomePage(page, base, theme, axe) {
   await page.getByRole("button", { name: "Reset view" }).click();
   assert.match(await resultCount.innerText(), /13 traces · All agents/);
 
-  await page.getByRole("button", { name: "Duration", exact: true }).click();
-  assert.match(
-    await page.locator(".even-trace-table tbody tr").last().innerText(),
-    /Unknown duration/,
+  assert.equal(
+    await page.getByRole("button", { name: "Duration", exact: true }).count(),
+    0,
   );
-  await page.getByRole("button", { name: "Duration", exact: true }).click();
-  assert.match(
-    await page.locator(".even-trace-table tbody tr").last().innerText(),
-    /Unknown duration/,
+  assert.equal(
+    await page.getByRole("button", { name: "Started", exact: true }).count(),
+    0,
+  );
+  assert.equal(
+    await page
+      .getByRole("columnheader", { name: "Started" })
+      .getAttribute("aria-sort"),
+    "descending",
   );
 
   for (const width of [1280, 768, 390]) {

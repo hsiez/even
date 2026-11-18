@@ -8,6 +8,7 @@
   },
   "files": [
     "src",
+    "frontend/dist",
     "README.md",
     "LICENSE",
     "openapi.yaml"
@@ -18,10 +19,12 @@
   "scripts": {
     "dev:ui": "npm --prefix frontend run dev",
     "build:ui": "npm --prefix frontend run build",
+    "prepack": "npm run build:ui >&2",
     "start": "node src/cli.js",
     "test": "node --test test/*.test.js",
     "test:contract": "node --test test/openapi.test.js",
     "test:ui": "npm --prefix frontend test",
+    "test:app": "npm run build:ui && node frontend/scripts/check-app.mjs",
     "storybook": "npm --prefix frontend run storybook",
     "build-storybook": "npm --prefix frontend run build-storybook",
     "test:all": "npm test && npm run test:ui"

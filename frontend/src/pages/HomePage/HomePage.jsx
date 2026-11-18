@@ -2,6 +2,7 @@ import React, { useEffect, useId, useState } from "react";
 import {
   Button,
   InspectorPanel,
+  Notice,
   ResultsState,
   Sidebar,
   SpanDetails,
@@ -21,72 +22,93 @@ import {
   removeQueryToken,
   matchExcerpt,
 } from "../../search/traceSearch";
+import { useTraceData, useTraceDetail } from "./useTraceData";
 
-const sortValue = (trace, key) =>
-  key === "startedAt"
-    ? trace.startedAt == null
-      ? NaN
-      : Date.parse(trace.startedAt)
-    : trace.durationMs == null || trace.durationMs < 0
-      ? NaN
-      : trace.durationMs;
+const startedAt = (trace) =>
+  trace.startedAt == null ? NaN : Date.parse(trace.startedAt);
 
 // The page coordinates supplied view models. Generic controls own their interactions.
 export function HomePage({
   workspaceName = "Workspace",
   agents = [],
-  traces = [],
+  traces: suppliedTraces = [],
   actions,
   dataLabel,
-  loading = false,
-  error,
-  onRefresh,
+  loading: suppliedLoading = false,
+  error: suppliedError,
+  onRefresh: suppliedRefresh,
   refreshing = false,
   initialQuery = "",
+  initialAgentId = "",
+  allowAllAgents = true,
+  dataSource,
 }) {
   const agentsLabel = useId();
-  const [agentId, setAgentId] = useState("");
+  const [agentId, setAgentId] = useState(initialAgentId);
   const [query, setQuery] = useState(initialQuery);
   const [recentQueries, setRecentQueries] = useState([]);
   const [detailTab, setDetailTab] = useState("spans");
-  const [sort, setSort] = useState({
-    key: "startedAt",
-    direction: "descending",
-  });
+  const [columnWidths, setColumnWidths] = useState({});
   const [selection, setSelection] = useState();
   const [spanId, setSpanId] = useState();
   const [expandedSpanIds, setExpandedSpanIds] = useState([]);
+  const remote = useTraceData(dataSource, { agentId, query });
+  const traces = dataSource
+    ? remote.results.map((result) => result.trace)
+    : suppliedTraces;
+  const loading = suppliedLoading || (!!dataSource && remote.loading);
+  const error = suppliedError || (dataSource && remote.error);
+  const onRefresh = dataSource ? remote.refresh : suppliedRefresh;
   const activeAgent = agents.find((agent) => agent.id === agentId);
   const scope = activeAgent
     ? traces.filter((trace) => trace.agentId === activeAgent.id)
     : traces;
   const normalizedQuery = query.trim();
   const parsed = parseTraceQuery(query);
-  const searchResults = searchTraces(scope, parsed);
+  const searchResults = dataSource
+    ? remote.results
+    : searchTraces(scope, parsed);
   const matchesByTrace = new Map(
     searchResults.map((result) => [result.trace.traceId, result.matches]),
   );
   const filtered = searchResults
     .map((result) => result.trace)
     .sort((a, b) => {
-      const left = sortValue(a, sort.key),
-        right = sortValue(b, sort.key);
-      // Missing timings remain last in either direction.
+      if (dataSource) return 0; // The backend orders the full result set before pagination.
+      const left = startedAt(a),
+        right = startedAt(b);
+      // The explorer always shows the most recent traces first; unknowns last.
       if (!Number.isFinite(left)) return Number.isFinite(right) ? 1 : 0;
       if (!Number.isFinite(right)) return -1;
-      return (sort.direction === "ascending" ? 1 : -1) * (left - right);
+      return right - left;
     });
+  const selectedSummary =
+    (!error || dataSource) &&
+    (filtered.find((trace) => trace.traceId === selection?.traceId) ??
+      (dataSource ? selection?.summary : undefined));
+  const detail = useTraceDetail(dataSource, agentId, selectedSummary?.traceId);
   const selected =
-    !error && filtered.find((trace) => trace.traceId === selection);
+    selectedSummary &&
+    (dataSource
+      ? { ...selectedSummary, spans: detail.trace?.spans ?? [] }
+      : selectedSummary);
+  useEffect(() => {
+    if (!detail.trace) return;
+    const next =
+      spanId ?? detail.trace.spans?.find((span) => !span.parentSpanId)?.spanId;
+    setSpanId(next);
+    setExpandedSpanIds(expandedAncestors(detail.trace.spans ?? [], next));
+  }, [detail.trace]);
   useEffect(() => {
     if (
+      !dataSource &&
       selection &&
-      (error || !traces.some((trace) => trace.traceId === selection))
+      (error || !traces.some((trace) => trace.traceId === selection.traceId))
     ) {
       setSelection(undefined);
       setSpanId(undefined);
     }
-  }, [error, traces, selection]);
+  }, [dataSource, error, traces, selection]);
   function changeFilter(update) {
     setSelection(undefined);
     setSpanId(undefined);
@@ -94,7 +116,7 @@ export function HomePage({
   }
   function clearFilters() {
     changeFilter(() => {
-      setAgentId("");
+      if (allowAllAgents) setAgentId("");
       setQuery("");
     });
   }
@@ -102,7 +124,7 @@ export function HomePage({
     ...parsed.tokens
       .filter((token) => token.field !== "text")
       .map((token) => ({ id: `query:${token.start}`, label: token.raw })),
-    ...(activeAgent
+    ...(activeAgent && allowAllAgents
       ? [{ id: "agent", label: activeAgent.name ?? activeAgent.id }]
       : []),
   ];
@@ -135,18 +157,20 @@ export function HomePage({
             <span>{agents.length}</span>
           </div>
           <ul className="even-home-agents" aria-labelledby={agentsLabel}>
-            <li>
-              <Button
-                variant="ghost"
-                aria-pressed={!activeAgent}
-                onClick={() => changeFilter(() => setAgentId(""))}
-              >
-                <span>All agents</span>
-                <span className="even-home-count" aria-hidden="true">
-                  {traces.length}
-                </span>
-              </Button>
-            </li>
+            {allowAllAgents && (
+              <li>
+                <Button
+                  variant="ghost"
+                  aria-pressed={!activeAgent}
+                  onClick={() => changeFilter(() => setAgentId(""))}
+                >
+                  <span>All agents</span>
+                  <span className="even-home-count" aria-hidden="true">
+                    {traces.length}
+                  </span>
+                </Button>
+              </li>
+            )}
             {agents.map((agent) => (
               <li key={agent.id}>
                 <Button
@@ -155,12 +179,14 @@ export function HomePage({
                   onClick={() => changeFilter(() => setAgentId(agent.id))}
                 >
                   <span>{agent.name ?? agent.id}</span>
-                  <span className="even-home-count" aria-hidden="true">
-                    {
-                      traces.filter((trace) => trace.agentId === agent.id)
-                        .length
-                    }
-                  </span>
+                  {!dataSource && (
+                    <span className="even-home-count" aria-hidden="true">
+                      {
+                        traces.filter((trace) => trace.agentId === agent.id)
+                          .length
+                      }
+                    </span>
+                  )}
                 </Button>
               </li>
             ))}
@@ -185,6 +211,19 @@ export function HomePage({
                 <p className="even-home-inspector-title">
                   {selected.label ?? selected.traceId}
                 </p>
+                {detail.loading && <Notice>Loading trace details…</Notice>}
+                {detail.error && (
+                  <Notice
+                    urgent
+                    action={
+                      <Button onClick={detail.refresh}>
+                        Retry trace details
+                      </Button>
+                    }
+                  >
+                    {detail.error}
+                  </Notice>
+                )}
                 <SpanWaterfall
                   key={selected.traceId}
                   spans={selected.spans ?? []}
@@ -202,9 +241,9 @@ export function HomePage({
                     <Tabs.Panel value="spans">
                       {(selected.spans ?? []).length ? (
                         <SpanWaterfall.Tree />
-                      ) : (
+                      ) : !detail.loading && !detail.error ? (
                         <p>No spans were captured.</p>
-                      )}
+                      ) : null}
                       {(matchesByTrace.get(selected.traceId) ?? []).some(
                         (match) => match.spanId,
                       ) && (
@@ -303,7 +342,15 @@ export function HomePage({
                       ].slice(0, 3),
                     );
                 }}
-                suggestions={searchSuggestions(query, traces, recentQueries)}
+                suggestions={searchSuggestions(query, traces, recentQueries, {
+                  tools: remote.suggestions?.tools,
+                  agents: [
+                    ...(activeAgent
+                      ? [activeAgent.id, activeAgent.name]
+                      : agents.flatMap((agent) => [agent.id, agent.name])),
+                    ...(remote.suggestions?.agents ?? []),
+                  ].filter(Boolean),
+                })}
                 error={parsed.error}
               />
             }
@@ -359,61 +406,80 @@ export function HomePage({
       <section className="even-home-results" aria-label="Trace explorer">
         <p className="even-home-results-status" role="status">
           {filtered.length} {filtered.length === 1 ? "trace" : "traces"}
+          {dataSource && ` loaded of ${remote.total}`}
           {" · "}
           {activeAgent?.name ?? activeAgent?.id ?? "All agents"}
         </p>
+        {dataSource && remote.coverage?.complete === false && (
+          <Notice>
+            Search coverage is incomplete. {remote.coverage.skippedTraces}{" "}
+            traces skipped; {remote.coverage.unreadableSegments} segments
+            unreadable.
+          </Notice>
+        )}
+        {dataSource && remote.notice && <Notice>{remote.notice}</Notice>}
         <ResultsState
           state={parsed.error && !error && !loading ? "ready" : state}
           error={error}
           onRetry={onRefresh}
-        >
-          {!parsed.error && (!loading || traces.length > 0) && (
-            <TraceTable
-              traces={filtered}
-              sort={sort}
-              onSortChange={setSort}
-              selectedTraceId={selected?.traceId}
-              renderOperationDetail={
-                normalizedQuery
-                  ? (trace) => {
-                      const matches = matchesByTrace.get(trace.traceId) ?? [];
-                      return matches[0] ? (
-                        <>
-                          <span>
-                            {matches[0].field} ·{" "}
-                            {matches[0].operation ?? "Trace metadata"}
-                            {matches.length > 1
-                              ? ` · +${matches.length - 1} matches`
-                              : ""}
-                          </span>
-                          <span>
-                            <SearchExcerpt match={matches[0]} />
-                          </span>
-                        </>
-                      ) : null;
-                    }
-                  : undefined
-              }
-              onSelectTrace={(id) => {
-                setSelection(id);
-                setDetailTab("spans");
-                const matchedSpan =
-                  matchesByTrace.get(id)?.find((match) => match.spanId)
-                    ?.spanId ??
-                  filtered
-                    .find((trace) => trace.traceId === id)
-                    ?.spans?.find((span) => !span.parentSpanId)?.spanId;
-                setSpanId(matchedSpan);
-                setExpandedSpanIds(
-                  expandedAncestors(
-                    filtered.find((trace) => trace.traceId === id)?.spans ?? [],
-                    matchedSpan,
-                  ),
-                );
-              }}
-            />
-          )}
-        </ResultsState>
+        />
+        {dataSource && error && filtered.length > 0 && (
+          <Notice>Showing previously loaded traces.</Notice>
+        )}
+        {!parsed.error && (!error || dataSource) && filtered.length > 0 && (
+          <TraceTable
+            traces={filtered}
+            reloads={dataSource ? remote.reloads : []}
+            columnWidths={columnWidths}
+            onColumnWidthsChange={setColumnWidths}
+            selectedTraceId={selected?.traceId}
+            renderOperationDetail={
+              normalizedQuery
+                ? (trace) => {
+                    const matches = matchesByTrace.get(trace.traceId) ?? [];
+                    return matches[0] ? (
+                      <>
+                        <span>
+                          {matches[0].field} ·{" "}
+                          {matches[0].operation ?? "Trace metadata"}
+                          {matches.length > 1
+                            ? ` · +${matches.length - 1} matches`
+                            : ""}
+                        </span>
+                        <span>
+                          <SearchExcerpt match={matches[0]} />
+                        </span>
+                      </>
+                    ) : null;
+                  }
+                : undefined
+            }
+            onSelectTrace={(id) => {
+              setSelection({
+                traceId: id,
+                summary: filtered.find((trace) => trace.traceId === id),
+              });
+              setDetailTab("spans");
+              const matchedSpan =
+                matchesByTrace.get(id)?.find((match) => match.spanId)?.spanId ??
+                filtered
+                  .find((trace) => trace.traceId === id)
+                  ?.spans?.find((span) => !span.parentSpanId)?.spanId;
+              setSpanId(matchedSpan);
+              setExpandedSpanIds(
+                expandedAncestors(
+                  filtered.find((trace) => trace.traceId === id)?.spans ?? [],
+                  matchedSpan,
+                ),
+              );
+            }}
+          />
+        )}
+        {dataSource && remote.nextCursor && (
+          <Button pending={remote.loading} onClick={remote.loadMore}>
+            Load more traces
+          </Button>
+        )}
       </section>
     </WorkbenchLayout>
   );

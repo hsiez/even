@@ -1,6 +1,6 @@
 import React from "react";
 import { expect, test, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HomePage } from "./HomePage";
 import { previewAgents, previewTraces } from "./previewData";
@@ -138,21 +138,41 @@ test("removing a trace from the data clears selection even if the trace later re
   expect(screen.queryByRole("complementary")).toBeNull();
 });
 
-test("sorts missing durations last in both directions and distinguishes empty/loading/error states", async () => {
+test("always orders newest first and distinguishes empty/loading/error states", async () => {
   const user = userEvent.setup();
-  const { rerender } = render(<HomePage {...props} />);
+  const { rerender } = render(
+    <HomePage
+      {...props}
+      traces={[
+        {
+          ...previewTraces[0],
+          traceId: "unknown-time",
+          label: "Missing timing",
+          startedAt: undefined,
+        },
+        ...previewTraces,
+      ]}
+    />,
+  );
   const rows = () =>
     within(screen.getByRole("table", { name: "Recorded traces" }))
       .getAllByRole("row")
       .slice(1);
-  await user.click(
-    screen.getByRole("button", { name: "Duration", exact: true }),
+  expect(
+    screen.queryByRole("button", { name: "Duration", exact: true }),
+  ).toBeNull();
+  expect(
+    screen.queryByRole("button", { name: "Started", exact: true }),
+  ).toBeNull();
+  expect(screen.getByRole("columnheader", { name: /Started/ })).toHaveAttribute(
+    "aria-sort",
+    "descending",
   );
-  expect(rows().at(-1)).toHaveTextContent("Prepare an incident response");
-  await user.click(
-    screen.getByRole("button", { name: "Duration", exact: true }),
-  );
-  expect(rows().at(-1)).toHaveTextContent("Prepare an incident response");
+  const newest = [...previewTraces].sort(
+    (a, b) => Date.parse(b.startedAt) - Date.parse(a.startedAt),
+  )[0];
+  expect(rows()[0]).toHaveTextContent(newest.label);
+  expect(rows().at(-1)).toHaveTextContent("Missing timing");
   rerender(<HomePage {...props} traces={[]} />);
   expect(screen.getByText("No recorded traces yet.")).toBeVisible();
   rerender(<HomePage {...props} traces={[]} loading />);
@@ -220,4 +240,125 @@ test("query errors are recoverable and history search explicitly includes copied
       name: /context:"deploy preview" Recent search/,
     }),
   ).toBeVisible();
+});
+
+test("live refresh preserves the mounted table, column widths, focus and inspector even beyond the first page", async () => {
+  const user = userEvent.setup();
+  const trace = previewTraces[0];
+  const { spans, ...summary } = trace;
+  const response = {
+    results: [{ trace: summary, matches: [] }],
+    total: 1,
+    nextCursor: null,
+  };
+  let completeRefresh;
+  const source = {
+    search: vi
+      .fn()
+      .mockResolvedValueOnce(response)
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            completeRefresh = resolve;
+          }),
+      )
+      .mockResolvedValue(response),
+    trace: vi.fn().mockResolvedValue({ spans }),
+  };
+  render(
+    <HomePage
+      {...props}
+      dataSource={source}
+      initialAgentId="support"
+      allowAllAgents={false}
+    />,
+  );
+  await user.click(await screen.findByRole("button", { name: trace.label }));
+  const inspector = screen.getByRole("complementary", {
+    name: "Execution inspector",
+  });
+  const child = await within(inspector).findByRole("treeitem", {
+    name: "Read deployment logs",
+  });
+  await user.click(child);
+  const table = screen.getByRole("table", { name: "Recorded traces" });
+  const resize = screen.getByRole("separator", {
+    name: "Resize Operation column",
+  });
+  resize.focus();
+  await user.keyboard("{Home}");
+  const width = resize.getAttribute("aria-valuenow");
+  expect(width).toBe("128");
+  await user.click(
+    screen.getByRole("button", { name: "Refresh", exact: true }),
+  );
+  resize.focus();
+  await waitFor(() => expect(source.search).toHaveBeenCalledTimes(2));
+  expect(screen.getByRole("table", { name: "Recorded traces" })).toBe(table);
+  expect(child).toHaveAttribute("aria-selected", "true");
+  expect(resize).toHaveFocus();
+  // The next first page need not contain the execution being inspected.
+  await act(async () =>
+    completeRefresh({
+      ...response,
+      results: [
+        {
+          trace: { ...summary, traceId: "newer", label: "Newer execution" },
+          matches: [],
+        },
+      ],
+    }),
+  );
+  expect(screen.getByRole("table", { name: "Recorded traces" })).toBe(table);
+  expect(resize).toHaveAttribute("aria-valuenow", width);
+  expect(resize).toHaveFocus();
+  expect(child).toHaveAttribute("aria-selected", "true");
+  expect(inspector).toBeVisible();
+  expect(source.trace).toHaveBeenCalledTimes(1);
+  const search = screen.getByRole("combobox", { name: "Search traces" });
+  await user.type(search, "tool:");
+  await user.keyboard("{Escape}");
+  expect(screen.queryByRole("table")).toBeNull();
+  expect(screen.queryByRole("complementary")).toBeNull();
+  await user.clear(search);
+  await user.keyboard("{Escape}");
+  await screen.findByRole("table", { name: "Recorded traces" });
+  expect(
+    screen.getByRole("separator", { name: "Resize Operation column" }),
+  ).toHaveAttribute("aria-valuenow", width);
+});
+
+test("live autocomplete uses summary tools and inventory agents while the query is incomplete", async () => {
+  const user = userEvent.setup();
+  const source = {
+    search: vi.fn().mockResolvedValue({
+      results: [
+        {
+          trace: {
+            ...previewTraces[0],
+            spans: undefined,
+            toolNames: ["read_logs"],
+          },
+          matches: [],
+        },
+      ],
+      total: 1,
+    }),
+  };
+  render(
+    <HomePage
+      {...props}
+      dataSource={source}
+      initialAgentId="support"
+      allowAllAgents={false}
+    />,
+  );
+  await screen.findByRole("button", { name: previewTraces[0].label });
+  const search = screen.getByRole("combobox", { name: "Search traces" });
+  await user.type(search, "tool:");
+  expect(screen.getByRole("option", { name: /tool:read_logs/ })).toBeVisible();
+  await user.clear(search);
+  await user.type(search, "agent:");
+  expect(screen.getByRole("option", { name: /agent:Support/ })).toBeVisible();
+  await user.keyboard("{Escape}");
 });
