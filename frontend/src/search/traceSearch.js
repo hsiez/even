@@ -205,7 +205,7 @@ export function searchTraces(traces, parsed) {
   });
 }
 
-export function searchSuggestions(query, traces, recent = []) {
+export function searchSuggestions(query, traces, recent = [], catalog = {}) {
   const examples = [
     {
       query: "tool:read_logs tool.status:error",
@@ -245,18 +245,21 @@ export function searchSuggestions(query, traces, recent = []) {
       prefix = last[2];
     const values = {
       tool: [
-        ...new Set(
-          traces.flatMap((trace) =>
-            (trace.spans ?? []).map(toolName).filter(Boolean),
-          ),
-        ),
+        ...new Set([
+          ...(catalog.tools ?? []),
+          ...traces.flatMap((trace) => [
+            ...(trace.toolNames ?? []),
+            ...(trace.spans ?? []).map(toolName).filter(Boolean),
+          ]),
+        ]),
       ],
       agent: [
-        ...new Set(
-          traces
+        ...new Set([
+          ...(catalog.agents ?? []),
+          ...traces
             .flatMap((trace) => [trace.agentId, ...(trace.agentNames ?? [])])
             .filter(Boolean),
-        ),
+        ]),
       ],
       "tool.status": ["error"],
       has: ["error"],
@@ -270,7 +273,7 @@ export function searchSuggestions(query, traces, recent = []) {
           query:
             query.slice(0, last.index) +
             (last.index ? " " : "") +
-            `${field}:${value}`,
+            `${field}:${/[\s"\\]/u.test(value) ? JSON.stringify(value) : value}`,
           description:
             field === "tool.status"
               ? "Error on the selected tool operation"

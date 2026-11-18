@@ -2,7 +2,6 @@ import { test, expect, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useTraceData, useTraceDetail } from "./useTraceData";
 
-const sort = { key: "startedAt", direction: "descending" };
 const page = (id, nextCursor = null) => ({
   results: [
     {
@@ -15,11 +14,12 @@ const page = (id, nextCursor = null) => ({
   coverage: { complete: true },
 });
 const deferred = () => {
-  let resolve;
-  const promise = new Promise((done) => {
+  let resolve, reject;
+  const promise = new Promise((done, fail) => {
     resolve = done;
+    reject = fail;
   });
-  return { promise, resolve };
+  return { promise, resolve, reject };
 };
 
 test("ignores late responses after agent and query changes and cancels old requests", async () => {
@@ -33,11 +33,11 @@ test("ignores late responses after agent and query changes and cancels old reque
   };
   const { result, rerender } = renderHook(
     (props) => useTraceData(source, props),
-    { initialProps: { agentId: "support", query: "", sort } },
+    { initialProps: { agentId: "support", query: "" } },
   );
   await waitFor(() => expect(source.search).toHaveBeenCalledTimes(1));
   const oldSignal = source.search.mock.calls[0][0].signal;
-  rerender({ agentId: "research", query: "new", sort });
+  rerender({ agentId: "research", query: "new" });
   expect(oldSignal.aborted).toBe(true);
   await waitFor(() => expect(source.search).toHaveBeenCalledTimes(2));
   await act(async () => {
@@ -62,7 +62,7 @@ test("restarts stale pagination without appending obsolete rows", async () => {
       .mockResolvedValueOnce(page("refreshed")),
   };
   const { result } = renderHook(() =>
-    useTraceData(source, { agentId: "support", query: "", sort }),
+    useTraceData(source, { agentId: "support", query: "" }),
   );
   await waitFor(() => expect(result.current.nextCursor).toBe("next"));
   await act(async () => {
@@ -76,6 +76,68 @@ test("restarts stale pagination without appending obsolete rows", async () => {
   expect(source.search.mock.calls[2][0].cursor).toBeUndefined();
 });
 
+test("refresh retains rows while pending and after a failure, then replaces them on success", async () => {
+  const refresh = deferred();
+  const source = {
+    search: vi
+      .fn()
+      .mockResolvedValueOnce(page("first"))
+      .mockReturnValueOnce(refresh.promise)
+      .mockResolvedValueOnce(page("newest")),
+  };
+  const { result } = renderHook(() =>
+    useTraceData(source, { agentId: "support", query: "" }),
+  );
+  await waitFor(() => expect(result.current.results).toHaveLength(1));
+  act(() => result.current.refresh());
+  expect(result.current.loading).toBe(true);
+  expect(result.current.results[0].trace.traceId).toBe("first");
+  await waitFor(() => expect(source.search).toHaveBeenCalledTimes(2));
+  // A refresh failure keeps useful data available to the mounted explorer.
+  await act(async () => refresh.reject(new Error("Offline")));
+  expect(result.current.error).toBe("Offline");
+  expect(result.current.results[0].trace.traceId).toBe("first");
+  act(() => result.current.refresh());
+  await waitFor(() =>
+    expect(result.current.results[0].trace.traceId).toBe("newest"),
+  );
+  expect(result.current.error).toBeUndefined();
+});
+
+test("retains observed completion metadata across queries without leaking across sources or agents", async () => {
+  const first = page("first");
+  Object.assign(first.results[0].trace, {
+    toolNames: ["read_logs"],
+    agentNames: ["Helper"],
+  });
+  const source = {
+    search: vi
+      .fn()
+      .mockResolvedValueOnce(first)
+      .mockResolvedValue({ ...page("unused"), results: [] }),
+  };
+  const { result, rerender } = renderHook(
+    ({ source, ...options }) => useTraceData(source, options),
+    {
+      initialProps: { source, agentId: "support", query: "" },
+    },
+  );
+  await waitFor(() =>
+    expect(result.current.suggestions?.tools).toEqual(["read_logs"]),
+  );
+  rerender({ source, agentId: "support", query: "tool:" });
+  expect(result.current.results).toEqual([]);
+  expect(result.current.suggestions.agents).toEqual(["support", "Helper"]);
+  expect(source.search).toHaveBeenCalledTimes(1);
+  rerender({ source, agentId: "support", query: "missing" });
+  await waitFor(() => expect(result.current.loading).toBe(false));
+  expect(result.current.suggestions.tools).toEqual(["read_logs"]);
+  rerender({ source, agentId: "research", query: "tool:" });
+  expect(result.current.suggestions).toBeUndefined();
+  rerender({ source: { search: vi.fn() }, agentId: "support", query: "tool:" });
+  expect(result.current.suggestions).toBeUndefined();
+});
+
 test("invalid queries make no request and 404 details remain local to the inspector", async () => {
   const source = {
     search: vi.fn(),
@@ -86,7 +148,7 @@ test("invalid queries make no request and 404 details remain local to the inspec
       ),
   };
   renderHook(() =>
-    useTraceData(source, { agentId: "support", query: "tool:", sort }),
+    useTraceData(source, { agentId: "support", query: "tool:" }),
   );
   expect(source.search).not.toHaveBeenCalled();
   const { result } = renderHook(() =>

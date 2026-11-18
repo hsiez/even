@@ -7,6 +7,33 @@ import {
   searchSuggestions,
 } from "./traceSearch";
 const find = (query) => searchTraces(previewTraces, parseTraceQuery(query));
+test("completes summary metadata and retained catalog values without captured spans or matching rows", () => {
+  const summaries = [
+    { agentId: "support", agentNames: ["Helper"], toolNames: ["read_logs"] },
+  ];
+  expect(
+    searchSuggestions("tool:rea", summaries).map((item) => item.query),
+  ).toContain("tool:read_logs");
+  expect(
+    searchSuggestions("agent:Hel", summaries).map((item) => item.query),
+  ).toContain("agent:Helper");
+  expect(
+    searchSuggestions("tool:", [], [], { tools: ["read_logs"] }).map(
+      (item) => item.query,
+    ),
+  ).toContain("tool:read_logs");
+  expect(
+    searchSuggestions("agent:", [], [], { agents: ["support"] }).map(
+      (item) => item.query,
+    ),
+  ).toContain("agent:support");
+  const [suggestion] = searchSuggestions("agent:", [], [], {
+    agents: ['Support "helper"'],
+  });
+  expect(parseTraceQuery(suggestion.query)).toMatchObject({
+    tokens: [{ field: "agent", value: 'Support "helper"' }],
+  });
+});
 test("searches recorded strings literally without JSON coercion", () => {
   const trace = {
     traceId: "literal-values",

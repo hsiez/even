@@ -45,12 +45,12 @@ export function createApiClient({ fetch: transport = globalThis.fetch } = {}) {
         headers: { authorization: `Bearer ${token}` },
       }),
     inventory: (options) => request("/agents", options),
-    search({ query, agentId, sort, cursor, signal }) {
+    search({ query, agentId, cursor, signal }) {
       const params = new URLSearchParams({
         q: query,
         agentId,
-        sort: sort.key === "startedAt" ? "latest" : "duration",
-        direction: sort.direction,
+        sort: "latest",
+        direction: "descending",
       });
       if (cursor) params.set("cursor", cursor);
       return request(`/traces/search?${params}`, { signal });

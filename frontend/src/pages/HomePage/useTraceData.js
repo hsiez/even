@@ -9,27 +9,35 @@ const empty = {
   loading: false,
 };
 
-export function useTraceData(source, { agentId, query, sort }) {
+export function useTraceData(source, { agentId, query }) {
   const [version, setVersion] = useState(0);
   const [state, setState] = useState(empty);
   const actions = useRef({});
-  const key = JSON.stringify([
-    agentId,
-    query,
-    sort.key,
-    sort.direction,
-    version,
-  ]);
+  const metadata = useRef({ source, agents: new Map() });
+  const resource = JSON.stringify([agentId, query]);
+  const key = JSON.stringify([resource, version]);
+  const compatible = state.source === source && state.resource === resource;
   useEffect(() => {
     actions.current = {};
+    if (metadata.current.source !== source)
+      metadata.current = { source, agents: new Map() };
     if (!source || !agentId || parseTraceQuery(query).error) {
-      setState({ ...empty, key });
+      setState({ ...empty, key, resource, source });
       return;
     }
     let alive = true,
       busy = false,
       controller;
-    let current = { ...empty, key, loading: true };
+    // Refresh the same resource in place. A new agent/query must never show
+    // another resource's rows, but refresh must not dismantle the current view.
+    let current = {
+      ...(compatible ? state : empty),
+      key,
+      resource,
+      source,
+      loading: true,
+      error: undefined,
+    };
     const publish = (next) => {
       current = next;
       if (alive) setState(next);
@@ -44,7 +52,6 @@ export function useTraceData(source, { agentId, query, sort }) {
           source.search({
             query,
             agentId,
-            sort,
             cursor,
             signal: controller.signal,
           }),
@@ -66,6 +73,27 @@ export function useTraceData(source, { agentId, query, sort }) {
           },
           matches: matches.map((match) => ({ ...match, text: match.excerpt })),
         }));
+        const known = metadata.current.agents.get(agentId) ?? {
+          tools: [],
+          agents: [],
+        };
+        metadata.current.agents.set(agentId, {
+          tools: [
+            ...new Set([
+              ...known.tools,
+              ...results.flatMap(({ trace }) => trace.toolNames ?? []),
+            ]),
+          ],
+          agents: [
+            ...new Set([
+              ...known.agents,
+              ...results.flatMap(({ trace }) => [
+                trace.agentId,
+                ...(trace.agentNames ?? []),
+              ]),
+            ]),
+          ],
+        });
         publish({
           ...current,
           ...response,
@@ -110,23 +138,30 @@ export function useTraceData(source, { agentId, query, sort }) {
     publish(current);
     actions.current.loadMore = () =>
       current.nextCursor && load(current.nextCursor, true);
-    // Debounce text entry; agent and sort changes use the same cancellable path.
-    const timer = setTimeout(() => load(), query ? 200 : 0);
+    // Debounce a new text query, while an explicit refresh starts immediately.
+    const timer = setTimeout(() => load(), query && !compatible ? 200 : 0);
     return () => {
       alive = false;
       clearTimeout(timer);
       controller?.abort();
     };
   }, [source, key]);
-  const visible =
-    state.key === key
-      ? state
-      : {
-          ...empty,
-          loading: !!source && !!agentId && !parseTraceQuery(query).error,
-        };
+  const visible = compatible
+    ? {
+        ...state,
+        loading: state.key !== key || state.loading,
+        error: state.key === key ? state.error : undefined,
+      }
+    : {
+        ...empty,
+        loading: !!source && !!agentId && !parseTraceQuery(query).error,
+      };
   return {
     ...visible,
+    suggestions:
+      metadata.current.source === source
+        ? metadata.current.agents.get(agentId)
+        : undefined,
     refresh: () => setVersion((value) => value + 1),
     loadMore: () => actions.current.loadMore?.(),
   };

@@ -76,7 +76,11 @@ Incomplete quotes, missing values, unknown fields and invalid durations show a v
 
 Each matching row shows an excerpt and its source. Select the operation to open the best matching span in the inspector. **Why this trace matched** links to other matching spans. If content was not recorded, metadata can still match, but text search cannot recover absent prompts, outputs or error details.
 
-The live browser uses actual Eve inventory and indexed search, scoped to its selected agent. Search is debounced, sorting applies globally before pagination, and **Load more traces** loads another page. Selecting a result fetches its full trace and opens the matching span; pruned traces and incomplete search coverage have explicit states. Refresh is manual. The simulated preview and Storybook remain labeled **staging data**. The shared query parser lives in `src/search/query.js` so the two use the same syntax.
+The live browser uses actual Eve inventory and indexed search, scoped to its selected agent. Search is debounced, traces are always ordered newest first across the full result set before pagination, and **Load more traces** loads another page. The explorer has no sort controls; time-window filtering is planned as a separate control. Selecting a result fetches its full trace and opens the matching span; pruned traces and incomplete search coverage have explicit states.
+
+Refresh is manual and keeps the current table, resized columns, focus and inspector while results update. An inspected execution remains open if it moves beyond the refreshed first page; detail failures stay inside the inspector.
+
+Autocomplete uses inventory agent names and tool/agent metadata observed in loaded summaries, retained per source while queries change; it is not an exhaustive catalog of every tool. The simulated preview and Storybook remain labeled **staging data**. The shared query parser lives in `src/search/query.js` so the two use the same syntax.
 
 ## Backend trace search
 

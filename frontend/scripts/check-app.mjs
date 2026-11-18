@@ -151,13 +151,87 @@ try {
     [],
   );
   await page.screenshot({ path: "/tmp/even-live-workbench-dark.png" });
+
+  const table = await page
+    .getByRole("table", { name: "Recorded traces" })
+    .elementHandle();
+  const resize = page.getByRole("separator", {
+    name: "Resize Operation column",
+  });
+  await resize.focus();
+  await resize.press("Home");
+  const width = await resize.getAttribute("aria-valuenow");
+  assert.equal(width, "128");
+  const selectedSpan = await inspector
+    .getByRole("treeitem", { selected: true })
+    .getAttribute("data-span-id");
+  let releaseSearch, startedSearch;
+  const gate = new Promise((resolve) => {
+    releaseSearch = resolve;
+  });
+  const started = new Promise((resolve) => {
+    startedSearch = resolve;
+  });
+  await page.route(
+    "**/api/v1/traces/search?**",
+    async (route) => {
+      startedSearch();
+      await gate;
+      await route.continue();
+    },
+    { times: 1 },
+  );
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await started;
+  await resize.focus();
+  assert.ok(
+    await table.evaluate((node) => node.isConnected),
+    "Refresh keeps the existing table mounted",
+  );
+  assert.ok(await inspector.isVisible(), "Refresh keeps the inspector open");
+  releaseSearch();
+  await page
+    .getByText("Loading results…", { exact: true })
+    .waitFor({ state: "hidden" });
+  assert.ok(
+    await table.evaluate((node) => node.isConnected),
+    "Successful refresh preserves table identity",
+  );
+  assert.equal(await resize.getAttribute("aria-valuenow"), width);
+  assert.ok(
+    await resize.evaluate((node) => node === document.activeElement),
+    "Refresh preserves keyboard focus",
+  );
+  assert.equal(
+    await inspector
+      .getByRole("treeitem", { selected: true })
+      .getAttribute("data-span-id"),
+    selectedSpan,
+  );
+
   await page.getByRole("button", { name: "Close inspector" }).click();
+  await search.fill("tool:");
+  await page.getByRole("option", { name: /tool:lookup/ }).waitFor();
+  await search.fill("agent:");
+  await page.getByRole("option", { name: /agent:root/ }).waitFor();
   await search.fill("");
   await search.press("Escape");
-  await page.getByRole("button", { name: "Duration", exact: true }).click();
-  await page.getByRole("button", { name: "Duration", exact: true }).click();
+  assert.equal(
+    await page.getByRole("button", { name: "Duration", exact: true }).count(),
+    0,
+  );
+  assert.equal(
+    await page.getByRole("button", { name: "Started", exact: true }).count(),
+    0,
+  );
+  assert.equal(
+    await page
+      .getByRole("columnheader", { name: "Started" })
+      .getAttribute("aria-sort"),
+    "descending",
+  );
   await page.waitForFunction(() =>
-    /^Recorded lookup 1\b/.test(
+    /^Recorded lookup 52\b/.test(
       document.querySelector(".even-trace-operation-action")?.textContent ?? "",
     ),
   );
@@ -200,7 +274,7 @@ try {
   await reopened.close();
   assert.deepEqual(errors, []);
   console.log(
-    "Verified automatic browser connection, refresh, additional tabs, new-launch handoff, real Eve search, pagination, global sorting, inspection, cookie-authenticated writes, and passive execution boundaries.",
+    "Verified automatic browser connection, refresh preserving inspector/widths/focus, retained autocomplete, additional tabs, new-launch handoff, real Eve search, pagination, newest-first ordering, inspection, cookie-authenticated writes, and passive execution boundaries.",
   );
 } finally {
   await browser?.close();

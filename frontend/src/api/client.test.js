@@ -18,7 +18,7 @@ test("consumes the launch credential before rendering and removes it from the UR
   );
 });
 
-test("uses same-origin cookie credentials and global search sort direction", async () => {
+test("uses same-origin cookie credentials and always requests newest-first search", async () => {
   const transport = vi.fn(async () => ({
     ok: true,
     json: async () => ({ results: [] }),
@@ -27,14 +27,14 @@ test("uses same-origin cookie credentials and global search sort direction", asy
   await client.search({
     query: 'output:"hello world"',
     agentId: "support",
-    sort: { key: "durationMs", direction: "ascending" },
     cursor: "next",
   });
   const [path, options] = transport.mock.calls[0];
   expect(path).not.toContain("secret");
   expect(new URL(path, "http://local").searchParams.get("direction")).toBe(
-    "ascending",
+    "descending",
   );
+  expect(new URL(path, "http://local").searchParams.get("sort")).toBe("latest");
   expect(options.headers).toBeUndefined();
   expect(options.credentials).toBe("same-origin");
   expect(options.redirect).toBe("error");

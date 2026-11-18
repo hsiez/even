@@ -19,7 +19,7 @@ The current All agents table becomes an agent-scoped view. A workspace-wide over
 | Tab                       | Initial state                                               | Closing behavior                                                          |
 | ------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
 | Traces                    | One per agent, pinned, empty query and latest-first sorting | Cannot close                                                              |
-| Additional trace explorer | Fresh query and default sorting, scoped to its agent        | Discards that view's state; keeps trace files and the shared search index |
+| Additional trace explorer | Fresh query and newest-first order, scoped to its agent     | Discards that view's state; keeps trace files and the shared search index |
 | Chat playground           | Empty draft, initially without an Eve session               | Discards the view; does not cancel execution or delete an Eve session     |
 
 The plus button opens a menu with **New trace explorer** and **New chat playground**. New tabs append to the current agent's tab strip and become active. Use distinct initial labels such as Traces 2 and Playground 1; keep labels stable as the user edits a query. Renaming, duplication, dragging, and reopening closed tabs are later enhancements.
@@ -30,7 +30,7 @@ Tabs and their state live in memory for this browser app instance. Reloading the
 
 ### Independent investigations
 
-Every trace explorer owns its query, sort, column widths, scroll position, selected trace and span, expanded spans, and inspector detail view. Opening an inspector in one tab does not open it in another. Closing the inspector returns focus to the operation in that tab.
+Every trace explorer owns its query, column widths, scroll position, selected trace and span, expanded spans, and inspector detail view. Opening an inspector in one tab does not open it in another. Closing the inspector returns focus to the operation in that tab.
 
 For example, Support can have the pinned Traces view, a second explorer with `tool:read_logs tool.status:error`, and a playground. Research has a separate set. Switching agents or tabs preserves each investigation.
 
@@ -57,7 +57,7 @@ Keep view state above tab panels so it survives panel unmounts. A small reducer 
 | Owner                 | State                                                                                    |
 | --------------------- | ---------------------------------------------------------------------------------------- |
 | Workspace page        | Selected agent, each agent's tab order and active tab                                    |
-| Trace tab record      | Query, sort, widths, scroll, trace/span selection, expanded spans, inspector view        |
+| Trace tab record      | Query, widths, scroll, trace/span selection, expanded spans, inspector view              |
 | Playground tab record | Draft, bound session ID, messages and reading position                                   |
 | Data controller       | Pending requests, cached pages, event subscriptions, replay cursor and delivery progress |
 | Existing primitives   | Keyboard navigation, primitive focus, popup state and dismissal                          |
@@ -125,11 +125,13 @@ The server admits the exact bound application origin and rejects foreign or null
 
 Browser cookie authentication also allows same-origin EventSource connections. Choose and verify the event reader during playground integration, preserving `line:index` replay, reconnect deduplication and subscription cleanup. A replay cursor belongs to its session, not to whichever tab is active.
 
-### Global sorting and request lifecycle
+### Newest-first search and request lifecycle
 
-Stack alignment adds `direction=ascending|descending`, defaulting to descending, to preserve the table’s Started and Duration controls. Direction participates in cursor identity and global ordering before pagination. Future tab controllers must retain that server ordering rather than sorting a loaded page independently.
+Every explorer uses `sort=latest&direction=descending`, ordered by the backend before pagination. The page exposes no sort controls. The shared TraceTable still supports optional sorting for other compositions, and the backend retains its general sort/direction API. Future tab controllers must preserve the server order rather than sorting one loaded page independently.
 
-Each tab keeps its own search cursor and loaded pages. A changed query, source, sort or direction clears that tab's pagination. On the existing 409 stale-cursor response, restart that tab from its first page and identify the refresh. A 503 remains a retryable availability state; incomplete index coverage must remain visible within the affected view.
+Time-window controls are follow-up work: they will narrow the newest-first stream and belong to each explorer’s query state. They require backend filtering before pagination and participation in cursor identity; this change does not implement a time-window UI or API.
+
+Each tab keeps its own search cursor and loaded pages. A changed query or source clears that tab's pagination. Refreshing the same query retains the mounted table, column widths, keyboard focus and inspector while loading or retrying. An execution absent from the new first page is not assumed deleted: keep its inspector and let trace-detail responses report actual unavailability. Autocomplete metadata comes from inventory and observed summaries, retained per source independently of matching rows. On the existing 409 stale-cursor response, restart that tab from its first page and identify the refresh. A 503 remains a retryable availability state; incomplete index coverage must remain visible within the affected view.
 
 Abort obsolete read requests or ignore their results using a request identity. A late response for a closed tab or a previous query must not update another tab. Cached searches can be shared by resource key, but independent tab state must remain independent. Creating tabs does not create more search workers or index files.
 
@@ -155,7 +157,7 @@ Keep stack alignment independently reviewable before adding workbench tabs. Play
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Agent spaces     | Initial pinned tab; no-agent state; restore separate active tabs and investigations when switching agents                                                      |
 | Tab lifecycle    | Both tab types; stable unique IDs and labels; cannot close pinned tab; active/inactive close selection and focus                                               |
-| Trace isolation  | Different queries, widths, sorting, scroll and inspectors stay independent; identical trace IDs under different agents remain distinct                         |
+| Trace isolation  | Different queries, widths, scroll and inspectors stay independent; identical trace IDs under different agents remain distinct                                  |
 | Async behavior   | Out-of-order responses, changed queries, closed tabs, errors, incomplete coverage, pagination invalidation, and reactivation refresh                           |
 | Playground       | First send creates one session; later sends reuse it; failed creation retains draft; background events continue; close does not cancel execution               |
 | Trace navigation | Session filter opens or reuses the correct agent's explorer; delayed or absent traces remain honest; explicit multi-trace mappings are supported when verified |
