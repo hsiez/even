@@ -484,6 +484,31 @@ test('pagination is deterministic, survives reopening, rejects mismatched and st
   });
 });
 
+test('ascending and descending search order paginate globally with stable ties', async (t) => {
+  const f = await fixture(t), index = f.create();
+  for (let n = 20; n <= 23; n++) {
+    const value = tool(n, 'ordered');
+    value.startTimeNs = String(BigInt(n) * 1000000000n);
+    value.endTimeNs = String(BigInt(value.startTimeNs) + BigInt(n % 2 + 1) * 1000000000n);
+    await f.write(id(n), [value]);
+  }
+  for (const sort of ['latest', 'duration']) for (const direction of ['ascending', 'descending']) {
+    const options = { q: 'tool:ordered', sort, direction, limit: 1 };
+    let cursor, rows = [];
+    do {
+      const result = await index.search({ ...options, ...(cursor ? { cursor } : {}) });
+      rows.push(...result.results.map(value => value.trace));
+      cursor = result.nextCursor;
+    } while (cursor);
+    assert.equal(new Set(rows.map(row => row.traceId)).size, 4);
+    const values = rows.map(row => sort === 'latest' ? Date.parse(row.startedAt) : row.durationMs);
+    assert.deepEqual(values, [...values].sort((a,b) => direction === 'ascending' ? a-b : b-a));
+  }
+  const page = await index.search({ q: 'tool:ordered', limit: 1 });
+  await assert.rejects(index.search({ q: 'tool:ordered', cursor: page.nextCursor, direction: 'ascending' }), { status: 400 });
+  assert.throws(() => validateSearch({ direction: 'sideways' }), { status: 400 });
+});
+
 test('query validation is shared and rejects invalid fields, lengths, and unsafe limits', () => {
   for (const q of [
     'tool:',

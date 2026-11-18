@@ -2,6 +2,7 @@ import React, { useEffect, useId, useState } from "react";
 import {
   Button,
   InspectorPanel,
+  Notice,
   ResultsState,
   Sidebar,
   SpanDetails,
@@ -21,6 +22,7 @@ import {
   removeQueryToken,
   matchExcerpt,
 } from "../../search/traceSearch";
+import { useTraceData, useTraceDetail } from "./useTraceData";
 
 const sortValue = (trace, key) =>
   key === "startedAt"
@@ -35,17 +37,20 @@ const sortValue = (trace, key) =>
 export function HomePage({
   workspaceName = "Workspace",
   agents = [],
-  traces = [],
+  traces: suppliedTraces = [],
   actions,
   dataLabel,
-  loading = false,
-  error,
-  onRefresh,
+  loading: suppliedLoading = false,
+  error: suppliedError,
+  onRefresh: suppliedRefresh,
   refreshing = false,
   initialQuery = "",
+  initialAgentId = "",
+  allowAllAgents = true,
+  dataSource,
 }) {
   const agentsLabel = useId();
-  const [agentId, setAgentId] = useState("");
+  const [agentId, setAgentId] = useState(initialAgentId);
   const [query, setQuery] = useState(initialQuery);
   const [recentQueries, setRecentQueries] = useState([]);
   const [detailTab, setDetailTab] = useState("spans");
@@ -56,19 +61,29 @@ export function HomePage({
   const [selection, setSelection] = useState();
   const [spanId, setSpanId] = useState();
   const [expandedSpanIds, setExpandedSpanIds] = useState([]);
+  const remote = useTraceData(dataSource, { agentId, query, sort });
+  const traces = dataSource
+    ? remote.results.map((result) => result.trace)
+    : suppliedTraces;
+  const loading = suppliedLoading || (!!dataSource && remote.loading);
+  const error = suppliedError || (dataSource && remote.error);
+  const onRefresh = dataSource ? remote.refresh : suppliedRefresh;
   const activeAgent = agents.find((agent) => agent.id === agentId);
   const scope = activeAgent
     ? traces.filter((trace) => trace.agentId === activeAgent.id)
     : traces;
   const normalizedQuery = query.trim();
   const parsed = parseTraceQuery(query);
-  const searchResults = searchTraces(scope, parsed);
+  const searchResults = dataSource
+    ? remote.results
+    : searchTraces(scope, parsed);
   const matchesByTrace = new Map(
     searchResults.map((result) => [result.trace.traceId, result.matches]),
   );
   const filtered = searchResults
     .map((result) => result.trace)
     .sort((a, b) => {
+      if (dataSource) return 0; // The backend orders the full result set before pagination.
       const left = sortValue(a, sort.key),
         right = sortValue(b, sort.key);
       // Missing timings remain last in either direction.
@@ -76,8 +91,21 @@ export function HomePage({
       if (!Number.isFinite(right)) return -1;
       return (sort.direction === "ascending" ? 1 : -1) * (left - right);
     });
-  const selected =
+  const selectedSummary =
     !error && filtered.find((trace) => trace.traceId === selection);
+  const detail = useTraceDetail(dataSource, agentId, selectedSummary?.traceId);
+  const selected =
+    selectedSummary &&
+    (dataSource
+      ? { ...selectedSummary, spans: detail.trace?.spans ?? [] }
+      : selectedSummary);
+  useEffect(() => {
+    if (!detail.trace) return;
+    const next =
+      spanId ?? detail.trace.spans?.find((span) => !span.parentSpanId)?.spanId;
+    setSpanId(next);
+    setExpandedSpanIds(expandedAncestors(detail.trace.spans ?? [], next));
+  }, [detail.trace]);
   useEffect(() => {
     if (
       selection &&
@@ -94,7 +122,7 @@ export function HomePage({
   }
   function clearFilters() {
     changeFilter(() => {
-      setAgentId("");
+      if (allowAllAgents) setAgentId("");
       setQuery("");
     });
   }
@@ -102,7 +130,7 @@ export function HomePage({
     ...parsed.tokens
       .filter((token) => token.field !== "text")
       .map((token) => ({ id: `query:${token.start}`, label: token.raw })),
-    ...(activeAgent
+    ...(activeAgent && allowAllAgents
       ? [{ id: "agent", label: activeAgent.name ?? activeAgent.id }]
       : []),
   ];
@@ -135,18 +163,20 @@ export function HomePage({
             <span>{agents.length}</span>
           </div>
           <ul className="even-home-agents" aria-labelledby={agentsLabel}>
-            <li>
-              <Button
-                variant="ghost"
-                aria-pressed={!activeAgent}
-                onClick={() => changeFilter(() => setAgentId(""))}
-              >
-                <span>All agents</span>
-                <span className="even-home-count" aria-hidden="true">
-                  {traces.length}
-                </span>
-              </Button>
-            </li>
+            {allowAllAgents && (
+              <li>
+                <Button
+                  variant="ghost"
+                  aria-pressed={!activeAgent}
+                  onClick={() => changeFilter(() => setAgentId(""))}
+                >
+                  <span>All agents</span>
+                  <span className="even-home-count" aria-hidden="true">
+                    {traces.length}
+                  </span>
+                </Button>
+              </li>
+            )}
             {agents.map((agent) => (
               <li key={agent.id}>
                 <Button
@@ -155,12 +185,14 @@ export function HomePage({
                   onClick={() => changeFilter(() => setAgentId(agent.id))}
                 >
                   <span>{agent.name ?? agent.id}</span>
-                  <span className="even-home-count" aria-hidden="true">
-                    {
-                      traces.filter((trace) => trace.agentId === agent.id)
-                        .length
-                    }
-                  </span>
+                  {!dataSource && (
+                    <span className="even-home-count" aria-hidden="true">
+                      {
+                        traces.filter((trace) => trace.agentId === agent.id)
+                          .length
+                      }
+                    </span>
+                  )}
                 </Button>
               </li>
             ))}
@@ -185,6 +217,19 @@ export function HomePage({
                 <p className="even-home-inspector-title">
                   {selected.label ?? selected.traceId}
                 </p>
+                {detail.loading && <Notice>Loading trace details…</Notice>}
+                {detail.error && (
+                  <Notice
+                    urgent
+                    action={
+                      <Button onClick={detail.refresh}>
+                        Retry trace details
+                      </Button>
+                    }
+                  >
+                    {detail.error}
+                  </Notice>
+                )}
                 <SpanWaterfall
                   key={selected.traceId}
                   spans={selected.spans ?? []}
@@ -202,9 +247,9 @@ export function HomePage({
                     <Tabs.Panel value="spans">
                       {(selected.spans ?? []).length ? (
                         <SpanWaterfall.Tree />
-                      ) : (
+                      ) : !detail.loading && !detail.error ? (
                         <p>No spans were captured.</p>
-                      )}
+                      ) : null}
                       {(matchesByTrace.get(selected.traceId) ?? []).some(
                         (match) => match.spanId,
                       ) && (
@@ -359,9 +404,18 @@ export function HomePage({
       <section className="even-home-results" aria-label="Trace explorer">
         <p className="even-home-results-status" role="status">
           {filtered.length} {filtered.length === 1 ? "trace" : "traces"}
+          {dataSource && ` loaded of ${remote.total}`}
           {" · "}
           {activeAgent?.name ?? activeAgent?.id ?? "All agents"}
         </p>
+        {dataSource && remote.coverage?.complete === false && (
+          <Notice>
+            Search coverage is incomplete. {remote.coverage.skippedTraces}{" "}
+            traces skipped; {remote.coverage.unreadableSegments} segments
+            unreadable.
+          </Notice>
+        )}
+        {dataSource && remote.notice && <Notice>{remote.notice}</Notice>}
         <ResultsState
           state={parsed.error && !error && !loading ? "ready" : state}
           error={error}
@@ -370,6 +424,7 @@ export function HomePage({
           {!parsed.error && (!loading || traces.length > 0) && (
             <TraceTable
               traces={filtered}
+              reloads={dataSource ? remote.reloads : []}
               sort={sort}
               onSortChange={setSort}
               selectedTraceId={selected?.traceId}
@@ -414,6 +469,11 @@ export function HomePage({
             />
           )}
         </ResultsState>
+        {dataSource && remote.nextCursor && (
+          <Button pending={remote.loading} onClick={remote.loadMore}>
+            Load more traces
+          </Button>
+        )}
       </section>
     </WorkbenchLayout>
   );

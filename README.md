@@ -1,22 +1,27 @@
 # Even
 
-Local backend adapter for a project's installed Eve. Requires Node.js 24 or later and Eve 1.0.0-rc.6 in the selected project's dependency tree.
+Local browser workbench and backend adapter for a project's installed Eve. Requires Node.js 24 or later and Eve 1.0.0-rc.6 in the selected project's dependency tree.
 
 ## Launch
 
-From this checkout, install dependencies once with `npm install`, then run:
+From this checkout, install and build once, then launch:
 
 ```sh
+npm ci
+npm --prefix frontend ci
+npm run build:ui
 npm start -- --project /absolute/path/to/eve-project
 ```
 
-For an installed package, use `even --project /absolute/path/to/eve-project`. The project defaults to the current directory. `--port 0` selects a free port. Every launch prints one JSON line containing `url`, `token`, `project`, and `eveVersion`. Send `Authorization: Bearer <token>` on every request, including event streams.
+For an installed package, use `even --project /absolute/path/to/eve-project`. The project defaults to the current directory. `--port 0` selects a free port. Every launch prints one JSON line containing `url`, `browserUrl`, `token`, `project`, and `eveVersion`. The CLI opens `browserUrl` automatically. `--no-open` disables browser launch for headless use and automation. The installed package includes the built frontend. Programmatic API requests use `Authorization: Bearer <token>`; the browser authenticates automatically through its session cookie.
 
-Even binds to 127.0.0.1. Tokens are random per launch and held in memory. Cross-origin requests and unexpected Host headers are rejected. Treat the launch token as a local execution credential.
+Even binds to 127.0.0.1. The launch link carries the initial credential in a URL fragment, which is never sent over HTTP and is removed before rendering. The app automatically exchanges it for a temporary HttpOnly, SameSite=Strict cookie, then discards the bearer credential. Refreshing or opening another tab in the same browser stays connected without entering a token. The cookie is scoped to the API path, named per bound port, and invalidated on every Even restart; a new CLI launch opens the new connection automatically.
+
+Requests from foreign origins and unexpected Host headers are rejected. Browser cookies are accepted only with same-origin browser request metadata; public HTML never issues a credential. Programmatic bearer authentication remains available. Treat the printed launch token and browser link as local execution credentials. No token-entry form, account setup, password storage, localStorage, or sessionStorage is required.
 
 ## API
 
-All routes use the prefix `/api/v1`.
+All API routes use the prefix `/api/v1`. The public `/` entry and `/assets/` serve only built frontend files, with no embedded launch credential. Static files and API requests use the same origin.
 
 | Method | Route                            | Behavior                                                                                                  |
 | ------ | -------------------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -40,7 +45,7 @@ Reload markers mean Even observed a new runtime snapshot, not that a file was sa
 
 ## Using the search bar
 
-The browser prototype runs at http://127.0.0.1:5173 after `npm run dev:ui`. Click **Search traces...** for examples and field suggestions. Type to preview matching rows, use Up/Down and Enter to choose a suggestion, and Escape to dismiss the menu. Enter also remembers a valid query in the page’s recent searches. Recent searches last for that page instance. Remove a filter chip to remove its term, use the clear action to clear the query, or **Reset view** to clear the query and agent scope.
+The live browser opens from the `browserUrl` printed by Even. A separate simulated preview runs at http://127.0.0.1:5173/staging.html after `npm run dev:ui`. Click **Search traces...** for examples and field suggestions. Type to preview matching rows, use Up/Down and Enter to choose a suggestion, and Escape to dismiss the menu. Enter also remembers a valid query in the page’s recent searches. Recent searches last for that page instance. Remove a filter chip to remove its term, use the clear action to clear the query, or **Reset view** to clear the query. In the simulated preview, Reset view also clears the agent filter.
 
 Use ordinary text when you do not need a field filter. Add `field:value` tags to narrow the question. Tags and plain text can be combined in one query:
 
@@ -71,7 +76,7 @@ Incomplete quotes, missing values, unknown fields and invalid durations show a v
 
 Each matching row shows an excerpt and its source. Select the operation to open the best matching span in the inspector. **Why this trace matched** links to other matching spans. If content was not recorded, metadata can still match, but text search cannot recover absent prompts, outputs or error details.
 
-The browser remains explicitly **staging data**. The backend search below reads actual Eve files; connecting the browser host to that API is a separate integration step. The shared query parser lives in `src/search/query.js` so the two use the same syntax.
+The live browser uses actual Eve inventory and indexed search, scoped to its selected agent. Search is debounced, sorting applies globally before pagination, and **Load more traces** loads another page. Selecting a result fetches its full trace and opens the matching span; pruned traces and incomplete search coverage have explicit states. Refresh is manual. The simulated preview and Storybook remain labeled **staging data**. The shared query parser lives in `src/search/query.js` so the two use the same syntax.
 
 ## Backend trace search
 
@@ -84,7 +89,7 @@ curl --get "$EVEN_URL/api/v1/traces/search" \
   --data-urlencode 'limit=50'
 ```
 
-Optional parameters are `agentId` (exact catalog source), `sort` (`latest`, `duration`, `failures`, or `inputTokens`, descending), `limit` (1–100, default 50), and `cursor`. Empty `q` lists summaries. Unknown or repeated parameters are rejected. A successful response contains:
+Optional parameters are `agentId` (exact catalog source), `sort` (`latest`, `duration`, `failures`, or `inputTokens`), `direction` (`ascending` or `descending`, default descending), `limit` (1–100, default 50), and `cursor`. Empty `q` lists summaries. Unknown or repeated parameters are rejected. A successful response contains:
 
 - `results`: `{trace, matches, matchesTruncated}` entries. The trace is an Eve structural summary plus source `agentId`, label and content availability; full spans are loaded separately from the existing trace-detail route.
 - `matches`: up to ten plain-text excerpts per trace, with the matching field, term and, when available, source span ID, canonical operation ID, attribute/event source and JSON path. A wrapper’s error can have a different source span ID from its execution operation. Render excerpts as text, never HTML.
@@ -123,7 +128,7 @@ Select an Eve application, workspace root, or workspace member. A standalone app
 
 For a workspace, supply `{"agentId":"support"}` when creating a session. Omitting agentId selects the only agent when the catalog contains exactly one. Session listings include agentId. Trace routes are nested under `/agents/:agentId/traces`. Session lists support `?agentId=support` filtering. Each inventory agent includes `runtime` with `state` (`disconnected`, `starting`, `ready`, or `unavailable`), `ownership` (`started`, `attached`, or null), and the Eve server URL when available. Runtime readiness is checked when inventory is requested, with a one-second timeout; it is a point-in-time observation. Inspecting inventory does not start a server. Each agent starts or attaches independently on its first session request. The adapter is version-gated because the discovery and hosting APIs are internal. Other Eve versions fail with an explicit compatibility error.
 
-A standalone staging browser UI is available for frontend review (see below). Serving a real-data browser UI from the backend, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
+The backend serves a real-data browser trace explorer; a separate staging preview is available for frontend review. Live playground wiring, closable workbench tabs, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
 
 ## Verification
 
@@ -149,4 +154,4 @@ Update the contract in the same change as API behavior. `npm run test:contract` 
 
 ## Frontend component development
 
-The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. The standalone staging home page can be started with `npm run dev:ui` and built with `npm run build:ui`. It opens the trace explorer with explicitly simulated data and a sample-trace generator. The frontend is not yet connected to the backend or included in the installed `even` package.
+The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. The backend serves the built app from `frontend/dist`; `npm pack` rebuilds and includes those assets without adding frontend tooling to runtime dependencies. `npm run dev:ui` provides the connection page at `/` and the explicitly simulated preview at `/staging.html`. Use Even’s own browser link for real data. `EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules npm run test:app` builds and verifies the complete browser-to-Eve inspection flow in Chromium, including authentication, pagination and trace detail.

@@ -1,13 +1,16 @@
 import { createSessions, parseCursor, replayEvents } from './sessions.js';
 import { createReloadMonitor } from './reloads.js';
 import { createTraceSearch } from './search/service.js';
+import { serveBrowser } from './browser.js';
 import { once } from 'node:events';
 import polka from 'polka';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 
-export async function startServer(adapter, { port = 0, eveHeaders, traceSearch = createTraceSearch(adapter) } = {}) {
+export async function startServer(adapter, { port = 0, eveHeaders, traceSearch = createTraceSearch(adapter), browserDirectory } = {}) {
   const token = randomBytes(32).toString('hex');
   const expected = Buffer.from('Bearer ' + token);
+  const browserSecret = randomBytes(32).toString('hex');
+  const browserExpected = Buffer.from(browserSecret);
   const app = polka();
   const sessions = createSessions(adapter, { eveHeaders });
   const reloads = createReloadMonitor(adapter);
@@ -15,16 +18,48 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
     response.writeHead(status, { 'content-type': 'application/json', 'cache-control': 'no-store' });
     response.end(JSON.stringify(value, (_, item) => typeof item === 'bigint' ? item.toString() : item));
   }
-  app.use((request, response, next) => {
-    // Reject browser cross-origin traffic and DNS rebinding before routing.
-    if (request.headers.origin || !/^127\.0\.0\.1:\d+$/.test(request.headers.host ?? '')) {
+  app.use(async (request, response, next) => {
+    const host = '127.0.0.1:' + app.server.address().port;
+    const origin = 'http://' + host;
+    response.setHeader('x-content-type-options', 'nosniff');
+    response.setHeader('referrer-policy', 'no-referrer');
+    response.setHeader('x-frame-options', 'DENY');
+    response.setHeader('content-security-policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+    // Browser writes may carry our exact origin. Foreign origins, null origins,
+    // and alternate Host headers remain forbidden before routing or file access.
+    if (request.headers.host !== host || (request.headers.origin !== undefined && request.headers.origin !== origin)) {
       return json(response, 403, { error: 'Forbidden origin or host' });
     }
+    let pathname;
+    try {
+      const target = new URL(request.url, origin);
+      if (target.origin !== origin) return json(response, 403, { error: 'Forbidden request target' });
+      pathname = target.pathname;
+    } catch { return json(response, 400, { error: 'Invalid request target' }); }
+    if (!pathname.startsWith('/api/')) return serveBrowser(request, response, pathname, browserDirectory);
     const actual = Buffer.from(request.headers.authorization ?? '');
-    if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
-      return json(response, 401, { error: 'Bearer authentication required' });
+    const bearer = actual.length === expected.length && timingSafeEqual(actual, expected);
+    const cookieName = 'even_browser_' + app.server.address().port;
+    const cookies = (request.headers.cookie ?? '').split(';').map(value => value.trim()).filter(value => value.startsWith(cookieName + '='));
+    const cookie = Buffer.from(cookies.length === 1 ? cookies[0].slice(cookieName.length + 1) : '');
+    const sameOriginBrowser = request.headers['sec-fetch-site'] === 'same-origin' || request.headers.origin === origin;
+    const browserSession = sameOriginBrowser && cookie.length === browserExpected.length && timingSafeEqual(cookie, browserExpected);
+    // An explicit Authorization header must itself be valid; cookies do not
+    // turn invalid programmatic credentials into a successful request.
+    if (!(request.headers.authorization !== undefined ? bearer : browserSession)) {
+      return json(response, 401, { error: 'Even authentication required' });
     }
     next();
+  });
+  app.post('/api/v1/browser-session', (request, response) => {
+    const actual = Buffer.from(request.headers.authorization ?? '');
+    if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
+      return json(response, 401, { error: 'Launch bearer token required' });
+    }
+    // Cookie names include the port so simultaneous Even launches can coexist.
+    // No expiry makes this a browser-session cookie; its value rotates at launch.
+    response.setHeader('set-cookie', 'even_browser_' + app.server.address().port + '=' + browserSecret + '; Path=/api/v1; HttpOnly; SameSite=Strict');
+    json(response, 200, { connected: true });
   });
   app.get('/api/v1/agents', async (_request, response) => {
     try {
@@ -40,7 +75,7 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
   app.get('/api/v1/traces/search', async (request, response) => {
     try {
       const query = new URL(request.url, 'http://localhost').searchParams;
-      const allowed = new Set(['q', 'agentId', 'sort', 'limit', 'cursor']);
+      const allowed = new Set(['q', 'agentId', 'sort', 'direction', 'limit', 'cursor']);
       for (const key of query.keys()) {
         if (!allowed.has(key) || query.getAll(key).length !== 1) throw Object.assign(new Error('Unknown or repeated search parameter: ' + key), { status: 400 });
       }
@@ -146,8 +181,10 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
     app.listen(port, '127.0.0.1', resolve);
     app.server.once('error', reject);
   });
+  const url = 'http://127.0.0.1:' + app.server.address().port;
   return {
-    url: 'http://127.0.0.1:' + app.server.address().port,
+    url,
+    browserUrl: url + '/#token=' + token,
     token,
     async close() {
       const closed = new Promise((resolve, reject) => app.server.close(error => error ? reject(error) : resolve()));

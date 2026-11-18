@@ -18,7 +18,7 @@ try {
   await writeFile(headerFile, JSON.stringify({ Authorization: 'Basic ' + Buffer.from('tester:pack-secret').toString('base64') }), { mode: 0o600 });
   await writeFile(join(project, 'agent/channels/eve.js'),
     'import { eveChannel } from "eve/channels/eve"; import { httpBasic } from "eve/channels/auth"; export default eveChannel({ auth: httpBasic({ username: "tester", password: "pack-secret" }) });');
-  child = spawn(join(temp, 'node_modules/.bin/even'), ['--project', project, '--eve-headers', headerFile], { stdio: ['ignore', 'pipe', 'pipe'] });
+  child = spawn(join(temp, 'node_modules/.bin/even'), ['--project', project, '--eve-headers', headerFile, '--no-open'], { stdio: ['ignore', 'pipe', 'pipe'] });
   let errors = '';
   child.stderr.on('data', bytes => { errors += bytes; });
   const launch = await new Promise((resolveLaunch, reject) => {
@@ -35,8 +35,19 @@ try {
     });
   });
   const headers = { authorization: 'Bearer ' + launch.token, 'content-type': 'application/json' };
+  const html = await (await fetch(launch.browserUrl)).text();
+  assert.ok(html.includes('<div id="root"></div>'));
+  assert.ok(!html.includes(launch.token));
+  assert.ok(packed.files.some(file => file.path === 'frontend/dist/index.html'));
+  const script = /src="([^"]+\.js)"/.exec(html)?.[1];
+  assert.ok(script);
+  assert.equal((await fetch(launch.url + script)).status, 200);
   assert.equal((await fetch(launch.url + '/api/v1/agents')).status, 401);
   assert.equal((await fetch(launch.url + '/api/v1/agents', { headers })).status, 200);
+  const browserSession = await fetch(launch.url + '/api/v1/browser-session', { method: 'POST', headers: { ...headers, origin: launch.url } });
+  assert.equal(browserSession.status, 200);
+  const cookie = browserSession.headers.get('set-cookie').split(';')[0];
+  assert.equal((await fetch(launch.url + '/api/v1/agents', { headers: { cookie, 'sec-fetch-site': 'same-origin' } })).status, 200);
   const created = await fetch(launch.url + '/api/v1/sessions', { method: 'POST', headers, body: '{}' });
   const session = await created.json();
   assert.equal(created.status, 201, JSON.stringify(session));

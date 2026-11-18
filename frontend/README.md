@@ -1,10 +1,22 @@
 # Even frontend
 
-Base UI-backed controls and React product components for the v1 trace explorer, inspector, and secondary playground. Shared defaults use decision tokens and support light/dark themes. Components have no model calls or API integration. Each component has a colocated implementation, Storybook stories, and behavior tests.
+Base UI-backed controls and React product components for the v1 trace explorer, inspector, and secondary playground. Shared defaults use decision tokens and support light/dark themes. Shared components have no model calls or API integration; the connected page owns API access. Each component has a colocated implementation, Storybook stories, and behavior tests.
+
+## Connected browser app
+
+Even serves the production app and API from one local origin. Build with `npm run build:ui`, then launch `npm start -- --project /absolute/path/to/eve-project`. The CLI opens the browser automatically; `--no-open` is available for automation. The launch fragment is consumed and removed before rendering, exchanged for a temporary HttpOnly session cookie, and discarded. Refreshes and additional tabs use that cookie automatically. There is no manual token-entry or disconnect screen.
+
+`pages/ConnectedApp` loads inventory and selects the first agent. It supplies an API client to HomePage through `dataSource`, with `initialAgentId` and `allowAllAgents={false}`. `useTraceData` owns debounced requests, global sort/direction, pagination, cursor invalidation, incomplete coverage, reload observations and cancellation. `useTraceDetail` fetches full spans on demand and keeps detail failures inside the inspector. Neither hook evaluates agent code. The browser remains passive; session creation and live conversation integration follow separately.
+
+The client uses relative same-origin API URLs. It does not connect the Vite development server to a different backend origin. Use the backend’s browser link for real data and the Vite staging page or Storybook for fixture development. The compiled app is included in the npm package; React, Vite and Storybook remain frontend development dependencies.
+
+`EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules npm run test:app` at the repository root runs a real browser against an isolated Eve project. It verifies automatic connection, refresh, additional tabs, new-launch handoff, actual indexed traces, global sorting, multiple result pages, span inspection, cookie-authenticated writes and passive operation, with accessibility checks in both themes.
 
 ## Staging home page
 
-The standalone app opens directly onto the workspace trace explorer. Run `npm run dev:ui` from the repository root, then open http://127.0.0.1:5173. `npm run build:ui` produces `frontend/dist`. This is an explicitly labeled staging UI with simulated data; it does not contact Eve, create sessions, or execute agents.
+The [agent spaces and workbench tabs proposal](../docs/design/workbench-agent-spaces.md) describes the planned layout changes, separate frontend/backend responsibilities, and delivery phases. The behavior below describes the current implementation.
+
+The standalone app opens directly onto the workspace trace explorer. Run `npm run dev:ui` from the repository root, then open http://127.0.0.1:5173/staging.html. `npm run build:ui` produces `frontend/dist`. This is an explicitly labeled staging UI with simulated data; it does not contact Eve, create sessions, or execute agents.
 
 The table starts across all agents. Agent buttons scope the workspace source; search tags and captured-content search narrow the view. Use `has:error` to find traces with recorded errors. Column headers sort the supplied view models, keeping missing timings last. Existing resizable columns, complete-character overflow, zebra rows, and mixed data/UI typography are reused. Selecting an operation opens the existing inspector alongside or below the results, with spans, timing, and summary tabs. Closing restores focus to the operation. Filter changes clear selection. Result totals are announced to screen readers without a visible count row above the table. The page header, search/filter controls, reset action and search notices share a `surface.secondary` band above the results. The table retains its existing zebra surfaces on the page canvas.
 
@@ -12,7 +24,7 @@ The table starts across all agents. Agent buttons scope the workspace source; se
 
 `pages/HomePage/HomePage.jsx` is the page composition; its colocated stories/tests cover staging, loading, empty, error/retry, search, combined filters, sorting, selection and focus. It takes supplied `agents` and trace summary view models, with `agentId` identifying each trace’s workspace source. Trace IDs must be unique in the supplied set; captured spans are optional. `actions` is a page-header slot. The sample data and generator are kept in `previewData.js` and the staging entry, outside reusable controls. Page arrangement is scoped in `HomePage.css`, consuming existing decisions. The shared library remains in `components/`.
 
-See **Pages / HomePage / Staging** in Storybook. The browser gate also checks generated rows, filtering, the open inspector, retry, and overflow at 390px, 768px, and 1280px in both themes. Real backend data, reload aggregation, routing, and persisted filters remain later integration work.
+See **Pages / HomePage / Staging** in Storybook. The browser gate also checks generated rows, filtering, the open inspector, retry, and overflow at 390px, 768px, and 1280px in both themes. The production connected page supplies real backend data and agent reload observations. Routing, workbench tabs and persisted filters remain later work.
 
 ## Search prototype
 

@@ -3,8 +3,9 @@ info:
   title: Even local backend
   version: 0.1.0
   description: Project-scoped API using installed Eve 1.0.0-rc.6. Bind to
-    127.0.0.1 only. All requests require a new token each launch; requests with
-    Origin are rejected. Eve-owned discovery, trace and event fields remain
+    127.0.0.1 only. API requests require a launch bearer token or the automatically established browser session. Only the exact bound
+    local application Origin is accepted when present; foreign origins and
+    unexpected Host headers are rejected. Eve-owned discovery, trace and event fields remain
     extensible.
 servers:
   - url: http://127.0.0.1:{port}/api/v1
@@ -13,6 +14,7 @@ servers:
         default: "2000"
 security:
   - launchToken: []
+  - browserSession: []
 paths:
   /agents:
     get:
@@ -28,15 +30,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/Agents"
         "401": &a2
-          description: Missing or incorrect per-launch bearer token.
+          description: Missing or incorrect Even authentication.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "403": &a3
           description:
-            Origin header present or Host is not a localhost IPv4 address and
-            port.
+            Foreign Origin, unexpected Host, or a forbidden request target.
           content:
             application/json:
               schema:
@@ -47,6 +48,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /browser-session:
+    post:
+      operationId: connectBrowser
+      description: Exchange the CLI launch credential for an HttpOnly SameSite=Strict browser-session cookie. The CLI opens this flow automatically; public HTML never issues credentials. Cookie names include the bound port and values rotate on every Even launch.
+      security:
+        - launchToken: []
+      responses:
+        "200":
+          description: Browser connected; Set-Cookie establishes the session.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [connected]
+                additionalProperties: false
+                properties:
+                  connected:
+                    type: boolean
+                    const: true
+        "401": *a2
+        "403": *a3
   /traces/search:
     get:
       operationId: searchTraces
@@ -73,11 +95,18 @@ paths:
             type: string
         - name: sort
           in: query
-          description: Descending order with a stable tie break.
+          description: Sort field with a stable tie break.
           schema:
             type: string
             enum: [latest, duration, failures, inputTokens]
             default: latest
+        - name: direction
+          in: query
+          description: Global sort direction; ties retain stable ordering.
+          schema:
+            type: string
+            enum: [ascending, descending]
+            default: descending
         - name: limit
           in: query
           schema:
@@ -88,7 +117,7 @@ paths:
         - name: cursor
           in: query
           description:
-            Opaque continuation for the same query, source scope and sort.
+            Opaque continuation for the same query, source scope, sort and direction.
             An index or source-availability change invalidates pagination.
           schema:
             type: string
@@ -378,8 +407,8 @@ paths:
         follow=false ends at current history; otherwise follows live events. No
         cursor starts at line zero. A failure after headers emits event: error
         with JSON Error data and closes the stream. Finite replay also emits an error
-        if the upstream stream ends before the captured tail. Reconnecting requires the
-        bearer token; native EventSource cannot supply this header."
+        if the upstream stream ends before the captured tail. Programmatic reconnects require the bearer token; same-origin browser
+        clients use their automatically established session cookie."
       parameters:
         - *a5
         - name: after
@@ -439,6 +468,11 @@ paths:
                 $ref: "#/components/schemas/Error"
 components:
   securitySchemes:
+    browserSession:
+      type: apiKey
+      in: header
+      name: Cookie
+      description: Browser-managed session cookie in the Cookie header, named even_browser_<bound-port>. Established only by the authenticated browser-session exchange; usable only for same-origin browser requests. Programmatic clients use launchToken instead.
     launchToken:
       type: http
       scheme: bearer

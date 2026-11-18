@@ -1,0 +1,13 @@
+.even-connection {
+  display: grid;
+  gap: var(--even-space-gap-group);
+  width: min(100%, var(--even-size-panel-preferred));
+  margin-inline: auto;
+  padding: var(--even-space-inset-spacious);
+  color: var(--even-text-primary);
+  font-family: var(--even-font-ui);
+}
+.even-connection h1,
+.even-connection p {
+  margin: 0;
+}
