@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import Color from "colorjs.io";
-import { checkTabMotion } from "./check-tab-motion.mjs";
+import {
+  checkTabMotion,
+  checkTabRemovalMotion,
+  checkDenseRemoval,
+  checkRemovalLeftOfActive,
+  checkCreationFadeOverlap,
+  checkRapidRemovals,
+  checkStationaryRemovals,
+  checkRapidRemovalCue,
+} from "./check-tab-motion.mjs";
 import { checkStickyTabs } from "./check-sticky-tabs.mjs";
 
 function hoverGeometry(node) {
@@ -116,7 +125,7 @@ function assertCloseGeometry(geometry) {
   assert.ok(geometry.inside, "Close highlight stays inside its tab surface");
   assert.ok(
     Math.abs(geometry.rightGap - geometry.verticalGap) < 0.5,
-    "Close highlight has matching right and vertical clearance",
+    `Close highlight has matching right and vertical clearance: ${JSON.stringify(geometry)}`,
   );
   assert.ok(
     geometry.radius < geometry.parentRadius,
@@ -130,6 +139,12 @@ async function scrollIdle(page) {
   await page.waitForFunction(
     () => !document.querySelector(".even-workbench-tab-track[data-scrolling]"),
   );
+  // Hover can also schedule Base UI / ResizeObserver geometry updates without
+  // a scroll event. Audit the rendered layout after those frame callbacks.
+  await page.evaluate(async () => {
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+  });
 }
 
 async function settled(page) {
@@ -501,8 +516,16 @@ export async function checkWorkbenchTabs(page, base, theme, axe) {
   await checkTabDividers(page, base, theme);
   await checkOverflowFades(page, base, theme, axe);
   await checkTabTypeIcons(page, base, theme);
+  await checkTabCursorContinuity(page, base, theme);
   await checkImmediateCreation(page, base, theme);
   await checkTabMotion(page, base, theme);
+  await checkCreationFadeOverlap(page, base, theme);
+  await checkTabRemovalMotion(page, base, theme);
+  await checkRapidRemovals(page, base, theme);
+  await checkStationaryRemovals(page, base, theme);
+  await checkRapidRemovalCue(page, base, theme);
+  await checkDenseRemoval(page, base, theme);
+  await checkRemovalLeftOfActive(page, base, theme);
   await checkStickyTabs(page, base, theme, axe);
   await checkTokenResilience(page, base, theme);
 }
@@ -1270,4 +1293,97 @@ async function checkTokenResilience(page, base, theme) {
       ) < 0.5
     );
   });
+}
+
+export async function checkTabCursorContinuity(page, base, theme) {
+  await page.setViewportSize({ width: 1000, height: 700 });
+  for (const count of [3, 15]) {
+    await page.goto(
+      `${base}/iframe.html?id=workbench-workbenchtabs--immediate-creation&viewMode=story&globals=theme:${theme}`,
+    );
+    const add = page.getByRole("button", {
+      name: "New trace tab",
+      exact: true,
+    });
+    await add.waitFor();
+    for (let i = 3; i < count; i++) {
+      await add.focus();
+      await page.keyboard.press("Enter");
+    }
+    await scrollIdle(page);
+    const geometry = await page
+      .locator(".even-workbench-tab-scroll")
+      .evaluate((node) => {
+        const view = node.getBoundingClientRect();
+        const rows = [...node.querySelectorAll(".even-workbench-tab")].map(
+          (row) => row.getBoundingClientRect(),
+        );
+        const seams = [];
+        for (let i = 1; i < rows.length; i++) {
+          const a = rows[i - 1],
+            b = rows[i];
+          if (
+            Math.abs(a.right - b.left) < 1 &&
+            a.left >= view.left &&
+            b.right <= view.right
+          ) {
+            for (const y of [b.top + 3, b.top + b.height / 2, b.bottom - 3]) {
+              for (let x = b.left - 3; x <= b.left + 3; x += 0.5) {
+                const hit = document.elementFromPoint(x, y);
+                seams.push({
+                  x,
+                  y,
+                  cursor: hit && getComputedStyle(hit).cursor,
+                  hit: hit?.className,
+                });
+              }
+            }
+          }
+        }
+        const empty =
+          rows[0].left - view.left > 40
+            ? {
+                x: (rows[0].left + view.left) / 2,
+                y: rows[0].top + rows[0].height / 2,
+              }
+            : null;
+        return { seams, empty };
+      });
+    assert.ok(
+      geometry.seams.length > 0,
+      "The cursor sweep samples visible adjacent tabs",
+    );
+    assert.deepEqual(
+      geometry.seams.filter((point) => point.cursor !== "pointer"),
+      [],
+      "Pointer stays continuous over narrow seams, borders and curved corners",
+    );
+    // Exercise real mouse movement too, rather than checking only declarations.
+    for (const point of geometry.seams.filter((_, i) => i % 6 === 0)) {
+      await page.mouse.move(point.x, point.y);
+      assert.equal(
+        await page.evaluate(
+          ({ x, y }) =>
+            getComputedStyle(document.elementFromPoint(x, y)).cursor,
+          point,
+        ),
+        "pointer",
+      );
+    }
+    if (geometry.empty) {
+      await page.mouse.move(geometry.empty.x, geometry.empty.y);
+      assert.notEqual(
+        await page.evaluate(
+          ({ x, y }) =>
+            getComputedStyle(document.elementFromPoint(x, y)).cursor,
+          geometry.empty,
+        ),
+        "pointer",
+        "Unused strip space retains its default cursor",
+      );
+    }
+  }
+  console.log(
+    `Verified ${theme} pointer continuity across real tab seams/corners in sparse and overflowing strips, with default cursor over unused space.`,
+  );
 }

@@ -328,13 +328,14 @@
     0% 0 0 / 0.16
   ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
   --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
-  --even-duration-100: 0.1s; /** Brief non-spatial feedback or reduced-motion fades. */
+  --even-duration-75: 0.075s; /** Brief interaction beat before a visual change continues. */
+  --even-duration-100: 0.1s; /** Brief feedback, reduced-motion fades, or quick settling after repeated collection updates. */
   --even-duration-150: 0.15s; /** Small feedback and quick exits. */
   --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
   --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
   --even-duration-300: 0.3s; /** Dismissal of large-area surfaces, allowing the eye to follow their departure. */
   --even-duration-350: 0.35s; /** Large-area entrances and relocations; longer settling time avoids an abrupt spatial change. */
-  --even-duration-500: 0.5s; /** Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls. */
+  --even-duration-500: 0.5s; /** Repeat-action recognition interval. Visual transitions this long are reserved for deliberately designed large surfaces. */
   --even-easing-ease: cubic-bezier(
     0.25,
     0.1,
@@ -467,6 +468,12 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-interaction-delay-removal: var(
+    --even-duration-75
+  ); /** Brief visible gap after an item is removed, before surrounding items reflow. State changes immediately; skip the gap for keyboard and reduced-motion interactions. */
+  --even-interaction-delay-repeat: var(
+    --even-duration-500
+  ); /** Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration. */
   --even-motion-duration-instant: var(
     --even-duration-0
   ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */
@@ -497,6 +504,12 @@
   --even-motion-duration-move-large: var(
     --even-duration-350
   ); /** Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation. */
+  --even-motion-duration-reflow: var(
+    --even-duration-150
+  ); /** Quick repositioning of surviving items after removal; keep text and borders at their original scale. */
+  --even-motion-duration-reflow-rapid: var(
+    --even-duration-100
+  ); /** Short visible settling when repeated pointer actions remove collection items. Continue from the current pose without replaying an anticipation hold or queuing movement. */
   --even-motion-easing-feedback: var(
     --even-easing-ease
   ); /** Small changes in color, background or opacity. */
@@ -524,6 +537,12 @@
   --even-motion-easing-move-large: var(
     --even-easing-in-out-cubic
   ); /** Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-reflow: var(
+    --even-easing-in-out-cubic
+  ); /** Accelerate and settle as surrounding items fill a removed item’s space. */
+  --even-motion-easing-reflow-rapid: var(
+    --even-easing-out-quad
+  ); /** A restrained ease-out makes the short removal path readable while keeping repeated actions responsive. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -915,13 +934,14 @@
     0% 0 0 / 0.16
   ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
   --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
-  --even-duration-100: 0.1s; /** Brief non-spatial feedback or reduced-motion fades. */
+  --even-duration-75: 0.075s; /** Brief interaction beat before a visual change continues. */
+  --even-duration-100: 0.1s; /** Brief feedback, reduced-motion fades, or quick settling after repeated collection updates. */
   --even-duration-150: 0.15s; /** Small feedback and quick exits. */
   --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
   --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
   --even-duration-300: 0.3s; /** Dismissal of large-area surfaces, allowing the eye to follow their departure. */
   --even-duration-350: 0.35s; /** Large-area entrances and relocations; longer settling time avoids an abrupt spatial change. */
-  --even-duration-500: 0.5s; /** Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls. */
+  --even-duration-500: 0.5s; /** Repeat-action recognition interval. Visual transitions this long are reserved for deliberately designed large surfaces. */
   --even-easing-ease: cubic-bezier(
     0.25,
     0.1,
@@ -1054,6 +1074,12 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-interaction-delay-removal: var(
+    --even-duration-75
+  ); /** Brief visible gap after an item is removed, before surrounding items reflow. State changes immediately; skip the gap for keyboard and reduced-motion interactions. */
+  --even-interaction-delay-repeat: var(
+    --even-duration-500
+  ); /** Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration. */
   --even-motion-duration-instant: var(
     --even-duration-0
   ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */
@@ -1084,6 +1110,12 @@
   --even-motion-duration-move-large: var(
     --even-duration-350
   ); /** Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation. */
+  --even-motion-duration-reflow: var(
+    --even-duration-150
+  ); /** Quick repositioning of surviving items after removal; keep text and borders at their original scale. */
+  --even-motion-duration-reflow-rapid: var(
+    --even-duration-100
+  ); /** Short visible settling when repeated pointer actions remove collection items. Continue from the current pose without replaying an anticipation hold or queuing movement. */
   --even-motion-easing-feedback: var(
     --even-easing-ease
   ); /** Small changes in color, background or opacity. */
@@ -1111,6 +1143,12 @@
   --even-motion-easing-move-large: var(
     --even-easing-in-out-cubic
   ); /** Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-reflow: var(
+    --even-easing-in-out-cubic
+  ); /** Accelerate and settle as surrounding items fill a removed item’s space. */
+  --even-motion-easing-reflow-rapid: var(
+    --even-easing-out-quad
+  ); /** A restrained ease-out makes the short removal path readable while keeping repeated actions responsive. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */

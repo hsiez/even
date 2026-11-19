@@ -79,7 +79,7 @@ function Example({
   const pendingFocus = useRef(false);
   useLayoutEffect(() => {
     if (pendingFocus.current) {
-      refs.current.get(active)?.focus();
+      refs.current.get(active)?.focus({ preventScroll: true });
       pendingFocus.current = false;
     }
   }, [active, tabs]);

@@ -453,6 +453,9 @@
     border: 0;
     overflow: visible;
     isolation: auto;
+    /* Keep the hand continuous across tab borders and curved corner gaps.
+       This box follows the actual tabs; spare strip space remains outside it. */
+    cursor: pointer;
   }
   :where(.even-workbench-tab) {
     position: relative;
@@ -542,7 +545,9 @@
     opacity: 1;
   }
   :where(
-    .even-workbench-tab-track:not([data-scrolling])
+    .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+        [data-removing]
+      )
       .even-workbench-tab[data-hovered]:not(:has(.even-tab[data-active]))
   )::before {
     content: "";
@@ -638,8 +643,10 @@
     );
   }
   :where(
-    .even-workbench-tab-track:not([data-scrolling])
-      .even-workbench-tab-close:hover
+    .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+        [data-removing]
+      )
+      .even-workbench-tab-close[data-close-hovered]
   )::before {
     background: var(--even-surface-hover);
   }
@@ -647,10 +654,14 @@
     background: var(--even-surface-active);
   }
   :where(
-    .even-workbench-tab-track:not([data-scrolling])
+    .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+        [data-removing]
+      )
       .even-workbench-tab-close[data-tab-hovered],
-    .even-workbench-tab-track:not([data-scrolling])
-      .even-workbench-tab-close:hover,
+    .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+        [data-removing]
+      )
+      .even-workbench-tab-close[data-close-hovered],
     .even-workbench-tab-close:focus-visible
   ) {
     opacity: 1;
@@ -661,11 +672,13 @@
     }
   }
   :where(
-      .even-workbench-tab-track:not([data-scrolling]):has(
-          .even-workbench-tab[data-hovered]
-        ):not(:has(.even-workbench-tab[data-hovered] .even-tab[data-active]))
+      .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+          [data-removing]
+        ):has(.even-workbench-tab[data-hovered]):not(
+          :has(.even-workbench-tab[data-hovered] .even-tab[data-active])
+        )
     )
-    .even-workbench-tab-close:hover::before {
+    .even-workbench-tab-close[data-close-hovered]::before {
     background: var(--even-surface-active);
   }
   :where(.even-workbench-tab .even-tab) {
@@ -684,7 +697,9 @@
     font-weight: 500;
   }
   :where(
-    .even-workbench-tab-track:not([data-scrolling])
+    .even-workbench-tab-track:not([data-scrolling]):not([data-creating]):not(
+        [data-removing]
+      )
       .even-workbench-tab[data-hovered]
       .even-tab
   ) {
@@ -692,14 +707,22 @@
   }
   /* Ignore pointer hover during scroll, including the shared trigger's :hover. */
   :where(
-    .even-workbench-tab-track[data-scrolling]
+    .even-workbench-tab-track:is(
+        [data-scrolling],
+        [data-creating],
+        [data-removing]
+      )
       .even-workbench-tab
       .even-tab:not([data-active])
   ) {
     color: var(--even-text-secondary);
   }
   :where(
-    .even-workbench-tab-track[data-scrolling]
+    .even-workbench-tab-track:is(
+        [data-scrolling],
+        [data-creating],
+        [data-removing]
+      )
       .even-workbench-tab:not(:has(.even-tab[data-active]))
       + .even-workbench-tab:not(:has(.even-tab[data-active]))
   )::after {
@@ -804,8 +827,39 @@
     .even-workbench-tab:has(.even-tab[data-active])::after {
     visibility: hidden;
   }
+  /* The creation outline moves independently of the selected row and viewport.
+     Stationary scroll masks would paint over its border near the final target,
+     making a constant-width tab look narrower. The plus still clips the entry;
+     restore scroll fades when the outline returns to the live sticky row. */
+  :where(.even-workbench-tab-track[data-creating])::before,
+  :where(.even-workbench-tab-track[data-creating])::after,
+  :where(.even-workbench-tab-track[data-creating])
+    .even-workbench-tab:has(.even-tab[data-active])
+    > .even-workbench-active-fade {
+    opacity: 0;
+  }
   :where(.even-workbench-tab-indicator[hidden]) {
     display: none;
+  }
+  /* Removal moves the live tab outline with its label, leaving a readable gap.
+     The separate selection indicator must not fill that gap or trail the row. */
+  :where(.even-workbench-tab-track[data-removing])
+    .even-workbench-tab-indicator {
+    /* Its previous Base UI position may extend beyond the shortened track for
+       one commit. Hidden paint still enlarges scroll overflow and causes a late
+       clamp, canceling removal. The live active row paints this outline. */
+    display: none;
+  }
+  :where(.even-workbench-tab-track[data-removing])
+    .even-workbench-tab:has(.even-tab[data-active]) {
+    border-color: var(--even-border-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-workbench-tab-track[data-removing])
+    .even-workbench-tab:has(.even-tab[data-active])::before,
+  :where(.even-workbench-tab-track[data-removing])
+    .even-workbench-tab:has(.even-tab[data-active])::after {
+    visibility: visible;
   }
   @media (prefers-reduced-motion: reduce) {
     :where(.even-workbench-tab-indicator) {

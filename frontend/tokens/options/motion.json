@@ -9,12 +9,19 @@
         },
         "$description": "Immediate state changes; no decorative interpolation."
       },
+      "75": {
+        "$value": {
+          "value": 75,
+          "unit": "ms"
+        },
+        "$description": "Brief interaction beat before a visual change continues."
+      },
       "100": {
         "$value": {
           "value": 100,
           "unit": "ms"
         },
-        "$description": "Brief non-spatial feedback or reduced-motion fades."
+        "$description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates."
       },
       "150": {
         "$value": {
@@ -56,7 +63,7 @@
           "value": 500,
           "unit": "ms"
         },
-        "$description": "Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls."
+        "$description": "Repeat-action recognition interval. Visual transitions this long are reserved for deliberately designed large surfaces."
       }
     },
     "easing": {

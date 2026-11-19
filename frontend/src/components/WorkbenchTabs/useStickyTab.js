@@ -7,8 +7,10 @@ const set = (node, name, value) => {
 
 // Native CSS owns the sticky constraint. Coordinate its separate decorative
 // indicator and close control without duplicating Base UI's selected state.
-export function useStickyTab(viewportRef, updateOverflow) {
+export function useStickyTab(viewportRef, updateOverflow, onScrollIdle) {
   const selectedId = useRef(null);
+  const idleCallback = useRef(onScrollIdle);
+  idleCallback.current = onScrollIdle;
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
     const track = viewport.firstElementChild;
@@ -47,20 +49,24 @@ export function useStickyTab(viewportRef, updateOverflow) {
       // New selection reveals its logical slot; manual scrolling only pins it.
       if (selectedId.current !== trigger.id) {
         selectedId.current = trigger.id;
-        const style = getComputedStyle(viewport);
-        const start = parseFloat(style.paddingInlineStart) || 0;
-        const end = parseFloat(style.paddingInlineEnd) || 0;
-        const left = trackBox.left + (column - 1) * width;
-        if (left < viewBox.left + start)
-          viewport.scrollLeft += left - viewBox.left - start;
-        else if (left + width > viewBox.right - end)
-          viewport.scrollLeft += left + width - viewBox.right + end;
-        trackBox = track.getBoundingClientRect();
-        set(
-          track,
-          "--even-tab-viewport-start",
-          `${viewBox.left - trackBox.left}px`,
-        );
+        // Closing a pinned tab replaces it at the current viewport edge. Its
+        // decorative removal must not jump back to the logical list position.
+        if (!track.hasAttribute("data-removing")) {
+          const style = getComputedStyle(viewport);
+          const start = parseFloat(style.paddingInlineStart) || 0;
+          const end = parseFloat(style.paddingInlineEnd) || 0;
+          const left = trackBox.left + (column - 1) * width;
+          if (left < viewBox.left + start)
+            viewport.scrollLeft += left - viewBox.left - start;
+          else if (left + width > viewBox.right - end)
+            viewport.scrollLeft += left + width - viewBox.right + end;
+          trackBox = track.getBoundingClientRect();
+          set(
+            track,
+            "--even-tab-viewport-start",
+            `${viewBox.left - trackBox.left}px`,
+          );
+        }
       }
       const box = row.getBoundingClientRect();
       set(track, "--even-active-tab-width", `${box.width}px`);
@@ -77,7 +83,10 @@ export function useStickyTab(viewportRef, updateOverflow) {
     function scrolling() {
       track.setAttribute("data-scrolling", "");
       clearTimeout(timer);
-      timer = setTimeout(() => track.removeAttribute("data-scrolling"), 120);
+      timer = setTimeout(() => {
+        track.removeAttribute("data-scrolling");
+        idleCallback.current?.();
+      }, 120);
       sync();
     }
     function prepareScroll(event) {
@@ -135,8 +144,17 @@ export function useStickyTab(viewportRef, updateOverflow) {
     const mutations = new MutationObserver(sync);
     mutations.observe(track, {
       subtree: true,
+      childList: true,
       attributes: true,
-      attributeFilter: ["data-active", "data-creating"],
+      // Reconcile sibling close controls after reindexing or primitive DOM
+      // updates as well as selection; their sticky placement must stay current.
+      attributeFilter: [
+        "data-active",
+        "data-creating",
+        "data-removing",
+        "data-tab-column",
+        "data-active-tab",
+      ],
     });
     const resize =
       typeof ResizeObserver === "undefined"

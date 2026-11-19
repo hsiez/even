@@ -18,12 +18,27 @@ export const motionOptions = [
   ...rows("options.easing.").map((token) => ({ ...token, category: "easing" })),
 ];
 export const motionDecisions = rows("decision.motion.");
+export const interactionDelays = rows("decision.interaction.delay.");
 
 function milliseconds(value) {
   const match = String(value)
     .trim()
     .match(/^(\d+(?:\.\d+)?|\.\d+)(ms|s)$/);
   return match ? Number(match[1]) * (match[2] === "s" ? 1000 : 1) : null;
+}
+
+function readDuration(element, token) {
+  return (
+    milliseconds(
+      getComputedStyle(element).getPropertyValue(`--${token.name}`),
+    ) ?? milliseconds(token.value)
+  );
+}
+
+export function readInteractionDelay(element, purpose) {
+  const token = tokens[`decision.interaction.delay.${purpose}`];
+  if (!token) throw new Error(`Unknown interaction delay: ${purpose}`);
+  return readDuration(element, token);
 }
 
 // WAAPI cannot consume var(). Read the same resolved decisions CSS uses,
@@ -36,9 +51,7 @@ export function readMotionTiming(element, purpose) {
   const style = getComputedStyle(element);
   const resolvedEasing = style.getPropertyValue(`--${easing.name}`).trim();
   return {
-    duration:
-      milliseconds(style.getPropertyValue(`--${duration.name}`)) ??
-      milliseconds(duration.value),
+    duration: readDuration(element, duration),
     easing: resolvedEasing || easing.value,
   };
 }

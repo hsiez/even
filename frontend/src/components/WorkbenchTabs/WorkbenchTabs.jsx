@@ -74,22 +74,41 @@ function List({ children, className, ...props }) {
   const tabs = React.Children.toArray(children);
   const [hovered, setHovered] = useState();
   const [overflow, setOverflow] = useState({ start: false, end: false });
-  function enter(value, event) {
-    if (event.pointerType !== "touch") setHovered(value);
-  }
-  function leave(value, column, event) {
-    const next = event.relatedTarget?.closest?.("[data-tab-column]");
-    // The close button is outside the semantic tablist, but belongs to the
-    // same visual item. Crossing between them must retain the item's hover.
-    if (
-      next?.dataset.tabColumn === String(column) &&
-      next.closest(".even-workbench-tab-track") ===
-        event.currentTarget.closest(".even-workbench-tab-track")
-    )
-      return;
-    setHovered((current) => (current === value ? undefined : current));
-  }
   const scrollRef = useRef(null);
+  const pointer = useRef(null);
+  function updateHover(event) {
+    if (event?.pointerType === "touch") return;
+    if (event) pointer.current = { x: event.clientX, y: event.clientY };
+    const viewport = scrollRef.current;
+    const track = viewport?.firstElementChild;
+    let next;
+    if (
+      pointer.current &&
+      track &&
+      !track.matches("[data-creating], [data-removing], [data-scrolling]")
+    ) {
+      const hit =
+        viewport.ownerDocument.elementFromPoint?.(
+          pointer.current.x,
+          pointer.current.y,
+        ) ??
+        (event?.type === "pointerleave" ? event.relatedTarget : event?.target);
+      const part = hit?.closest?.("[data-tab-column]");
+      if (part?.closest(".even-workbench-tab-track") === track) {
+        const value = tabs[Number(part.dataset.tabColumn) - 1]?.props.value;
+        if (value !== undefined)
+          next = {
+            value,
+            close: part.classList.contains("even-workbench-tab-close"),
+          };
+      }
+    }
+    setHovered((current) =>
+      current?.value === next?.value && current?.close === next?.close
+        ? current
+        : next,
+    );
+  }
   const updateOverflow = useCallback(() => {
     const viewport = scrollRef.current;
     if (viewport) {
@@ -105,38 +124,49 @@ function List({ children, className, ...props }) {
       );
     }
   }, []);
-  useStickyTab(scrollRef, updateOverflow);
-  const revealSelected = useCallback(() => {
-    const viewport = scrollRef.current;
-    if (!viewport?.clientWidth) return;
-    // Entry transforms deliberately extend under the plus. Measure the final
-    // layout again on completion rather than scrolling the projected bounds.
-    if (viewport.querySelector("[data-creating]")) {
+  useStickyTab(scrollRef, updateOverflow, updateHover);
+  const revealSelected = useCallback(
+    (logical = false) => {
+      const viewport = scrollRef.current;
+      if (!viewport?.clientWidth) return;
+      // Entry transforms deliberately extend under the plus. Measure the final
+      // layout again on completion rather than scrolling the projected bounds.
+      if (viewport.querySelector("[data-creating], [data-removing]")) {
+        updateOverflow();
+        return;
+      }
+      const selected = viewport.querySelector(
+        '[role="tab"][aria-selected="true"]',
+      );
+      if (selected) {
+        const box = viewport.getBoundingClientRect();
+        const track = viewport.firstElementChild;
+        const row = selected.closest(".even-workbench-tab");
+        const width = track.clientWidth / tabs.length;
+        const left =
+          track.getBoundingClientRect().left +
+          (Number(row.dataset.tabColumn) - 1) * width;
+        const tab = logical
+          ? { left, right: left + width }
+          : selected.getBoundingClientRect();
+        const style = getComputedStyle(viewport);
+        const startInset = parseFloat(style.paddingInlineStart) || 0;
+        const endInset = parseFloat(style.paddingInlineEnd) || 0;
+        if (tab.left < box.left + startInset)
+          viewport.scrollLeft += tab.left - box.left - startInset;
+        else if (tab.right > box.right - endInset)
+          viewport.scrollLeft += tab.right - box.right + endInset;
+      }
       updateOverflow();
-      return;
-    }
-    const selected = viewport.querySelector(
-      '[role="tab"][aria-selected="true"]',
-    );
-    if (selected) {
-      const box = viewport.getBoundingClientRect();
-      const tab = selected.getBoundingClientRect();
-      const style = getComputedStyle(viewport);
-      const startInset = parseFloat(style.paddingInlineStart) || 0;
-      const endInset = parseFloat(style.paddingInlineEnd) || 0;
-      if (tab.left < box.left + startInset)
-        viewport.scrollLeft += tab.left - box.left - startInset;
-      else if (tab.right > box.right - endInset)
-        viewport.scrollLeft += tab.right - box.right + endInset;
-    }
-    updateOverflow();
-  }, [updateOverflow]);
+    },
+    [updateOverflow, tabs.length],
+  );
   useLayoutEffect(() => {
     const viewport = scrollRef.current;
     const observer =
       typeof ResizeObserver === "undefined"
         ? null
-        : new ResizeObserver(revealSelected);
+        : new ResizeObserver(() => revealSelected(true));
     observer?.observe(viewport);
     observer?.observe(viewport.firstElementChild);
     viewport.addEventListener("scroll", updateOverflow, { passive: true });
@@ -153,10 +183,15 @@ function List({ children, className, ...props }) {
         ref={scrollRef}
         data-overflow-start={overflow.start || undefined}
         data-overflow-end={overflow.end || undefined}
+        onPointerMoveCapture={updateHover}
+        onPointerLeave={updateHover}
       >
         <TabMotion
           values={tabs.map((tab) => tab.props.value)}
-          onMotionEnd={revealSelected}
+          onMotionEnd={(kind) => {
+            revealSelected(kind === "create");
+            updateHover();
+          }}
         >
           <Tabs.List
             {...props}
@@ -165,10 +200,9 @@ function List({ children, className, ...props }) {
             {tabs.map((tab, index) =>
               React.cloneElement(tab, {
                 column: index + 1,
-                hovered: hovered === tab.props.value,
-                onHoverEnter: (event) => enter(tab.props.value, event),
-                onHoverLeave: (event) =>
-                  leave(tab.props.value, index + 1, event),
+                hovered: hovered?.value === tab.props.value,
+                onHoverEnter: updateHover,
+                onHoverLeave: updateHover,
               }),
             )}
             <StickyIndicator viewportRef={scrollRef} />
@@ -186,11 +220,15 @@ function List({ children, className, ...props }) {
                   variant="ghost"
                   size="compact"
                   data-tab-column={index + 1}
-                  data-tab-hovered={hovered === tab.props.value || undefined}
-                  onPointerEnter={(event) => enter(tab.props.value, event)}
-                  onPointerLeave={(event) =>
-                    leave(tab.props.value, index + 1, event)
+                  data-tab-hovered={
+                    hovered?.value === tab.props.value || undefined
                   }
+                  data-close-hovered={
+                    (hovered?.value === tab.props.value && hovered.close) ||
+                    undefined
+                  }
+                  onPointerEnter={updateHover}
+                  onPointerLeave={updateHover}
                   onClick={(event) => {
                     setHovered(undefined);
                     tab.props.onClose(event);

@@ -42,6 +42,14 @@
         "move-large": {
           "$value": "{options.duration.350}",
           "$description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation."
+        },
+        "reflow": {
+          "$value": "{options.duration.150}",
+          "$description": "Quick repositioning of surviving items after removal; keep text and borders at their original scale."
+        },
+        "reflow-rapid": {
+          "$value": "{options.duration.100}",
+          "$description": "Short visible settling when repeated pointer actions remove collection items. Continue from the current pose without replaying an anticipation hold or queuing movement."
         }
       },
       "easing": {
@@ -81,6 +89,14 @@
         "move-large": {
           "$value": "{options.easing.in-out-cubic}",
           "$description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot."
+        },
+        "reflow": {
+          "$value": "{options.easing.in-out-cubic}",
+          "$description": "Accelerate and settle as surrounding items fill a removed item\u2019s space."
+        },
+        "reflow-rapid": {
+          "$value": "{options.easing.out-quad}",
+          "$description": "A restrained ease-out makes the short removal path readable while keeping repeated actions responsive."
         }
       }
     }

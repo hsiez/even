@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motionDecisions, motionOptions } from "../motion";
+import { motionDecisions, motionOptions, interactionDelays } from "../motion";
 import { Button } from "../../components/Button/Button";
 import "../ColorGrid/ColorGrid.css";
 import "./MotionGrid.css";
@@ -14,13 +14,15 @@ export function MotionGrid({
   const rows =
     kind === "options"
       ? motionOptions
-      : motionDecisions.filter(
+      : [...motionDecisions, ...interactionDelays].filter(
           (token) => !largeOnly || token.name.endsWith("-large"),
         );
   const previews = [
     "enter",
     "exit",
     "move",
+    "reflow",
+    "reflow-rapid",
     "feedback",
     "enter-large",
     "exit-large",
@@ -40,7 +42,9 @@ export function MotionGrid({
         feedback below. Keyboard navigation and scroll tracking stay immediate.
         Reduced motion removes travel; optional meaningful fades can remain.
         Large surfaces use a longer settling time: 350ms entry/movement and
-        300ms exit, with the same easing families as small controls.
+        300ms exit, with the same easing families as small controls. Removal
+        leaves a 75ms gap, then surrounding items reflow over 150ms. The gap is
+        an interaction delay, separate from visual transition timing.
       </p>
       {kind !== "options" && (
         <div className="even-motion-grid__previews">

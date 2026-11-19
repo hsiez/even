@@ -43,10 +43,11 @@ export function HomePage({
   useLayoutEffect(() => {
     const trigger = activeTrigger();
     if (focusRequested.current) {
-      trigger?.focus();
+      trigger?.focus({ preventScroll: true });
       focusRequested.current = false;
     }
-    trigger?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+    if (!trigger?.closest("[data-removing]"))
+      trigger?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
   }, [workspace]);
   function openTab(kind) {
     focusRequested.current = true;

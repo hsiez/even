@@ -1,5 +1,27 @@
 import { expect, test } from "vitest";
-import { readMotionTiming, motionDecisions } from "./motion";
+import {
+  readInteractionDelay,
+  readMotionTiming,
+  motionDecisions,
+} from "./motion";
+
+test("removal gap and reflow use independent decisions without changing ordinary movement or exit", () => {
+  const element = document.createElement("div");
+  document.body.append(element);
+  element.style.setProperty("--even-motion-duration-exit", "400ms");
+  element.style.setProperty("--even-motion-duration-move", "500ms");
+  expect(readInteractionDelay(element, "removal")).toBe(75);
+  expect(readInteractionDelay(element, "repeat")).toBe(500);
+  expect(readMotionTiming(element, "reflow").duration).toBe(150);
+  expect(readMotionTiming(element, "reflow-rapid").duration).toBe(100);
+  element.style.setProperty("--even-interaction-delay-removal", "0.05s");
+  element.style.setProperty("--even-motion-duration-reflow", "125ms");
+  expect(readInteractionDelay(element, "removal")).toBe(50);
+  expect(readMotionTiming(element, "reflow").duration).toBe(125);
+  element.style.setProperty("--even-interaction-delay-removal", "0s");
+  expect(readInteractionDelay(element, "removal")).toBe(0);
+  element.remove();
+});
 
 test("WAAPI timing uses generated defaults and resolves caller CSS overrides in milliseconds", () => {
   const element = document.createElement("div");

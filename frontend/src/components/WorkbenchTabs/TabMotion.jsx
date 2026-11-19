@@ -1,8 +1,14 @@
 import React from "react";
-import { readMotionTiming } from "../../tokens/motion";
+import { readInteractionDelay, readMotionTiming } from "../../tokens/motion";
 import { observeMotionInput, isKeyboardMotion } from "../motionInput";
 const same = (a, b) =>
   a.length === b.length && a.every((value, i) => value === b[i]);
+const containsPoint = (box, event) =>
+  box &&
+  event.clientX >= box.left &&
+  event.clientX <= box.right &&
+  event.clientY >= box.top &&
+  event.clientY <= box.bottom;
 
 // A pre-commit snapshot is needed for FLIP: an effect would see the new layout.
 // This coordinates decoration only; Base UI still owns selection and geometry.
@@ -10,6 +16,9 @@ export class TabMotion extends React.Component {
   track = React.createRef();
   motion = null;
   frame = null;
+  lastRemovalAt = -Infinity;
+  lastCloseRect = null;
+  pendingClose = null;
 
   componentDidMount() {
     const viewport = this.track.current.parentElement;
@@ -54,8 +63,14 @@ export class TabMotion extends React.Component {
     const appended =
       values.length === previous.values.length + 1 &&
       previous.values.every((value, i) => value === values[i]);
+    const removed =
+      values.length === previous.values.length - 1 &&
+      same(
+        previous.values.filter((value) => values.includes(value)),
+        values,
+      );
     if (
-      !appended ||
+      (!appended && !removed) ||
       !track.animate ||
       this.media?.matches ||
       isKeyboardMotion(track)
@@ -65,31 +80,48 @@ export class TabMotion extends React.Component {
     const closes = [...track.querySelectorAll(".even-workbench-tab-close")];
     const indicator = track.querySelector(".even-workbench-tab-indicator");
     if (!indicator || indicator.hidden) return null;
+    const active = track
+      .querySelector(".even-tab[data-active]")
+      ?.closest(".even-workbench-tab");
+    const continuing = removed && this.motion?.kind === "remove";
+    const repeated =
+      removed &&
+      (continuing ||
+        performance.now() - this.lastRemovalAt <
+          readInteractionDelay(track, "repeat"));
     return {
+      kind: removed ? "remove" : "create",
+      repeated,
       rows: new Map(
         rows.map((node) => [
-          node.dataset.tabColumn,
+          previous.values[Number(node.dataset.tabColumn) - 1],
           node.getBoundingClientRect(),
         ]),
       ),
       closes: new Map(
         closes.map((node) => [
-          node.dataset.tabColumn,
+          previous.values[Number(node.dataset.tabColumn) - 1],
           node.getBoundingClientRect(),
         ]),
       ),
-      active: track
-        .querySelector(".even-tab[data-active]")
-        ?.closest(".even-workbench-tab").dataset.tabColumn,
-      indicator: indicator.getBoundingClientRect(),
+      active: active?.dataset.tabColumn,
+      indicator:
+        track.hasAttribute("data-removing") && active
+          ? active.getBoundingClientRect()
+          : indicator.getBoundingClientRect(),
       scrollLeft: track.parentElement.scrollLeft,
     };
   }
 
   componentDidUpdate(previous, _, snapshot) {
     if (same(previous.values, this.props.values)) return;
-    this.stop();
-    if (snapshot) this.frame = requestAnimationFrame(() => this.play(snapshot));
+    if (snapshot?.kind === "remove") this.lastRemovalAt = performance.now();
+    // Redirect a removal without briefly revealing/focusing its settled layout.
+    this.stop(!(snapshot?.kind === "remove" && this.motion?.kind === "remove"));
+    // Invert removal before paint so the compacted layout never flashes first.
+    if (snapshot?.kind === "remove") this.playRemoval(snapshot);
+    else if (snapshot)
+      this.frame = requestAnimationFrame(() => this.play(snapshot));
   }
 
   onScroll = () => {
@@ -103,20 +135,90 @@ export class TabMotion extends React.Component {
   };
 
   pauseForPointer = () => {
-    if (!this.motion) return;
+    if (!this.motion?.animations.length) return;
     // Keep a moving close button under the pointer until its click is dispatched.
     this.motion.animations.forEach((animation) => animation.pause());
     document.addEventListener("pointerup", this.endPointer, { once: true });
     document.addEventListener("pointercancel", this.endPointer, { once: true });
   };
 
+  preparePointer = (event) => {
+    this.pendingClose = null;
+    const track = this.track.current;
+    if (
+      event.button === 0 &&
+      event.pointerType === "mouse" &&
+      this.motion?.kind === "remove" &&
+      this.motion.animations.length &&
+      containsPoint(this.lastCloseRect, event)
+    ) {
+      const pressed = event.target.closest(".even-workbench-tab-close");
+      const rect = this.lastCloseRect;
+      const projected = this.motion.closeTargets?.find((target) =>
+        containsPoint(target.box, event),
+      )?.button;
+      const button = projected ?? pressed;
+      if (button?.closest(".even-workbench-tab-track") === track) {
+        // Resolve the repeated close against final layout, without snapping the
+        // painted tabs there. The next removal continues from this paused pose.
+        this.pauseForPointer();
+        this.pendingClose = { button, rect };
+        if (pressed !== button) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return;
+      }
+    }
+    this.pauseForPointer();
+  };
+
+  captureClick = (event) => {
+    const close = event.target.closest(".even-workbench-tab-close");
+    const pending = this.pendingClose;
+    this.pendingClose = null;
+    const repeatIntent =
+      pending &&
+      event.button === 0 &&
+      event.detail > 0 &&
+      containsPoint(pending.rect, event) &&
+      pending.button.isConnected &&
+      pending.button.closest(".even-workbench-tab-track") ===
+        this.track.current;
+    if (repeatIntent && close !== pending.button) {
+      event.preventDefault();
+      event.stopPropagation();
+      // Invoke the existing named button exactly once. Its normal Base UI /
+      // product callback still owns closure; no extra control or selection state.
+      pending.button.click();
+      this.lastCloseRect = pending.rect;
+      return;
+    }
+    if (close) {
+      this.lastCloseRect = repeatIntent
+        ? pending.rect
+        : close.getBoundingClientRect();
+      return;
+    }
+    this.stop();
+  };
+
   endPointer = () => {
     document.removeEventListener("pointerup", this.endPointer);
     document.removeEventListener("pointercancel", this.endPointer);
-    if (this.motion) this.frame = requestAnimationFrame(() => this.stop());
+    const paused = this.motion;
+    if (paused)
+      this.frame = requestAnimationFrame(() => {
+        this.frame = null;
+        // A close normally replaces this motion before the frame. If canceled,
+        // resume its existing pose instead of snapping to the final layout.
+        if (this.motion === paused)
+          paused.animations.forEach((animation) => animation.play());
+      });
   };
 
   stop = (notify = true) => {
+    this.pendingClose = null;
     document.removeEventListener("pointerup", this.endPointer);
     document.removeEventListener("pointercancel", this.endPointer);
     if (this.frame !== null) cancelAnimationFrame(this.frame);
@@ -127,8 +229,115 @@ export class TabMotion extends React.Component {
     motion.animations.forEach((animation) => animation.cancel());
     motion.indicator.style.transition = motion.transition;
     this.track.current?.removeAttribute("data-creating");
-    if (notify !== false) this.props.onMotionEnd?.();
+    this.track.current?.removeAttribute("data-removing");
+    if (notify !== false) this.props.onMotionEnd?.(motion.kind);
   };
+
+  playRemoval(snapshot) {
+    const track = this.track.current;
+    const viewport = track.parentElement;
+    const indicator = track.querySelector(".even-workbench-tab-indicator");
+    const hold = snapshot.repeated ? 0 : readInteractionDelay(track, "removal");
+    const move = readMotionTiming(
+      track,
+      snapshot.repeated ? "reflow-rapid" : "reflow",
+    );
+    const total = hold + move.duration;
+    if (!total || !indicator) return;
+    const transition = indicator.style.transition;
+    indicator.style.transition = "none";
+    track.setAttribute("data-removing", "");
+    const animations = [];
+    const view = viewport.getBoundingClientRect();
+    const active = track
+      .querySelector(".even-tab[data-active]")
+      ?.closest(".even-workbench-tab");
+    const activeValue =
+      active && this.props.values[Number(active.dataset.tabColumn) - 1];
+    const activeOld = snapshot.rows.get(activeValue);
+    const activeBox = active?.getBoundingClientRect();
+    // The host has already changed selection. Align the sibling close controls
+    // before measuring; MutationObserver coordination otherwise runs too late.
+    for (const close of track.querySelectorAll(".even-workbench-tab-close")) {
+      close.toggleAttribute(
+        "data-active-tab",
+        close.dataset.tabColumn === active?.dataset.tabColumn,
+      );
+    }
+    // Stable native layout targets let stationary clicks reach the next X even
+    // while its visible control is still sliding. Active controls paint above
+    // overlapping inactive slots, so use the same priority when resolving hits.
+    const closeTargets = [
+      ...track.querySelectorAll(".even-workbench-tab-close"),
+    ]
+      .map((button) => ({ button, box: button.getBoundingClientRect() }))
+      .sort(
+        (a, b) =>
+          Number(b.button.hasAttribute("data-active-tab")) -
+          Number(a.button.hasAttribute("data-active-tab")),
+      );
+    // A replacement that was hidden behind the sticky tab enters from the
+    // nearest edge, rather than traveling from its distant logical slot.
+    const activeDx =
+      activeOld && activeBox
+        ? activeOld.right <= view.left
+          ? -activeBox.width
+          : activeOld.left >= view.right
+            ? activeBox.width
+            : activeOld.left - activeBox.left
+        : 0;
+    for (const node of track.querySelectorAll(
+      ".even-workbench-tab, .even-workbench-tab-close",
+    )) {
+      const value = this.props.values[Number(node.dataset.tabColumn) - 1];
+      const old = (
+        node.classList.contains("even-workbench-tab")
+          ? snapshot.rows
+          : snapshot.closes
+      ).get(value);
+      const box = node.getBoundingClientRect();
+      if (
+        !old ||
+        (value !== activeValue &&
+          (Math.max(old.right, box.right) < view.left ||
+            Math.min(old.left, box.left) > view.right))
+      )
+        continue;
+      const dx = value === activeValue ? activeDx : old.left - box.left;
+      if (Math.abs(dx) < 0.5) continue;
+      const animation = node.animate(
+        [
+          { transform: `translateX(${dx}px)`, offset: 0 },
+          {
+            transform: `translateX(${dx}px)`,
+            offset: hold / total,
+            easing: move.easing,
+          },
+          { transform: "translateX(0px)", offset: 1 },
+        ],
+        { duration: total },
+      );
+      animation.id = "even-tab-remove-gap";
+      animations.push(animation);
+    }
+    const motion = {
+      kind: "remove",
+      animations,
+      closeTargets,
+      indicator,
+      transition,
+      viewportWidth: viewport.clientWidth,
+      trackWidth: track.clientWidth,
+      trackHeight: track.clientHeight,
+      scrollLeft: viewport.scrollLeft,
+    };
+    this.motion = motion;
+    Promise.all(
+      animations.map((animation) => animation.finished.catch(() => {})),
+    ).then(() => {
+      if (this.motion === motion) this.stop();
+    });
+  }
 
   play(snapshot) {
     this.frame = null;
@@ -193,7 +402,9 @@ export class TabMotion extends React.Component {
         box.left > viewportBox.right + box.width
       )
         continue;
-      const old = snapshot.rows.get(row.dataset.tabColumn);
+      const old = snapshot.rows.get(
+        this.props.values[Number(row.dataset.tabColumn) - 1],
+      );
       const dx =
         row === added
           ? enteredFrom
@@ -220,7 +431,9 @@ export class TabMotion extends React.Component {
       const box = close.getBoundingClientRect();
       if (box.right < viewportBox.left || box.left > viewportBox.right)
         continue;
-      const old = snapshot.closes.get(close.dataset.tabColumn);
+      const old = snapshot.closes.get(
+        this.props.values[Number(close.dataset.tabColumn) - 1],
+      );
       const dx =
         close.dataset.tabColumn === added.dataset.tabColumn
           ? enteredFrom
@@ -256,6 +469,7 @@ export class TabMotion extends React.Component {
     focus.id = "even-tab-create-focus";
     animations.push(focus);
     const motion = {
+      kind: "create",
       animations,
       indicator,
       transition,
@@ -279,8 +493,11 @@ export class TabMotion extends React.Component {
         ref={this.track}
         className="even-workbench-tab-track"
         style={{ "--even-tab-count": Math.max(1, this.props.values.length) }}
-        onPointerDownCapture={this.pauseForPointer}
-        onClickCapture={this.stop}
+        onPointerDownCapture={this.preparePointer}
+        onPointerCancelCapture={() => {
+          this.pendingClose = null;
+        }}
+        onClickCapture={this.captureClick}
         onKeyDownCapture={this.stop}
         onWheelCapture={this.stop}
       >
