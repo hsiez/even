@@ -12,6 +12,182 @@ const props = {
   dataLabel: "Staging · simulated data",
 };
 
+async function newTab(user, name) {
+  await user.click(screen.getByRole("button", { name: "New tab" }));
+  await user.click(await screen.findByRole("menuitem", { name }));
+  await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+}
+
+test("each tab contains its own title below the tab strip", async () => {
+  const user = userEvent.setup();
+  render(
+    <HomePage {...props} initialAgentId="support" allowAllAgents={false} />,
+  );
+  expect(
+    within(
+      screen.getByRole("tabpanel", { name: "Traces", exact: true }),
+    ).getByRole("heading", { level: 1, name: "Traces" }),
+  ).toBeVisible();
+  await newTab(user, "New trace explorer");
+  expect(
+    within(
+      screen.getByRole("tabpanel", { name: "Traces 2", exact: true }),
+    ).getByRole("heading", { level: 1, name: "Traces 2" }),
+  ).toBeVisible();
+  expect(
+    screen.queryByRole("heading", { level: 1, name: "Traces", exact: true }),
+  ).toBeNull();
+  await newTab(user, "New chat playground");
+  expect(
+    within(
+      screen.getByRole("tabpanel", { name: "Playground 1", exact: true }),
+    ).getByRole("heading", { level: 1, name: "Playground 1" }),
+  ).toBeVisible();
+});
+
+test("agent spaces retain independent explorers and restore inspector state without stealing tab focus", async () => {
+  const user = userEvent.setup();
+  render(
+    <HomePage {...props} initialAgentId="support" allowAllAgents={false} />,
+  );
+  const list = screen.getByRole("tablist", { name: "Support workbench tabs" });
+  expect(
+    within(list).getByRole("tab", { name: "Traces", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  expect(screen.queryByRole("button", { name: "All agents" })).toBeNull();
+  const search = screen.getByRole("combobox", { name: "Search traces" });
+  await user.type(search, "deployment");
+  await user.keyboard("{Escape}");
+  await user.click(
+    screen.getByRole("button", { name: /Investigate deployment failure/ }),
+  );
+  await user.click(
+    screen.getByRole("treeitem", { name: "Read deployment logs" }),
+  );
+  const resize = screen.getByRole("separator", {
+    name: "Resize Operation column",
+  });
+  resize.focus();
+  await user.keyboard("{Home}");
+  await newTab(user, "New trace explorer");
+  const second = within(list).getByRole("tab", { name: "Traces 2" });
+  await waitFor(() => expect(second).toHaveFocus());
+  expect(screen.getByRole("combobox", { name: "Search traces" })).toHaveValue(
+    "",
+  );
+  expect(screen.getByRole("status")).toHaveTextContent("4 traces · Support");
+  expect(screen.queryByRole("complementary")).toBeNull();
+  expect(search).not.toBeInTheDocument();
+  await user.click(
+    within(list).getByRole("tab", { name: "Traces", exact: true }),
+  );
+  expect(
+    within(list).getByRole("tab", { name: "Traces", exact: true }),
+  ).toHaveFocus();
+  expect(screen.getByRole("combobox", { name: "Search traces" })).toHaveValue(
+    "deployment",
+  );
+  expect(
+    screen.getByRole("separator", { name: "Resize Operation column" }),
+  ).toHaveAttribute("aria-valuenow", "128");
+  expect(
+    screen.getByRole("treeitem", { name: "Read deployment logs" }),
+  ).toHaveAttribute("aria-selected", "true");
+  await user.click(
+    screen.getByRole("button", { name: "Research", exact: true }),
+  );
+  expect(screen.queryByRole("tab", { name: "Traces 2" })).toBeNull();
+  expect(screen.queryByRole("complementary")).toBeNull();
+  await newTab(user, "New chat playground");
+  expect(
+    screen.getByRole("region", { name: "Playground preview" }),
+  ).toBeVisible();
+  expect(screen.getByRole("textbox", { name: "Message" })).toBeDisabled();
+  await user.click(
+    screen.getByRole("button", { name: "Support", exact: true }),
+  );
+  expect(screen.getByRole("tab", { name: "Traces 2" })).toBeVisible();
+  expect(
+    screen.getByRole("treeitem", { name: "Read deployment logs" }),
+  ).toHaveAttribute("aria-selected", "true");
+});
+
+test("tab closure picks the right then left neighbor, preserves inactive selection and never closes the pinned tab", async () => {
+  const user = userEvent.setup();
+  render(
+    <HomePage {...props} initialAgentId="support" allowAllAgents={false} />,
+  );
+  await newTab(user, "New trace explorer");
+  await newTab(user, "New chat playground");
+  await user.click(screen.getByRole("tab", { name: "Traces 2" }));
+  await user.keyboard("{Delete}");
+  const playground = screen.getByRole("tab", { name: "Playground 1" });
+  expect(playground).toHaveAttribute("aria-selected", "true");
+  expect(playground).toHaveFocus();
+  await newTab(user, "New trace explorer");
+  await user.click(screen.getByRole("button", { name: "Close Playground 1" }));
+  expect(screen.getByRole("tab", { name: "Traces 3" })).toHaveFocus();
+  expect(screen.getByRole("tab", { name: "Traces 3" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await user.click(screen.getByRole("button", { name: "Close Traces 3" }));
+  expect(
+    screen.getByRole("tab", { name: "Traces", exact: true }),
+  ).toHaveFocus();
+  await user.keyboard("{Delete}");
+  expect(
+    screen.getByRole("tab", { name: "Traces", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  expect(
+    screen.queryByRole("button", { name: "Close Traces", exact: true }),
+  ).toBeNull();
+});
+
+test("closing a pending explorer aborts its request; playground previews make no session requests", async () => {
+  const user = userEvent.setup();
+  let resolve;
+  const response = {
+    results: [{ trace: previewTraces[0], matches: [] }],
+    total: 1,
+  };
+  const source = {
+    search: vi
+      .fn()
+      .mockResolvedValueOnce(response)
+      .mockImplementationOnce(
+        () =>
+          new Promise((done) => {
+            resolve = done;
+          }),
+      ),
+    createSession: vi.fn(),
+  };
+  render(
+    <HomePage
+      {...props}
+      dataSource={source}
+      initialAgentId="support"
+      allowAllAgents={false}
+    />,
+  );
+  await screen.findByRole("button", { name: previewTraces[0].label });
+  await newTab(user, "New trace explorer");
+  await waitFor(() => expect(source.search).toHaveBeenCalledTimes(2));
+  const pending = source.search.mock.calls[1][0];
+  expect(pending.agentId).toBe("support");
+  await user.click(screen.getByRole("button", { name: "Close Traces 2" }));
+  expect(pending.signal.aborted).toBe(true);
+  await act(async () => resolve({ ...response, results: [] }));
+  expect(
+    screen.getByRole("button", { name: previewTraces[0].label }),
+  ).toBeVisible();
+  expect(source.search).toHaveBeenCalledTimes(2);
+  await newTab(user, "New chat playground");
+  expect(source.search).toHaveBeenCalledTimes(2);
+  expect(source.createSession).not.toHaveBeenCalled();
+});
+
 test("starts on all agents’ traces and searches across operations, agents and IDs", async () => {
   const user = userEvent.setup();
   render(<HomePage {...props} />);
@@ -72,9 +248,7 @@ test("combines agent scope with search filters and can recover from no results",
   await user.keyboard("{Escape}");
   expect(screen.getByText("No traces match these filters.")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Reset view" }));
-  expect(screen.getByRole("status")).toHaveTextContent(
-    "12 traces · All agents",
-  );
+  expect(screen.getByRole("status")).toHaveTextContent("4 traces · Support");
   expect(screen.getByRole("combobox", { name: "Search traces" })).toHaveValue(
     "",
   );

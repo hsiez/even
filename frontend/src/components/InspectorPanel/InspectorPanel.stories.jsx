@@ -24,3 +24,17 @@ export const Default = {
     );
   },
 };
+
+export const RestoredWithoutFocus = {
+  render: () => (
+    <InspectorPanel autoFocus={false}>
+      <InspectorPanel.Header>
+        <h2>Restored inspection</h2>
+      </InspectorPanel.Header>
+      <InspectorPanel.Body>
+        Restored details leave focus on the workbench tab. A new inspection
+        still focuses its panel by default.
+      </InspectorPanel.Body>
+    </InspectorPanel>
+  ),
+};

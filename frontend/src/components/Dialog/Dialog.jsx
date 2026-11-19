@@ -2,10 +2,12 @@ import React from "react";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 
 import { styledPart } from "../presentation";
+import { useMotionInput } from "../motionInput";
 
 const Popup = styledPart(BaseDialog.Popup, "even-popup even-dialog-popup");
 
 function Content({ children, ...props }) {
+  useMotionInput();
   return (
     <BaseDialog.Portal className="even-overlay-portal">
       <BaseDialog.Backdrop className="even-dialog-backdrop" />

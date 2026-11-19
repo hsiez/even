@@ -143,7 +143,7 @@
   }
   :where(.even-popup) {
     padding: var(--even-space-inset-default);
-    border: 1px solid var(--even-border-default);
+    border: var(--even-size-border-control) solid var(--even-border-default);
     border-radius: var(--even-size-radius-panel);
     background: var(--even-surface-page);
     color: var(--even-text-primary);
@@ -154,6 +154,82 @@
       calc(100vw - 2 * var(--even-space-inset-default))
     );
     overflow: auto;
+  }
+  /* Base UI owns mount/unmount and exposes its transition phases. Only these
+     occasional overlays animate; autocomplete, tooltips and selects stay instant. */
+  :where(.even-menu-popup, .even-popover-popup) {
+    transform-origin: var(--transform-origin);
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--even-motion-duration-enter) var(--even-motion-easing-enter),
+      transform var(--even-motion-duration-enter)
+        var(--even-motion-easing-enter);
+  }
+  :where(.even-menu-popup, .even-popover-popup):where(
+    [data-starting-style],
+    [data-ending-style]
+  ) {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  :where(
+    .even-menu-popup[data-ending-style],
+    .even-popover-popup[data-ending-style]
+  ) {
+    transition-duration: var(--even-motion-duration-exit);
+    transition-timing-function: var(--even-motion-easing-exit);
+  }
+  /* The modal scrim changes the whole viewport, so panel and backdrop share
+     the large-area timing even when the dialog's content itself is compact. */
+  :where(.even-dialog-popup, .even-dialog-backdrop) {
+    opacity: 1;
+    transition: opacity var(--even-motion-duration-enter-large)
+      var(--even-motion-easing-enter-large);
+  }
+  :where(.even-dialog-popup) {
+    transform: none;
+    transition-property: opacity, transform;
+  }
+  :where(.even-dialog-popup, .even-dialog-backdrop):where(
+    [data-starting-style],
+    [data-ending-style]
+  ) {
+    opacity: 0;
+  }
+  :where(.even-dialog-popup):where([data-starting-style], [data-ending-style]) {
+    transform: translateY(var(--even-space-gap-related));
+  }
+  :where(
+    .even-dialog-popup[data-ending-style],
+    .even-dialog-backdrop[data-ending-style]
+  ) {
+    transition-duration: var(--even-motion-duration-exit-large);
+    transition-timing-function: var(--even-motion-easing-exit-large);
+  }
+  :where(.even-menu-popup, .even-popover-popup)[data-instant] {
+    transition-duration: var(--even-motion-duration-instant);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :where(.even-menu-popup, .even-popover-popup) {
+      transition: none;
+      transform: none;
+    }
+    :where(.even-dialog-popup, .even-dialog-backdrop) {
+      transform: none;
+      transition: opacity var(--even-motion-duration-reduced)
+        var(--even-motion-easing-reduced);
+    }
+  }
+  :root[data-even-motion-input="keyboard"]
+    :where(
+      .even-menu-popup,
+      .even-popover-popup,
+      .even-dialog-popup,
+      .even-dialog-backdrop,
+      .even-workbench-tab-indicator
+    ) {
+    transition-duration: var(--even-motion-duration-instant);
   }
   :where(.even-popup-title) {
     margin: 0;
@@ -261,6 +337,648 @@
   :where(.even-tab-panel[hidden], .even-disclosure-panel[hidden]) {
     display: none;
   }
+  :where(.even-workbench-tabs) {
+    min-width: 0;
+  }
+  :where(.even-workbench-tabs[hidden]) {
+    display: none;
+  }
+  :where(.even-workbench-tab-bar) {
+    /* Seed for first layout; useStickyTab replaces this with the rendered height. */
+    --even-tab-row-height: calc(
+      var(--even-size-control-default) + var(--even-size-border-control)
+    );
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    background-color: var(--even-surface-page);
+    background-image: linear-gradient(
+      var(--even-border-default),
+      var(--even-border-default)
+    );
+    background-size: 100% var(--even-size-border-control);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    padding-inline-start: var(--even-space-inset-compact);
+    padding-inline-end: var(--even-space-inset-tight);
+  }
+  :where(.even-workbench-tab-window) {
+    position: relative;
+    isolation: isolate;
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.even-workbench-active-fade) {
+    display: none;
+    position: absolute;
+    top: calc(-1 * var(--even-size-border-control));
+    height: 100%;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    /* Behind the tab's own outline/shoulders, above passing tab slots. */
+    z-index: -1;
+  }
+  :where(.even-workbench-tab:has(.even-tab[data-active]))
+    > .even-workbench-active-fade {
+    display: block;
+  }
+  /* Border-image paint follows the tab but adds no scrollable overflow. */
+  :where(.even-workbench-active-fade-start) {
+    /* Stop at the outer edge: child paint would otherwise cover the border. */
+    left: calc(-1 * var(--even-size-border-control));
+    border-image: linear-gradient(
+        to right,
+        transparent,
+        var(--even-surface-page) var(--even-space-inset-default)
+      )
+      0 fill;
+    border-image-outset: 0 0 0
+      calc(var(--even-space-inset-default) + var(--even-size-radius-panel));
+  }
+  :where(.even-workbench-active-fade-end) {
+    right: calc(-1 * var(--even-size-border-control));
+    border-image: linear-gradient(
+        to left,
+        transparent,
+        var(--even-surface-page) var(--even-space-inset-default)
+      )
+      0 fill;
+    border-image-outset: 0
+      calc(var(--even-space-inset-default) + var(--even-size-radius-panel)) 0 0;
+  }
+  :where(
+      .even-workbench-tab-track[data-sticky-edge="start"],
+      .even-workbench-tab-track[data-sticky-edge="end"],
+      .even-workbench-tab-track[data-scrolling]
+    )
+    .even-workbench-tab:has(.even-tab[data-active])
+    > .even-workbench-active-fade {
+    opacity: 1;
+  }
+  :where(.even-workbench-tab-scroll) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* Suppress edge feedback and chaining into browser swipe navigation. */
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
+    scrollbar-width: none;
+    scroll-padding-inline: var(--even-space-inset-default);
+    flex: 1;
+    min-width: 0;
+    padding: var(--even-space-inset-compact) var(--even-space-inset-default) 0;
+  }
+  :where(.even-workbench-tab-scroll)::-webkit-scrollbar {
+    display: none;
+  }
+  :where(.even-workbench-tab-track) {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--even-tab-count), minmax(0, 1fr));
+    gap: 0;
+    width: clamp(
+      calc(var(--even-tab-count) * var(--even-size-navigation-item-minimum)),
+      100%,
+      calc(var(--even-tab-count) * var(--even-size-navigation-item-maximum))
+    );
+    margin-inline-start: auto;
+  }
+  :where(.even-workbench-tab-list) {
+    position: relative;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    gap: inherit;
+    border: 0;
+    overflow: visible;
+    isolation: auto;
+  }
+  :where(.even-workbench-tab) {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    z-index: 1;
+    border: var(--even-size-border-control) solid transparent;
+    border-bottom: 0;
+    border-start-start-radius: var(--even-size-radius-panel);
+    border-start-end-radius: var(--even-size-radius-panel);
+  }
+  :where(.even-workbench-tab:has(.even-tab[data-active])) {
+    position: sticky;
+    inset-inline: 0;
+    z-index: 4;
+    border-color: var(--even-border-default);
+    background: var(--even-surface-secondary);
+    background-clip: padding-box;
+  }
+  :where(.even-workbench-tab-track)::before,
+  :where(.even-workbench-tab-track)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: var(--even-space-inset-default);
+    height: calc(100% - var(--even-size-border-control));
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+  }
+  :where(.even-workbench-tab-track)::before {
+    left: var(--even-tab-viewport-start, 0px);
+    background: linear-gradient(
+      to right,
+      var(--even-surface-page),
+      transparent
+    );
+  }
+  :where(.even-workbench-tab-track)::after {
+    left: calc(
+      var(--even-tab-viewport-start, 0px) +
+        var(--even-tab-viewport-width, 0px) - var(--even-space-inset-default)
+    );
+    background: linear-gradient(to left, var(--even-surface-page), transparent);
+  }
+  :where(
+    .even-workbench-tab-scroll[data-overflow-start] > .even-workbench-tab-track
+  )::before,
+  :where(
+    .even-workbench-tab-scroll[data-overflow-end] > .even-workbench-tab-track
+  )::after {
+    opacity: 1;
+  }
+  :where(.even-workbench-tab + .even-workbench-tab)::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: calc(-1 * var(--even-size-border-control));
+    inset-block-start: 50%;
+    width: var(--even-size-border-control);
+    height: var(--even-size-icon-default);
+    transform: translateY(-50%);
+    background: var(--even-border-default);
+    opacity: 0;
+    pointer-events: none;
+  }
+  :where(
+    .even-workbench-tab:not([data-hovered]):not(:has(.even-tab[data-active]))
+      + .even-workbench-tab:not([data-hovered]):not(
+        :has(.even-tab[data-active])
+      )
+  )::after {
+    opacity: 1;
+  }
+  :where(.even-workbench-tab-track[data-sticky-edge="start"])::before,
+  :where(.even-workbench-tab-track[data-sticky-edge="end"])::after {
+    background: var(--even-surface-page);
+    opacity: 1;
+  }
+  :where(
+    .even-workbench-tab-track:not([data-scrolling])
+      .even-workbench-tab[data-hovered]:not(:has(.even-tab[data-active]))
+  )::before {
+    content: "";
+    position: absolute;
+    /* Keep the tight clearance above the painted baseline, not its outer edge. */
+    inset-block: calc(
+      var(--even-space-inset-tight) + var(--even-size-border-control)
+    );
+    /* Include the reserved stroke in the tight visible edge clearance. */
+    inset-inline: calc(
+      var(--even-space-inset-tight) - var(--even-size-border-control)
+    );
+    /* Concentric with the shoulder's painted inner edge. */
+    border-radius: max(
+      0px,
+      calc(
+        var(--even-size-radius-panel) - var(--even-size-border-control) -
+          var(--even-space-inset-tight)
+      )
+    );
+    background: var(--even-surface-hover);
+    pointer-events: none;
+    z-index: -1;
+  }
+  :where(.even-workbench-tab-close) {
+    scroll-margin-inline: var(--even-space-gap-tight);
+    position: relative;
+    isolation: isolate;
+    align-self: center;
+    justify-self: end;
+    width: var(--even-size-control-compact);
+    height: var(--even-size-control-compact);
+    min-width: var(--even-size-control-compact);
+    min-height: var(--even-size-control-compact);
+    padding: 0;
+    border: 0;
+    /* Derived runtime clearance inside the inactive tab's inset hover surface. */
+    --even-tab-close-offset: calc(
+      (
+          var(--even-tab-row-height) - var(--even-size-control-compact) - 3 *
+            var(--even-size-border-control)
+        ) /
+        2
+    );
+    margin-inline-end: var(--even-tab-close-offset);
+    color: var(--even-text-secondary);
+    opacity: 0;
+    z-index: 1;
+  }
+  :where(.even-workbench-tab-close[data-active-tab]) {
+    --even-tab-close-offset: calc(
+      (var(--even-tab-row-height) - var(--even-size-control-compact)) / 2
+    );
+    position: sticky;
+    inset-inline-start: calc(
+      var(--even-active-tab-width) - var(--even-size-control-compact) -
+        var(--even-tab-close-offset)
+    );
+    inset-inline-end: var(--even-tab-close-offset);
+    z-index: 5;
+  }
+  :where(.even-workbench-tab-close:focus-visible) {
+    z-index: 6;
+  }
+  :where(
+    .even-workbench-tab-close,
+    .even-workbench-tab-close:hover,
+    .even-workbench-tab-close:active
+  ) {
+    background: transparent;
+  }
+  :where(.even-workbench-tab-close)::before {
+    content: "";
+    position: absolute;
+    inset: var(--even-space-inset-tight);
+    border-radius: max(
+      0px,
+      calc(
+        var(--even-size-radius-panel) - var(--even-space-inset-tight) -
+          var(--even-size-border-control) - var(--even-tab-close-offset)
+      )
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  :where(.even-workbench-tab-close[data-active-tab])::before {
+    border-radius: max(
+      0px,
+      calc(
+        var(--even-size-radius-panel) - var(--even-space-inset-tight) -
+          var(--even-tab-close-offset)
+      )
+    );
+  }
+  :where(
+    .even-workbench-tab-track:not([data-scrolling])
+      .even-workbench-tab-close:hover
+  )::before {
+    background: var(--even-surface-hover);
+  }
+  :where(.even-workbench-tab-close:active)::before {
+    background: var(--even-surface-active);
+  }
+  :where(
+    .even-workbench-tab-track:not([data-scrolling])
+      .even-workbench-tab-close[data-tab-hovered],
+    .even-workbench-tab-track:not([data-scrolling])
+      .even-workbench-tab-close:hover,
+    .even-workbench-tab-close:focus-visible
+  ) {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    :where(.even-workbench-tab-close) {
+      opacity: 1;
+    }
+  }
+  :where(
+      .even-workbench-tab-track:not([data-scrolling]):has(
+          .even-workbench-tab[data-hovered]
+        ):not(:has(.even-workbench-tab[data-hovered] .even-tab[data-active]))
+    )
+    .even-workbench-tab-close:hover::before {
+    background: var(--even-surface-active);
+  }
+  :where(.even-workbench-tab .even-tab) {
+    display: flex;
+    align-items: center;
+    gap: var(--even-space-gap-related);
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    text-align: start;
+    min-height: var(--even-size-control-default);
+    padding-inline: var(--even-space-inset-default);
+    border: 0;
+    border-radius: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  :where(
+    .even-workbench-tab-track:not([data-scrolling])
+      .even-workbench-tab[data-hovered]
+      .even-tab
+  ) {
+    color: var(--even-text-primary);
+  }
+  /* Ignore pointer hover during scroll, including the shared trigger's :hover. */
+  :where(
+    .even-workbench-tab-track[data-scrolling]
+      .even-workbench-tab
+      .even-tab:not([data-active])
+  ) {
+    color: var(--even-text-secondary);
+  }
+  :where(
+    .even-workbench-tab-track[data-scrolling]
+      .even-workbench-tab:not(:has(.even-tab[data-active]))
+      + .even-workbench-tab:not(:has(.even-tab[data-active]))
+  )::after {
+    opacity: 1;
+  }
+  :where(.even-workbench-tab[data-closable] .even-tab) {
+    padding-inline-end: var(--even-space-inset-compact);
+  }
+  :where(.even-workbench-tab) .even-tab:focus-visible {
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
+  }
+  :where(.even-workbench-tab-label) {
+    flex: 1;
+    min-width: 0;
+    display: block;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+    mask-image: linear-gradient(
+      to right,
+      black calc(100% - var(--even-space-inset-compact)),
+      transparent
+    );
+  }
+  :where(.even-workbench-tab-icon) {
+    flex: none;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-workbench-tab[data-closable] .even-workbench-tab-label) {
+    mask-image: linear-gradient(
+      to right,
+      black
+        calc(
+          100% - var(--even-size-control-compact) -
+            var(--even-space-inset-default)
+        ),
+      transparent
+        calc(
+          100% - var(--even-size-control-compact) / 2 -
+            var(--even-space-inset-compact)
+        )
+    );
+  }
+  :where(.even-workbench-tab-indicator) {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    top: calc(var(--active-tab-top) - var(--even-size-border-control));
+    width: calc(var(--active-tab-width) + 2 * var(--even-size-border-control));
+    height: calc(var(--active-tab-height) + var(--even-size-border-control));
+    box-sizing: border-box;
+    transform: translateX(
+      calc(var(--active-tab-left) - var(--even-size-border-control))
+    );
+    background: var(--even-surface-secondary);
+    border: var(--even-size-border-control) solid var(--even-border-default);
+    border-bottom: 0;
+    border-start-start-radius: var(--even-size-radius-panel);
+    border-start-end-radius: var(--even-size-radius-panel);
+    pointer-events: none;
+    z-index: 0;
+    transition: transform var(--even-motion-duration-move)
+      var(--even-motion-easing-move);
+  }
+  :where(
+    .even-workbench-tab-track[data-scrolling] .even-workbench-tab-indicator
+  ) {
+    transition-duration: var(--even-motion-duration-instant);
+  }
+  :where(
+      .even-workbench-tab-track[data-sticky-edge="start"],
+      .even-workbench-tab-track[data-sticky-edge="end"]
+    )
+    .even-workbench-tab-indicator {
+    z-index: 3;
+  }
+  :where(
+      .even-workbench-tab-track[data-creating],
+      .even-workbench-tab-track[data-indicator-moving]:not([data-scrolling])
+    )
+    .even-workbench-tab-indicator {
+    visibility: visible;
+  }
+  :where(
+      .even-workbench-tab-track[data-creating],
+      .even-workbench-tab-track[data-indicator-moving]:not([data-scrolling])
+    )
+    .even-workbench-tab:has(.even-tab[data-active]) {
+    border-color: transparent;
+    background: transparent;
+  }
+  :where(
+      .even-workbench-tab-track[data-creating],
+      .even-workbench-tab-track[data-indicator-moving]:not([data-scrolling])
+    )
+    .even-workbench-tab:has(.even-tab[data-active])::before,
+  :where(
+      .even-workbench-tab-track[data-creating],
+      .even-workbench-tab-track[data-indicator-moving]:not([data-scrolling])
+    )
+    .even-workbench-tab:has(.even-tab[data-active])::after {
+    visibility: hidden;
+  }
+  :where(.even-workbench-tab-indicator[hidden]) {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :where(.even-workbench-tab-indicator) {
+      transition: none;
+    }
+  }
+  :where(
+    .even-workbench-tab-indicator,
+    .even-workbench-tab:has(.even-tab[data-active])
+  )::before,
+  :where(
+    .even-workbench-tab-indicator,
+    .even-workbench-tab:has(.even-tab[data-active])
+  )::after {
+    content: "";
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    opacity: 1;
+    transform: none;
+    width: calc(
+      var(--even-size-radius-panel) + var(--even-size-border-control)
+    );
+    height: var(--even-size-radius-panel);
+    pointer-events: none;
+  }
+  :where(
+    .even-workbench-tab-indicator,
+    .even-workbench-tab:has(.even-tab[data-active])
+  )::before {
+    right: auto;
+    left: calc(-1 * var(--even-size-radius-panel));
+    background: radial-gradient(
+      circle at top left,
+      transparent
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control)),
+      var(--even-border-default)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control))
+        var(--even-size-radius-panel),
+      var(--even-surface-secondary) var(--even-size-radius-panel)
+    );
+  }
+  :where(
+    .even-workbench-tab-indicator,
+    .even-workbench-tab:has(.even-tab[data-active])
+  )::after {
+    left: auto;
+    right: calc(-1 * var(--even-size-radius-panel));
+    background: radial-gradient(
+      circle at top right,
+      transparent
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control)),
+      var(--even-border-default)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control))
+        var(--even-size-radius-panel),
+      var(--even-surface-secondary) var(--even-size-radius-panel)
+    );
+  }
+  :where(
+      .even-workbench-tab-track[data-sticky-edge="start"],
+      .even-workbench-tab-track[data-sticky-edge="end"]
+    )
+    .even-workbench-tab-indicator::before {
+    background: radial-gradient(
+      circle at top left,
+      var(--even-surface-page)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control)),
+      var(--even-border-default)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control))
+        var(--even-size-radius-panel),
+      var(--even-surface-secondary) var(--even-size-radius-panel)
+    );
+  }
+  :where(
+      .even-workbench-tab-track[data-sticky-edge="start"],
+      .even-workbench-tab-track[data-sticky-edge="end"]
+    )
+    .even-workbench-tab-indicator::after {
+    background: radial-gradient(
+      circle at top right,
+      var(--even-surface-page)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control)),
+      var(--even-border-default)
+        calc(var(--even-size-radius-panel) - var(--even-size-border-control))
+        var(--even-size-radius-panel),
+      var(--even-surface-secondary) var(--even-size-radius-panel)
+    );
+  }
+  :where(.even-workbench-tab .even-tab[data-active]) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-workbench-new) {
+    position: relative;
+    isolation: isolate;
+    flex: 0 0 auto;
+    align-self: end;
+    margin-inline-start: calc(-1 * var(--even-space-inset-default));
+    /* The leading radius stays transparent so the active shoulder can pass. */
+    width: calc(
+      var(--even-size-control-comfortable) + var(--even-size-radius-panel)
+    );
+    min-width: calc(
+      var(--even-size-control-comfortable) + var(--even-size-radius-panel)
+    );
+    height: var(--even-tab-row-height);
+    min-height: calc(
+      var(--even-size-control-default) + var(--even-size-border-control)
+    );
+    padding: 0;
+    border: var(--even-size-border-control) solid transparent;
+    border-bottom: 0;
+    border-radius: 0;
+    color: var(--even-text-secondary);
+    z-index: 3;
+  }
+  :where(
+    .even-workbench-new,
+    .even-workbench-new:hover,
+    .even-workbench-new:active
+  ) {
+    /* Cover overflowing tabs after the shoulder, with no seam in the baseline. */
+    background:
+      linear-gradient(var(--even-border-default), var(--even-border-default))
+        right bottom / calc(100% - var(--even-size-radius-panel))
+        var(--even-size-border-control) no-repeat,
+      linear-gradient(
+        to right,
+        transparent var(--even-size-radius-panel),
+        var(--even-surface-page) var(--even-size-radius-panel)
+      );
+    background-origin: border-box;
+  }
+  :where(.even-workbench-new:hover, .even-workbench-new[data-popup-open]) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-workbench-new)::before {
+    content: "";
+    position: absolute;
+    inset-block: calc(
+      var(--even-space-inset-tight) + var(--even-size-border-control)
+    );
+    inset-inline: calc(
+      var(--even-space-inset-tight) - var(--even-size-border-control)
+    );
+    border-radius: max(
+      0px,
+      calc(
+        var(--even-size-radius-panel) - var(--even-size-border-control) -
+          var(--even-space-inset-tight)
+      )
+    );
+    background: var(--even-surface-hover);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  :where(
+    .even-workbench-new:hover,
+    .even-workbench-new[data-popup-open]
+  )::before {
+    opacity: 1;
+  }
+  :where(.even-workbench-new:active)::before {
+    background: var(--even-surface-active);
+  }
+  :where(.even-workbench-new):focus-visible {
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
+  }
+  :where(.even-workbench-close-icon) {
+    display: block;
+    width: var(--even-size-icon-small);
+    height: var(--even-size-icon-small);
+  }
+  :where(.even-workbench-add-icon) {
+    display: block;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-workbench-tab-panel) {
+    padding: 0;
+    min-width: 0;
+  }
   :where(.even-disclosure) {
     border: 1px solid var(--even-border-default);
     border-radius: var(--even-size-radius-control);
@@ -341,8 +1059,65 @@
   }
   :where(.even-trace-search-input > .even-input) {
     border-width: var(--even-size-border-control);
+    padding-inline-start: calc(
+      var(--even-space-inset-compact) + var(--even-size-icon-default) +
+        var(--even-space-gap-related)
+    );
     padding-inline-end: var(--even-size-control-default);
     font-family: var(--even-font-data);
+  }
+  :where(.even-trace-search-icon) {
+    position: absolute;
+    inset-inline-start: calc(
+      var(--even-size-border-control) + var(--even-space-inset-compact)
+    );
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+    color: var(--even-text-secondary);
+    pointer-events: none;
+  }
+  :where(.even-theme-toggle) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--even-space-gap-tight);
+    padding: var(--even-space-inset-tight);
+    border: var(--even-size-border-control) solid var(--even-border-default);
+    border-radius: var(--even-size-radius-panel);
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-theme-option) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-control-compact);
+    height: var(--even-size-control-compact);
+    border-radius: var(--even-size-radius-control);
+    color: var(--even-text-secondary);
+    cursor: pointer;
+  }
+  :where(.even-theme-option > svg) {
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-theme-option:hover:not([data-disabled])) {
+    background: var(--even-surface-hover);
+    color: var(--even-text-primary);
+  }
+  :where(.even-theme-option[data-checked]) {
+    background: var(--even-surface-active);
+    color: var(--even-text-primary);
+    box-shadow: inset 0 0 0 var(--even-size-border-control)
+      var(--even-border-control);
+  }
+  :where(.even-theme-option:focus-visible) {
+    outline: var(--even-size-focus-outline) solid var(--even-focus-ring);
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
+  }
+  :where(.even-theme-option[data-disabled]) {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
   :where(.even-trace-search-input > .even-button) {
     position: absolute;

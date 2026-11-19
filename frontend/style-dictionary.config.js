@@ -27,6 +27,7 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
     sourcePath("options/fonts.json"),
     sourcePath("options/overlays.json"),
     sourcePath("options/shadows.json"),
+    sourcePath("options/motion.json"),
     sourcePath("decisions/*.json"),
   ];
   return {
@@ -77,6 +78,8 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
           "size/rem",
           "fontFamily/css",
           "shadow/css/shorthand",
+          "time/seconds",
+          "cubicBezier/css",
         ],
         files: [
           {

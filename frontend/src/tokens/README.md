@@ -1,11 +1,11 @@
 # Token consumers and generated outputs
 
-The source of truth is now [`frontend/tokens`](../../tokens/README.md): JSON options and decisions for colors, spacing, sizing and the technical-data font family. Read that guide for the scale, provenance, naming and Style Dictionary build process.
+The source of truth is now [`frontend/tokens`](../../tokens/README.md): JSON options and decisions for colors, spacing, sizing, motion and the technical-data font family. Read that guide for the scale, provenance, naming and Style Dictionary build process.
 
 - `generated/tokens.css`: generated opt-in CSS custom properties. Do not edit by hand.
 - `generated/token-manifest.json`: generated resolved values, alias relationships, descriptions and CSS names for documentation/tests. Do not edit by hand.
-- `colors.js` / `dimensions.js`: read-only views of the generated manifest, plus color role/contrast test definitions. No authored token values or decision aliases live in JavaScript.
-- `ColorGrid/` / `DimensionGrid/`: Storybook documentation, including isolated presentation CSS; the component library consumes decision tokens in `../components/components.css`.
+- `colors.js` / `dimensions.js` / `motion.js`: read-only views of the generated manifest, plus color role/contrast test definitions. Motion also reads resolved CSS decisions for WAAPI, including caller overrides. No authored token values or decision aliases live in JavaScript.
+- `ColorGrid/` / `DimensionGrid/` / `MotionGrid/`: Storybook documentation, including isolated presentation CSS; the component library consumes decision tokens in `../components/components.css`.
 
 ## Color contract
 

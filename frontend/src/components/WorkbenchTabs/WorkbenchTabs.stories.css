@@ -1,0 +1,83 @@
+.even-tabs-design-sandbox {
+  display: grid;
+  gap: var(--even-space-gap-section);
+}
+.even-tabs-design-sandbox > p {
+  margin: 0;
+  color: var(--even-text-secondary);
+  font-size: 0.875rem;
+}
+.even-tabs-design-frame {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: min(100%, var(--even-size-field-preferred));
+  max-width: 100%;
+  resize: horizontal;
+  overflow: auto;
+  border: var(--even-size-border-control) solid var(--even-border-default);
+  background: var(--even-surface-page);
+}
+.even-tabs-design-content {
+  display: grid;
+  align-content: start;
+  gap: var(--even-space-gap-group);
+  box-sizing: border-box;
+  min-height: calc(var(--even-size-control-comfortable) * 4);
+  padding: var(--even-space-inset-spacious);
+  background: var(--even-surface-secondary);
+}
+.even-tabs-design-content h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.even-tabs-design-content p {
+  margin: 0;
+  color: var(--even-text-secondary);
+  font-size: 0.875rem;
+}
+.even-tabs-design-controls {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-group);
+}
+.even-tabs-design-controls p {
+  margin: 0;
+  padding-block: var(--even-space-inset-compact);
+  color: var(--even-text-secondary);
+  font-size: 0.875rem;
+}
+.even-tabs-design-frame[data-preview-size]:not([data-preview-size="current"])
+  .even-tab {
+  padding-block: var(--even-space-inset-tight);
+  padding-inline: var(--even-space-inset-compact);
+}
+.even-tabs-size-comparison {
+  display: grid;
+  gap: var(--even-space-gap-section);
+}
+.even-tabs-size-comparison > p,
+.even-tabs-size-comparison header p {
+  margin: 0;
+  color: var(--even-text-secondary);
+  font-size: 0.875rem;
+}
+.even-tabs-size-comparison > section {
+  display: grid;
+  gap: var(--even-space-gap-related);
+  min-width: 0;
+}
+.even-tabs-size-comparison header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-group);
+}
+.even-tabs-size-comparison header h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+.even-tabs-size-comparison .even-tabs-design-content {
+  min-height: calc(var(--even-size-control-comfortable) * 2);
+  padding: var(--even-space-inset-default);
+}

@@ -2,10 +2,12 @@ import React from "react";
 import { Popover as BasePopover } from "@base-ui/react/popover";
 
 import { styledPart } from "../presentation";
+import { useMotionInput } from "../motionInput";
 
 const Popup = styledPart(BasePopover.Popup, "even-popup even-popover-popup");
 
 function Content({ children, side = "bottom", align = "start", ...props }) {
+  useMotionInput();
   return (
     <BasePopover.Portal className="even-overlay-portal">
       <BasePopover.Positioner

@@ -1,6 +1,7 @@
 import React, { useId, useRef } from "react";
 import { Autocomplete } from "@base-ui/react/autocomplete";
 import { classes } from "../presentation";
+import { SearchIcon } from "../icons";
 
 // A product composition: Base UI owns popup state, active items and keyboard input.
 // Suggestions and query semantics belong to the caller.
@@ -48,6 +49,11 @@ export function TraceSearch({
         disabled={disabled}
       >
         <div className="even-trace-search-input">
+          <SearchIcon
+            className="even-trace-search-icon"
+            aria-hidden="true"
+            focusable="false"
+          />
           <Autocomplete.Input
             {...inputProps}
             id={id}

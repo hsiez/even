@@ -22,6 +22,8 @@ function StagingApp() {
       agents={previewAgents}
       traces={traces}
       dataLabel="Staging · simulated data"
+      theme={theme}
+      onThemeChange={setTheme}
       actions={
         <>
           <Button
@@ -32,15 +34,6 @@ function StagingApp() {
             }}
           >
             Generate sample trace
-          </Button>
-          <Button
-            variant="ghost"
-            size="compact"
-            onClick={() =>
-              setTheme((previous) => (previous === "dark" ? "light" : "dark"))
-            }
-          >
-            Use {theme === "dark" ? "light" : "dark"} theme
           </Button>
         </>
       }

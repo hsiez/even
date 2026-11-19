@@ -1,15 +1,88 @@
 /* Page composition only. Shared controls retain their token-backed defaults. */
 .even-home {
+  display: flex;
+  flex-wrap: nowrap;
   min-height: 100dvh;
   border: 0;
+  height: 100dvh;
+  overflow: hidden;
 }
 .even-home > main {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.even-home .even-workbench-tabs:not([hidden]) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.even-home .even-workbench-tab-panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.even-home .even-workbench-tab-panel:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+}
+.even-home-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-related);
+  padding: var(--even-space-inset-compact) var(--even-space-inset-spacious);
+}
+.even-home-context .even-home-breadcrumb {
+  margin: 0;
+}
+.even-home .even-home-header {
+  flex: 0 0 auto;
+}
+.even-home-explorer {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  align-items: flex-start;
+}
+.even-home-explorer-content {
+  flex: 1;
+  min-width: 0;
+}
+.even-home-explorer > .even-inspector {
+  min-height: 100%;
+}
+.even-home-playground {
+  display: grid;
+  gap: var(--even-space-gap-section);
+  padding: var(--even-space-inset-spacious);
+}
+.even-home-playground h2 {
+  margin: 0;
+}
+@media (max-width: 85rem) {
+  .even-home-explorer {
+    display: block;
+  }
+  .even-home-explorer > .even-inspector {
+    border-inline-start: 0;
+    border-top: var(--even-size-border-control) solid var(--even-border-default);
+    min-height: 0;
+  }
 }
 .even-home-sidebar {
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: var(--even-space-gap-section);
+}
+.even-home-sidebar > :not(.even-home-agents) {
+  flex-shrink: 0;
 }
 .even-home-brand {
   display: flex;
@@ -53,11 +126,18 @@
   text-transform: uppercase;
 }
 .even-home-agents {
+  min-height: 0;
+  overflow-y: auto;
   display: grid;
   gap: var(--even-space-gap-tight);
   list-style: none;
-  margin: calc(-1 * var(--even-space-gap-group)) 0 0;
-  padding: 0;
+  /* Preserve the layout inset while leaving room for keyboard focus rings. */
+  margin: calc(
+      -1 * (var(--even-space-gap-group) + var(--even-space-inset-tight))
+    )
+    calc(-1 * var(--even-space-inset-tight))
+    calc(-1 * var(--even-space-inset-tight));
+  padding: var(--even-space-inset-tight);
 }
 .even-home-agents .even-button {
   justify-content: space-between;
@@ -74,8 +154,14 @@
   font-size: 0.75rem;
   font-weight: 400;
 }
+.even-home-sidebar-footer {
+  margin-block-start: auto;
+  display: grid;
+  justify-items: start;
+  gap: var(--even-space-gap-related);
+}
 .even-home-sidebar-note {
-  margin-block: auto 0;
+  margin: 0;
   font-size: 0.75rem;
 }
 .even-home-control-area {
@@ -89,7 +175,7 @@
   flex-wrap: wrap;
   gap: var(--even-space-gap-group);
   padding: var(--even-space-inset-default) var(--even-space-inset-spacious);
-  border-bottom: 1px solid var(--even-border-default);
+  border-bottom: 0;
 }
 .even-home-header h1 {
   font-size: 1.75rem;
@@ -163,10 +249,23 @@
   overflow-wrap: anywhere;
 }
 @media (max-width: 48rem) {
+  .even-home {
+    flex-direction: column;
+  }
   .even-home-sidebar {
+    overflow: visible;
+    flex: 0 0 auto;
     flex-direction: row;
     align-items: center;
     gap: var(--even-space-gap-group);
+    flex-wrap: wrap;
+  }
+  .even-home-sidebar-footer {
+    margin-block-start: 0;
+    flex: 0 0 100%;
+  }
+  .even-home-agents {
+    flex: 1 1 0;
   }
   .even-home-brand {
     flex-shrink: 0;
@@ -181,6 +280,7 @@
     display: flex;
     min-width: 0;
     overflow-x: auto;
+    overflow-y: hidden;
     /* Leave room for the existing keyboard-focus outline inside the scroller. */
     padding: var(--even-space-inset-tight);
     margin: 0;
@@ -195,7 +295,8 @@
     padding: 0;
   }
   .even-home-header,
-  .even-home-controls {
+  .even-home-controls,
+  .even-home-context {
     padding: var(--even-space-inset-default);
   }
 }

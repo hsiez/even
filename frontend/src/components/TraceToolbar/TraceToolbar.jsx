@@ -2,6 +2,8 @@ import "../components.css";
 import React from "react";
 import { TextField } from "../TextField/TextField";
 import { Button } from "../Button/Button";
+import { IconButton } from "../IconButton/IconButton";
+import { RefreshIcon } from "../icons";
 import { FilterBar } from "../FilterBar/FilterBar";
 export function TraceToolbar({
   query = "",
@@ -30,9 +32,14 @@ export function TraceToolbar({
         </>
       )}
       {(onRefresh || refreshing) && (
-        <Button pending={refreshing} onClick={onRefresh}>
-          {refreshing ? "Refreshing…" : "Refresh"}
-        </Button>
+        <IconButton
+          label="Refresh"
+          title={refreshing ? "Refreshing…" : "Refresh"}
+          pending={refreshing}
+          onClick={onRefresh}
+        >
+          <RefreshIcon size="100%" aria-hidden="true" focusable="false" />
+        </IconButton>
       )}
       {children}
       <FilterBar

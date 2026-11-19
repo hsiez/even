@@ -2,10 +2,12 @@ import React from "react";
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 
 import { styledPart } from "../presentation";
+import { useMotionInput } from "../motionInput";
 
 const Popup = styledPart(BaseMenu.Popup, "even-popup even-menu-popup");
 
 function Content({ children, side = "bottom", align = "start", ...props }) {
+  useMotionInput();
   return (
     <BaseMenu.Portal className="even-overlay-portal">
       <BaseMenu.Positioner

@@ -1,0 +1,88 @@
+{
+  "decision": {
+    "motion": {
+      "duration": {
+        "$type": "duration",
+        "instant": {
+          "$value": "{options.duration.0}",
+          "$description": "Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate."
+        },
+        "feedback": {
+          "$value": "{options.duration.150}",
+          "$description": "Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant."
+        },
+        "press": {
+          "$value": "{options.duration.150}",
+          "$description": "Subtle press response where movement helps acknowledge an action."
+        },
+        "enter": {
+          "$value": "{options.duration.200}",
+          "$description": "A small element entering, anchored to its trigger when applicable."
+        },
+        "exit": {
+          "$value": "{options.duration.150}",
+          "$description": "A shorter exit: the user has already decided to dismiss the element."
+        },
+        "move": {
+          "$value": "{options.duration.200}",
+          "$description": "A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders."
+        },
+        "reduced": {
+          "$value": "{options.duration.100}",
+          "$description": "Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely."
+        },
+        "enter-large": {
+          "$value": "{options.duration.350}",
+          "$description": "Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate."
+        },
+        "exit-large": {
+          "$value": "{options.duration.300}",
+          "$description": "Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface."
+        },
+        "move-large": {
+          "$value": "{options.duration.350}",
+          "$description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation."
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "feedback": {
+          "$value": "{options.easing.ease}",
+          "$description": "Small changes in color, background or opacity."
+        },
+        "press": {
+          "$value": "{options.easing.out-quad}",
+          "$description": "Responsive subtle press feedback with no overshoot."
+        },
+        "enter": {
+          "$value": "{options.easing.out-expo}",
+          "$description": "A fast start and soft settle for entrances."
+        },
+        "exit": {
+          "$value": "{options.easing.out-expo}",
+          "$description": "The same curve family as entry, paired with a shorter duration."
+        },
+        "move": {
+          "$value": "{options.easing.in-out-cubic}",
+          "$description": "Accelerate then decelerate during on-screen movement."
+        },
+        "reduced": {
+          "$value": "{options.easing.ease}",
+          "$description": "Opacity-only feedback without spatial movement."
+        },
+        "enter-large": {
+          "$value": "{options.easing.out-expo}",
+          "$description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot."
+        },
+        "exit-large": {
+          "$value": "{options.easing.out-expo}",
+          "$description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot."
+        },
+        "move-large": {
+          "$value": "{options.easing.in-out-cubic}",
+          "$description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot."
+        }
+      }
+    }
+  }
+}

@@ -327,6 +327,44 @@
   --even-shadow-ink: oklch(
     0% 0 0 / 0.16
   ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
+  --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
+  --even-duration-100: 0.1s; /** Brief non-spatial feedback or reduced-motion fades. */
+  --even-duration-150: 0.15s; /** Small feedback and quick exits. */
+  --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
+  --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
+  --even-duration-300: 0.3s; /** Dismissal of large-area surfaces, allowing the eye to follow their departure. */
+  --even-duration-350: 0.35s; /** Large-area entrances and relocations; longer settling time avoids an abrupt spatial change. */
+  --even-duration-500: 0.5s; /** Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls. */
+  --even-easing-ease: cubic-bezier(
+    0.25,
+    0.1,
+    0.25,
+    1
+  ); /** CSS ease: small changes in color, background or opacity. */
+  --even-easing-out-expo: cubic-bezier(
+    0.19,
+    1,
+    0.22,
+    1
+  ); /** Strong ease-out: responsive entrances and exits with a gentle settle. */
+  --even-easing-out-quad: cubic-bezier(
+    0.25,
+    0.46,
+    0.45,
+    0.94
+  ); /** Ease-out for subtle press feedback. */
+  --even-easing-in-out-cubic: cubic-bezier(
+    0.645,
+    0.045,
+    0.355,
+    1
+  ); /** Acceleration and deceleration for movement already on screen. */
+  --even-easing-linear: cubic-bezier(
+    0,
+    0,
+    1,
+    1
+  ); /** Constant progress only, such as a time indicator; not ordinary UI entrances. */
   --even-shadow-soft: var(--even-dimension-0) var(--even-dimension-4)
     var(--even-dimension-16) var(--even-dimension-0) var(--even-shadow-ink); /** Soft cast shadow: 0/4/16/0px equivalents at a 16px root. */
   --even-surface-page: var(--even-palette-background-1);
@@ -429,6 +467,63 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-motion-duration-instant: var(
+    --even-duration-0
+  ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */
+  --even-motion-duration-feedback: var(
+    --even-duration-150
+  ); /** Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant. */
+  --even-motion-duration-press: var(
+    --even-duration-150
+  ); /** Subtle press response where movement helps acknowledge an action. */
+  --even-motion-duration-enter: var(
+    --even-duration-200
+  ); /** A small element entering, anchored to its trigger when applicable. */
+  --even-motion-duration-exit: var(
+    --even-duration-150
+  ); /** A shorter exit: the user has already decided to dismiss the element. */
+  --even-motion-duration-move: var(
+    --even-duration-200
+  ); /** A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders. */
+  --even-motion-duration-reduced: var(
+    --even-duration-100
+  ); /** Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely. */
+  --even-motion-duration-enter-large: var(
+    --even-duration-350
+  ); /** Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate. */
+  --even-motion-duration-exit-large: var(
+    --even-duration-300
+  ); /** Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface. */
+  --even-motion-duration-move-large: var(
+    --even-duration-350
+  ); /** Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation. */
+  --even-motion-easing-feedback: var(
+    --even-easing-ease
+  ); /** Small changes in color, background or opacity. */
+  --even-motion-easing-press: var(
+    --even-easing-out-quad
+  ); /** Responsive subtle press feedback with no overshoot. */
+  --even-motion-easing-enter: var(
+    --even-easing-out-expo
+  ); /** A fast start and soft settle for entrances. */
+  --even-motion-easing-exit: var(
+    --even-easing-out-expo
+  ); /** The same curve family as entry, paired with a shorter duration. */
+  --even-motion-easing-move: var(
+    --even-easing-in-out-cubic
+  ); /** Accelerate then decelerate during on-screen movement. */
+  --even-motion-easing-reduced: var(
+    --even-easing-ease
+  ); /** Opacity-only feedback without spatial movement. */
+  --even-motion-easing-enter-large: var(
+    --even-easing-out-expo
+  ); /** Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-exit-large: var(
+    --even-easing-out-expo
+  ); /** Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-move-large: var(
+    --even-easing-in-out-cubic
+  ); /** Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -447,6 +542,12 @@
   --even-size-navigation-preferred: var(
     --even-dimension-256
   ); /** Preferred width, not a fixed or minimum viewport width. */
+  --even-size-navigation-item-minimum: var(
+    --even-dimension-128
+  ); /** Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound. */
+  --even-size-navigation-item-maximum: var(
+    --even-dimension-192
+  ); /** Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items. */
   --even-size-radius-control: var(
     --even-dimension-4
   ); /** Corner radius for controls and small surfaces. */
@@ -813,6 +914,44 @@
   --even-shadow-ink: oklch(
     0% 0 0 / 0.16
   ); /** Translucent black cast-shadow ink in both themes, independent of white-alpha surface overlays and modal dimming. */
+  --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
+  --even-duration-100: 0.1s; /** Brief non-spatial feedback or reduced-motion fades. */
+  --even-duration-150: 0.15s; /** Small feedback and quick exits. */
+  --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
+  --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
+  --even-duration-300: 0.3s; /** Dismissal of large-area surfaces, allowing the eye to follow their departure. */
+  --even-duration-350: 0.35s; /** Large-area entrances and relocations; longer settling time avoids an abrupt spatial change. */
+  --even-duration-500: 0.5s; /** Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls. */
+  --even-easing-ease: cubic-bezier(
+    0.25,
+    0.1,
+    0.25,
+    1
+  ); /** CSS ease: small changes in color, background or opacity. */
+  --even-easing-out-expo: cubic-bezier(
+    0.19,
+    1,
+    0.22,
+    1
+  ); /** Strong ease-out: responsive entrances and exits with a gentle settle. */
+  --even-easing-out-quad: cubic-bezier(
+    0.25,
+    0.46,
+    0.45,
+    0.94
+  ); /** Ease-out for subtle press feedback. */
+  --even-easing-in-out-cubic: cubic-bezier(
+    0.645,
+    0.045,
+    0.355,
+    1
+  ); /** Acceleration and deceleration for movement already on screen. */
+  --even-easing-linear: cubic-bezier(
+    0,
+    0,
+    1,
+    1
+  ); /** Constant progress only, such as a time indicator; not ordinary UI entrances. */
   --even-shadow-soft: var(--even-dimension-0) var(--even-dimension-4)
     var(--even-dimension-16) var(--even-dimension-0) var(--even-shadow-ink); /** Soft cast shadow: 0/4/16/0px equivalents at a 16px root. */
   --even-surface-page: var(--even-palette-background-1);
@@ -915,6 +1054,63 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-motion-duration-instant: var(
+    --even-duration-0
+  ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */
+  --even-motion-duration-feedback: var(
+    --even-duration-150
+  ); /** Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant. */
+  --even-motion-duration-press: var(
+    --even-duration-150
+  ); /** Subtle press response where movement helps acknowledge an action. */
+  --even-motion-duration-enter: var(
+    --even-duration-200
+  ); /** A small element entering, anchored to its trigger when applicable. */
+  --even-motion-duration-exit: var(
+    --even-duration-150
+  ); /** A shorter exit: the user has already decided to dismiss the element. */
+  --even-motion-duration-move: var(
+    --even-duration-200
+  ); /** A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders. */
+  --even-motion-duration-reduced: var(
+    --even-duration-100
+  ); /** Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely. */
+  --even-motion-duration-enter-large: var(
+    --even-duration-350
+  ); /** Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate. */
+  --even-motion-duration-exit-large: var(
+    --even-duration-300
+  ); /** Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface. */
+  --even-motion-duration-move-large: var(
+    --even-duration-350
+  ); /** Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation. */
+  --even-motion-easing-feedback: var(
+    --even-easing-ease
+  ); /** Small changes in color, background or opacity. */
+  --even-motion-easing-press: var(
+    --even-easing-out-quad
+  ); /** Responsive subtle press feedback with no overshoot. */
+  --even-motion-easing-enter: var(
+    --even-easing-out-expo
+  ); /** A fast start and soft settle for entrances. */
+  --even-motion-easing-exit: var(
+    --even-easing-out-expo
+  ); /** The same curve family as entry, paired with a shorter duration. */
+  --even-motion-easing-move: var(
+    --even-easing-in-out-cubic
+  ); /** Accelerate then decelerate during on-screen movement. */
+  --even-motion-easing-reduced: var(
+    --even-easing-ease
+  ); /** Opacity-only feedback without spatial movement. */
+  --even-motion-easing-enter-large: var(
+    --even-easing-out-expo
+  ); /** Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-exit-large: var(
+    --even-easing-out-expo
+  ); /** Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
+  --even-motion-easing-move-large: var(
+    --even-easing-in-out-cubic
+  ); /** Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -933,6 +1129,12 @@
   --even-size-navigation-preferred: var(
     --even-dimension-256
   ); /** Preferred width, not a fixed or minimum viewport width. */
+  --even-size-navigation-item-minimum: var(
+    --even-dimension-128
+  ); /** Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound. */
+  --even-size-navigation-item-maximum: var(
+    --even-dimension-192
+  ); /** Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items. */
   --even-size-radius-control: var(
     --even-dimension-4
   ); /** Corner radius for controls and small surfaces. */

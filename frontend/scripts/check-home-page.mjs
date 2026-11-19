@@ -135,6 +135,8 @@ export async function checkHomePage(page, base, theme, axe) {
     .getByText("No traces match these filters.", { exact: true })
     .waitFor();
   await page.getByRole("button", { name: "Reset view" }).click();
+  assert.match(await resultCount.innerText(), /4 traces · Research/);
+  await page.getByRole("button", { name: "All agents", exact: true }).click();
   assert.match(await resultCount.innerText(), /13 traces · All agents/);
 
   assert.equal(
@@ -186,6 +188,254 @@ export async function checkHomePage(page, base, theme, axe) {
     "Staging error example recovers through retry",
   );
   await checkSearchPrototype(page, base, theme, axe);
+  await checkAgentSpaces(page, base, theme, axe);
+  await checkManyAgents(page, base, theme, axe);
+  await checkHomeControls(page, base, theme);
+}
+
+export async function checkHomeControls(page, base, theme) {
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(
+      `${base}/iframe.html?id=pages-homepage--agent-spaces&viewMode=story&globals=theme:${theme}`,
+    );
+    const selector = page.getByRole("radiogroup", { name: "Color theme" });
+    await selector.waitFor();
+    const bounds = await selector.evaluate((node) => {
+      const sidebar = node.closest("nav");
+      const box = node.getBoundingClientRect();
+      const owner = sidebar.getBoundingClientRect();
+      const style = getComputedStyle(sidebar);
+      return {
+        left: box.left - owner.left,
+        bottom: owner.bottom - box.bottom - parseFloat(style.borderBottomWidth),
+        insetLeft: parseFloat(style.paddingLeft),
+        insetBottom: parseFloat(style.paddingBottom),
+      };
+    });
+    assert.ok(
+      Math.abs(bounds.left - bounds.insetLeft) < 1,
+      "Theme selector aligns with the sidebar's left inset",
+    );
+    assert.ok(
+      Math.abs(bounds.bottom - bounds.insetBottom) < 1,
+      "Theme selector stays at the sidebar's lower edge",
+    );
+    assert.equal(
+      await page.getByRole("button", { name: /Use .* theme/ }).count(),
+      0,
+    );
+    assert.equal(await selector.locator("svg.lucide-sun-medium").count(), 1);
+    assert.equal(await selector.locator("svg.lucide-moon").count(), 1);
+    const input = page.getByRole("combobox", { name: "Search traces" });
+    const icon = page.locator(".even-trace-search-icon");
+    const geometry = await icon.evaluate((node) => {
+      const input = node.parentElement.querySelector("input");
+      const iconBox = node.getBoundingClientRect();
+      const field = input.getBoundingClientRect();
+      const style = getComputedStyle(input);
+      return {
+        gap:
+          field.left +
+          parseFloat(style.borderLeftWidth) +
+          parseFloat(style.paddingLeft) -
+          iconBox.right,
+        centers: iconBox.y + iconBox.height / 2 - (field.y + field.height / 2),
+        hidden: node.getAttribute("aria-hidden"),
+      };
+    });
+    assert.ok(
+      geometry.gap > 0 && Math.abs(geometry.centers) < 1,
+      "Search icon leaves space before the input text and stays vertically centered",
+    );
+    assert.equal(geometry.hidden, "true");
+    const box = await icon.boundingBox();
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    assert.equal(
+      await input.evaluate((node) => node === document.activeElement),
+      true,
+      "Clicking through the decorative search icon focuses the input",
+    );
+    await input.fill("tool:read_logs");
+    await page.keyboard.press("Escape");
+    for (const next of ["light", "dark", theme]) {
+      const radio = page.getByRole("radio", {
+        name: next === "light" ? "Light theme" : "Dark theme",
+        exact: true,
+      });
+      await radio.click();
+      await page.waitForFunction(
+        (next) => document.documentElement.dataset.evenTheme === next,
+        next,
+      );
+      assert.equal(await radio.getAttribute("aria-checked"), "true");
+      assert.equal(
+        await input.inputValue(),
+        "tool:read_logs",
+        "Theme changes retain the current query",
+      );
+    }
+    await input.click();
+    const popup = page.locator(".even-trace-search-popup");
+    await popup.waitFor();
+    assert.equal(
+      await popup.evaluate((node) => {
+        const probe = document.createElement("span");
+        probe.style.background = "var(--even-surface-page)";
+        document.body.append(probe);
+        const matches =
+          getComputedStyle(node).backgroundColor ===
+          getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        return matches;
+      }),
+      true,
+      "Portalled suggestions inherit the chosen document theme",
+    );
+    await page.keyboard.press("Escape");
+  }
+  console.log(
+    `Verified ${theme} sidebar theme controls, responsive placement, retained query, portal theme inheritance and search icon focus/spacing.`,
+  );
+}
+
+async function checkAgentSpaces(page, base, theme, axe) {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(
+    `${base}/iframe.html?id=pages-homepage--agent-spaces&viewMode=story&globals=theme:${theme}`,
+  );
+  const tabs = page.getByRole("tablist", { name: "Support workbench tabs" });
+  const add = async (name) => {
+    await page.getByRole("button", { name: "New tab" }).click();
+    await page.getByRole("menuitem", { name, exact: true }).click();
+    await page.getByRole("menu").waitFor({ state: "hidden" });
+  };
+  const search = page.getByRole("combobox", { name: "Search traces" });
+  await search.fill("deployment");
+  await search.press("Escape");
+  await page
+    .getByRole("button", { name: /Investigate deployment failure/ })
+    .click();
+  const inspector = page.getByRole("complementary", {
+    name: "Execution inspector",
+  });
+  await inspector
+    .getByRole("treeitem", { name: "Read deployment logs" })
+    .click();
+  await inspector.getByRole("tab", { name: "Summary" }).click();
+  const resizer = page.getByRole("separator", {
+    name: "Resize Operation column",
+  });
+  await resizer.focus();
+  await resizer.press("Home");
+  const tableScroll = page.getByRole("region", {
+    name: "Recorded trace results",
+  });
+  await tableScroll.evaluate((node) => {
+    node.scrollLeft = 100;
+    node.dispatchEvent(new Event("scroll"));
+  });
+  const left = await tableScroll.evaluate((node) => node.scrollLeft);
+  assert.ok(left > 0, "Fixture table can scroll horizontally");
+  await add("New trace explorer");
+  await page.waitForFunction(
+    () => document.activeElement?.textContent === "Traces 2",
+  );
+  assert.equal(await search.inputValue(), "");
+  assert.equal(
+    await inspector.count(),
+    0,
+    "Inactive explorer content unmounts",
+  );
+  await search.fill("has:error");
+  await search.press("Escape");
+  await add("New chat playground");
+  assert.ok(await page.getByLabel("Message", { exact: true }).isDisabled());
+  await page.getByRole("tab", { name: "Traces 2", exact: true }).click();
+  await page.getByRole("button", { name: "Research", exact: true }).click();
+  assert.equal(
+    await page.getByRole("tab", { name: "Traces 2", exact: true }).count(),
+    0,
+  );
+  await page.getByRole("button", { name: "Support", exact: true }).click();
+  assert.equal(await search.inputValue(), "has:error");
+  await page.screenshot({
+    path: `/tmp/even-workbench-tabs-overview-${theme}.png`,
+  });
+  await page
+    .getByRole("button", { name: "Close Traces 2", exact: true })
+    .click();
+  assert.ok(
+    await page
+      .getByRole("tab", { name: "Playground 1", exact: true })
+      .evaluate((node) => node === document.activeElement),
+  );
+  await page
+    .getByRole("button", { name: "Close Playground 1", exact: true })
+    .click();
+  assert.ok(
+    await tabs
+      .getByRole("tab", { name: "Traces", exact: true })
+      .evaluate((node) => node === document.activeElement),
+    "Restoring an inspector does not steal tab focus",
+  );
+  assert.equal(await search.inputValue(), "deployment");
+  assert.equal(await resizer.getAttribute("aria-valuenow"), "128");
+  assert.equal(await tableScroll.evaluate((node) => node.scrollLeft), left);
+  assert.equal(
+    await inspector
+      .getByRole("tab", { name: "Summary" })
+      .getAttribute("aria-selected"),
+    "true",
+  );
+  await page.evaluate(axe);
+  assert.deepEqual(
+    await page.evaluate(
+      async () => (await window.axe.run(document)).violations,
+    ),
+    [],
+  );
+  await page.screenshot({ path: `/tmp/even-workbench-tabs-${theme}.png` });
+
+  await page.setViewportSize({ width: 390, height: 900 });
+  for (let n = 0; n < 8; n++) await add("New trace explorer");
+  assert.ok(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+    "Tab overflow stays inside the tab strip",
+  );
+  const selected = tabs.getByRole("tab", { selected: true });
+  assert.ok(
+    await selected.evaluate((node) => node === document.activeElement),
+    "A new tab receives keyboard focus without waiting for its decoration",
+  );
+  await page.waitForFunction(
+    (node) =>
+      !node.closest(".even-workbench-tab-track").hasAttribute("data-creating"),
+    await selected.elementHandle(),
+  );
+  assert.ok(
+    await selected.evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      const list = node
+        .closest(".even-workbench-tab-scroll")
+        .getBoundingClientRect();
+      return rect.left >= list.left && rect.right <= list.right;
+    }),
+    "Newly focused tabs are revealed in a narrow tab strip",
+  );
+  assert.ok(await page.getByRole("button", { name: "New tab" }).isVisible());
+  await page.screenshot({
+    path: `/tmp/even-workbench-tabs-narrow-${theme}.png`,
+  });
+  await selected.press("Home");
+  assert.equal(
+    await tabs
+      .getByRole("tab", { name: "Traces", exact: true })
+      .getAttribute("aria-selected"),
+    "true",
+  );
 }
 
 async function checkSearchPrototype(page, base, theme, axe) {
@@ -315,5 +565,98 @@ async function checkSearchPrototype(page, base, theme, axe) {
         `${theme}, ${width}px: Tab dismisses suggestions and reveals the next control`,
       );
     }
+  }
+}
+
+async function checkManyAgents(page, base, theme, axe) {
+  for (const [width, height] of [
+    [1000, 600],
+    [1000, 360],
+    [390, 700],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto(
+      `${base}/iframe.html?id=pages-homepage--many-agents&viewMode=story&globals=theme:${theme}`,
+    );
+    const list = page.getByRole("list", { name: "Agents", exact: true });
+    const last = page.getByRole("button", {
+      name: "Fixture agent 30",
+      exact: true,
+    });
+    await last.waitFor({ state: "attached" });
+    const box = await list.boundingBox();
+    assert.ok(
+      box.height > 0 && box.width > 0,
+      "Agent list keeps a visible scroll viewport",
+    );
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.wheel(width < 768 ? 20000 : 0, width < 768 ? 0 : 2000);
+    await page.waitForFunction(
+      (last) => {
+        const list = last.closest("ul").getBoundingClientRect();
+        const box = last.getBoundingClientRect();
+        return (
+          box.top >= list.top &&
+          box.bottom <= list.bottom &&
+          box.left >= list.left &&
+          box.right <= list.right
+        );
+      },
+      await last.elementHandle(),
+    );
+    await last.click();
+    assert.equal(
+      await last.getAttribute("aria-pressed"),
+      "true",
+      "The last agent is reachable by pointer scrolling",
+    );
+    assert.equal(
+      await page.locator(".even-home").evaluate((node) => node.scrollTop),
+      0,
+      "Agent scrolling leaves the workspace frame fixed",
+    );
+    assert.ok(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      "Many agents do not widen the page",
+    );
+    if (width >= 768) {
+      await page
+        .getByRole("button", { name: "Fixture agent 1", exact: true })
+        .focus();
+      for (let i = 0; i < 29; i++) await page.keyboard.press("Tab");
+      assert.ok(
+        await last.evaluate((node) => {
+          const box = node.getBoundingClientRect();
+          return (
+            node === document.activeElement &&
+            node.contains(
+              document.elementFromPoint(
+                box.left + box.width / 2,
+                box.top + box.height / 2,
+              ),
+            )
+          );
+        }),
+        "Keyboard focus reveals the last agent inside the agent scroller",
+      );
+    }
+    await page.screenshot({
+      path: `/tmp/even-many-agents-${theme}-${width}-${height}.png`,
+    });
+    await page.addScriptTag({ content: axe });
+    assert.deepEqual(
+      await page.evaluate(
+        async () =>
+          (
+            await window.axe.run(document.body, {
+              rules: { region: { enabled: false } },
+            })
+          ).violations,
+      ),
+      [],
+      "The bounded agent list remains accessible",
+    );
   }
 }

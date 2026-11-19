@@ -7,6 +7,9 @@ import assert from "node:assert/strict";
 import Color from "colorjs.io";
 import { checkDecisionUsage } from "./check-decision-usage.mjs";
 import { checkHomePage } from "./check-home-page.mjs";
+import { checkWorkbenchTabs } from "./check-workbench-tabs.mjs";
+import { checkMotionTokens } from "./check-motion-tokens.mjs";
+import { checkOverlayMotion } from "./check-overlay-motion.mjs";
 import {
   contrastPairs,
   scaleNames,
@@ -83,6 +86,21 @@ try {
         story.id,
       );
       await page.evaluate(() => document.fonts.ready);
+      // Audit the settled surface, not the intentionally transparent frames
+      // of a finite entrance. Infinite indicators must never block the gate.
+      await page.evaluate(async () => {
+        await new Promise(requestAnimationFrame);
+        await new Promise(requestAnimationFrame);
+        await Promise.all(
+          document
+            .getAnimations()
+            .filter(
+              (animation) =>
+                animation.effect.getTiming().iterations !== Infinity,
+            )
+            .map((animation) => animation.finished.catch(() => {})),
+        );
+      });
       await page.addScriptTag({ content: axe });
       const violations = await page.evaluate(
         async (auditColor) =>
@@ -105,6 +123,9 @@ try {
     }
   }
   for (const theme of themes) await checkHomePage(page, base, theme, axe);
+  for (const theme of themes) await checkWorkbenchTabs(page, base, theme, axe);
+  for (const theme of themes) await checkMotionTokens(page, base, theme);
+  for (const theme of themes) await checkOverlayMotion(page, base, theme);
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchlayout--composed-explorer&viewMode=story`,

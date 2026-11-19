@@ -1,0 +1,66 @@
+.even-motion-grid__previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--even-space-gap-group);
+  margin-block: var(--even-space-gap-group);
+}
+.even-motion-grid__preview {
+  flex: 1 1 var(--even-size-navigation-item-maximum);
+}
+.even-motion-grid__preview[data-large] {
+  flex-basis: 100%;
+}
+.even-motion-grid__preview[data-large] .even-motion-grid__sample {
+  width: min(60%, var(--even-size-panel-preferred));
+  height: var(--even-size-control-comfortable);
+}
+.even-motion-grid__preview[data-large]
+  .even-motion-grid__sample[data-active="true"] {
+  transform: translateX(25%);
+}
+.even-motion-grid__lane {
+  padding: var(--even-space-inset-compact);
+  margin-block-start: var(--even-space-gap-related);
+  background: var(--even-surface-secondary);
+  border: var(--even-size-border-control) solid var(--even-border-default);
+  border-radius: var(--even-size-radius-panel);
+}
+.even-motion-grid__sample {
+  display: block;
+  width: var(--even-size-icon-large);
+  height: var(--even-size-icon-large);
+  background: var(--even-text-primary);
+  border-radius: var(--even-size-radius-control);
+  transition:
+    transform var(--preview-duration) var(--preview-easing),
+    opacity var(--preview-duration) var(--preview-easing);
+}
+.even-motion-grid__sample[data-active="true"] {
+  transform: translateX(100%);
+}
+.even-motion-grid__sample[data-purpose="enter"][data-active="false"],
+.even-motion-grid__sample[data-purpose="exit"][data-active="true"],
+.even-motion-grid__sample[data-purpose="feedback"][data-active="true"] {
+  opacity: 0;
+}
+.even-motion-grid__sample[data-purpose="feedback"] {
+  transform: none;
+}
+.even-motion-grid[data-reduced] .even-motion-grid__sample,
+.even-motion-grid[data-reduced]
+  .even-motion-grid__preview[data-large]
+  .even-motion-grid__sample {
+  transform: none;
+  transition: opacity var(--even-motion-duration-reduced)
+    var(--even-motion-easing-reduced);
+}
+@media (prefers-reduced-motion: reduce) {
+  .even-motion-grid .even-motion-grid__sample,
+  .even-motion-grid
+    .even-motion-grid__preview[data-large]
+    .even-motion-grid__sample {
+    transform: none;
+    transition: opacity var(--even-motion-duration-reduced)
+      var(--even-motion-easing-reduced);
+  }
+}

@@ -947,6 +947,97 @@
           "description": "Soft cast shadow: 0/4/16/0px equivalents at a 16px root.",
           "type": "shadow"
         },
+        "options.duration.0": {
+          "value": "0s",
+          "name": "even-duration-0",
+          "reference": null,
+          "description": "Immediate state changes; no decorative interpolation.",
+          "type": "duration"
+        },
+        "options.duration.100": {
+          "value": "0.1s",
+          "name": "even-duration-100",
+          "reference": null,
+          "description": "Brief non-spatial feedback or reduced-motion fades.",
+          "type": "duration"
+        },
+        "options.duration.150": {
+          "value": "0.15s",
+          "name": "even-duration-150",
+          "reference": null,
+          "description": "Small feedback and quick exits.",
+          "type": "duration"
+        },
+        "options.duration.200": {
+          "value": "0.2s",
+          "name": "even-duration-200",
+          "reference": null,
+          "description": "Short entrances and movement within the interface.",
+          "type": "duration"
+        },
+        "options.duration.250": {
+          "value": "0.25s",
+          "name": "even-duration-250",
+          "reference": null,
+          "description": "Intermediate transitions when moderate travel warrants more time than a small control.",
+          "type": "duration"
+        },
+        "options.duration.300": {
+          "value": "0.3s",
+          "name": "even-duration-300",
+          "reference": null,
+          "description": "Dismissal of large-area surfaces, allowing the eye to follow their departure.",
+          "type": "duration"
+        },
+        "options.duration.350": {
+          "value": "0.35s",
+          "name": "even-duration-350",
+          "reference": null,
+          "description": "Large-area entrances and relocations; longer settling time avoids an abrupt spatial change.",
+          "type": "duration"
+        },
+        "options.duration.500": {
+          "value": "0.5s",
+          "name": "even-duration-500",
+          "reference": null,
+          "description": "Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls.",
+          "type": "duration"
+        },
+        "options.easing.ease": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-easing-ease",
+          "reference": null,
+          "description": "CSS ease: small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-expo": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-easing-out-expo",
+          "reference": null,
+          "description": "Strong ease-out: responsive entrances and exits with a gentle settle.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-quad": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-easing-out-quad",
+          "reference": null,
+          "description": "Ease-out for subtle press feedback.",
+          "type": "cubicBezier"
+        },
+        "options.easing.in-out-cubic": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-easing-in-out-cubic",
+          "reference": null,
+          "description": "Acceleration and deceleration for movement already on screen.",
+          "type": "cubicBezier"
+        },
+        "options.easing.linear": {
+          "value": "cubic-bezier(0, 0, 1, 1)",
+          "name": "even-easing-linear",
+          "reference": null,
+          "description": "Constant progress only, such as a time indicator; not ordinary UI entrances.",
+          "type": "cubicBezier"
+        },
         "decision.color.surface.page": {
           "value": "rgb(98.8235294118% 98.8235294118% 98.8235294118%)",
           "name": "even-surface-page",
@@ -1290,6 +1381,139 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.motion.duration.instant": {
+          "value": "0s",
+          "name": "even-motion-duration-instant",
+          "reference": "options.duration.0",
+          "description": "Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.feedback": {
+          "value": "0.15s",
+          "name": "even-motion-duration-feedback",
+          "reference": "options.duration.150",
+          "description": "Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant.",
+          "type": "duration"
+        },
+        "decision.motion.duration.press": {
+          "value": "0.15s",
+          "name": "even-motion-duration-press",
+          "reference": "options.duration.150",
+          "description": "Subtle press response where movement helps acknowledge an action.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter": {
+          "value": "0.2s",
+          "name": "even-motion-duration-enter",
+          "reference": "options.duration.200",
+          "description": "A small element entering, anchored to its trigger when applicable.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit": {
+          "value": "0.15s",
+          "name": "even-motion-duration-exit",
+          "reference": "options.duration.150",
+          "description": "A shorter exit: the user has already decided to dismiss the element.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move": {
+          "value": "0.2s",
+          "name": "even-motion-duration-move",
+          "reference": "options.duration.200",
+          "description": "A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders.",
+          "type": "duration"
+        },
+        "decision.motion.duration.reduced": {
+          "value": "0.1s",
+          "name": "even-motion-duration-reduced",
+          "reference": "options.duration.100",
+          "description": "Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-enter-large",
+          "reference": "options.duration.350",
+          "description": "Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit-large": {
+          "value": "0.3s",
+          "name": "even-motion-duration-exit-large",
+          "reference": "options.duration.300",
+          "description": "Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-move-large",
+          "reference": "options.duration.350",
+          "description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation.",
+          "type": "duration"
+        },
+        "decision.motion.easing.feedback": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-feedback",
+          "reference": "options.easing.ease",
+          "description": "Small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.press": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-motion-easing-press",
+          "reference": "options.easing.out-quad",
+          "description": "Responsive subtle press feedback with no overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter",
+          "reference": "options.easing.out-expo",
+          "description": "A fast start and soft settle for entrances.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit",
+          "reference": "options.easing.out-expo",
+          "description": "The same curve family as entry, paired with a shorter duration.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Accelerate then decelerate during on-screen movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.reduced": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-reduced",
+          "reference": "options.easing.ease",
+          "description": "Opacity-only feedback without spatial movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move-large": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move-large",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
         "decision.shadow.floating": {
           "value": "0rem 0.25rem 1rem 0rem oklch(0% 0 0 / 0.16)",
           "name": "even-shadow-floating",
@@ -1351,6 +1575,20 @@
           "name": "even-size-navigation-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.minimum": {
+          "value": "8rem",
+          "name": "even-size-navigation-item-minimum",
+          "reference": "options.dimension.128",
+          "description": "Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.maximum": {
+          "value": "12rem",
+          "name": "even-size-navigation-item-maximum",
+          "reference": "options.dimension.192",
+          "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
         "decision.size.radius.control": {
@@ -2412,6 +2650,97 @@
           "description": "Soft cast shadow: 0/4/16/0px equivalents at a 16px root.",
           "type": "shadow"
         },
+        "options.duration.0": {
+          "value": "0s",
+          "name": "even-duration-0",
+          "reference": null,
+          "description": "Immediate state changes; no decorative interpolation.",
+          "type": "duration"
+        },
+        "options.duration.100": {
+          "value": "0.1s",
+          "name": "even-duration-100",
+          "reference": null,
+          "description": "Brief non-spatial feedback or reduced-motion fades.",
+          "type": "duration"
+        },
+        "options.duration.150": {
+          "value": "0.15s",
+          "name": "even-duration-150",
+          "reference": null,
+          "description": "Small feedback and quick exits.",
+          "type": "duration"
+        },
+        "options.duration.200": {
+          "value": "0.2s",
+          "name": "even-duration-200",
+          "reference": null,
+          "description": "Short entrances and movement within the interface.",
+          "type": "duration"
+        },
+        "options.duration.250": {
+          "value": "0.25s",
+          "name": "even-duration-250",
+          "reference": null,
+          "description": "Intermediate transitions when moderate travel warrants more time than a small control.",
+          "type": "duration"
+        },
+        "options.duration.300": {
+          "value": "0.3s",
+          "name": "even-duration-300",
+          "reference": null,
+          "description": "Dismissal of large-area surfaces, allowing the eye to follow their departure.",
+          "type": "duration"
+        },
+        "options.duration.350": {
+          "value": "0.35s",
+          "name": "even-duration-350",
+          "reference": null,
+          "description": "Large-area entrances and relocations; longer settling time avoids an abrupt spatial change.",
+          "type": "duration"
+        },
+        "options.duration.500": {
+          "value": "0.5s",
+          "name": "even-duration-500",
+          "reference": null,
+          "description": "Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls.",
+          "type": "duration"
+        },
+        "options.easing.ease": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-easing-ease",
+          "reference": null,
+          "description": "CSS ease: small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-expo": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-easing-out-expo",
+          "reference": null,
+          "description": "Strong ease-out: responsive entrances and exits with a gentle settle.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-quad": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-easing-out-quad",
+          "reference": null,
+          "description": "Ease-out for subtle press feedback.",
+          "type": "cubicBezier"
+        },
+        "options.easing.in-out-cubic": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-easing-in-out-cubic",
+          "reference": null,
+          "description": "Acceleration and deceleration for movement already on screen.",
+          "type": "cubicBezier"
+        },
+        "options.easing.linear": {
+          "value": "cubic-bezier(0, 0, 1, 1)",
+          "name": "even-easing-linear",
+          "reference": null,
+          "description": "Constant progress only, such as a time indicator; not ordinary UI entrances.",
+          "type": "cubicBezier"
+        },
         "decision.color.surface.page": {
           "value": "oklch(99% 0 0)",
           "name": "even-surface-page",
@@ -2755,6 +3084,139 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.motion.duration.instant": {
+          "value": "0s",
+          "name": "even-motion-duration-instant",
+          "reference": "options.duration.0",
+          "description": "Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.feedback": {
+          "value": "0.15s",
+          "name": "even-motion-duration-feedback",
+          "reference": "options.duration.150",
+          "description": "Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant.",
+          "type": "duration"
+        },
+        "decision.motion.duration.press": {
+          "value": "0.15s",
+          "name": "even-motion-duration-press",
+          "reference": "options.duration.150",
+          "description": "Subtle press response where movement helps acknowledge an action.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter": {
+          "value": "0.2s",
+          "name": "even-motion-duration-enter",
+          "reference": "options.duration.200",
+          "description": "A small element entering, anchored to its trigger when applicable.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit": {
+          "value": "0.15s",
+          "name": "even-motion-duration-exit",
+          "reference": "options.duration.150",
+          "description": "A shorter exit: the user has already decided to dismiss the element.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move": {
+          "value": "0.2s",
+          "name": "even-motion-duration-move",
+          "reference": "options.duration.200",
+          "description": "A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders.",
+          "type": "duration"
+        },
+        "decision.motion.duration.reduced": {
+          "value": "0.1s",
+          "name": "even-motion-duration-reduced",
+          "reference": "options.duration.100",
+          "description": "Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-enter-large",
+          "reference": "options.duration.350",
+          "description": "Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit-large": {
+          "value": "0.3s",
+          "name": "even-motion-duration-exit-large",
+          "reference": "options.duration.300",
+          "description": "Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-move-large",
+          "reference": "options.duration.350",
+          "description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation.",
+          "type": "duration"
+        },
+        "decision.motion.easing.feedback": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-feedback",
+          "reference": "options.easing.ease",
+          "description": "Small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.press": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-motion-easing-press",
+          "reference": "options.easing.out-quad",
+          "description": "Responsive subtle press feedback with no overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter",
+          "reference": "options.easing.out-expo",
+          "description": "A fast start and soft settle for entrances.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit",
+          "reference": "options.easing.out-expo",
+          "description": "The same curve family as entry, paired with a shorter duration.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Accelerate then decelerate during on-screen movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.reduced": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-reduced",
+          "reference": "options.easing.ease",
+          "description": "Opacity-only feedback without spatial movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move-large": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move-large",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
         "decision.shadow.floating": {
           "value": "0rem 0.25rem 1rem 0rem oklch(0% 0 0 / 0.16)",
           "name": "even-shadow-floating",
@@ -2816,6 +3278,20 @@
           "name": "even-size-navigation-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.minimum": {
+          "value": "8rem",
+          "name": "even-size-navigation-item-minimum",
+          "reference": "options.dimension.128",
+          "description": "Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.maximum": {
+          "value": "12rem",
+          "name": "even-size-navigation-item-maximum",
+          "reference": "options.dimension.192",
+          "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
         "decision.size.radius.control": {
@@ -3879,6 +4355,97 @@
           "description": "Soft cast shadow: 0/4/16/0px equivalents at a 16px root.",
           "type": "shadow"
         },
+        "options.duration.0": {
+          "value": "0s",
+          "name": "even-duration-0",
+          "reference": null,
+          "description": "Immediate state changes; no decorative interpolation.",
+          "type": "duration"
+        },
+        "options.duration.100": {
+          "value": "0.1s",
+          "name": "even-duration-100",
+          "reference": null,
+          "description": "Brief non-spatial feedback or reduced-motion fades.",
+          "type": "duration"
+        },
+        "options.duration.150": {
+          "value": "0.15s",
+          "name": "even-duration-150",
+          "reference": null,
+          "description": "Small feedback and quick exits.",
+          "type": "duration"
+        },
+        "options.duration.200": {
+          "value": "0.2s",
+          "name": "even-duration-200",
+          "reference": null,
+          "description": "Short entrances and movement within the interface.",
+          "type": "duration"
+        },
+        "options.duration.250": {
+          "value": "0.25s",
+          "name": "even-duration-250",
+          "reference": null,
+          "description": "Intermediate transitions when moderate travel warrants more time than a small control.",
+          "type": "duration"
+        },
+        "options.duration.300": {
+          "value": "0.3s",
+          "name": "even-duration-300",
+          "reference": null,
+          "description": "Dismissal of large-area surfaces, allowing the eye to follow their departure.",
+          "type": "duration"
+        },
+        "options.duration.350": {
+          "value": "0.35s",
+          "name": "even-duration-350",
+          "reference": null,
+          "description": "Large-area entrances and relocations; longer settling time avoids an abrupt spatial change.",
+          "type": "duration"
+        },
+        "options.duration.500": {
+          "value": "0.5s",
+          "name": "even-duration-500",
+          "reference": null,
+          "description": "Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls.",
+          "type": "duration"
+        },
+        "options.easing.ease": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-easing-ease",
+          "reference": null,
+          "description": "CSS ease: small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-expo": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-easing-out-expo",
+          "reference": null,
+          "description": "Strong ease-out: responsive entrances and exits with a gentle settle.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-quad": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-easing-out-quad",
+          "reference": null,
+          "description": "Ease-out for subtle press feedback.",
+          "type": "cubicBezier"
+        },
+        "options.easing.in-out-cubic": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-easing-in-out-cubic",
+          "reference": null,
+          "description": "Acceleration and deceleration for movement already on screen.",
+          "type": "cubicBezier"
+        },
+        "options.easing.linear": {
+          "value": "cubic-bezier(0, 0, 1, 1)",
+          "name": "even-easing-linear",
+          "reference": null,
+          "description": "Constant progress only, such as a time indicator; not ordinary UI entrances.",
+          "type": "cubicBezier"
+        },
         "decision.color.surface.page": {
           "value": "rgb(10.5882352941% 10.5882352941% 10.5882352941%)",
           "name": "even-surface-page",
@@ -4222,6 +4789,139 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.motion.duration.instant": {
+          "value": "0s",
+          "name": "even-motion-duration-instant",
+          "reference": "options.duration.0",
+          "description": "Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.feedback": {
+          "value": "0.15s",
+          "name": "even-motion-duration-feedback",
+          "reference": "options.duration.150",
+          "description": "Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant.",
+          "type": "duration"
+        },
+        "decision.motion.duration.press": {
+          "value": "0.15s",
+          "name": "even-motion-duration-press",
+          "reference": "options.duration.150",
+          "description": "Subtle press response where movement helps acknowledge an action.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter": {
+          "value": "0.2s",
+          "name": "even-motion-duration-enter",
+          "reference": "options.duration.200",
+          "description": "A small element entering, anchored to its trigger when applicable.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit": {
+          "value": "0.15s",
+          "name": "even-motion-duration-exit",
+          "reference": "options.duration.150",
+          "description": "A shorter exit: the user has already decided to dismiss the element.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move": {
+          "value": "0.2s",
+          "name": "even-motion-duration-move",
+          "reference": "options.duration.200",
+          "description": "A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders.",
+          "type": "duration"
+        },
+        "decision.motion.duration.reduced": {
+          "value": "0.1s",
+          "name": "even-motion-duration-reduced",
+          "reference": "options.duration.100",
+          "description": "Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-enter-large",
+          "reference": "options.duration.350",
+          "description": "Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit-large": {
+          "value": "0.3s",
+          "name": "even-motion-duration-exit-large",
+          "reference": "options.duration.300",
+          "description": "Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-move-large",
+          "reference": "options.duration.350",
+          "description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation.",
+          "type": "duration"
+        },
+        "decision.motion.easing.feedback": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-feedback",
+          "reference": "options.easing.ease",
+          "description": "Small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.press": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-motion-easing-press",
+          "reference": "options.easing.out-quad",
+          "description": "Responsive subtle press feedback with no overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter",
+          "reference": "options.easing.out-expo",
+          "description": "A fast start and soft settle for entrances.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit",
+          "reference": "options.easing.out-expo",
+          "description": "The same curve family as entry, paired with a shorter duration.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Accelerate then decelerate during on-screen movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.reduced": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-reduced",
+          "reference": "options.easing.ease",
+          "description": "Opacity-only feedback without spatial movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move-large": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move-large",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
         "decision.shadow.floating": {
           "value": "0rem 0.25rem 1rem 0rem oklch(0% 0 0 / 0.16)",
           "name": "even-shadow-floating",
@@ -4283,6 +4983,20 @@
           "name": "even-size-navigation-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.minimum": {
+          "value": "8rem",
+          "name": "even-size-navigation-item-minimum",
+          "reference": "options.dimension.128",
+          "description": "Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.maximum": {
+          "value": "12rem",
+          "name": "even-size-navigation-item-maximum",
+          "reference": "options.dimension.192",
+          "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
         "decision.size.radius.control": {
@@ -5344,6 +6058,97 @@
           "description": "Soft cast shadow: 0/4/16/0px equivalents at a 16px root.",
           "type": "shadow"
         },
+        "options.duration.0": {
+          "value": "0s",
+          "name": "even-duration-0",
+          "reference": null,
+          "description": "Immediate state changes; no decorative interpolation.",
+          "type": "duration"
+        },
+        "options.duration.100": {
+          "value": "0.1s",
+          "name": "even-duration-100",
+          "reference": null,
+          "description": "Brief non-spatial feedback or reduced-motion fades.",
+          "type": "duration"
+        },
+        "options.duration.150": {
+          "value": "0.15s",
+          "name": "even-duration-150",
+          "reference": null,
+          "description": "Small feedback and quick exits.",
+          "type": "duration"
+        },
+        "options.duration.200": {
+          "value": "0.2s",
+          "name": "even-duration-200",
+          "reference": null,
+          "description": "Short entrances and movement within the interface.",
+          "type": "duration"
+        },
+        "options.duration.250": {
+          "value": "0.25s",
+          "name": "even-duration-250",
+          "reference": null,
+          "description": "Intermediate transitions when moderate travel warrants more time than a small control.",
+          "type": "duration"
+        },
+        "options.duration.300": {
+          "value": "0.3s",
+          "name": "even-duration-300",
+          "reference": null,
+          "description": "Dismissal of large-area surfaces, allowing the eye to follow their departure.",
+          "type": "duration"
+        },
+        "options.duration.350": {
+          "value": "0.35s",
+          "name": "even-duration-350",
+          "reference": null,
+          "description": "Large-area entrances and relocations; longer settling time avoids an abrupt spatial change.",
+          "type": "duration"
+        },
+        "options.duration.500": {
+          "value": "0.5s",
+          "name": "even-duration-500",
+          "reference": null,
+          "description": "Reserved for large sheets with a steep settling curve. Requires a deliberate decision, not ordinary controls.",
+          "type": "duration"
+        },
+        "options.easing.ease": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-easing-ease",
+          "reference": null,
+          "description": "CSS ease: small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-expo": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-easing-out-expo",
+          "reference": null,
+          "description": "Strong ease-out: responsive entrances and exits with a gentle settle.",
+          "type": "cubicBezier"
+        },
+        "options.easing.out-quad": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-easing-out-quad",
+          "reference": null,
+          "description": "Ease-out for subtle press feedback.",
+          "type": "cubicBezier"
+        },
+        "options.easing.in-out-cubic": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-easing-in-out-cubic",
+          "reference": null,
+          "description": "Acceleration and deceleration for movement already on screen.",
+          "type": "cubicBezier"
+        },
+        "options.easing.linear": {
+          "value": "cubic-bezier(0, 0, 1, 1)",
+          "name": "even-easing-linear",
+          "reference": null,
+          "description": "Constant progress only, such as a time indicator; not ordinary UI entrances.",
+          "type": "cubicBezier"
+        },
         "decision.color.surface.page": {
           "value": "oklch(22% 0 0)",
           "name": "even-surface-page",
@@ -5687,6 +6492,139 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.motion.duration.instant": {
+          "value": "0s",
+          "name": "even-motion-duration-instant",
+          "reference": "options.duration.0",
+          "description": "Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.feedback": {
+          "value": "0.15s",
+          "name": "even-motion-duration-feedback",
+          "reference": "options.duration.150",
+          "description": "Optional low-frequency visual feedback. Frequent hover/highlight tracking remains instant.",
+          "type": "duration"
+        },
+        "decision.motion.duration.press": {
+          "value": "0.15s",
+          "name": "even-motion-duration-press",
+          "reference": "options.duration.150",
+          "description": "Subtle press response where movement helps acknowledge an action.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter": {
+          "value": "0.2s",
+          "name": "even-motion-duration-enter",
+          "reference": "options.duration.200",
+          "description": "A small element entering, anchored to its trigger when applicable.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit": {
+          "value": "0.15s",
+          "name": "even-motion-duration-exit",
+          "reference": "options.duration.150",
+          "description": "A shorter exit: the user has already decided to dismiss the element.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move": {
+          "value": "0.2s",
+          "name": "even-motion-duration-move",
+          "reference": "options.duration.200",
+          "description": "A deliberate pointer-driven relocation within the screen; use translation without scaling text or borders.",
+          "type": "duration"
+        },
+        "decision.motion.duration.reduced": {
+          "value": "0.1s",
+          "name": "even-motion-duration-reduced",
+          "reference": "options.duration.100",
+          "description": "Optional opacity-only replacement when it conveys meaning. Pure decoration is removed entirely.",
+          "type": "duration"
+        },
+        "decision.motion.duration.enter-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-enter-large",
+          "reference": "options.duration.350",
+          "description": "Large-area entrances, such as broad drawers, dialogs and inspector panels. Allow the eye to follow the surface while the ease-out keeps the response immediate.",
+          "type": "duration"
+        },
+        "decision.motion.duration.exit-large": {
+          "value": "0.3s",
+          "name": "even-motion-duration-exit-large",
+          "reference": "options.duration.300",
+          "description": "Large-area dismissals. Slightly shorter than entry, but long enough to avoid an abrupt disappearance of a broad surface.",
+          "type": "duration"
+        },
+        "decision.motion.duration.move-large": {
+          "value": "0.35s",
+          "name": "even-motion-duration-move-large",
+          "reference": "options.duration.350",
+          "description": "Deliberate repositioning of large on-screen surfaces. Use when visual area or travel makes the small movement timing feel jarring; not native scrolling or keyboard navigation.",
+          "type": "duration"
+        },
+        "decision.motion.easing.feedback": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-feedback",
+          "reference": "options.easing.ease",
+          "description": "Small changes in color, background or opacity.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.press": {
+          "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "name": "even-motion-easing-press",
+          "reference": "options.easing.out-quad",
+          "description": "Responsive subtle press feedback with no overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter",
+          "reference": "options.easing.out-expo",
+          "description": "A fast start and soft settle for entrances.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit",
+          "reference": "options.easing.out-expo",
+          "description": "The same curve family as entry, paired with a shorter duration.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Accelerate then decelerate during on-screen movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.reduced": {
+          "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          "name": "even-motion-easing-reduced",
+          "reference": "options.easing.ease",
+          "description": "Opacity-only feedback without spatial movement.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.enter-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-enter-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.exit-large": {
+          "value": "cubic-bezier(0.19, 1, 0.22, 1)",
+          "name": "even-motion-easing-exit-large",
+          "reference": "options.easing.out-expo",
+          "description": "Same entry/exit curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
+        "decision.motion.easing.move-large": {
+          "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+          "name": "even-motion-easing-move-large",
+          "reference": "options.easing.in-out-cubic",
+          "description": "Same on-screen movement curve family as the small transition; duration accounts for the greater visual area. No overshoot.",
+          "type": "cubicBezier"
+        },
         "decision.shadow.floating": {
           "value": "0rem 0.25rem 1rem 0rem oklch(0% 0 0 / 0.16)",
           "name": "even-shadow-floating",
@@ -5748,6 +6686,20 @@
           "name": "even-size-navigation-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width, not a fixed or minimum viewport width.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.minimum": {
+          "value": "8rem",
+          "name": "even-size-navigation-item-minimum",
+          "reference": "options.dimension.128",
+          "description": "Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound.",
+          "type": "dimension"
+        },
+        "decision.size.navigation-item.maximum": {
+          "value": "12rem",
+          "name": "even-size-navigation-item-maximum",
+          "reference": "options.dimension.192",
+          "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
         "decision.size.radius.control": {
