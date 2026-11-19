@@ -22,6 +22,23 @@ import {
   themes,
 } from "../src/tokens/colors.js";
 
+// Contrast is a settled-surface check. Motion itself is verified separately
+// through paused intermediate frames; infinite indicators never block auditing.
+async function waitForFiniteMotion(page) {
+  await page.evaluate(async () => {
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    await Promise.all(
+      document
+        .getAnimations()
+        .filter(
+          (animation) => animation.effect.getTiming().iterations !== Infinity,
+        )
+        .map((animation) => animation.finished.catch(() => {})),
+    );
+  });
+}
+
 const directory = fileURLToPath(
   new URL("../storybook-static/", import.meta.url),
 );
@@ -86,21 +103,7 @@ try {
         story.id,
       );
       await page.evaluate(() => document.fonts.ready);
-      // Audit the settled surface, not the intentionally transparent frames
-      // of a finite entrance. Infinite indicators must never block the gate.
-      await page.evaluate(async () => {
-        await new Promise(requestAnimationFrame);
-        await new Promise(requestAnimationFrame);
-        await Promise.all(
-          document
-            .getAnimations()
-            .filter(
-              (animation) =>
-                animation.effect.getTiming().iterations !== Infinity,
-            )
-            .map((animation) => animation.finished.catch(() => {})),
-        );
-      });
+      await waitForFiniteMotion(page);
       await page.addScriptTag({ content: axe });
       const violations = await page.evaluate(
         async (auditColor) =>
@@ -141,6 +144,7 @@ try {
     .getByRole("region", { name: "Span details" })
     .getByText("Permission denied", { exact: true })
     .waitFor();
+  await waitForFiniteMotion(page);
   await page.addScriptTag({ content: axe });
   const openInspectorViolations = await page.evaluate(async () =>
     (
@@ -370,6 +374,7 @@ try {
       true,
       "Child popover paints above the modal",
     );
+    await waitForFiniteMotion(page);
     await page.addScriptTag({ content: axe });
     const nestedViolations = await page.evaluate(async () =>
       (

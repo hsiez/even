@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { WorkbenchTabs } from "./WorkbenchTabs";
 import { Select } from "../Select/Select";
+import { IconButton } from "../IconButton/IconButton";
 import "./WorkbenchTabs.stories.css";
 
 export default { title: "Workbench/WorkbenchTabs", component: WorkbenchTabs };
@@ -62,6 +63,7 @@ function Example({
   initialTabs,
   initialActive = "0",
   design = false,
+  immediateCreation = false,
 }) {
   const [tabs, setTabs] = useState(
     () =>
@@ -81,6 +83,20 @@ function Example({
       pendingFocus.current = false;
     }
   }, [active, tabs]);
+  function createTab(kind) {
+    const id = String(sequence.current++);
+    setTabs((previous) => [
+      ...previous,
+      {
+        id,
+        kind,
+        label:
+          kind === "traces" ? `Traces ${Number(id) + 1}` : `Playground ${id}`,
+      },
+    ]);
+    pendingFocus.current = true;
+    setActive(id);
+  }
   return (
     <WorkbenchTabs value={active} onValueChange={setActive}>
       <WorkbenchTabs.Bar>
@@ -109,25 +125,35 @@ function Example({
             </WorkbenchTabs.Tab>
           ))}
         </WorkbenchTabs.List>
-        <WorkbenchTabs.New
-          onCreate={(kind) => {
-            const id = String(sequence.current++);
-            setTabs([
-              ...tabs,
-              {
-                id,
-                kind,
-                label:
-                  kind === "traces"
-                    ? `Traces ${Number(id) + 1}`
-                    : `Playground ${id}`,
-              },
-            ]);
-            pendingFocus.current = true;
-            setActive(id);
-          }}
-          finalFocus={() => refs.current.get(active)}
-        />
+        {immediateCreation ? (
+          <IconButton
+            label="New trace tab"
+            className="even-workbench-new"
+            variant="ghost"
+            size="compact"
+            onClick={() => createTab("traces")}
+          >
+            <svg
+              className="even-workbench-add-icon"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M8 3v10M3 8h10"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </IconButton>
+        ) : (
+          <WorkbenchTabs.New
+            onCreate={createTab}
+            finalFocus={() => refs.current.get(active)}
+          />
+        )}
       </WorkbenchTabs.Bar>
       {tabs.map((tab) => (
         <WorkbenchTabs.Panel key={tab.id} value={tab.id} keepMounted={false}>
@@ -193,6 +219,28 @@ export const DesignSandbox = {
       </section>
     );
   },
+};
+
+export const ImmediateCreation = {
+  render: () => (
+    <section
+      className="even-tabs-design-sandbox"
+      aria-label="Immediate tab creation sandbox"
+    >
+      <p>
+        Click + to add a trace tab directly. Add several tabs or resize the
+        frame to review creation and overflow. Fixture content only.
+      </p>
+      <div className="even-tabs-design-frame" data-preview-size="current">
+        <Example
+          design
+          immediateCreation
+          initialTabs={designTabs}
+          initialActive="1"
+        />
+      </div>
+    </section>
+  ),
 };
 
 export const SizeComparison = {

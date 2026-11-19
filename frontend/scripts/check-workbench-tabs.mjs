@@ -501,9 +501,65 @@ export async function checkWorkbenchTabs(page, base, theme, axe) {
   await checkTabDividers(page, base, theme);
   await checkOverflowFades(page, base, theme, axe);
   await checkTabTypeIcons(page, base, theme);
+  await checkImmediateCreation(page, base, theme);
   await checkTabMotion(page, base, theme);
   await checkStickyTabs(page, base, theme, axe);
   await checkTokenResilience(page, base, theme);
+}
+
+export async function checkImmediateCreation(page, base, theme) {
+  await page.goto(
+    `${base}/iframe.html?id=workbench-workbenchtabs--immediate-creation&viewMode=story&globals=theme:${theme}`,
+  );
+  const add = page.getByRole("button", { name: "New trace tab", exact: true });
+  await add.waitFor();
+  assert.equal(await page.getByRole("tab").count(), 3);
+  await add.click();
+  const fourth = page.getByRole("tab", { name: "Traces 4", exact: true });
+  await fourth.waitFor();
+  assert.equal(await fourth.getAttribute("aria-selected"), "true");
+  assert.equal(
+    await page.getByRole("menu").count(),
+    0,
+    "Direct creation never opens a menu",
+  );
+  await page.waitForFunction(
+    (node) => node === document.activeElement,
+    await fourth.elementHandle(),
+  );
+  await add.focus();
+  await page.keyboard.press("Enter");
+  await page.getByRole("tab", { name: "Traces 5", exact: true }).waitFor();
+  await add.dblclick();
+  const seventh = page.getByRole("tab", { name: "Traces 7", exact: true });
+  await seventh.waitFor();
+  assert.equal(
+    await page.getByRole("tab").count(),
+    7,
+    "Rapid creation retains every appended tab",
+  );
+  await page
+    .locator(".even-tabs-design-frame")
+    .evaluate((node) => (node.style.width = "360px"));
+  assert.ok(
+    await page
+      .locator(".even-workbench-tab-scroll")
+      .evaluate((node) => node.scrollWidth > node.clientWidth),
+    "Direct-create fixture supports overflow review",
+  );
+  await page
+    .getByRole("button", { name: "Close Traces 7", exact: true })
+    .click();
+  const replacement = page.getByRole("tab", { name: "Traces 6", exact: true });
+  assert.equal(await replacement.getAttribute("aria-selected"), "true");
+  await page.waitForFunction(
+    (node) => node === document.activeElement,
+    await replacement.elementHandle(),
+  );
+  assert.equal(await page.getByRole("menu").count(), 0);
+  console.log(
+    `Verified ${theme} immediate story-only tab creation, keyboard focus, rapid clicks, overflow and closure without a dropdown.`,
+  );
 }
 
 async function checkTabTypeIcons(page, base, theme) {
