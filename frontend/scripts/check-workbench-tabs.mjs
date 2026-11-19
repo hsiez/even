@@ -556,9 +556,63 @@ export async function checkImmediateCreation(page, base, theme) {
     (node) => node === document.activeElement,
     await replacement.elementHandle(),
   );
+  const viewport = page.locator(".even-workbench-tab-scroll");
+  const assertFilledEnd = async () => {
+    await page.waitForFunction(() => {
+      const viewport = document.querySelector(".even-workbench-tab-scroll");
+      const track = viewport.firstElementChild;
+      const style = getComputedStyle(viewport);
+      const extent = Math.max(
+        viewport.clientWidth,
+        track.getBoundingClientRect().width +
+          parseFloat(style.paddingInlineStart) +
+          parseFloat(style.paddingInlineEnd),
+      );
+      return (
+        Math.abs(viewport.scrollWidth - extent) < 2 &&
+        Math.abs(
+          viewport.scrollLeft - (viewport.scrollWidth - viewport.clientWidth),
+        ) < 2
+      );
+    });
+  };
+  await assertFilledEnd();
+  const beforeClose = await viewport.evaluate((node) => node.scrollLeft);
+  await page
+    .getByRole("button", { name: "Close Traces 6", exact: true })
+    .click();
+  await assertFilledEnd();
+  assert.ok(
+    (await viewport.evaluate((node) => node.scrollLeft)) < beforeClose,
+    "Closing the rightmost tab brings hidden left tabs into the freed space",
+  );
+  // Repeat through the overflow threshold: invisible fades must not keep an
+  // obsolete scroll range alive, including when the active view stays put.
+  await page.getByRole("tab", { name: "Traces", exact: true }).click();
+  await viewport.evaluate((node) => (node.scrollLeft = node.scrollWidth));
+  await page
+    .getByRole("button", { name: "Close Traces 5", exact: true })
+    .click();
+  await assertFilledEnd();
+  assert.equal(
+    await page
+      .getByRole("tab", { name: "Traces", exact: true })
+      .getAttribute("aria-selected"),
+    "true",
+    "Closing an inactive end tab preserves selection",
+  );
+  for (const name of ["Traces 4", "Playground 1", "Tool errors"]) {
+    await page
+      .getByRole("button", { name: `Close ${name}`, exact: true })
+      .click();
+    await assertFilledEnd();
+  }
+  assert.equal(await viewport.evaluate((node) => node.scrollLeft), 0);
+  assert.equal(await viewport.getAttribute("data-overflow-start"), null);
+  assert.equal(await viewport.getAttribute("data-overflow-end"), null);
   assert.equal(await page.getByRole("menu").count(), 0);
   console.log(
-    `Verified ${theme} immediate story-only tab creation, keyboard focus, rapid clicks, overflow and closure without a dropdown.`,
+    `Verified ${theme} immediate story-only creation, keyboard focus, rapid clicks and end-tab closure reclaiming overflow space without a dropdown.`,
   );
 }
 

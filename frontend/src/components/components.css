@@ -485,7 +485,12 @@
     opacity: 0;
   }
   :where(.even-workbench-tab-track)::before {
-    left: var(--even-tab-viewport-start, 0px);
+    /* Decoration must not preserve the old scroll extent after tabs close. */
+    left: clamp(
+      0px,
+      var(--even-tab-viewport-start, 0px),
+      calc(100% - var(--even-space-inset-default))
+    );
     background: linear-gradient(
       to right,
       var(--even-surface-page),
@@ -493,9 +498,13 @@
     );
   }
   :where(.even-workbench-tab-track)::after {
-    left: calc(
-      var(--even-tab-viewport-start, 0px) +
-        var(--even-tab-viewport-width, 0px) - var(--even-space-inset-default)
+    left: clamp(
+      0px,
+      calc(
+        var(--even-tab-viewport-start, 0px) +
+          var(--even-tab-viewport-width, 0px) - var(--even-space-inset-default)
+      ),
+      calc(100% - var(--even-space-inset-default))
     );
     background: linear-gradient(to left, var(--even-surface-page), transparent);
   }
