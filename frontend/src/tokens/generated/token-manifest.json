@@ -968,6 +968,13 @@
           "description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates.",
           "type": "duration"
         },
+        "options.duration.120": {
+          "value": "0.12s",
+          "name": "even-duration-120",
+          "reference": null,
+          "description": "Short idle interval before pointer feedback resumes after scrolling.",
+          "type": "duration"
+        },
         "options.duration.150": {
           "value": "0.15s",
           "name": "even-duration-150",
@@ -1400,6 +1407,13 @@
           "name": "even-interaction-delay-repeat",
           "reference": "options.duration.500",
           "description": "Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration.",
+          "type": "duration"
+        },
+        "decision.interaction.delay.scroll-idle": {
+          "value": "0.12s",
+          "name": "even-interaction-delay-scroll-idle",
+          "reference": "options.duration.120",
+          "description": "Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible.",
           "type": "duration"
         },
         "decision.motion.duration.instant": {
@@ -2720,6 +2734,13 @@
           "description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates.",
           "type": "duration"
         },
+        "options.duration.120": {
+          "value": "0.12s",
+          "name": "even-duration-120",
+          "reference": null,
+          "description": "Short idle interval before pointer feedback resumes after scrolling.",
+          "type": "duration"
+        },
         "options.duration.150": {
           "value": "0.15s",
           "name": "even-duration-150",
@@ -3152,6 +3173,13 @@
           "name": "even-interaction-delay-repeat",
           "reference": "options.duration.500",
           "description": "Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration.",
+          "type": "duration"
+        },
+        "decision.interaction.delay.scroll-idle": {
+          "value": "0.12s",
+          "name": "even-interaction-delay-scroll-idle",
+          "reference": "options.duration.120",
+          "description": "Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible.",
           "type": "duration"
         },
         "decision.motion.duration.instant": {
@@ -4474,6 +4502,13 @@
           "description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates.",
           "type": "duration"
         },
+        "options.duration.120": {
+          "value": "0.12s",
+          "name": "even-duration-120",
+          "reference": null,
+          "description": "Short idle interval before pointer feedback resumes after scrolling.",
+          "type": "duration"
+        },
         "options.duration.150": {
           "value": "0.15s",
           "name": "even-duration-150",
@@ -4906,6 +4941,13 @@
           "name": "even-interaction-delay-repeat",
           "reference": "options.duration.500",
           "description": "Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration.",
+          "type": "duration"
+        },
+        "decision.interaction.delay.scroll-idle": {
+          "value": "0.12s",
+          "name": "even-interaction-delay-scroll-idle",
+          "reference": "options.duration.120",
+          "description": "Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible.",
           "type": "duration"
         },
         "decision.motion.duration.instant": {
@@ -6226,6 +6268,13 @@
           "description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates.",
           "type": "duration"
         },
+        "options.duration.120": {
+          "value": "0.12s",
+          "name": "even-duration-120",
+          "reference": null,
+          "description": "Short idle interval before pointer feedback resumes after scrolling.",
+          "type": "duration"
+        },
         "options.duration.150": {
           "value": "0.15s",
           "name": "even-duration-150",
@@ -6658,6 +6707,13 @@
           "name": "even-interaction-delay-repeat",
           "reference": "options.duration.500",
           "description": "Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration.",
+          "type": "duration"
+        },
+        "decision.interaction.delay.scroll-idle": {
+          "value": "0.12s",
+          "name": "even-interaction-delay-scroll-idle",
+          "reference": "options.duration.120",
+          "description": "Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible.",
           "type": "duration"
         },
         "decision.motion.duration.instant": {

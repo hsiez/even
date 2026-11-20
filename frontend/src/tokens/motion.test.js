@@ -12,6 +12,7 @@ test("removal gap and reflow use independent decisions without changing ordinary
   element.style.setProperty("--even-motion-duration-move", "500ms");
   expect(readInteractionDelay(element, "removal")).toBe(75);
   expect(readInteractionDelay(element, "repeat")).toBe(500);
+  expect(readInteractionDelay(element, "scroll-idle")).toBe(120);
   expect(readMotionTiming(element, "reflow").duration).toBe(150);
   expect(readMotionTiming(element, "reflow-rapid").duration).toBe(100);
   element.style.setProperty("--even-interaction-delay-removal", "0.05s");
@@ -20,6 +21,9 @@ test("removal gap and reflow use independent decisions without changing ordinary
   expect(readMotionTiming(element, "reflow").duration).toBe(125);
   element.style.setProperty("--even-interaction-delay-removal", "0s");
   expect(readInteractionDelay(element, "removal")).toBe(0);
+  element.style.setProperty("--even-interaction-delay-scroll-idle", "0.35s");
+  expect(readInteractionDelay(element, "scroll-idle")).toBe(350);
+  expect(readInteractionDelay(element, "repeat")).toBe(500);
   element.remove();
 });
 

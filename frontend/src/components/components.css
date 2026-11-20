@@ -731,9 +731,6 @@
   :where(.even-workbench-tab[data-closable] .even-tab) {
     padding-inline-end: var(--even-space-inset-compact);
   }
-  :where(.even-workbench-tab) .even-tab:focus-visible {
-    outline-offset: calc(-1 * var(--even-size-focus-outline));
-  }
   :where(.even-workbench-tab-label) {
     flex: 1;
     min-width: 0;
@@ -1024,9 +1021,6 @@
   }
   :where(.even-workbench-new:active)::before {
     background: var(--even-surface-active);
-  }
-  :where(.even-workbench-new):focus-visible {
-    outline-offset: calc(-1 * var(--even-size-focus-outline));
   }
   :where(.even-workbench-close-icon) {
     display: block;
@@ -1650,15 +1644,17 @@
     .even-execution-links a,
     .even-conversation [role="log"]
   ):focus-visible {
-    outline: 2px solid var(--even-focus-ring);
-    outline-offset: 2px;
+    outline: var(--even-size-focus-outline) solid var(--even-focus-ring);
+    outline-offset: var(--even-size-focus-outline);
   }
   :where(
     .even-tab,
     .even-menu-item,
-    .even-trace-operation-action
+    .even-trace-operation-action,
+    .even-workbench-tab-close,
+    .even-workbench-new
   ):focus-visible {
-    outline-offset: -2px;
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
   }
   :where(.even-trace-search-input > .even-input):focus {
     outline: none;
@@ -1695,8 +1691,8 @@
   }
   @media (forced-colors: active) {
     :where(.even-tab[data-active], .even-span-tree [aria-selected="true"]) {
-      outline: 2px solid Highlight;
-      outline-offset: -2px;
+      outline: var(--even-size-focus-outline) solid Highlight;
+      outline-offset: calc(-1 * var(--even-size-focus-outline));
     }
     :where(.even-button, .even-input, .even-popup) {
       border-color: ButtonText;

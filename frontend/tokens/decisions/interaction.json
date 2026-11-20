@@ -10,6 +10,10 @@
         "repeat": {
           "$value": "{options.duration.500}",
           "$description": "Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration."
+        },
+        "scroll-idle": {
+          "$value": "{options.duration.120}",
+          "$description": "Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible."
         }
       }
     }

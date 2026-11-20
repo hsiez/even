@@ -42,9 +42,13 @@ test("decorative type icons preserve tab names, keyboard order and close targets
   expect(chat).toHaveFocus();
   expect(chat).toHaveAttribute("aria-selected", "true");
   await user.tab();
-  expect(
-    screen.getByRole("button", { name: "Close Agent chat", exact: true }),
-  ).toHaveFocus();
+  const close = screen.getByRole("button", {
+    name: "Close Agent chat",
+    exact: true,
+  });
+  expect(close).toHaveFocus();
+  expect(close.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  expect(close.querySelector("svg")).toHaveAttribute("focusable", "false");
 });
 
 test("Base UI owns keyboard selection and relationships; close controls stay outside tab buttons", async () => {
@@ -103,6 +107,8 @@ test("new-tab menu delegates creation and Escape returns focus without creating"
     </WorkbenchTabs>,
   );
   const trigger = screen.getByRole("button", { name: "New tab" });
+  expect(trigger.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  expect(trigger.querySelector("svg")).toHaveAttribute("focusable", "false");
   trigger.focus();
   await user.keyboard("{ArrowDown}");
   await waitFor(() =>

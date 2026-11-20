@@ -517,6 +517,7 @@ export async function checkWorkbenchTabs(page, base, theme, axe) {
   await checkOverflowFades(page, base, theme, axe);
   await checkTabTypeIcons(page, base, theme);
   await checkTabCursorContinuity(page, base, theme);
+  await checkTabDesignDecisions(page, base, theme);
   await checkImmediateCreation(page, base, theme);
   await checkTabMotion(page, base, theme);
   await checkCreationFadeOverlap(page, base, theme);
@@ -1385,5 +1386,115 @@ export async function checkTabCursorContinuity(page, base, theme) {
   }
   console.log(
     `Verified ${theme} pointer continuity across real tab seams/corners in sparse and overflowing strips, with default cursor over unused space.`,
+  );
+}
+
+export async function checkTabDesignDecisions(page, base, theme) {
+  for (const story of ["default", "immediate-creation"]) {
+    await page.goto(
+      `${base}/iframe.html?id=workbench-workbenchtabs--${story}&viewMode=story&globals=theme:${theme}`,
+    );
+    const tab = page.getByRole("tab").nth(1);
+    await tab.waitFor();
+    const close = page.locator(".even-workbench-tab-close").first();
+    const add = page.locator(".even-workbench-new");
+    for (const [button, icon] of [
+      [close, "x"],
+      [add, "plus"],
+    ]) {
+      assert.equal(
+        await button
+          .locator(`svg.lucide-${icon}[aria-hidden="true"][focusable="false"]`)
+          .count(),
+        1,
+      );
+      assert.ok(
+        await button.getAttribute("aria-label"),
+        "Glyph buttons retain accessible names",
+      );
+    }
+    await page.keyboard.press("Tab");
+    for (const forcedColors of ["none", "active"]) {
+      await page.emulateMedia({ forcedColors });
+      for (const width of [2, 6]) {
+        await page.evaluate(
+          (width) =>
+            document.documentElement.style.setProperty(
+              "--even-size-focus-outline",
+              `${width}px`,
+            ),
+          width,
+        );
+        for (const control of [tab, close, add]) {
+          const before = await control.boundingBox();
+          await control.focus();
+          const focus = await control.evaluate((node) => {
+            const style = getComputedStyle(node);
+            return {
+              width: parseFloat(style.outlineWidth),
+              offset: parseFloat(style.outlineOffset),
+              visible: node.matches(":focus-visible"),
+            };
+          });
+          assert.deepEqual(
+            focus,
+            { width, offset: -width, visible: true },
+            "Tab, X and plus focus rings follow the same decision in either color mode",
+          );
+          assert.deepEqual(
+            await control.boundingBox(),
+            before,
+            "Focus emphasis does not change control layout",
+          );
+        }
+      }
+    }
+    await page.emulateMedia({ forcedColors: "none" });
+  }
+  await page.goto(
+    `${base}/iframe.html?id=workbench-workbenchtabs--overflow&viewMode=story&globals=theme:${theme}`,
+  );
+  await page.getByRole("tab").first().waitFor();
+  await scrollIdle(page);
+  const track = page.locator(".even-workbench-tab-track");
+  for (const delay of [350, 0]) {
+    const elapsed = await track.evaluate(
+      (node, delay) =>
+        new Promise((resolve) => {
+          node.style.setProperty(
+            "--even-interaction-delay-scroll-idle",
+            `${delay}ms`,
+          );
+          const viewport = node.parentElement;
+          let lastScroll;
+          const moved = () => {
+            lastScroll = performance.now();
+          };
+          viewport.addEventListener("scroll", moved, true);
+          const observer = new MutationObserver(() => {
+            if (
+              lastScroll !== undefined &&
+              !node.hasAttribute("data-scrolling")
+            ) {
+              observer.disconnect();
+              viewport.removeEventListener("scroll", moved, true);
+              resolve(performance.now() - lastScroll);
+            }
+          });
+          observer.observe(node, {
+            attributes: true,
+            attributeFilter: ["data-scrolling"],
+          });
+          viewport.scrollLeft += 80;
+        }),
+      delay,
+    );
+    assert.ok(
+      elapsed >= delay - 20 && elapsed < delay + 500,
+      `Scroll hover recovers using the live ${delay}ms decision: ${elapsed}ms`,
+    );
+  }
+  console.log(
+    `Verified ${theme} shared Lucide glyphs, token-driven inset focus without layout shifts (including forced colors), and live scroll-idle overrides.`,
   );
 }

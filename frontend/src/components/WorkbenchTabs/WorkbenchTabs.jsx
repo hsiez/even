@@ -7,6 +7,7 @@ import { TabMotion } from "./TabMotion";
 import { useStickyTab } from "./useStickyTab";
 import { StickyIndicator } from "./StickyIndicator";
 import { iconForTab } from "./tabIcons";
+import { AddIcon, CloseIcon } from "../icons";
 
 // Base UI owns selection, roving focus, tab/panel relationships and dismissal.
 // The host owns tab records and decides which tab replaces a closed one.
@@ -234,19 +235,11 @@ function List({ children, className, ...props }) {
                     tab.props.onClose(event);
                   }}
                 >
-                  <svg
+                  <CloseIcon
                     className="even-workbench-close-icon"
-                    viewBox="0 0 16 16"
-                    fill="none"
                     aria-hidden="true"
-                  >
-                    <path
-                      d="m3 3 10 10m0-10L3 13"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                    focusable="false"
+                  />
                 </IconButton>
               ),
           )}
@@ -271,19 +264,11 @@ function New({ onCreate, finalFocus, className, ...props }) {
         {...props}
         className={classes("even-workbench-new", className)}
       >
-        <svg
+        <AddIcon
           className="even-workbench-add-icon"
-          viewBox="0 0 16 16"
-          fill="none"
           aria-hidden="true"
-        >
-          <path
-            d="M8 3v10M3 8h10"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
+          focusable="false"
+        />
       </Menu.Trigger>
       <Menu.Content
         align="end"

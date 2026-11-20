@@ -330,6 +330,7 @@
   --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
   --even-duration-75: 0.075s; /** Brief interaction beat before a visual change continues. */
   --even-duration-100: 0.1s; /** Brief feedback, reduced-motion fades, or quick settling after repeated collection updates. */
+  --even-duration-120: 0.12s; /** Short idle interval before pointer feedback resumes after scrolling. */
   --even-duration-150: 0.15s; /** Small feedback and quick exits. */
   --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
   --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
@@ -474,6 +475,9 @@
   --even-interaction-delay-repeat: var(
     --even-duration-500
   ); /** Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration. */
+  --even-interaction-delay-scroll-idle: var(
+    --even-duration-120
+  ); /** Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible. */
   --even-motion-duration-instant: var(
     --even-duration-0
   ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */
@@ -936,6 +940,7 @@
   --even-duration-0: 0s; /** Immediate state changes; no decorative interpolation. */
   --even-duration-75: 0.075s; /** Brief interaction beat before a visual change continues. */
   --even-duration-100: 0.1s; /** Brief feedback, reduced-motion fades, or quick settling after repeated collection updates. */
+  --even-duration-120: 0.12s; /** Short idle interval before pointer feedback resumes after scrolling. */
   --even-duration-150: 0.15s; /** Small feedback and quick exits. */
   --even-duration-200: 0.2s; /** Short entrances and movement within the interface. */
   --even-duration-250: 0.25s; /** Intermediate transitions when moderate travel warrants more time than a small control. */
@@ -1080,6 +1085,9 @@
   --even-interaction-delay-repeat: var(
     --even-duration-500
   ); /** Recognize consecutive pointer actions within 500ms as a repeat sequence, independently of visual transition duration. */
+  --even-interaction-delay-scroll-idle: var(
+    --even-duration-120
+  ); /** Restore pointer hover after scrolling has been idle for 120ms. Trailing wheel input at a boundary does not extend this interval; keyboard focus stays visible. */
   --even-motion-duration-instant: var(
     --even-duration-0
   ); /** Keyboard selection, high-frequency navigation, scrolling and decorative movement under reduced motion stay immediate. */

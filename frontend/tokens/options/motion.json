@@ -23,6 +23,10 @@
         },
         "$description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates."
       },
+      "120": {
+        "$value": { "value": 120, "unit": "ms" },
+        "$description": "Short idle interval before pointer feedback resumes after scrolling."
+      },
       "150": {
         "$value": {
           "value": 150,

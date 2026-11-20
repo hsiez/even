@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import { WorkbenchTabs } from "./WorkbenchTabs";
 import { Select } from "../Select/Select";
 import { IconButton } from "../IconButton/IconButton";
+import { AddIcon } from "../icons";
 import "./WorkbenchTabs.stories.css";
 
 export default { title: "Workbench/WorkbenchTabs", component: WorkbenchTabs };
@@ -133,20 +134,11 @@ function Example({
             size="compact"
             onClick={() => createTab("traces")}
           >
-            <svg
+            <AddIcon
               className="even-workbench-add-icon"
-              viewBox="0 0 16 16"
-              fill="none"
               aria-hidden="true"
               focusable="false"
-            >
-              <path
-                d="M8 3v10M3 8h10"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            />
           </IconButton>
         ) : (
           <WorkbenchTabs.New

@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { readInteractionDelay } from "../../tokens/motion";
 
 const set = (node, name, value) => {
   if (node.style.getPropertyValue(name) !== value)
@@ -83,10 +84,13 @@ export function useStickyTab(viewportRef, updateOverflow, onScrollIdle) {
     function scrolling() {
       track.setAttribute("data-scrolling", "");
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        track.removeAttribute("data-scrolling");
-        idleCallback.current?.();
-      }, 120);
+      timer = setTimeout(
+        () => {
+          track.removeAttribute("data-scrolling");
+          idleCallback.current?.();
+        },
+        readInteractionDelay(track, "scroll-idle"),
+      );
       sync();
     }
     function prepareScroll(event) {
