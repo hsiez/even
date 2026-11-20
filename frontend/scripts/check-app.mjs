@@ -209,6 +209,41 @@ try {
     selectedSpan,
   );
 
+  const addTab = async (name) => {
+    await page.getByRole("button", { name: "New tab" }).click();
+    await page.getByRole("menuitem", { name, exact: true }).click();
+    await page.getByRole("menu").waitFor({ state: "hidden" });
+  };
+  await addTab("New trace explorer");
+  await page.getByRole("button", { name: "Load more traces" }).waitFor();
+  assert.equal(await search.inputValue(), "");
+  assert.equal(await inspector.count(), 0);
+  await page.getByRole("tab", { name: "Traces", exact: true }).click();
+  await inspector.waitFor();
+  assert.equal(await search.inputValue(), "output:1234567890123456789");
+  assert.equal(
+    await inspector
+      .getByRole("treeitem", { selected: true })
+      .getAttribute("data-span-id"),
+    selectedSpan,
+  );
+  await addTab("New chat playground");
+  assert.ok(await page.getByLabel("Message", { exact: true }).isDisabled());
+  assert.ok(
+    urls.every((url) => !url.includes("/api/v1/sessions")),
+    "A playground preview does not create or read sessions",
+  );
+  await page
+    .getByRole("button", { name: "Close Playground 1", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Close Traces 2", exact: true })
+    .click();
+  assert.ok(
+    await page
+      .getByRole("tab", { name: "Traces", exact: true })
+      .evaluate((node) => node === document.activeElement),
+  );
   await page.getByRole("button", { name: "Close inspector" }).click();
   await search.fill("tool:");
   await page.getByRole("option", { name: /tool:lookup/ }).waitFor();
@@ -235,7 +270,7 @@ try {
       document.querySelector(".even-trace-operation-action")?.textContent ?? "",
     ),
   );
-  await page.getByRole("button", { name: "Use light theme" }).click();
+  await page.getByRole("radio", { name: "Light theme", exact: true }).click();
   await page.screenshot({ path: "/tmp/even-live-workbench-light.png" });
   const write = await page.evaluate(async () => {
     const response = await fetch("/api/v1/sessions", {

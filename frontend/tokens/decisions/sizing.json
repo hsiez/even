@@ -49,6 +49,18 @@
           "$description": "Preferred width, not a fixed or minimum viewport width."
         }
       },
+      "navigation-item": {
+        "minimum": {
+          "$type": "dimension",
+          "$value": "{options.dimension.128}",
+          "$description": "Minimum width for items sharing a horizontal navigation strip. Preserve readable labels and action targets; scroll the strip once items reach this bound."
+        },
+        "maximum": {
+          "$type": "dimension",
+          "$value": "{options.dimension.192}",
+          "$description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items."
+        }
+      },
       "radius": {
         "control": {
           "$type": "dimension",

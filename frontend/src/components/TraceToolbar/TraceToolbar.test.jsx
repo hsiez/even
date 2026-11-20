@@ -1,6 +1,6 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TraceToolbar } from "./TraceToolbar";
 import { trace, spans, agents, sessions } from "../../test/fixtures";
@@ -33,7 +33,13 @@ test("changes search without clearing filters and prevents duplicate refresh", a
       onRefresh={refresh}
     />,
   );
-  expect(screen.getByRole("button", { name: "Refreshing…" })).toBeDisabled();
+  const pending = screen.getByRole("button", { name: "Refresh" });
+  expect(pending).toBeDisabled();
+  expect(pending).toHaveAttribute("aria-busy", "true");
+  expect(pending.textContent).toBe("");
+  expect(within(pending).queryByRole("img")).toBeNull();
+  await user.click(pending);
+  expect(refresh).toHaveBeenCalledOnce();
 });
 
 test("omits refresh when no refresh action is available", () => {

@@ -1,6 +1,6 @@
 # Agent spaces and workbench tabs proposal
 
-Status: Proposed. The agent-space layout and tab behavior are agreed. Stack alignment takes priority before tab implementation: the current branch connects the browser and backend first.
+Status: Tab layout implemented. Stack alignment is merged. This frontend pass adds agent spaces, independent trace tabs and open/close/focus behavior, reusing the existing trace-read APIs. Playground tabs are labeled layout previews with a disabled composer. Session creation, messaging and event subscriptions remain proposed below.
 
 Even opens an agent space from the sidebar. The main area contains tabs that users can open and close: trace explorers and chat playgrounds. Each agent starts with a pinned Traces tab, keeping inspection at the center of the experience while allowing several investigations and conversations to remain open.
 
@@ -38,6 +38,8 @@ The selected agent is a fixed source scope. An `agent:` search term continues to
 
 ### Playground sessions and traces
 
+**Planned live integration:** the current playground is a labeled layout preview with a disabled composer. The session and message behavior below is not implemented yet.
+
 Opening an empty playground is a local action and does not start Eve. On the first send, create one session for the tab's agent, bind its returned ID to the tab, then send the message. Later messages reuse that session. Block duplicate sends while session creation or delivery is pending. A failed creation retains the draft and allows an explicit retry; failed or ambiguous write requests must not be automatically retried as though they were reads.
 
 A tab ID is a UI identity, a session ID identifies an Eve session, and a trace ID identifies recorded execution. They are separate values. A session can have multiple traces; a message delivery receipt does not establish completion or identify a trace by itself.
@@ -50,23 +52,23 @@ Closing a playground does not promise to stop the agent. The current API has no 
 
 ### State and ownership
 
-The page owns the selected agent and a workspace record for each agent, keyed by catalog source ID. Each record contains an ordered list of stable tab IDs, the active tab ID, and state for each tab. Tab records distinguish `traces` from `playground`; the default trace tab is marked pinned.
+The page owns the selected agent and a workspace record for each agent, keyed by catalog source ID. Each record contains an ordered list of stable tab IDs and the active tab ID. Retained per-tab controllers own explorer state above the conditionally rendered panel content. Tab records distinguish `traces` from `playground`; the default trace tab is marked pinned.
 
-Keep view state above tab panels so it survives panel unmounts. A small reducer can own open, activate, close, and update actions; this does not replace Base UI's focus or keyboard behavior. The useful invariant is that an agent's active tab always exists and its pinned tab cannot be removed.
+Keep view state above visible panel content so it survives content unmounts. A small reducer can own open, activate, close, and update actions; this does not replace Base UI's focus or keyboard behavior. The useful invariant is that an agent's active tab always exists and its pinned tab cannot be removed.
 
-| Owner                 | State                                                                                    |
-| --------------------- | ---------------------------------------------------------------------------------------- |
-| Workspace page        | Selected agent, each agent's tab order and active tab                                    |
-| Trace tab record      | Query, widths, scroll, trace/span selection, expanded spans, inspector view              |
-| Playground tab record | Draft, bound session ID, messages and reading position                                   |
-| Data controller       | Pending requests, cached pages, event subscriptions, replay cursor and delivery progress |
-| Existing primitives   | Keyboard navigation, primitive focus, popup state and dismissal                          |
+| Owner                           | State                                                                                    |
+| ------------------------------- | ---------------------------------------------------------------------------------------- |
+| Workspace page                  | Selected agent, each agent's tab order and active tab                                    |
+| Trace tab controller            | Query, widths, scroll, trace/span selection, expanded spans, inspector view              |
+| Playground controller (planned) | Draft, bound session ID, messages and reading position                                   |
+| Data controller                 | Pending requests, cached pages, event subscriptions, replay cursor and delivery progress |
+| Existing primitives             | Keyboard navigation, primitive focus, popup state and dismissal                          |
 
 Use `(agentId, traceId)` for trace identity and include the agent and tab IDs in request ownership. Trace IDs may occur under multiple workspace sources. Keep runtime handles such as AbortControllers and stream readers outside serializable view records.
 
-Render the active panel and restore its state on activation. The existing Tabs panels default to `keepMounted`; explicitly choose unmounting for workbench panels once their state has been lifted. Hidden panels must not each run an independent polling loop. Refresh the active explorer and mark retained results stale when necessary; background explorers keep their last results until activated or explicitly refreshed.
+Render only active panel content and restore its state on activation. Panel shells use `keepMounted` for stable tab/panel relationships; per-tab controllers remain above the conditional content. Hidden controllers do not poll. In-flight reads can complete into their own retained controller; closing a tab aborts pending requests and ignores late results. Activation restores cached pages without an automatic refresh. Explicit Refresh reuses the existing continuity behavior.
 
-Sending and receiving chat events belong to the data controller, so switching tabs or agents does not interrupt a delivery or lose messages. Keep one subscription per open session, rather than one per rendered panel. Closing its last view can release the subscription; it does not send a cancellation request. Settle pending requests safely after closure without recreating a closed tab.
+For planned live playground integration, sending and receiving chat events belong to the data controller, so switching tabs or agents does not interrupt a delivery or lose messages. Keep one subscription per open session, rather than one per rendered panel. Closing its last view can release the subscription; it does not send a cancellation request. Settle pending requests safely after closure without recreating a closed tab.
 
 ### Component changes
 
@@ -82,19 +84,23 @@ Sending and receiving chat events belong to the data controller, so switching ta
 
 Keep one-screen compositions local to the page until an independent public component is useful. Every public component receives its own folder containing implementation, story, and behavior test. Follow the [component exemplar](../design-system/component-exemplar.md), [frontend workflow](../../frontend/AGENTS.md), and [existing contracts](../../frontend/README.md). Generic components receive data and callbacks; page controllers own API calls and product rules.
 
-WorkbenchTabs should expose cooperating declarative parts where useful, with shared product coordination at the root. Base UI continues to own tab selection mechanics, roving focus, keyboard navigation, and menu dismissal. Use its supported composition APIs for close affordances; do not nest a close button inside a native tab button. Keep inspector Spans, Timing, and Summary tabs separate from the workbench tab strip, with distinct accessible labels.
+WorkbenchTabs should expose cooperating declarative parts where useful, with shared product coordination at the root. Base UI continues to own tab selection mechanics, roving focus, keyboard navigation, and menu dismissal. Use its supported composition APIs; do not nest a close button inside a native tab button. WorkbenchTabs.List uses a shared CSS grid to place close buttons visually alongside triggers while keeping those buttons outside the semantic tablist. Keep inspector Spans, Timing, and Summary tabs separate from the workbench tab strip, with distinct accessible labels.
 
 ### Accessibility and responsive behavior
 
 Use an agent-specific accessible name for the workbench tab list. Preserve tab-to-panel relationships, keyboard selection, and visible focus. Close controls need specific names such as “Close Traces 2”; the pinned tab has no close control. New tabs receive focus, and close operations follow the focus rules above.
 
-The tab strip scrolls horizontally when it runs out of room. Keep the new-tab action reachable and reveal the focused or active tab. At narrow widths, reuse the existing responsive sidebar arrangement; the selected agent and current tab must remain identifiable. An inspector stacks within its tab when the available width is too small.
+Tabs share equal width between the horizontal-navigation minimum/maximum decisions (128–192px-equivalent). They compress as more tabs are added, truncate long labels and scroll once the minimum is reached. The group aligns to the right when it has spare space. One Base UI indicator draws the connected selected-tab shape and slides laterally between targets; selection/content update immediately and reduced-motion preferences disable the transition. A rounded selected tab joins the surface below; its title and data label are inside its panel. Workspace and agent context stay above the tab strip. Keep the new-tab action reachable and reveal the focused or active tab. At narrow widths, reuse the existing responsive sidebar arrangement; the selected agent and current tab must remain identifiable. An inspector stacks within its tab when the available width is too small.
 
 ### Design system decisions
 
 Reuse the current options and decisions. Page and table surfaces use `surface.page`; control bands use `surface.secondary`; decorative separators use `border.default`. Interactive boundaries, focus, selection, text, gaps, insets, control heights and stroke widths use their existing purpose-specific decisions.
 
 Do not introduce a palette change or a component-token layer for this feature. Add a semantic decision in JSON only when a new visual purpose cannot be expressed by the existing decisions, then regenerate CSS and the manifest. Keep styles in the shared component layer or scoped page layout as appropriate. The search field retains its neutral inset focus treatment; new tab controls retain the shared keyboard focus treatment.
+
+The implemented foundations now include navigation width bounds and shared motion decisions: small entry/exit (200/150ms), deliberate movement (200ms), large-area entry/exit (350/300ms), and large movement (350ms). CSS and Web Animations resolve the same JSON decisions. Native sticky positioning keeps the selected tab visible during overflow; decorative outlines translate without scaling. Keyboard navigation and frequent data interactions stay immediate, and reduced motion removes spatial decoration. See the [motion contract](../../frontend/tokens/README.md#motion-decisions).
+
+Lucide supplies the trace/chat, search/refresh, and sun/moon icons through semantic aliases in `frontend/src/components/icons.js`. The sidebar theme selector is a controlled Base UI RadioGroup; the application applies the HTML theme for page and portal inheritance. The current implementation and supported overrides are documented in [frontend/README.md](../../frontend/README.md).
 
 ## Backend design
 
@@ -146,22 +152,22 @@ Before shipping message-level execution links, verify Eve's available correlatio
 | Phase                   | Frontend deliverable                                                                       | Backend deliverable                                                                | Completion condition                                                                                  |
 | ----------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | 1 Stack alignment       | Connect inventory, search, details and reload observations; loading, errors and pagination | Same-origin browser hosting and credential flow; search direction; packaged assets | One local launch loads actual traces with authenticated browser access                                |
-| 2 Agent spaces and tabs | Independent workspaces; pinned explorer; open/close explorers and fixture playgrounds      | Reuse the aligned stack                                                            | State isolation, closure and focus behavior work with real trace data and labeled playground fixtures |
+| 2 Agent spaces and tabs | Independent workspaces; pinned explorer; open/close explorers and preview playgrounds      | Reuse the aligned stack                                                            | State isolation, closure and focus behavior work with real trace data and labeled playground previews |
 | 3 Live playgrounds      | Session binding on first send; event-backed conversation; session-trace navigation         | Reuse current session APIs; verify event normalization and correlation             | Switching or closing views does not misroute messages or claim cancellation                           |
 
-Keep stack alignment independently reviewable before adding workbench tabs. Playground fixtures remain clearly labeled until live integration is implemented. Update the frontend README when ownership and component contracts change; document API additions in OpenAPI alongside their implementation.
+Stack alignment shipped separately; the tab implementation reuses it. Playground previews remain clearly labeled until live integration is implemented. Update the frontend README when ownership and component contracts change; document API additions in OpenAPI alongside their implementation.
 
 ## Acceptance and verification
 
-| Area             | Required checks                                                                                                                                                |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Agent spaces     | Initial pinned tab; no-agent state; restore separate active tabs and investigations when switching agents                                                      |
-| Tab lifecycle    | Both tab types; stable unique IDs and labels; cannot close pinned tab; active/inactive close selection and focus                                               |
-| Trace isolation  | Different queries, widths, scroll and inspectors stay independent; identical trace IDs under different agents remain distinct                                  |
-| Async behavior   | Out-of-order responses, changed queries, closed tabs, errors, incomplete coverage, pagination invalidation, and reactivation refresh                           |
-| Playground       | First send creates one session; later sends reuse it; failed creation retains draft; background events continue; close does not cancel execution               |
-| Trace navigation | Session filter opens or reuses the correct agent's explorer; delayed or absent traces remain honest; explicit multi-trace mappings are supported when verified |
-| Accessibility    | Tab/panel relationships, names, keyboard traversal, close focus, menu dismissal, nested inspector tabs and narrow-width overflow                               |
-| Backend          | Agent scoping, global sort directions, cursor identity, authenticated same-origin browser writes, rejected foreign origins, SSE replay and passive inspection  |
+| Area                       | Required checks                                                                                                                                                   |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Agent spaces               | Initial pinned tab; no-agent state; restore separate active tabs and investigations when switching agents                                                         |
+| Tab lifecycle              | Both tab types; stable unique IDs and labels; cannot close pinned tab; active/inactive close selection and focus                                                  |
+| Trace isolation            | Different queries, widths, scroll and inspectors stay independent; identical trace IDs under different agents remain distinct                                     |
+| Async behavior             | Out-of-order responses, changed queries, closed tabs, errors, incomplete coverage, pagination invalidation, and reactivation continuity without automatic refresh |
+| Playground (planned)       | First send creates one session; later sends reuse it; failed creation retains draft; background events continue; close does not cancel execution                  |
+| Trace navigation (planned) | Session filter opens or reuses the correct agent's explorer; delayed or absent traces remain honest; explicit multi-trace mappings are supported when verified    |
+| Accessibility              | Tab/panel relationships, names, keyboard traversal, close focus, menu dismissal, nested inspector tabs and narrow-width overflow                                  |
+| Backend                    | Agent scoping, global sort directions, cursor identity, authenticated same-origin browser writes, rejected foreign origins, SSE replay and passive inspection     |
 
 Add behavior tests and interactive colocated stories for each new public component, then cover the composed page in both themes and narrow layouts. Run frontend tests, Storybook build and browser checks for implementation changes. For live integration, also run backend contract tests, real-Eve integration and installed-package verification. Manual screen-reader review remains part of accessibility validation.

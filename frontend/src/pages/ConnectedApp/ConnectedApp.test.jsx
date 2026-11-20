@@ -4,6 +4,50 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ConnectedApp } from "./ConnectedApp";
 
+test("sidebar theme selection replaces the header action and updates the document without resetting tabs", async () => {
+  const user = userEvent.setup();
+  const previous = document.documentElement.dataset.evenTheme;
+  const client = {
+    inventory: async () => ({ agents: [{ id: "support" }] }),
+    search: async () => ({
+      results: [],
+      total: 0,
+      nextCursor: null,
+      coverage: { complete: true },
+    }),
+  };
+  try {
+    render(<ConnectedApp clientFactory={() => client} />);
+    await screen.findByRole("button", { name: "support", exact: true });
+    await user.click(
+      screen.getByRole("button", { name: "New tab", exact: true }),
+    );
+    await user.click(
+      await screen.findByRole("menuitem", { name: "New chat playground" }),
+    );
+    await user.click(
+      screen.getByRole("radio", { name: "Light theme", exact: true }),
+    );
+    await waitFor(() =>
+      expect(document.documentElement.dataset.evenTheme).toBe("light"),
+    );
+    expect(
+      screen.getByRole("tab", { name: "Playground 1", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(screen.queryByRole("button", { name: /Use .* theme/ })).toBeNull();
+    await user.click(
+      screen.getByRole("radio", { name: "Dark theme", exact: true }),
+    );
+    await waitFor(() =>
+      expect(document.documentElement.dataset.evenTheme).toBe("dark"),
+    );
+  } finally {
+    if (previous === undefined)
+      delete document.documentElement.dataset.evenTheme;
+    else document.documentElement.dataset.evenTheme = previous;
+  }
+});
+
 test("loads inventory automatically without a token-entry screen", async () => {
   const client = {
     inventory: vi.fn(async () => ({ agents: [{ id: "real-agent" }] })),

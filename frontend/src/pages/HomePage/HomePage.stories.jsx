@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useGlobals } from "storybook/preview-api";
 import { HomePage } from "./HomePage";
 import { Button } from "../../components";
 import { createSampleTrace, previewAgents, previewTraces } from "./previewData";
@@ -7,6 +8,20 @@ export default {
   title: "Pages/HomePage",
   component: HomePage,
   parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story, context) => {
+      const [globals, updateGlobals] = useGlobals();
+      return (
+        <Story
+          args={{
+            ...context.args,
+            theme: globals.theme,
+            onThemeChange: (theme) => updateGlobals({ theme }),
+          }}
+        />
+      );
+    },
+  ],
 };
 const data = {
   workspaceName: "Staging workspace",
@@ -16,12 +31,13 @@ const data = {
 };
 
 export const Staging = {
-  render: function Example() {
+  render: function Example(args) {
     const [traces, setTraces] = useState(previewTraces);
     const sequence = useRef(previewTraces.length);
     return (
       <HomePage
         {...data}
+        {...args}
         traces={traces}
         actions={
           <Button
@@ -38,16 +54,19 @@ export const Staging = {
     );
   },
 };
-export const Empty = { render: () => <HomePage {...data} traces={[]} /> };
+export const Empty = {
+  render: (args) => <HomePage {...data} {...args} traces={[]} />,
+};
 export const Loading = {
-  render: () => <HomePage {...data} traces={[]} loading />,
+  render: (args) => <HomePage {...data} {...args} traces={[]} loading />,
 };
 export const Error = {
-  render: function Example() {
+  render: function Example(args) {
     const [failed, setFailed] = useState(true);
     return (
       <HomePage
         {...data}
+        {...args}
         traces={failed ? [] : previewTraces}
         error={failed ? "Could not read recorded traces." : undefined}
         onRefresh={() => setFailed(false)}
@@ -57,10 +76,43 @@ export const Error = {
 };
 
 export const SearchPrototype = {
-  render: () => (
-    <HomePage {...data} initialQuery="tool:read_logs tool.status:error" />
+  render: (args) => (
+    <HomePage
+      {...data}
+      {...args}
+      initialQuery="tool:read_logs tool.status:error"
+    />
   ),
 };
 export const OutputMatch = {
-  render: () => <HomePage {...data} initialQuery={'output:"ECONNRESET"'} />,
+  render: (args) => (
+    <HomePage {...data} {...args} initialQuery={'output:"ECONNRESET"'} />
+  ),
+};
+
+export const AgentSpaces = {
+  render: (args) => (
+    <HomePage
+      {...data}
+      {...args}
+      initialAgentId="support"
+      allowAllAgents={false}
+    />
+  ),
+};
+
+export const ManyAgents = {
+  render: (args) => (
+    <HomePage
+      {...data}
+      {...args}
+      agents={Array.from({ length: 30 }, (_, index) => ({
+        id: `fixture-agent-${index + 1}`,
+        name: `Fixture agent ${index + 1}`,
+      }))}
+      traces={[]}
+      initialAgentId="fixture-agent-1"
+      allowAllAgents={false}
+    />
+  ),
 };

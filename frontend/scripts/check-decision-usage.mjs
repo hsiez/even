@@ -198,6 +198,17 @@ export async function checkDecisionUsage(page, base, theme) {
       await page.getByRole("button", { name: "Refresh traces" }).hover();
     const popup = page.locator(selector);
     await popup.waitFor();
+    await popup.evaluate((node) =>
+      node.style.setProperty("--even-size-border-control", "2px"),
+    );
+    assert.equal(
+      await style(popup, "borderTopWidth"),
+      "2px",
+      "Floating surface borders follow the shared stroke decision",
+    );
+    await popup.evaluate((node) =>
+      node.style.removeProperty("--even-size-border-control"),
+    );
     const shadow = await style(popup, "boxShadow");
     const expected = await popup.evaluate((node) => {
       const probe = document.createElement("span");

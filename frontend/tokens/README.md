@@ -24,6 +24,7 @@ Style Dictionary loads and merges JSON, resolves aliases (failing on missing/cir
 - `fonts.json`: the self-hosted Geist Mono variable font stack (`options.font.mono`) and system sans-serif stack (`options.font.sans`). Its Fontsource package supplies local font assets; no runtime font CDN is used.
 - `overlays.json`: Even’s supplementary translucent black scrim option (not part of the Geist grid).
 - `shadows.json`: zero-chroma OKLCH black cast-shadow ink at 16% alpha, plus a soft shadow geometry using dimension options. The same black ink works in both themes; it is separate from theme-dependent gray-alpha overlays and the stronger modal scrim.
+- `motion.json`: DTCG durations (0, 75, 100, 120, 150, 200, 250, 300, 350, 500ms) and cubic Bézier options (`ease`, `out-expo`, `out-quad`, `in-out-cubic`, `linear`). These are ingredients, not permission to animate every state change. The 500ms option supplies repeat-action recognition; visual transitions this long still require a deliberately designed large surface.
 - `dimensions.json`: shared dimension scale for spacing and sizing: `0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512, 640, 768` px-equivalents at a 16px root.
 
 The same file defines fixed-pixel `options.stroke.thin` (1px) and `options.stroke.strong` (2px), separate from the rem layout scale. These resolve through `size.border.control`, `size.focus.inset`, and `size.focus.outline`. The search field combines its persistent border with an inset shadow for focus; forced-colors mode uses the outline width and its negative offset. These decisions are shown in Storybook’s Sizing story, and stroke options in Options.
@@ -59,7 +60,11 @@ References:
 - `shadows.json`: `shadow.floating` aliases the soft shadow option for menus, selects, popovers, tooltips and dialog panels. The decision includes offset, blur, spread and ink. Use visual purpose, rather than z-index, to decide where it applies.
 - `spacing.json`: relationships (`gap.tight`, `gap.related`, `gap.group`, `gap.section`) and insets (`tight`, `compact`, `default`, `spacious`). Gaps separate elements; insets provide internal padding. The small inset and tight gap both start at 4px-equivalent but can change independently.
 - `typography.json`: `decision.font.data` selects the monospace stack for dense technical and tabular data. TraceTable, payloads and code consume the generated `--even-font-data`. `decision.font.ui` selects the system sans-serif stack for UI text, including Agent and Operation columns and their headers. Other typography properties remain provisional.
-- `sizing.json`: icon dimensions, control minimum heights, preferred panel/navigation/field widths, control/panel corner radii, and shared border/focus widths. Flexible fields use `size.field.preferred`, independent of navigation sizing.
+- `sizing.json`: icon dimensions, control minimum heights, preferred panel/navigation/field widths, control/panel corner radii, and shared border/focus widths. Flexible fields use `size.field.preferred`, independent of navigation sizing. Shared horizontal navigation items use `size.navigation-item.minimum` (128px-equivalent) and `.maximum` (192px-equivalent). Equal-width items compress between those bounds; their strip scrolls when the minimum would otherwise be exceeded. These alias existing dimension options and scale with root text sizing.
+
+- `interaction.json`: `interaction.delay.removal` is a 75ms visual gap after removal and before reflow. It delays decoration, not data or selection. It is skipped for keyboard and reduced-motion actions. `interaction.delay.repeat` is a separate 500ms repeat-action interval so fast-close behavior does not depend on the visual animation length. `interaction.delay.scroll-idle` restores pointer hover 120ms after the last scroll movement; boundary wheel tails do not extend it and keyboard focus remains visible. All three delays resolve through `readInteractionDelay`, including caller overrides.
+
+- `motion.json`: purpose-based duration/easing decisions for entry, exit, movement, feedback, press, and reduced-motion fades, plus an instant duration. See the motion contract below.
 
 ```json
 {
@@ -171,3 +176,42 @@ Review **Primitives / Popover / Initially Open**, **Primitives / Dialog / Initia
 | --------------------------------- | ----------------------------------------------------------------------------------- |
 | No cast-shadow color option       | `options.shadow.ink`: `oklch(0 0 0 / 0.16)` in both themes                          |
 | Floating panels had no box shadow | Shared `shadow.floating`: 0/4/16/0px-equivalent geometry with translucent black ink |
+
+## Motion decisions
+
+The installed [animations.dev](https://animations.dev/) `animate`, `css-animations`, and `animation-accessibility` skills inform these choices. The exact scale and semantic mappings are Even decisions, not a prescribed course token system. Review **Foundations / Motion / Options**, **Decisions**, **Reduced Motion**, **Large Areas**, and **Both Themes**.
+
+| Purpose        | Duration decision                     | Easing decision                           | Use                                                                               |
+| -------------- | ------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------- |
+| Immediate      | `motion.duration.instant` → 0ms       | None                                      | Keyboard selection, frequent highlight tracking, native scroll position; no tween |
+| Entry          | `motion.duration.enter` → 200ms       | `motion.easing.enter` → out-expo          | Small entrances from their trigger; responsive start, gentle settle               |
+| Exit           | `motion.duration.exit` → 150ms        | `motion.easing.exit` → out-expo           | Same spatial/curve family as entry, shorter dismissal                             |
+| Movement       | `motion.duration.move` → 200ms        | `motion.easing.move` → in-out-cubic       | Deliberate relocation already on screen, such as pointer selection of a tab       |
+| Feedback       | `motion.duration.feedback` → 150ms    | `motion.easing.feedback` → ease           | Optional small color/opacity changes; not a trailing hover highlight              |
+| Press          | `motion.duration.press` → 150ms       | `motion.easing.press` → out-quad          | Optional subtle press acknowledgement; no bounce                                  |
+| Reduced        | `motion.duration.reduced` → 100ms     | `motion.easing.reduced` → ease            | Optional meaningful opacity change without travel; remove pure decoration         |
+| Large entry    | `motion.duration.enter-large` → 350ms | `motion.easing.enter-large` → out-expo    | Broad drawers, dialogs or inspector surfaces entering the scene                   |
+| Large exit     | `motion.duration.exit-large` → 300ms  | `motion.easing.exit-large` → out-expo     | Large surfaces dismiss more quickly than entry, while remaining easy to follow    |
+| Large movement | `motion.duration.move-large` → 350ms  | `motion.easing.move-large` → in-out-cubic | Deliberate repositioning of a large on-screen surface                             |
+
+Removal uses `interaction.delay.removal` (75ms) followed by `motion.duration.reflow` (150ms) with `motion.easing.reflow` (in-out-cubic), for 225ms total. This collection-reflow purpose is independent of ordinary `move` and overlay `exit` timings. Repeated closes within the separate `interaction.delay.repeat` interval (500ms) use `motion.duration.reflow-rapid` (100ms) and `motion.easing.reflow-rapid` (out-quad), without a gap hold. Each slide continues from the current painted pose rather than blinking between final positions; only the latest movement remains active. After a pause, an isolated close retains the full gap and reflow.
+
+Choose a purpose before choosing values. Pair duration and easing; do not apply a global transition or `transition: all`. Animate explicit properties, normally transform and opacity. Preserve trigger origin using Base UI’s `--transform-origin`; do not scale tab outlines or text to simulate movement. Frequent keyboard navigation stays immediate. Existing hover states remain immediate; defining feedback/press decisions does not add new motion to every button.
+
+```css
+.example {
+  transition: transform var(--even-motion-duration-move)
+    var(--even-motion-easing-move);
+}
+@media (prefers-reduced-motion: reduce) {
+  .example {
+    transition: none;
+  }
+}
+```
+
+Choose the large-area decisions when the amount of screen occupied or the travel distance makes 150–200ms feel abrupt. This is a visual responsibility, not a component-name rule or a fixed pixel breakpoint: a small dialog can use ordinary entry/exit, while a broad inspector may need the large pair. Start at 350ms entry/movement and 300ms exit; tune the shared decisions after reviewing the actual surface. These longer spatial transitions are still removed under reduced motion, and keyboard selection/native scrolling stay immediate. Existing small-control timings are unchanged. No visual motion decision selects the 500ms option; the repeat-action interaction interval uses it independently.
+
+CSS consumes decision variables. WAAPI uses `readMotionTiming(element, "move")` (or `"enter-large"` / `"exit-large"` / `"move-large"`) from `src/tokens/motion.js`, which reads the same computed decision variables and converts generated seconds to milliseconds, preserving caller overrides. Its unthemed fallback comes from the generated manifest, not duplicated constants. Style Dictionary’s built-in `time/seconds` and `cubicBezier/css` transforms serialize DTCG values; no extra motion compiler or dependency is introduced.
+
+Reduced motion is a behavior contract, not a global zero-duration switch. Skip spatial/decorative motion; retain a brief fade only when useful. Tab selection and creation remain immediate under reduced motion. Menus and popovers, including the new-tab menu, remove decorative scale/fade entirely. Modal dialogs keep a `reduced` opacity-only fade; their panel and full-viewport scrim otherwise share `enter-large` / `exit-large`. Keyboard-triggered transitions use `instant`, independently of the OS preference. The shared input observer follows events through portals without replacing Base UI focus/state/presence management. The explicit Motion preview demonstrates optional fade-only replacements and honors both its reduced preview and the OS preference. Token values do not implement interruption, focus or reduced-motion behavior by themselves; those stay with the component. Interaction delays are separate from visual motion durations. The scroll-hover cooldown consumes `interaction.delay.scroll-idle` through `readInteractionDelay`; tooltip dwell and debounce remain independent interaction policies.

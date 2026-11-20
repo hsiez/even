@@ -43,9 +43,21 @@ The first `GET /agents/:agentId/reloads` starts passive observation of that appl
 
 Reload markers mean Even observed a new runtime snapshot, not that a file was saved or a particular trace used a particular version. Several rebuilds between samples can appear as one occurrence. The history starts when requested, lives in memory for this Even launch, and is separate from Eve's durable session event stream. Revision tokens are only compared internally and are not returned or retained as version history. A UI can poll this endpoint alongside trace lists and merge markers by `observedAt`; no code snapshots, diffs, or trace-to-version associations are created.
 
+## Agent spaces and workbench tabs
+
+The connected app opens the first agent from the selected Eve project. Choose another agent in the left sidebar to restore its independent workbench. Each agent starts with a pinned **Traces** tab. Use **+** to open a **New trace explorer** or **New chat playground**; new tabs become active and receive focus.
+
+Trace tabs retain their own query and recent searches, column widths, scroll position, loaded pages, selected trace/span, expanded spans, and inspector view. Switching agents or tabs restores that state without automatically refreshing. Use the `refresh-cw` icon button to request fresh results. Search and refresh reuse the existing trace APIs; opening or inspecting a tab does not execute an agent.
+
+The `list-tree` icon identifies trace tabs; `message-square` identifies chat playgrounds. **Playground tabs are layout previews with a disabled composer.** They do not create a session, send a message, or subscribe to events. Live conversation integration is future work.
+
+Use arrow keys, Home and End to navigate tabs. Delete closes a focused unpinned tab; its close button is also available by keyboard. Closing the active tab selects its right neighbor, otherwise its left; the pinned Traces tab cannot close. Closing a view discards its local state and does not delete trace files or cancel an Eve execution. Tabs and searches are in memory for this app instance and reset on a browser reload. URL sharing, saved views and tab reordering are not implemented.
+
+The sun/moon selector at the bottom-left of the sidebar changes the page and portalled controls together. At narrow widths it appears below the agent navigation. The tab strip compresses within its width bounds, then scrolls; its active tab stays visible. Keyboard-driven changes are immediate, and reduced-motion preferences are honored. [Component contracts and Storybook previews](frontend/README.md#workbench-tabs) describe the detailed behavior.
+
 ## Using the search bar
 
-The live browser opens from the `browserUrl` printed by Even. A separate simulated preview runs at http://127.0.0.1:5173/staging.html after `npm run dev:ui`. Click **Search traces...** for examples and field suggestions. Type to preview matching rows, use Up/Down and Enter to choose a suggestion, and Escape to dismiss the menu. Enter also remembers a valid query in the page’s recent searches. Recent searches last for that page instance. Remove a filter chip to remove its term, use the clear action to clear the query, or **Reset view** to clear the query. In the simulated preview, Reset view also clears the agent filter.
+The live browser opens from the `browserUrl` printed by Even. A separate simulated preview runs at http://127.0.0.1:5173/staging.html after `npm run dev:ui`. Click **Search traces...** for examples and field suggestions. Type to preview matching rows, use Up/Down and Enter to choose a suggestion, and Escape to dismiss the menu. Enter also remembers a valid query in the active trace tab’s recent searches. Each tab keeps its own recent queries until that tab closes or the app reloads. Remove a filter chip to remove its term, use the clear action to clear the query, or **Reset view** to clear that tab’s query. Reset view keeps the sidebar’s selected agent.
 
 Use ordinary text when you do not need a field filter. Add `field:value` tags to narrow the question. Tags and plain text can be combined in one query:
 
@@ -132,7 +144,7 @@ Select an Eve application, workspace root, or workspace member. A standalone app
 
 For a workspace, supply `{"agentId":"support"}` when creating a session. Omitting agentId selects the only agent when the catalog contains exactly one. Session listings include agentId. Trace routes are nested under `/agents/:agentId/traces`. Session lists support `?agentId=support` filtering. Each inventory agent includes `runtime` with `state` (`disconnected`, `starting`, `ready`, or `unavailable`), `ownership` (`started`, `attached`, or null), and the Eve server URL when available. Runtime readiness is checked when inventory is requested, with a one-second timeout; it is a point-in-time observation. Inspecting inventory does not start a server. Each agent starts or attaches independently on its first session request. The adapter is version-gated because the discovery and hosting APIs are internal. Other Eve versions fail with an explicit compatibility error.
 
-The backend serves a real-data browser trace explorer; a separate staging preview is available for frontend review. Live playground wiring, closable workbench tabs, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
+The backend serves a real-data browser trace explorer; a separate staging preview is available for frontend review. Live playground wiring, comparison view, Even-specific filesystem watcher features, and TUI session import are deferred. Eve's normal development watcher is active.
 
 ## Verification
 
@@ -152,10 +164,21 @@ TODO: Bound retained trace memory. Eve's current store retains parsed spans and 
 
 ## API contract
 
-[openapi.yaml](./openapi.yaml) is the HTTP contract for the backend and future UI. It documents requests, responses, bearer authentication, errors, and SSE framing/replay. Use the actual localhost port printed by the CLI. The file is included in the npm package; no documentation server is required.
+[openapi.yaml](./openapi.yaml) is the HTTP contract for the backend and browser clients. It documents requests, responses, bearer authentication, errors, and SSE framing/replay. Use the actual localhost port printed by the CLI. The file is included in the npm package; no documentation server is required.
 
 Update the contract in the same change as API behavior. `npm run test:contract` validates the specification, checks route coverage, and checks representative HTTP inspection/error responses. The real-Eve integration test additionally validates session creation, delivery receipts, streamed event payloads, and trace responses against the contract. Run that suite with `EVEN_TEST_NODE_MODULES` as described above. Eve-owned discovery, event, and span fields remain extensible; these checks do not claim to validate every internal Eve field or every possible response.
 
 ## Frontend component development
 
 The token-styled React component library and Storybook live in [frontend](./frontend/README.md). Install its separate development dependencies with `npm --prefix frontend ci`, then run `npm run storybook`. Each component has colocated implementation, stories, and behavior tests. `npm run test:ui` runs component tests; `npm run test:all` runs backend and UI suites. The backend serves the built app from `frontend/dist`; `npm pack` rebuilds and includes those assets without adding frontend tooling to runtime dependencies. `npm run dev:ui` provides the connection page at `/` and the explicitly simulated preview at `/staging.html`. Use Even’s own browser link for real data. `EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules npm run test:app` builds and verifies the complete browser-to-Eve inspection flow in Chromium, including authentication, pagination and trace detail.
+
+### Frontend foundations
+
+Start with [frontend/AGENTS.md](frontend/AGENTS.md) for the development workflow, [frontend/README.md](frontend/README.md) for component contracts and ownership, and [the token guide](frontend/tokens/README.md) for options, decisions, and generation.
+
+- **Tokens:** JSON in `frontend/tokens/options` and `frontend/tokens/decisions` is authoritative. Style Dictionary generates the committed CSS and manifest. Component styles consume semantic decisions; runtime measurements and derived tab geometry are layout state, not a third authored token layer.
+- **Motion:** duration/easing decisions cover small transitions, 300–350ms large-area transitions, immediate interaction, and reduced-motion fades. CSS and Web Animations share the same generated values through `readMotionTiming`. The [motion contract](frontend/tokens/README.md#motion-decisions) explains which surfaces animate, input modality, interruption, and reduced motion.
+- **Icons and theme:** Lucide icons are imported through semantic aliases in `frontend/src/components/icons.js`. Shared icon sizes and spacing use existing decisions. The Base UI-backed `ThemeToggle` supplies sun/moon radio options; the app owns the document theme. Icon-only controls retain accessible names.
+- **Composition:** Base UI owns primitive selection, keyboard navigation, focus, dismissal, and overlay presence. Product composites own tab coordination; page controllers own data and per-view state. Reuse existing controls and keep public component implementation/story/test files together.
+
+From `frontend`, run `npm run tokens:generate` after JSON edits, then `npm test`, `npm run build-storybook`, `npm run test:browser`, and `npm run format:check`. Commit generated token outputs with their JSON sources. **Foundations / Motion**, **Workbench / WorkbenchTabs**, **Primitives / ThemeToggle**, and **Pages / HomePage** provide the main review surfaces. Storybook displays generated tokens; it does not compile them.

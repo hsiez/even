@@ -82,19 +82,8 @@ export function ConnectedApp({
       allowAllAgents={false}
       dataSource={client}
       dataLabel={dataLabel}
-      actions={
-        <>
-          <Button
-            variant="ghost"
-            size="compact"
-            onClick={() =>
-              setTheme((value) => (value === "dark" ? "light" : "dark"))
-            }
-          >
-            Use {theme === "dark" ? "light" : "dark"} theme
-          </Button>
-        </>
-      }
+      theme={theme}
+      onThemeChange={setTheme}
     />
   );
 }

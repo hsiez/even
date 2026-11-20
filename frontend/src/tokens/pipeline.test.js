@@ -18,6 +18,45 @@ async function inMemory(tokens) {
     tokens,
   }).getPlatformTokens("css");
 }
+test("motion aliases compile DTCG durations and curves and propagate option edits", async () => {
+  const tokens = {
+    options: {
+      duration: {
+        short: { $type: "duration", $value: { value: 200, unit: "ms" } },
+      },
+      easing: { settle: { $type: "cubicBezier", $value: [0.19, 1, 0.22, 1] } },
+    },
+    decision: {
+      motion: {
+        duration: {
+          enter: { $type: "duration", $value: "{options.duration.short}" },
+        },
+        easing: {
+          enter: { $type: "cubicBezier", $value: "{options.easing.settle}" },
+        },
+      },
+    },
+  };
+  const values = async () =>
+    Object.fromEntries(
+      (await inMemory(tokens)).allTokens.map((token) => [
+        token.path.join("."),
+        token.$value,
+      ]),
+    );
+  const first = await values();
+  expect(first["decision.motion.duration.enter"]).toBe("0.2s");
+  expect(first["decision.motion.easing.enter"]).toBe(
+    "cubic-bezier(0.19, 1, 0.22, 1)",
+  );
+  tokens.options.duration.short.$value = { value: 0.25, unit: "s" };
+  tokens.options.easing.settle.$value = [0, 0, 1, 1];
+  const edited = await values();
+  expect(edited["decision.motion.duration.enter"]).toBe("0.25s");
+  expect(edited["decision.motion.easing.enter"]).toBe(
+    "cubic-bezier(0, 0, 1, 1)",
+  );
+});
 test("dimension options are rem values and decisions reference rem layout or fixed-pixel stroke options", async () => {
   expect(dimensionOptions.map((token) => Number(token.key))).toEqual([
     0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512,

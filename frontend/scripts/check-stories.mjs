@@ -7,6 +7,9 @@ import assert from "node:assert/strict";
 import Color from "colorjs.io";
 import { checkDecisionUsage } from "./check-decision-usage.mjs";
 import { checkHomePage } from "./check-home-page.mjs";
+import { checkWorkbenchTabs } from "./check-workbench-tabs.mjs";
+import { checkMotionTokens } from "./check-motion-tokens.mjs";
+import { checkOverlayMotion } from "./check-overlay-motion.mjs";
 import {
   contrastPairs,
   scaleNames,
@@ -18,6 +21,23 @@ import {
   semanticVariable,
   themes,
 } from "../src/tokens/colors.js";
+
+// Contrast is a settled-surface check. Motion itself is verified separately
+// through paused intermediate frames; infinite indicators never block auditing.
+async function waitForFiniteMotion(page) {
+  await page.evaluate(async () => {
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    await Promise.all(
+      document
+        .getAnimations()
+        .filter(
+          (animation) => animation.effect.getTiming().iterations !== Infinity,
+        )
+        .map((animation) => animation.finished.catch(() => {})),
+    );
+  });
+}
 
 const directory = fileURLToPath(
   new URL("../storybook-static/", import.meta.url),
@@ -83,6 +103,7 @@ try {
         story.id,
       );
       await page.evaluate(() => document.fonts.ready);
+      await waitForFiniteMotion(page);
       await page.addScriptTag({ content: axe });
       const violations = await page.evaluate(
         async (auditColor) =>
@@ -105,6 +126,9 @@ try {
     }
   }
   for (const theme of themes) await checkHomePage(page, base, theme, axe);
+  for (const theme of themes) await checkWorkbenchTabs(page, base, theme, axe);
+  for (const theme of themes) await checkMotionTokens(page, base, theme);
+  for (const theme of themes) await checkOverlayMotion(page, base, theme);
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchlayout--composed-explorer&viewMode=story`,
@@ -120,6 +144,7 @@ try {
     .getByRole("region", { name: "Span details" })
     .getByText("Permission denied", { exact: true })
     .waitFor();
+  await waitForFiniteMotion(page);
   await page.addScriptTag({ content: axe });
   const openInspectorViolations = await page.evaluate(async () =>
     (
@@ -349,6 +374,7 @@ try {
       true,
       "Child popover paints above the modal",
     );
+    await waitForFiniteMotion(page);
     await page.addScriptTag({ content: axe });
     const nestedViolations = await page.evaluate(async () =>
       (

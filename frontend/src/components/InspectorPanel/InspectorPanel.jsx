@@ -11,6 +11,7 @@ function Root({
   open = true,
   onClose,
   returnFocusRef,
+  autoFocus = true,
   label = "Execution inspector",
   children,
   ...props
@@ -20,7 +21,7 @@ function Root({
   useEffect(() => {
     if (!open) return;
     const previous = returnFocusRef?.current ?? document.activeElement;
-    ref.current?.focus();
+    if (autoFocus) ref.current?.focus();
     const panel = ref.current;
     return () => {
       if (
@@ -29,7 +30,7 @@ function Root({
       )
         previous?.focus?.();
     };
-  }, [open, returnFocusRef]);
+  }, [open, returnFocusRef, autoFocus]);
   if (!open) return null;
   return (
     <Context.Provider value={{ onClose, id }}>

@@ -30,3 +30,20 @@ test("opens nonmodally, closes and restores focus to its opener", async () => {
   expect(screen.queryByRole("complementary")).toBeNull();
   expect(opener).toHaveFocus();
 });
+
+test("restoring an inspector can leave keyboard focus on the workbench tab", async () => {
+  const user = userEvent.setup();
+  const example = (open) => (
+    <>
+      <button>Workbench tab</button>
+      <InspectorPanel open={open} autoFocus={false}>
+        Restored details
+      </InspectorPanel>
+    </>
+  );
+  const { rerender } = render(example(false));
+  await user.click(screen.getByRole("button", { name: "Workbench tab" }));
+  rerender(example(true));
+  expect(screen.getByRole("button", { name: "Workbench tab" })).toHaveFocus();
+  expect(screen.getByRole("complementary")).toBeVisible();
+});

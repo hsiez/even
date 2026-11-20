@@ -1,0 +1,97 @@
+{
+  "options": {
+    "duration": {
+      "$type": "duration",
+      "0": {
+        "$value": {
+          "value": 0,
+          "unit": "ms"
+        },
+        "$description": "Immediate state changes; no decorative interpolation."
+      },
+      "75": {
+        "$value": {
+          "value": 75,
+          "unit": "ms"
+        },
+        "$description": "Brief interaction beat before a visual change continues."
+      },
+      "100": {
+        "$value": {
+          "value": 100,
+          "unit": "ms"
+        },
+        "$description": "Brief feedback, reduced-motion fades, or quick settling after repeated collection updates."
+      },
+      "120": {
+        "$value": { "value": 120, "unit": "ms" },
+        "$description": "Short idle interval before pointer feedback resumes after scrolling."
+      },
+      "150": {
+        "$value": {
+          "value": 150,
+          "unit": "ms"
+        },
+        "$description": "Small feedback and quick exits."
+      },
+      "200": {
+        "$value": {
+          "value": 200,
+          "unit": "ms"
+        },
+        "$description": "Short entrances and movement within the interface."
+      },
+      "250": {
+        "$value": {
+          "value": 250,
+          "unit": "ms"
+        },
+        "$description": "Intermediate transitions when moderate travel warrants more time than a small control."
+      },
+      "300": {
+        "$value": {
+          "value": 300,
+          "unit": "ms"
+        },
+        "$description": "Dismissal of large-area surfaces, allowing the eye to follow their departure."
+      },
+      "350": {
+        "$value": {
+          "value": 350,
+          "unit": "ms"
+        },
+        "$description": "Large-area entrances and relocations; longer settling time avoids an abrupt spatial change."
+      },
+      "500": {
+        "$value": {
+          "value": 500,
+          "unit": "ms"
+        },
+        "$description": "Repeat-action recognition interval. Visual transitions this long are reserved for deliberately designed large surfaces."
+      }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "ease": {
+        "$value": [0.25, 0.1, 0.25, 1],
+        "$description": "CSS ease: small changes in color, background or opacity."
+      },
+      "out-expo": {
+        "$value": [0.19, 1, 0.22, 1],
+        "$description": "Strong ease-out: responsive entrances and exits with a gentle settle."
+      },
+      "out-quad": {
+        "$value": [0.25, 0.46, 0.45, 0.94],
+        "$description": "Ease-out for subtle press feedback."
+      },
+      "in-out-cubic": {
+        "$value": [0.645, 0.045, 0.355, 1],
+        "$description": "Acceleration and deceleration for movement already on screen."
+      },
+      "linear": {
+        "$value": [0, 0, 1, 1],
+        "$description": "Constant progress only, such as a time indicator; not ordinary UI entrances."
+      }
+    }
+  }
+}
