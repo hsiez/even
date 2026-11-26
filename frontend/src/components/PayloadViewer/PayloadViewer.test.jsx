@@ -16,3 +16,22 @@ test("distinguishes absent, empty and malformed JSON and renders HTML as text", 
   expect(screen.getByText("<script>alert(1)</script>")).toBeVisible();
   expect(document.querySelector("script")).toBeNull();
 });
+test("a custom toolbar replaces the default copy action without changing the record", () => {
+  const value = { preserved: [1, true, null] };
+  render(
+    <PayloadViewer
+      value={value}
+      label="Custom JSON"
+      highlightJson
+      showCopyButton={false}
+      toolbar={<span>JSON tools</span>}
+    />,
+  );
+  expect(screen.getByText("JSON tools")).toBeVisible();
+  expect(screen.queryByRole("button")).toBeNull();
+  expect(
+    JSON.parse(
+      screen.getByRole("region", { name: "Custom JSON content" }).textContent,
+    ),
+  ).toEqual(value);
+});

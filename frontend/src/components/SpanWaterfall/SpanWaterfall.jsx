@@ -3,6 +3,8 @@ import React from "react";
 import { createContext, useContext, useId, useState } from "react";
 import { useControllable } from "../state";
 import { Duration } from "../Duration/Duration";
+import { Button } from "../Button/Button";
+import { classes } from "../presentation";
 const Context = createContext(null);
 function useWaterfall() {
   const value = useContext(Context);
@@ -73,8 +75,21 @@ export function spanForest(spans) {
   }
   return roots;
 }
-function Tree({ label = "Execution spans" }) {
+function Tree({
+  label = "Execution spans",
+  className,
+  getLabel = (span) => span.name,
+  getDescription,
+  renderLabel,
+  renderToggle,
+  onActivateSpan,
+  ...props
+}) {
   const { spans, selected, select, expanded, expand, id } = useWaterfall();
+  function activate(spanId) {
+    select(spanId);
+    onActivateSpan?.(spanId);
+  }
   const [focusedSpanId, setFocusedSpanId] = useState();
   const roots = spanForest(spans);
   const visible = [];
@@ -117,6 +132,7 @@ function Tree({ label = "Execution spans" }) {
                 setFocusedSpanId(span.spanId);
             }}
             aria-labelledby={`${id}-${key}-label`}
+            aria-description={getDescription?.(span)}
             aria-selected={selected === span.spanId}
             aria-expanded={children.length ? isExpanded : undefined}
             aria-owns={
@@ -129,24 +145,37 @@ function Tree({ label = "Execution spans" }) {
               )
                 return;
               event.currentTarget.focus();
-              select(span.spanId);
+              activate(span.spanId);
             }}
           >
             {children.length > 0 && (
-              <button
+              <Button
+                variant="ghost"
+                size="compact"
                 type="button"
                 tabIndex={-1}
-                aria-label={`${isExpanded ? "Collapse" : "Expand"} ${span.name}`}
+                aria-label={`${isExpanded ? "Collapse" : "Expand"} ${getLabel(span)}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   event.currentTarget.closest('[role="treeitem"]').focus();
                   toggle(span.spanId, !isExpanded);
                 }}
               >
-                {isExpanded ? "−" : "+"}
-              </button>
+                {renderToggle
+                  ? renderToggle(span, { expanded: isExpanded })
+                  : isExpanded
+                    ? "−"
+                    : "+"}
+              </Button>
             )}
-            <span id={`${id}-${key}-label`}>{span.name}</span>
+            <span id={`${id}-${key}-label`}>
+              {renderLabel
+                ? renderLabel(span, {
+                    hasChildren: children.length > 0,
+                    expanded: isExpanded,
+                  })
+                : getLabel(span)}
+            </span>
           </div>
           {children.length > 0 && isExpanded && (
             <ul role="group" id={`${id}-${key}-group`}>
@@ -159,7 +188,8 @@ function Tree({ label = "Execution spans" }) {
   }
   return (
     <ul
-      className="even-span-tree"
+      {...props}
+      className={classes("even-span-tree", className)}
       role="tree"
       aria-label={label}
       onKeyDown={(event) => {
@@ -189,7 +219,7 @@ function Tree({ label = "Execution spans" }) {
               (item) => item.dataset.spanId === node.span.parentSpanId,
             );
         }
-        if (event.key === "Enter" || event.key === " ") select(spanId);
+        if (event.key === "Enter" || event.key === " ") activate(spanId);
         if (target) {
           target.focus();
         }

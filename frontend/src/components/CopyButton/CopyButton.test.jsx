@@ -34,3 +34,24 @@ test("does not report a stale clipboard result after the value changes", async (
   await act(async () => resolve());
   expect(screen.getByRole("status")).toBeEmptyDOMElement();
 });
+test("icon-only copy keeps its action name, announces success and exposes a retryable failure", async () => {
+  const user = userEvent.setup();
+  const write = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();
+  const { rerender } = render(
+    <CopyButton iconOnly value="original" label="Copy raw span JSON" />,
+  );
+  const control = screen.getByRole("button", { name: "Copy raw span JSON" });
+  expect(control.textContent).toBe("");
+  expect(control.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  await user.click(control);
+  expect(write).toHaveBeenCalledWith("original");
+  expect(screen.getByRole("status")).toHaveTextContent("Copied.");
+  rerender(<CopyButton iconOnly value="new" label="Copy raw span JSON" />);
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  write.mockRejectedValueOnce(new Error("denied"));
+  await user.click(control);
+  expect(screen.getByRole("status")).toHaveTextContent(
+    "Copy failed. Try again.",
+  );
+  expect(control).toBeEnabled();
+});

@@ -315,6 +315,7 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-radius-full: 9999px; /** Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size. */
   --even-stroke-thin: 1px;
   --even-stroke-strong: 2px;
   --even-font-mono:
@@ -379,6 +380,12 @@
   ); /** Navigational text links on page and secondary surfaces. */
   --even-text-primary: var(--even-palette-neutral-10);
   --even-text-secondary: var(--even-palette-neutral-9);
+  --even-label-background: var(
+    --even-palette-gray-alpha-2
+  ); /** Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite. */
+  --even-label-selected-background: var(
+    --even-palette-gray-alpha-3
+  ); /** Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground. */
   --even-border-default: var(
     --even-palette-neutral-3
   ); /** Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control. */
@@ -396,6 +403,9 @@
   --even-border-invalid: var(
     --even-palette-red-9
   ); /** Invalid input boundary, independent of error message text. */
+  --even-hierarchy-guide: var(
+    --even-palette-neutral-6
+  ); /** Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity. */
   --even-focus-ring: var(--even-palette-blue-6);
   --even-selection-background: var(--even-palette-blue-2);
   --even-selection-foreground: var(--even-palette-blue-10);
@@ -469,6 +479,21 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-syntax-key: var(
+    --even-palette-blue-9
+  ); /** JSON property names on page and secondary code surfaces. */
+  --even-syntax-string: var(
+    --even-palette-green-9
+  ); /** JSON string values; preserve the recorded text without interpreting it. */
+  --even-syntax-number: var(
+    --even-palette-purple-9
+  ); /** JSON numeric values. */
+  --even-syntax-literal: var(
+    --even-palette-amber-9
+  ); /** JSON true, false and null literals. */
+  --even-syntax-punctuation: var(
+    --even-palette-neutral-9
+  ); /** JSON structure and punctuation. */
   --even-interaction-delay-removal: var(
     --even-duration-75
   ); /** Brief visible gap after an item is removed, before surrounding items reflow. State changes immediately; skip the gap for keyboard and reduced-motion interactions. */
@@ -547,6 +572,12 @@
   --even-motion-easing-reflow-rapid: var(
     --even-easing-out-quad
   ); /** A restrained ease-out makes the short removal path readable while keeping repeated actions responsive. */
+  --even-size-label-category: var(
+    --even-dimension-64
+  ); /** Width reserved for short category labels in dense object rows so neighboring titles align. */
+  --even-size-object-row-minimum: var(
+    --even-dimension-256
+  ); /** Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -571,6 +602,9 @@
   --even-size-navigation-item-maximum: var(
     --even-dimension-192
   ); /** Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items. */
+  --even-size-radius-pill: var(
+    --even-radius-full
+  ); /** Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners. */
   --even-size-radius-control: var(
     --even-dimension-4
   ); /** Corner radius for controls and small surfaces. */
@@ -605,6 +639,9 @@
   --even-font-ui: var(
     --even-font-sans
   ); /** Font family for interface labels, names, and readable text. */
+  --even-label-foreground: var(
+    --even-text-secondary
+  ); /** Readable secondary text on the translucent label composite. Selected labels use selection.foreground. */
   --even-action-border: var(
     --even-fill-border-neutral
   ); /** Persistent boundary for filled primary actions, including hover. */
@@ -925,6 +962,7 @@
   --even-dimension-512: 32rem; /** 512px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-640: 40rem; /** 640px equivalent at a 16px root; do not fix the user's root font size. */
   --even-dimension-768: 48rem; /** 768px equivalent at a 16px root; do not fix the user's root font size. */
+  --even-radius-full: 9999px; /** Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size. */
   --even-stroke-thin: 1px;
   --even-stroke-strong: 2px;
   --even-font-mono:
@@ -989,6 +1027,12 @@
   ); /** Navigational text links on page and secondary surfaces. */
   --even-text-primary: var(--even-palette-neutral-10);
   --even-text-secondary: var(--even-palette-neutral-9);
+  --even-label-background: var(
+    --even-palette-gray-alpha-2
+  ); /** Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite. */
+  --even-label-selected-background: var(
+    --even-palette-gray-alpha-3
+  ); /** Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground. */
   --even-border-default: var(
     --even-palette-neutral-3
   ); /** Subtle decorative dividers for layout sections and table headers. Neutral 3 makes them lighter in light mode and darker in dark mode; meaningful control boundaries use border.control. */
@@ -1006,6 +1050,9 @@
   --even-border-invalid: var(
     --even-palette-red-9
   ); /** Invalid input boundary, independent of error message text. */
+  --even-hierarchy-guide: var(
+    --even-palette-neutral-6
+  ); /** Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity. */
   --even-focus-ring: var(--even-palette-blue-6);
   --even-selection-background: var(--even-palette-blue-2);
   --even-selection-foreground: var(--even-palette-blue-10);
@@ -1079,6 +1126,21 @@
   --even-fill-border-neutral: var(
     --even-palette-neutral-9
   ); /** Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills. */
+  --even-syntax-key: var(
+    --even-palette-blue-9
+  ); /** JSON property names on page and secondary code surfaces. */
+  --even-syntax-string: var(
+    --even-palette-green-9
+  ); /** JSON string values; preserve the recorded text without interpreting it. */
+  --even-syntax-number: var(
+    --even-palette-purple-9
+  ); /** JSON numeric values. */
+  --even-syntax-literal: var(
+    --even-palette-amber-9
+  ); /** JSON true, false and null literals. */
+  --even-syntax-punctuation: var(
+    --even-palette-neutral-9
+  ); /** JSON structure and punctuation. */
   --even-interaction-delay-removal: var(
     --even-duration-75
   ); /** Brief visible gap after an item is removed, before surrounding items reflow. State changes immediately; skip the gap for keyboard and reduced-motion interactions. */
@@ -1157,6 +1219,12 @@
   --even-motion-easing-reflow-rapid: var(
     --even-easing-out-quad
   ); /** A restrained ease-out makes the short removal path readable while keeping repeated actions responsive. */
+  --even-size-label-category: var(
+    --even-dimension-64
+  ); /** Width reserved for short category labels in dense object rows so neighboring titles align. */
+  --even-size-object-row-minimum: var(
+    --even-dimension-256
+  ); /** Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title. */
   --even-size-icon-small: var(--even-dimension-12); /** Icon dimensions. */
   --even-size-icon-default: var(--even-dimension-16); /** Icon dimensions. */
   --even-size-icon-large: var(--even-dimension-24); /** Icon dimensions. */
@@ -1181,6 +1249,9 @@
   --even-size-navigation-item-maximum: var(
     --even-dimension-192
   ); /** Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items. */
+  --even-size-radius-pill: var(
+    --even-radius-full
+  ); /** Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners. */
   --even-size-radius-control: var(
     --even-dimension-4
   ); /** Corner radius for controls and small surfaces. */
@@ -1215,6 +1286,9 @@
   --even-font-ui: var(
     --even-font-sans
   ); /** Font family for interface labels, names, and readable text. */
+  --even-label-foreground: var(
+    --even-text-secondary
+  ); /** Readable secondary text on the translucent label composite. Selected labels use selection.foreground. */
   --even-action-border: var(
     --even-fill-border-neutral
   ); /** Persistent boundary for filled primary actions, including hover. */

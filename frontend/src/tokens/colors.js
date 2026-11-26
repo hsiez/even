@@ -30,6 +30,46 @@ export const stepRoles = {
 };
 
 export const contrastPairs = [
+  ...[
+    "surface.page",
+    "surface.secondary",
+    "surface.control",
+    "surface.hover",
+  ].map((underlay) => ({
+    foreground: "label.foreground",
+    background: "label.background",
+    underlay,
+    minimum: 4.5,
+    purpose: "Passive label text on the composited overlay",
+  })),
+  {
+    foreground: "selection.foreground",
+    background: "label.selected-background",
+    underlay: "selection.background",
+    minimum: 4.5,
+    purpose: "Label text over the selected row's composited overlay",
+  },
+  ...[
+    "surface.page",
+    "surface.secondary",
+    "surface.control",
+    "surface.hover",
+    "surface.active",
+    "selection.background",
+  ].map((background) => ({
+    foreground: "hierarchy.guide",
+    background,
+    minimum: 3,
+    purpose: "Meaningful hierarchy connectors and nesting guides",
+  })),
+  ...["key", "string", "number", "literal", "punctuation"].flatMap((kind) =>
+    ["surface.page", "surface.secondary"].map((background) => ({
+      foreground: `syntax.${kind}`,
+      background,
+      minimum: 4.5,
+      purpose: "Readable JSON syntax text",
+    })),
+  ),
   ...["surface.page", "surface.secondary"].map((background) => ({
     foreground: "text.link",
     background,

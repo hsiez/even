@@ -2,7 +2,18 @@ import "../components.css";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "../Button/Button";
-export function CopyButton({ value, label = "Copy", ...props }) {
+import { IconButton } from "../IconButton/IconButton";
+import {
+  ClipboardIcon,
+  ClipboardSuccessIcon,
+  ClipboardErrorIcon,
+} from "../icons";
+export function CopyButton({
+  value,
+  label = "Copy",
+  iconOnly = false,
+  ...props
+}) {
   const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const busy = useRef(false);
@@ -33,18 +44,45 @@ export function CopyButton({ value, label = "Copy", ...props }) {
       }
     }
   }
+  const Control = iconOnly ? IconButton : Button;
+  const failed = status.startsWith("Copy failed");
+  const Icon = failed
+    ? ClipboardErrorIcon
+    : status
+      ? ClipboardSuccessIcon
+      : ClipboardIcon;
   return (
     <>
-      <Button
+      <Control
         variant="ghost"
         size="compact"
         {...props}
+        {...(iconOnly ? { label } : {})}
         pending={pending}
         onClick={copy}
       >
-        {label}
-      </Button>
-      <span role="status">{status}</span>
+        {iconOnly ? (
+          <Icon
+            className="even-copy-icon"
+            aria-hidden="true"
+            focusable="false"
+          />
+        ) : (
+          label
+        )}
+      </Control>
+      <span
+        role="status"
+        className={
+          iconOnly
+            ? failed
+              ? "even-copy-error"
+              : "even-visually-hidden"
+            : undefined
+        }
+      >
+        {status}
+      </span>
     </>
   );
 }

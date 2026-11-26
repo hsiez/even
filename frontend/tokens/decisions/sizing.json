@@ -1,6 +1,20 @@
 {
   "decision": {
     "size": {
+      "label": {
+        "category": {
+          "$type": "dimension",
+          "$value": "{options.dimension.64}",
+          "$description": "Width reserved for short category labels in dense object rows so neighboring titles align."
+        }
+      },
+      "object-row": {
+        "minimum": {
+          "$type": "dimension",
+          "$value": "{options.dimension.256}",
+          "$description": "Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title."
+        }
+      },
       "icon": {
         "small": {
           "$type": "dimension",
@@ -62,6 +76,11 @@
         }
       },
       "radius": {
+        "pill": {
+          "$type": "dimension",
+          "$value": "{options.radius.full}",
+          "$description": "Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners."
+        },
         "control": {
           "$type": "dimension",
           "$value": "{options.dimension.4}",

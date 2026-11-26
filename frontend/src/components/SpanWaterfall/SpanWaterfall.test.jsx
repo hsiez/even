@@ -113,3 +113,21 @@ test("keeps one tree tab stop when arrow focus and timeline selection differ", a
     screen.getByRole("treeitem", { name: "Agent activation" }),
   ]);
 });
+test("activation can repeat on a selected row without reporting a selection change", async () => {
+  const activate = vi.fn(),
+    select = vi.fn(),
+    user = userEvent.setup();
+  render(
+    <SpanWaterfall
+      spans={spans}
+      defaultSelectedSpanId="root"
+      onSelectSpan={select}
+    >
+      <SpanWaterfall.Tree onActivateSpan={activate} />
+    </SpanWaterfall>,
+  );
+  await user.click(screen.getByRole("treeitem", { name: "Agent activation" }));
+  await user.keyboard("{Enter}");
+  expect(activate.mock.calls).toEqual([["root"], ["root"]]);
+  expect(select).not.toHaveBeenCalled();
+});

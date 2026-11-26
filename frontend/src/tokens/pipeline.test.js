@@ -7,6 +7,7 @@ import {
   dimensionOptions,
   dimensionDecisions,
   strokeOptions,
+  radiusOptions,
 } from "./dimensions";
 
 async function inMemory(tokens) {
@@ -57,7 +58,7 @@ test("motion aliases compile DTCG durations and curves and propagate option edit
     "cubic-bezier(0, 0, 1, 1)",
   );
 });
-test("dimension options are rem values and decisions reference rem layout or fixed-pixel stroke options", async () => {
+test("layout dimensions stay on the rem scale while pill geometry uses a separate full-radius option", async () => {
   expect(dimensionOptions.map((token) => Number(token.key))).toEqual([
     0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128, 192, 256, 384, 512,
     640, 768,
@@ -65,6 +66,13 @@ test("dimension options are rem values and decisions reference rem layout or fix
   for (const token of dimensionOptions)
     expect(parseFloat(token.value) * 16).toBe(Number(token.key));
   for (const token of dimensionDecisions) {
+    if (token.name === "size.radius.pill") {
+      expect(token.reference).toBe("options.radius.full");
+      expect(token.value).toBe(
+        radiusOptions.find((option) => option.key === "radius.full").value,
+      );
+      continue;
+    }
     expect(token.reference).toMatch(
       /^options\.(dimension\.\d+|stroke\.(thin|strong))$/,
     );

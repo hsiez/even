@@ -1704,4 +1704,456 @@
       outline-offset: calc(-1 * var(--even-size-focus-outline));
     }
   }
+  :where(.even-trace-viewer) {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template:
+      auto minmax(0, 1fr) / minmax(0, var(--even-size-panel-preferred))
+      minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--even-surface-page);
+    color: var(--even-text-primary);
+    font-family: var(--even-font-ui);
+    border: var(--even-size-border-control) solid var(--even-border-default);
+    border-radius: var(--even-size-radius-panel);
+  }
+  :where(.even-trace-breadcrumbs) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--even-space-gap-related);
+    min-width: 0;
+    font-family: var(--even-font-ui);
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-breadcrumbs ol) {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: var(--even-space-inset-compact);
+    gap: var(--even-space-gap-tight);
+  }
+  :where(.even-trace-breadcrumbs li) {
+    display: flex;
+    align-items: center;
+    gap: var(--even-space-gap-tight);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  :where(.even-trace-breadcrumbs [aria-current]) {
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    font-weight: 600;
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-breadcrumbs .even-button:not([aria-current])) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-back) {
+    margin: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    min-width: 0;
+    max-width: 100%;
+  }
+  :where(.even-trace-back svg, .even-trace-open-icon) {
+    flex: none;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-trace-open-icon) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-open-icon) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-scope-snapshot) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  :where(.even-trace-breadcrumbs .even-button) {
+    white-space: normal;
+    text-align: start;
+  }
+  :where(.even-trace-breadcrumb-separator) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-viewer > .even-trace-breadcrumbs) {
+    grid-column: 1 / -1;
+    border-bottom: var(--even-size-border-control) solid
+      var(--even-border-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-trace-viewer-path) {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    border-inline-end: var(--even-size-border-control) solid
+      var(--even-border-default);
+  }
+  :where(.even-trace-path) {
+    min-width: 0;
+    overflow: auto;
+    color: var(--even-text-primary);
+    font-family: var(--even-font-ui);
+    padding: var(--even-space-inset-default);
+  }
+  :where(.even-trace-viewer-path .even-trace-path) {
+    overflow: visible;
+  }
+  :where(.even-trace-raw-format, .even-trace-empty) {
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-path-content) {
+    position: relative;
+    isolation: isolate;
+    display: flow-root;
+    min-width: 0;
+  }
+  :where(.even-trace-rail) {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    color: var(--even-hierarchy-guide);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--even-size-border-control);
+    stroke-linecap: round;
+  }
+  :where(.even-trace-path-tree) {
+    position: relative;
+  }
+  :where(.even-trace-level-guides) {
+    stroke-dasharray: 0 var(--even-space-gap-tight);
+  }
+  :where(.even-trace-path-tree, .even-trace-path-tree ul) {
+    padding-inline-start: var(--even-space-inset-default);
+    margin-inline-start: var(--even-space-inset-compact);
+  }
+  :where(.even-trace-path-tree) {
+    margin-block: var(--even-space-gap-group);
+  }
+  :where(.even-trace-path-tree ul) {
+    margin-block: 0;
+  }
+  :where(.even-trace-path-tree [role="treeitem"]) {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: var(--even-size-control-default);
+    min-width: var(--even-size-object-row-minimum);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    margin-block: var(--even-space-gap-related);
+    background: transparent;
+  }
+  /* Keep row highlights below the continuous rail, including multi-level returns. */
+  :where(.even-trace-path-tree [role="treeitem"])::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border-radius: inherit;
+    background: var(--trace-row-background, transparent);
+    pointer-events: none;
+  }
+  :where(.even-trace-path-tree [role="treeitem"]:hover) {
+    --trace-row-background: var(--even-surface-hover);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"]) {
+    --trace-row-background: var(--even-selection-background);
+  }
+  :where(.even-trace-path-node) {
+    position: absolute;
+    inset-inline-start: calc(
+      -1 * var(--even-space-inset-default) - var(--even-size-icon-default) / 2 -
+        var(--even-size-border-control)
+    );
+    top: calc(50% - var(--even-size-icon-default) / 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+    box-sizing: border-box;
+    border-radius: var(--even-size-radius-control);
+    background: var(--even-surface-page);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"]:hover) {
+    --trace-row-background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-tree) [role="treeitem"]:focus-visible {
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
+  }
+  :where(.even-trace-path-tree [role="treeitem"] > span) {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-width: 0;
+    gap: var(--even-space-gap-tight);
+    flex: 1;
+  }
+  :where(.even-trace-path-tree [role="treeitem"] > button) {
+    position: absolute;
+    inset-inline-start: calc(
+      -1 * var(--even-space-inset-default) - var(--even-size-control-compact) /
+        2 - var(--even-size-border-control)
+    );
+    top: calc(50% - var(--even-size-control-compact) / 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-control-compact);
+    height: var(--even-size-control-compact);
+    min-height: var(--even-size-control-compact);
+    padding: 0;
+  }
+  :where(
+    .even-trace-path-tree [role="treeitem"] > button .even-trace-path-node
+  ) {
+    position: static;
+    pointer-events: none;
+  }
+  :where(.even-trace-object) {
+    display: grid;
+    grid-template-columns: var(--even-size-label-category) minmax(0, 1fr);
+    align-items: center;
+    min-width: 0;
+    gap: var(--even-space-gap-related);
+    overflow: hidden;
+    font-family: var(--even-font-ui);
+    color: inherit;
+  }
+  :where(.even-trace-object[data-category="Step"] .even-trace-path-name) {
+    grid-column: 1 / 3;
+  }
+  :where(.even-trace-object-category) {
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  :where(
+    .even-trace-path-tree [aria-selected="true"] .even-trace-object-category
+  ) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-marker) {
+    width: var(--even-size-icon-small);
+    height: var(--even-size-icon-small);
+    border: var(--even-size-border-control) solid currentColor;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: var(--even-surface-page);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-marker) {
+    background: currentColor;
+  }
+  :where(.even-trace-path-name) {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :where(
+    .even-trace-path-tree .even-trace-path-name,
+    .even-trace-path-tree .even-trace-path-node
+  ) {
+    color: var(--even-text-secondary);
+  }
+  :where(
+    .even-trace-path-tree
+      [role="treeitem"]:hover
+      :is(.even-trace-path-name, .even-trace-path-node),
+    .even-trace-path-tree
+      [role="treeitem"]:focus-visible
+      :is(.even-trace-path-name, .even-trace-path-node),
+    .even-trace-path-tree
+      [role="treeitem"]:has(:focus-visible)
+      :is(.even-trace-path-name, .even-trace-path-node)
+  ) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-name) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-node) {
+    color: var(--even-selection-indicator);
+  }
+  :where(.even-trace-object[data-category-appearance="label"]) {
+    /* Reserve the existing text column plus the label's two inline insets. */
+    grid-template-columns:
+      calc(
+        var(--even-size-label-category) + 2 * var(--even-space-inset-default)
+      )
+      minmax(0, 1fr);
+  }
+  :where(
+    .even-trace-object[data-category-appearance="label"]
+      .even-trace-object-category,
+    .even-trace-object[data-category-appearance="label"][data-category="Step"]
+      .even-trace-path-name
+  ) {
+    display: inline-block;
+    justify-self: start;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: var(--even-space-inset-tight) var(--even-space-inset-default);
+    border-radius: var(--even-size-radius-pill);
+    background: var(--even-label-background);
+    color: var(--even-label-foreground);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  :where(
+    .even-trace-path-tree
+      [aria-selected="true"]
+      .even-trace-object[data-category-appearance="label"]
+      .even-trace-object-category,
+    .even-trace-path-tree
+      [aria-selected="true"]
+      .even-trace-object[data-category-appearance="label"][data-category="Step"]
+      .even-trace-path-name
+  ) {
+    background: var(--even-label-selected-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-raw-metrics) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-inline-end: auto;
+    min-width: 0;
+    gap: var(--even-space-gap-related);
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-path-error) {
+    color: var(--even-status-error-text);
+  }
+  :where(.even-trace-raw-panel) {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    color: var(--even-text-primary);
+    background: var(--even-surface-page);
+    font-family: var(--even-font-ui);
+    overflow: hidden;
+  }
+  :where(.even-visually-hidden) {
+    position: absolute;
+    width: var(--even-size-border-control);
+    height: var(--even-size-border-control);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    padding: 0;
+    border: 0;
+  }
+  :where(.even-copy-error) {
+    color: var(--even-status-error-text);
+    font-size: 0.75rem;
+  }
+  :where(.even-copy-icon) {
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-payload-toolbar) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--even-space-gap-related);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+  }
+  :where(.even-payload-toolbar > .even-copy-error) {
+    flex-basis: 100%;
+    text-align: end;
+  }
+  :where(.even-trace-raw-panel > .even-payload) {
+    display: grid;
+    grid-template: auto minmax(0, 1fr) / minmax(0, 1fr);
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-trace-raw-panel .even-payload-toolbar) {
+    padding-inline: var(--even-space-inset-default);
+  }
+  :where(.even-trace-raw-panel .even-payload pre) {
+    box-sizing: border-box;
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    min-height: 0;
+    overflow: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    padding: 0 var(--even-space-inset-default) var(--even-space-inset-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(
+    .even-trace-raw-panel > .even-notice,
+    .even-trace-raw-panel > .even-trace-empty
+  ) {
+    margin: var(--even-space-inset-default);
+  }
+  :where(.even-json-key) {
+    color: var(--even-syntax-key);
+  }
+  :where(.even-json-string) {
+    color: var(--even-syntax-string);
+  }
+  :where(.even-json-number) {
+    color: var(--even-syntax-number);
+  }
+  :where(.even-json-literal) {
+    color: var(--even-syntax-literal);
+  }
+  :where(.even-json-punctuation) {
+    color: var(--even-syntax-punctuation);
+  }
+  @media (max-width: 48rem) {
+    :where(.even-trace-viewer) {
+      grid-template: auto auto minmax(0, 1fr) / minmax(0, 1fr);
+    }
+    :where(.even-trace-viewer-path) {
+      max-height: calc(var(--even-size-control-comfortable) * 5);
+      border-inline-end: 0;
+      border-bottom: var(--even-size-border-control) solid
+        var(--even-border-default);
+    }
+  }
+  :where(.even-trace-viewer-raw) {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  :where(.even-trace-viewer-raw > .even-trace-raw-panel) {
+    flex: 1;
+  }
 }

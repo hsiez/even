@@ -4,6 +4,13 @@
   background: var(--even-text-primary);
   margin-block: 0.25rem;
 }
+.even-dimension-grid__radius {
+  display: block;
+  inline-size: min(100%, var(--even-size-control-comfortable));
+  block-size: var(--even-size-icon-large);
+  background: var(--even-text-primary);
+  margin-block: var(--even-space-gap-tight);
+}
 .even-dimension-grid td:last-child {
   inline-size: 55%;
 }

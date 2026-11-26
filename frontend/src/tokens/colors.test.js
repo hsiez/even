@@ -38,9 +38,24 @@ for (const theme of themes)
   for (const gamut of ["srgb", "p3"]) {
     test(`${theme} ${gamut}: intended text, selection, action, focus and control-boundary pairings meet contrast targets`, () => {
       const failures = contrastPairs.flatMap((pair) => {
+        let background = new Color(resolveColor(theme, pair.background, gamut));
+        if (pair.underlay) {
+          const overlay = background.to("srgb");
+          const base = new Color(resolveColor(theme, pair.underlay, gamut)).to(
+            "srgb",
+          );
+          background = new Color(
+            "srgb",
+            overlay.coords.map(
+              (channel, index) =>
+                channel * overlay.alpha +
+                base.coords[index] * (1 - overlay.alpha),
+            ),
+          );
+        }
         const ratio = Color.contrastWCAG21(
           new Color(resolveColor(theme, pair.foreground, gamut)),
-          new Color(resolveColor(theme, pair.background, gamut)),
+          background,
         );
         return ratio < pair.minimum
           ? [{ ...pair, ratio: Number(ratio.toFixed(3)) }]

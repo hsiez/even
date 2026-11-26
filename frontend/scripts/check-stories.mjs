@@ -10,6 +10,7 @@ import { checkHomePage } from "./check-home-page.mjs";
 import { checkWorkbenchTabs } from "./check-workbench-tabs.mjs";
 import { checkMotionTokens } from "./check-motion-tokens.mjs";
 import { checkOverlayMotion } from "./check-overlay-motion.mjs";
+import { checkTraceViewer } from "./check-trace-viewer.mjs";
 import {
   contrastPairs,
   scaleNames,
@@ -129,6 +130,7 @@ try {
   for (const theme of themes) await checkWorkbenchTabs(page, base, theme, axe);
   for (const theme of themes) await checkMotionTokens(page, base, theme);
   for (const theme of themes) await checkOverlayMotion(page, base, theme);
+  for (const theme of themes) await checkTraceViewer(page, base, theme, axe);
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchlayout--composed-explorer&viewMode=story`,
@@ -1378,17 +1380,34 @@ try {
                 foreground: style.color,
                 background: style.backgroundColor,
               };
+              if (pair.underlayVariable) {
+                sample.style.backgroundColor = `var(${pair.underlayVariable})`;
+                const canvas = document.createElement("canvas");
+                canvas.width = canvas.height = 1;
+                const context = canvas.getContext("2d");
+                context.fillStyle = getComputedStyle(sample).backgroundColor;
+                context.fillRect(0, 0, 1, 1);
+                context.fillStyle = result.background;
+                context.fillRect(0, 0, 1, 1);
+                const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+                result.composite = `rgb(${r}, ${g}, ${b})`;
+              }
               sample.remove();
               return result;
             }),
           contrastPairs.map((pair) => ({
             foregroundVariable: semanticVariable(pair.foreground),
             backgroundVariable: semanticVariable(pair.background),
+            underlayVariable: pair.underlay
+              ? semanticVariable(pair.underlay)
+              : undefined,
           })),
         );
       for (const [index, pair] of contrastPairs.entries()) {
         const foreground = new Color(actual[index].foreground);
-        const background = new Color(actual[index].background);
+        const background = new Color(
+          actual[index].composite ?? actual[index].background,
+        );
         const expected = new Color(resolveColor(theme, pair.foreground, gamut));
         assert.ok(
           foreground.deltaE(expected, "OK") < 0.01,

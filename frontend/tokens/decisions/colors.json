@@ -38,6 +38,23 @@
           "$value": "{options.color.neutral.9}"
         }
       },
+      "label": {
+        "background": {
+          "$type": "color",
+          "$value": "{options.color.gray-alpha.2}",
+          "$description": "Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite."
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{decision.color.text.secondary}",
+          "$description": "Readable secondary text on the translucent label composite. Selected labels use selection.foreground."
+        },
+        "selected-background": {
+          "$type": "color",
+          "$value": "{options.color.gray-alpha.3}",
+          "$description": "Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground."
+        }
+      },
       "border": {
         "default": {
           "$type": "color",
@@ -55,7 +72,7 @@
         "control": {
           "$type": "color",
           "$value": "{options.color.neutral.6}",
-          "$description": "Step 6 is the meaningful control boundary; steps 4–5 remain decorative."
+          "$description": "Step 6 is the meaningful control boundary; steps 4\u20135 remain decorative."
         },
         "focus": {
           "$type": "color",
@@ -71,6 +88,13 @@
           "$type": "color",
           "$value": "{options.color.red.9}",
           "$description": "Invalid input boundary, independent of error message text."
+        }
+      },
+      "hierarchy": {
+        "guide": {
+          "$type": "color",
+          "$value": "{options.color.neutral.6}",
+          "$description": "Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity."
         }
       },
       "focus": {
@@ -98,7 +122,7 @@
         "background": {
           "$type": "color",
           "$value": "{options.color.neutral.7}",
-          "$description": "Neutral primary-action fill, using the palette’s strong-fill role."
+          "$description": "Neutral primary-action fill, using the palette\u2019s strong-fill role."
         },
         "hover": {
           "$type": "color",
@@ -137,7 +161,7 @@
           "compact-surface": {
             "$type": "color",
             "$value": "{options.color.red.3}",
-            "$description": "Stronger tint for compact status labels, following Geist’s small-element background guidance."
+            "$description": "Stronger tint for compact status labels, following Geist\u2019s small-element background guidance."
           }
         },
         "warning": {
@@ -157,7 +181,7 @@
           "compact-surface": {
             "$type": "color",
             "$value": "{options.color.amber.3}",
-            "$description": "Stronger tint for compact status labels, following Geist’s small-element background guidance."
+            "$description": "Stronger tint for compact status labels, following Geist\u2019s small-element background guidance."
           }
         },
         "success": {
@@ -177,7 +201,7 @@
           "compact-surface": {
             "$type": "color",
             "$value": "{options.color.green.3}",
-            "$description": "Stronger tint for compact status labels, following Geist’s small-element background guidance."
+            "$description": "Stronger tint for compact status labels, following Geist\u2019s small-element background guidance."
           }
         },
         "info": {
@@ -197,7 +221,7 @@
           "compact-surface": {
             "$type": "color",
             "$value": "{options.color.blue.3}",
-            "$description": "Stronger tint for compact status labels, following Geist’s small-element background guidance."
+            "$description": "Stronger tint for compact status labels, following Geist\u2019s small-element background guidance."
           }
         }
       },
@@ -213,43 +237,70 @@
           "blue": {
             "$type": "color",
             "$value": "{options.color.blue.9}",
-            "$description": "Visible edge for blue strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for blue strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "green": {
             "$type": "color",
             "$value": "{options.color.green.9}",
-            "$description": "Visible edge for green strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for green strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "amber": {
             "$type": "color",
             "$value": "{options.color.amber.9}",
-            "$description": "Visible edge for amber strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for amber strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "red": {
             "$type": "color",
             "$value": "{options.color.red.9}",
-            "$description": "Visible edge for red strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for red strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "teal": {
             "$type": "color",
             "$value": "{options.color.teal.9}",
-            "$description": "Visible edge for teal strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for teal strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "purple": {
             "$type": "color",
             "$value": "{options.color.purple.9}",
-            "$description": "Visible edge for purple strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for purple strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "pink": {
             "$type": "color",
             "$value": "{options.color.pink.9}",
-            "$description": "Visible edge for pink strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for pink strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           },
           "neutral": {
             "$type": "color",
             "$value": "{options.color.neutral.9}",
-            "$description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills."
+            "$description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1\u20133, and neutral backgrounds 1\u20133. Use for default and hovered fills."
           }
+        }
+      },
+      "syntax": {
+        "key": {
+          "$type": "color",
+          "$value": "{options.color.blue.9}",
+          "$description": "JSON property names on page and secondary code surfaces."
+        },
+        "string": {
+          "$type": "color",
+          "$value": "{options.color.green.9}",
+          "$description": "JSON string values; preserve the recorded text without interpreting it."
+        },
+        "number": {
+          "$type": "color",
+          "$value": "{options.color.purple.9}",
+          "$description": "JSON numeric values."
+        },
+        "literal": {
+          "$type": "color",
+          "$value": "{options.color.amber.9}",
+          "$description": "JSON true, false and null literals."
+        },
+        "punctuation": {
+          "$type": "color",
+          "$value": "{options.color.neutral.9}",
+          "$description": "JSON structure and punctuation."
         }
       }
     }

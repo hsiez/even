@@ -10,3 +10,8 @@ export const Default = {
     return <CopyButton value={trace.traceId} label="Copy trace ID" />;
   },
 };
+export const IconOnly = {
+  render: () => (
+    <CopyButton iconOnly value={trace.traceId} label="Copy trace ID" />
+  ),
+};
