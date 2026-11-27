@@ -47,6 +47,8 @@ Every effect site is reviewed in `lint/effects.json`, grouped by file, owning fu
 
 Static analysis is not a memory-leak proof. A matching cleanup call may still target the wrong resource. MutationObserver, animation-frame scheduling, animation cancellation, class lifecycles, backend resource ownership and arbitrary async callbacks still need behavior tests and inspection. Timers/listeners/observers retain callbacks and their captured objects until released; React's effect mechanism does not itself disable garbage collection. Review cleanup on dependency changes and unmount, stale responses, interruption and Strict Mode replay.
 
+The browser-session restart test creates a fresh HTTP connection after rebinding the same port. Its previous server has explicitly closed all connections, while Node's shared fetch pool can still retain one of those sockets briefly. A connection owned by the new server lifetime makes the old-cookie rejection assertion deterministic.
+
 ## Comment policy and audit
 
 Authored JavaScript/JSX and CSS contain no explanatory code comments. Names and tests express behavior; durable reasons and exceptions live in documentation. The executable CLI shebang remains. Generated banners, dependencies, legal files, documentation code examples and comment-like text inside captured payloads are outside this rule. The former Vitest environment directive is now an explicit Node test project in `frontend/vite.config.js`.

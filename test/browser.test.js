@@ -222,8 +222,19 @@ test('public browser assets share one origin while APIs retain launch authentica
     { inventory: async () => ({ agents: [] }) },
     { port, browserDirectory: directory }
   );
+  const previousCookieStatus = await new Promise((resolve, reject) => {
+    get(
+      server.url + '/api/v1/agents',
+      { headers: browser, agent: false },
+      (response) => {
+        response.resume();
+        response.once('end', () => resolve(response.statusCode));
+        response.once('error', reject);
+      }
+    ).on('error', reject);
+  });
   assert.equal(
-    (await fetch(server.url + '/api/v1/agents', { headers: browser })).status,
+    previousCookieStatus,
     401,
     'Previous-launch cookies are rejected'
   );
