@@ -16,7 +16,6 @@ import { Conversation } from "../components/Conversation/Conversation";
 import { Button } from "../components/Button/Button";
 import { agents, traceHistory, observedReloads } from "./fixtures";
 
-// Demonstrates composition with deterministic data, not a live Eve connection.
 export function WorkbenchFixture() {
   const [agent, setAgent] = useState("support");
   const [query, setQuery] = useState("");

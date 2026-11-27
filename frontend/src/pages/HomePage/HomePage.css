@@ -1,4 +1,3 @@
-/* Page composition only. Shared controls retain their token-backed defaults. */
 .even-home {
   display: flex;
   flex-wrap: nowrap;
@@ -97,7 +96,7 @@
   place-items: center;
   width: var(--even-size-control-compact);
   height: var(--even-size-control-compact);
-  border: 1px solid var(--even-border-control);
+  border: var(--even-size-border-control) solid var(--even-border-control);
   border-radius: var(--even-size-radius-panel);
   font-family: var(--even-font-data);
   font-size: 1.25rem;
@@ -131,7 +130,6 @@
   display: grid;
   gap: var(--even-space-gap-tight);
   list-style: none;
-  /* Preserve the layout inset while leaving room for keyboard focus rings. */
   margin: calc(
       -1 * (var(--even-space-gap-group) + var(--even-space-inset-tight))
     )
@@ -166,7 +164,8 @@
 }
 .even-home-control-area {
   background: var(--even-surface-secondary);
-  border-bottom: 1px solid var(--even-border-default);
+  border-bottom: var(--even-size-border-control) solid
+    var(--even-border-default);
 }
 .even-home-header {
   display: flex;
@@ -203,7 +202,7 @@
 .even-home-data-label {
   padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
   color: var(--even-text-secondary);
-  border: 1px solid var(--even-border-default);
+  border: var(--even-size-border-control) solid var(--even-border-default);
   border-radius: var(--even-size-radius-control);
   font-size: 0.75rem;
 }
@@ -225,7 +224,6 @@
   white-space: nowrap;
 }
 .even-home-results-status {
-  /* Announce changing search results without a visible count or layout row. */
   position: absolute;
   width: 1px;
   height: 1px;
@@ -281,7 +279,6 @@
     min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
-    /* Leave room for the existing keyboard-focus outline inside the scroller. */
     padding: var(--even-space-inset-tight);
     margin: 0;
   }
@@ -329,7 +326,7 @@
   margin-block: var(--even-space-gap-group);
   padding: var(--even-space-inset-compact);
   background: var(--even-surface-secondary);
-  border: 1px solid var(--even-border-default);
+  border: var(--even-size-border-control) solid var(--even-border-default);
   border-radius: var(--even-size-radius-control);
 }
 .even-home-match-evidence h3 {

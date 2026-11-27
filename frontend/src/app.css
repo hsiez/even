@@ -1,4 +1,3 @@
-/* Standalone application host; shared components never reset a consuming page. */
 html[data-even-theme] {
   background: var(--even-surface-page);
   color: var(--even-text-primary);

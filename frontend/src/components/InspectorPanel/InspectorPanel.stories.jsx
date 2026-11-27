@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { InspectorPanel } from "./InspectorPanel";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Workbench/InspectorPanel", component: InspectorPanel };
 

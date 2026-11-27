@@ -10,8 +10,6 @@ const containsPoint = (box, event) =>
   event.clientY >= box.top &&
   event.clientY <= box.bottom;
 
-// A pre-commit snapshot is needed for FLIP: an effect would see the new layout.
-// This coordinates decoration only; Base UI still owns selection and geometry.
 export class TabMotion extends React.Component {
   track = React.createRef();
   motion = null;
@@ -116,9 +114,9 @@ export class TabMotion extends React.Component {
   componentDidUpdate(previous, _, snapshot) {
     if (same(previous.values, this.props.values)) return;
     if (snapshot?.kind === "remove") this.lastRemovalAt = performance.now();
-    // Redirect a removal without briefly revealing/focusing its settled layout.
+
     this.stop(!(snapshot?.kind === "remove" && this.motion?.kind === "remove"));
-    // Invert removal before paint so the compacted layout never flashes first.
+
     if (snapshot?.kind === "remove") this.playRemoval(snapshot);
     else if (snapshot)
       this.frame = requestAnimationFrame(() => this.play(snapshot));
@@ -136,7 +134,7 @@ export class TabMotion extends React.Component {
 
   pauseForPointer = () => {
     if (!this.motion?.animations.length) return;
-    // Keep a moving close button under the pointer until its click is dispatched.
+
     this.motion.animations.forEach((animation) => animation.pause());
     document.addEventListener("pointerup", this.endPointer, { once: true });
     document.addEventListener("pointercancel", this.endPointer, { once: true });
@@ -159,8 +157,6 @@ export class TabMotion extends React.Component {
       )?.button;
       const button = projected ?? pressed;
       if (button?.closest(".even-workbench-tab-track") === track) {
-        // Resolve the repeated close against final layout, without snapping the
-        // painted tabs there. The next removal continues from this paused pose.
         this.pauseForPointer();
         this.pendingClose = { button, rect };
         if (pressed !== button) {
@@ -188,8 +184,7 @@ export class TabMotion extends React.Component {
     if (repeatIntent && close !== pending.button) {
       event.preventDefault();
       event.stopPropagation();
-      // Invoke the existing named button exactly once. Its normal Base UI /
-      // product callback still owns closure; no extra control or selection state.
+
       pending.button.click();
       this.lastCloseRect = pending.rect;
       return;
@@ -210,8 +205,7 @@ export class TabMotion extends React.Component {
     if (paused)
       this.frame = requestAnimationFrame(() => {
         this.frame = null;
-        // A close normally replaces this motion before the frame. If canceled,
-        // resume its existing pose instead of snapping to the final layout.
+
         if (this.motion === paused)
           paused.animations.forEach((animation) => animation.play());
       });
@@ -256,17 +250,14 @@ export class TabMotion extends React.Component {
       active && this.props.values[Number(active.dataset.tabColumn) - 1];
     const activeOld = snapshot.rows.get(activeValue);
     const activeBox = active?.getBoundingClientRect();
-    // The host has already changed selection. Align the sibling close controls
-    // before measuring; MutationObserver coordination otherwise runs too late.
+
     for (const close of track.querySelectorAll(".even-workbench-tab-close")) {
       close.toggleAttribute(
         "data-active-tab",
         close.dataset.tabColumn === active?.dataset.tabColumn,
       );
     }
-    // Stable native layout targets let stationary clicks reach the next X even
-    // while its visible control is still sliding. Active controls paint above
-    // overlapping inactive slots, so use the same priority when resolving hits.
+
     const closeTargets = [
       ...track.querySelectorAll(".even-workbench-tab-close"),
     ]
@@ -276,8 +267,7 @@ export class TabMotion extends React.Component {
           Number(b.button.hasAttribute("data-active-tab")) -
           Number(a.button.hasAttribute("data-active-tab")),
       );
-    // A replacement that was hidden behind the sticky tab enters from the
-    // nearest edge, rather than traveling from its distant logical slot.
+
     const activeDx =
       activeOld && activeBox
         ? activeOld.right <= view.left

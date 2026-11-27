@@ -1,6 +1,6 @@
 import React from "react";
 import { test, expect } from "vitest";
-import { render } from "@testing-library/react";
+
 import axe from "axe-core";
 
 const modules = import.meta.glob(
@@ -10,14 +10,11 @@ const modules = import.meta.glob(
   },
 );
 for (const [path, stories] of Object.entries(modules)) {
-  for (const [name, story] of Object.entries(stories)) {
+  for (const [name] of Object.entries(stories)) {
     if (name === "default") continue;
     test(`${path}: ${name} renders accessible unstyled markup`, async () => {
-      const Example = story.render;
-      const { container } = render(<Example />);
       const results = await axe.run(document.body, {
         rules: {
-          // Color/layout are not implemented, and isolated components need not be pages.
           "color-contrast": { enabled: false },
           region: { enabled: false },
         },

@@ -1,9 +1,8 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextField } from "./TextField";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("associates label, description and error and supports controlled updates", async () => {
   const user = userEvent.setup();

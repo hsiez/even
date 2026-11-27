@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import Color from "colorjs.io";
 import { resolveColor } from "../src/tokens/colors.js";
 
-// Exercise rendered states and independent decisions, rather than CSS declarations.
 export async function checkDecisionUsage(page, base, theme) {
   const open = async (id, selector) => {
     await page.goto(

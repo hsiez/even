@@ -3,6 +3,7 @@ import {
   dimensionOptions,
   dimensionDecisions,
   strokeOptions,
+  radiusOptions,
 } from "../dimensions";
 import "../generated/tokens.css";
 import "../ColorGrid/ColorGrid.css";
@@ -11,7 +12,7 @@ import "./DimensionGrid.css";
 export function DimensionGrid({ theme = "light", kind = "options" }) {
   const options = kind === "options";
   const rows = options
-    ? [...dimensionOptions, ...strokeOptions]
+    ? [...dimensionOptions, ...strokeOptions, ...radiusOptions]
     : dimensionDecisions.filter((token) => token.category === kind);
   const title = options
     ? "Dimension options"
@@ -29,7 +30,8 @@ export function DimensionGrid({ theme = "light", kind = "options" }) {
         One shared scale, mainly 4px increments. Fine adjustment: 2px. Larger
         steps spread apart. Values use rem; pixel equivalents below assume a
         16px root, without setting that root size. Stroke options use fixed CSS
-        pixels for borders and focus indicators.
+        pixels for borders and focus indicators. Full-radius options describe a
+        capsule shape; CSS clamps their radius to the element's height.
       </p>
       {!options && (
         <p>
@@ -44,7 +46,7 @@ export function DimensionGrid({ theme = "light", kind = "options" }) {
             <th scope="col">Token</th>
             <th scope="col">Value</th>
             <th scope="col">{options ? "Reference px" : "Option reference"}</th>
-            <th scope="col">Example length</th>
+            <th scope="col">Example</th>
           </tr>
         </thead>
         <tbody>
@@ -56,16 +58,27 @@ export function DimensionGrid({ theme = "light", kind = "options" }) {
               <td>{token.value}</td>
               <td>
                 {options
-                  ? token.key.startsWith("stroke.")
+                  ? token.key.startsWith("stroke.") ||
+                    token.key.startsWith("radius.")
                     ? token.value
                     : `${Number(token.key)}px`
                   : token.reference}
               </td>
               <td>
                 <span
-                  className="even-dimension-grid__bar"
+                  className={
+                    token.key?.startsWith("radius.") ||
+                    token.name?.startsWith("size.radius.")
+                      ? "even-dimension-grid__radius"
+                      : "even-dimension-grid__bar"
+                  }
                   aria-hidden="true"
-                  style={{ inlineSize: `min(100%, var(${token.variable}))` }}
+                  style={
+                    token.key?.startsWith("radius.") ||
+                    token.name?.startsWith("size.radius.")
+                      ? { borderRadius: `var(${token.variable})` }
+                      : { inlineSize: `min(100%, var(${token.variable}))` }
+                  }
                 />
                 {token.description && <small>{token.description}</small>}
               </td>

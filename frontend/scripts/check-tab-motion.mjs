@@ -110,7 +110,6 @@ export async function checkTabMotion(page, base, theme) {
   );
   assert.equal(await created.getAttribute("aria-selected"), "true");
 
-  // Compaction changes the target size once; the outline only translates.
   await page.goto(url);
   await page.locator(".even-tabs-design-frame").evaluate((node) => {
     node.style.width = "600px";
@@ -126,7 +125,6 @@ export async function checkTabMotion(page, base, theme) {
   );
   await finish();
 
-  // A moving close target must still receive its first click.
   await page.goto(url);
   await create();
   await pose(80);
@@ -148,7 +146,6 @@ export async function checkTabMotion(page, base, theme) {
         .hasAttribute("data-creating"),
   );
 
-  // Consecutive creations replace decoration without losing either tab.
   await page.goto(url);
   await create();
   await pose(80);
@@ -166,7 +163,6 @@ export async function checkTabMotion(page, base, theme) {
     "true",
   );
 
-  // Resizing cancels projected geometry and leaves the selection usable.
   await page.goto(url);
   await create();
   await pose(80);
@@ -216,7 +212,7 @@ export async function checkTabRemovalMotion(page, base, theme) {
     await page
       .locator(".even-tabs-design-frame")
       .evaluate((node) => (node.style.width = "560px"));
-    // Setup through the keyboard skips decorative creation motion.
+
     for (let i = 0; i < 8; i++) {
       await add.focus();
       await page.keyboard.press("Enter");
@@ -352,7 +348,6 @@ export async function checkTabRemovalMotion(page, base, theme) {
     "Removal leaves no obsolete end gap",
   );
 
-  // Repeated pointer closes retain a short spatial cue without another hold.
   await page
     .getByRole("button", { name: "Close Traces 10", exact: true })
     .click();
@@ -392,8 +387,6 @@ export async function checkTabRemovalMotion(page, base, theme) {
     "Keyboard removal has no decorative delay",
   );
 
-  // The same staging works without strip overflow and does not depend on fixed
-  // timing constants. Caller decision overrides are consumed by WAAPI too.
   await page.goto(url);
   await track.waitFor();
   await track.evaluate((node) => {
@@ -567,8 +560,6 @@ export async function checkDenseRemoval(page, base, theme) {
       ),
   );
   for (const label of ["Tool errors", "Playground 1"]) {
-    // These cases audit hover during isolated animated removals. Rapid-repeat
-    // compaction is exercised separately below, without a wait between clicks.
     await page.waitForTimeout(550);
     const close = page.getByRole("button", {
       name: `Close ${label}`,
@@ -607,9 +598,7 @@ export async function checkDenseRemoval(page, base, theme) {
       "Close hover is suppressed for the same movement interval",
     );
     await finish();
-    // Do not move the cursor: layout alone must reconcile the hovered tab/X.
-    // Motion cleanup queues a React presentation update. Wait for that commit,
-    // rather than reading halfway between the WAAPI finish and the next paint.
+
     await page.waitForFunction((point) => {
       const track = document.querySelector(".even-workbench-tab-track");
       const hit = document
@@ -699,8 +688,7 @@ export async function checkRemovalLeftOfActive(page, base, theme) {
     await page
       .getByRole("button", { name: `Close ${label}`, exact: true })
       .click();
-    // Let the real post-commit measurement and scroll-clamp events run first.
-    // A test that pauses in the click task misses this cancellation entirely.
+
     await page.evaluate(async () => {
       await new Promise(requestAnimationFrame);
       await new Promise(requestAnimationFrame);
@@ -921,7 +909,7 @@ export async function checkCreationFadeOverlap(page, base, theme) {
     await page.waitForFunction(
       () => !document.querySelector(".even-workbench-tab-track[data-creating]"),
     );
-    // Scroll fades return for ordinary overflow scrolling after choreography.
+
     if (count > 3) {
       const viewport = page.locator(".even-workbench-tab-scroll");
       await viewport.evaluate(
@@ -975,8 +963,7 @@ export async function checkRapidRemovals(page, base, theme) {
     const box = await page
       .locator(".even-workbench-tab-close[data-active-tab]")
       .boundingBox();
-    // Real input without locator.click's "wait until stable" behavior, which
-    // otherwise waits out the exact motion being tested.
+
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   };
   for (let i = 0; i < 7; i++) {
@@ -1075,8 +1062,7 @@ export async function checkStationaryRemovals(page, base, theme) {
   };
   for (const interval of [60, 100, 250, 350]) {
     const point = await load();
-    // Keep exactly the same coordinates, including during the empty gap. Moving
-    // to each button's measured pose hides the missed-click regression.
+
     for (let i = 0; i < 4; i++) {
       await page.mouse.click(point.x, point.y);
       assert.equal(

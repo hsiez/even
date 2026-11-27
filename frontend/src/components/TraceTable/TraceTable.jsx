@@ -12,6 +12,9 @@ export function TraceTable({
   traces,
   reloads = [],
   selectedTraceId,
+  selectedOperationRef,
+  scrollRef,
+  onScroll,
   onSelectTrace,
   renderOperationDetail,
   sort = { key: "startedAt", direction: "descending" },
@@ -31,6 +34,8 @@ export function TraceTable({
   });
   return (
     <div
+      ref={scrollRef}
+      onScroll={onScroll}
       className="even-table-scroll"
       tabIndex={0}
       role="region"
@@ -151,6 +156,11 @@ export function TraceTable({
                 </td>
                 <td className="even-trace-operation" data-column-id="operation">
                   <Button
+                    ref={
+                      selectedTraceId === trace.traceId
+                        ? selectedOperationRef
+                        : undefined
+                    }
                     className="even-trace-operation-action"
                     variant="ghost"
                     size="compact"

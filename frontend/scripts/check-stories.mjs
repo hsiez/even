@@ -10,6 +10,7 @@ import { checkHomePage } from "./check-home-page.mjs";
 import { checkWorkbenchTabs } from "./check-workbench-tabs.mjs";
 import { checkMotionTokens } from "./check-motion-tokens.mjs";
 import { checkOverlayMotion } from "./check-overlay-motion.mjs";
+import { checkTraceViewer } from "./check-trace-viewer.mjs";
 import {
   contrastPairs,
   scaleNames,
@@ -22,8 +23,6 @@ import {
   themes,
 } from "../src/tokens/colors.js";
 
-// Contrast is a settled-surface check. Motion itself is verified separately
-// through paused intermediate frames; infinite indicators never block auditing.
 async function waitForFiniteMotion(page) {
   await page.evaluate(async () => {
     await new Promise(requestAnimationFrame);
@@ -129,6 +128,7 @@ try {
   for (const theme of themes) await checkWorkbenchTabs(page, base, theme, axe);
   for (const theme of themes) await checkMotionTokens(page, base, theme);
   for (const theme of themes) await checkOverlayMotion(page, base, theme);
+  for (const theme of themes) await checkTraceViewer(page, base, theme, axe);
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchlayout--composed-explorer&viewMode=story`,
@@ -177,7 +177,7 @@ try {
     .fill("Inspect deployment");
   await page.getByRole("button", { name: "Send message" }).click();
   assert.match(await page.getByRole("log").innerText(), /Inspect deployment/);
-  // Check portal-based interactions in a real browser, beyond static story audits.
+
   await page.goto(
     `${base}/iframe.html?id=primitives-dialog--default&viewMode=story`,
   );
@@ -248,7 +248,6 @@ try {
   await page.keyboard.press("Escape");
   await hint.waitFor({ state: "hidden" });
 
-  // Mixed keyboard/pointer selection must leave exactly one tree tab stop.
   await page.goto(
     `${base}/iframe.html?id=workbench-spanwaterfall--default&viewMode=story`,
   );
@@ -354,7 +353,7 @@ try {
       exact: true,
     });
     await childPopup.waitFor();
-    // Positioning/focus settle after the popup first becomes visible.
+
     await page.waitForFunction(
       (node) => {
         const r = node.getBoundingClientRect();
@@ -443,7 +442,7 @@ try {
     );
   }
   await page.setViewportSize({ width: 1280, height: 720 });
-  // Exercise decisions on actual consumers, portal inheritance and responsive layout.
+
   for (const theme of themes) {
     await page.goto(
       `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
@@ -457,8 +456,7 @@ try {
     const traceRows = page.locator(
       '.even-trace-table tr[data-row-kind="trace"]',
     );
-    // Measure rendered text, including text inside sortable headers and badges.
-    // Checking cell boxes alone misses nested control-padding regressions.
+
     for (const width of [1280, 390]) {
       await page.setViewportSize({ width, height: 720 });
       const offsets = await page
@@ -611,7 +609,6 @@ try {
       "Duration sorting omits chronological reload markers",
     );
 
-    // Resize controls change native column geometry, including every body row.
     await page.goto(
       `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
     );
@@ -639,7 +636,7 @@ try {
         '[data-row-kind="trace"] td:nth-child(2)',
       );
       const probe = document.createElement("span");
-      // The font shorthand may be empty when tabular numerals are enabled.
+
       const durationStyle = getComputedStyle(duration);
       for (const property of [
         "fontFamily",
@@ -830,7 +827,6 @@ try {
       "Resizing does not sort",
     );
 
-    // Rem-based defaults track the root text size; explicit widths remain CSS pixels.
     await page.goto(
       `${base}/iframe.html?id=workbench-tracetable--reload-timeline&viewMode=story&globals=theme:${theme}`,
     );
@@ -898,7 +894,6 @@ try {
       "Long values do not wrap or increase row height",
     );
 
-    // Anchored ellipsis masks whole graphemes and preserves full accessible labels.
     await page.setViewportSize({ width: 1400, height: 800 });
     await page.goto(
       `${base}/iframe.html?id=workbench-tracetable--character-ellipsis&viewMode=story&globals=theme:${theme}`,
@@ -981,7 +976,7 @@ try {
       await page.mouse.up();
     }
     const textPlane = operationText.locator(".even-cell-overflow-text");
-    // Widths between two character edges must paint the same complete prefix.
+
     for (const fraction of [0.25, 0.75]) {
       await resizeEllipsis(
         native.inset +
@@ -1067,7 +1062,6 @@ try {
       1,
     );
 
-    // Native inline ellipsis is an isolated story, with a live baseline toggle.
     await page.goto(
       `${base}/iframe.html?id=workbench-tracetable--inline-ellipsis-experiment&viewMode=story&globals=theme:${theme}`,
     );
@@ -1170,7 +1164,7 @@ try {
       await primary.evaluate((node) => getComputedStyle(node).outlineStyle),
       "solid",
     );
-    // Unlayered consumer CSS wins over the library's default presentation.
+
     await page.addStyleTag({
       content: ".consumer-override { min-height: 3.5rem; }",
     });
@@ -1249,7 +1243,7 @@ try {
     );
   }
   await page.setViewportSize({ width: 1280, height: 720 });
-  // Verify real CSS resolution in both gamuts, including nested theme boundaries.
+
   for (const theme of themes) await checkDecisionUsage(page, base, theme);
   const session = await page.context().newCDPSession(page);
   for (const gamut of ["srgb", "p3"]) {
@@ -1262,8 +1256,7 @@ try {
     await page
       .getByRole("region", { name: "dark color tokens", exact: true })
       .waitFor();
-    // Storybook deliberately themes html for portals. Removing that opt-in
-    // must still leave an unthemed document without token values.
+
     assert.equal(
       await page.evaluate(() => {
         const root = document.documentElement;
@@ -1327,7 +1320,7 @@ try {
           `${theme} ${gamut}: ${check.variable} preserves alpha within browser serialization precision`,
         );
       });
-      // Paint the browser-resolved alpha over the browser-resolved canvas.
+
       const composites = await page
         .locator(`section[data-even-theme="${theme}"]`)
         .evaluate((scope) => {
@@ -1378,17 +1371,34 @@ try {
                 foreground: style.color,
                 background: style.backgroundColor,
               };
+              if (pair.underlayVariable) {
+                sample.style.backgroundColor = `var(${pair.underlayVariable})`;
+                const canvas = document.createElement("canvas");
+                canvas.width = canvas.height = 1;
+                const context = canvas.getContext("2d");
+                context.fillStyle = getComputedStyle(sample).backgroundColor;
+                context.fillRect(0, 0, 1, 1);
+                context.fillStyle = result.background;
+                context.fillRect(0, 0, 1, 1);
+                const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+                result.composite = `rgb(${r}, ${g}, ${b})`;
+              }
               sample.remove();
               return result;
             }),
           contrastPairs.map((pair) => ({
             foregroundVariable: semanticVariable(pair.foreground),
             backgroundVariable: semanticVariable(pair.background),
+            underlayVariable: pair.underlay
+              ? semanticVariable(pair.underlay)
+              : undefined,
           })),
         );
       for (const [index, pair] of contrastPairs.entries()) {
         const foreground = new Color(actual[index].foreground);
-        const background = new Color(actual[index].background);
+        const background = new Color(
+          actual[index].composite ?? actual[index].background,
+        );
         const expected = new Color(resolveColor(theme, pair.foreground, gamut));
         assert.ok(
           foreground.deltaE(expected, "OK") < 0.01,
@@ -1401,7 +1411,7 @@ try {
       }
     }
   }
-  // rem decisions respond to root text sizing; no app CSS fixes the root size.
+
   const dimensionMeasurements = await page.evaluate(() => {
     const previous = document.documentElement.style.fontSize;
     const scope = document.createElement("div");
@@ -1435,7 +1445,7 @@ try {
     normal: { width: "8px", height: "40px", border: "1px" },
     enlarged: { width: "10px", height: "50px", border: "1px" },
   });
-  // A nested light scope inside dark must rebind aliases instead of inheriting resolved dark values.
+
   const nested = await page.evaluate(() => {
     const outer = document.createElement("div");
     outer.dataset.evenTheme = "dark";

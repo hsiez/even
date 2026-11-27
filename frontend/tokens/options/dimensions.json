@@ -144,6 +144,13 @@
       "$type": "dimension",
       "$description": "Curated dimension options: mainly 4px multiples, a 2px fine adjustment, and progressively larger gaps. Shared by spacing and sizing decisions."
     },
+    "radius": {
+      "full": {
+        "$type": "dimension",
+        "$value": { "value": 9999, "unit": "px" },
+        "$description": "Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size."
+      }
+    },
     "stroke": {
       "$type": "dimension",
       "$description": "Fixed CSS-pixel stroke options for borders and focus indicators; independent of the rem-based layout scale.",

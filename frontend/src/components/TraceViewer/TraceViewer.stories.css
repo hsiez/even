@@ -1,0 +1,18 @@
+.even-trace-viewer-story {
+  height: min(85dvh, calc(var(--even-size-panel-preferred) * 2));
+  min-height: calc(var(--even-size-control-comfortable) * 8);
+}
+.even-trace-viewer-story-note {
+  color: var(--even-text-secondary);
+  font-family: var(--even-font-ui);
+  font-size: 0.8125rem;
+  margin-block: 0 var(--even-space-gap-related);
+}
+.even-trace-raw-story {
+  height: calc(var(--even-size-panel-preferred) * 2);
+  max-height: 85dvh;
+}
+
+.even-trace-raw-story > .even-trace-raw-panel {
+  height: 100%;
+}

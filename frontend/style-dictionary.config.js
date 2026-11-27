@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 const sourcePath = (name) =>
   fileURLToPath(new URL(`./tokens/${name}`, import.meta.url));
 
-// Keep the CSS API stable while naming JSON explicitly as options and decisions.
 export function tokenCssName(path) {
   if (path[0] === "options" && path[1] === "color")
     return ["even", "palette", ...path.slice(2)].join("-");
@@ -57,7 +56,7 @@ export function createTokenConfig({ theme = "light", gamut = "srgb" } = {}) {
           filter: (token) => token.$type === "color",
           transform: (token) => {
             const value = token.$value;
-            // The default color/css transform clips wide-gamut colors to hex.
+
             return new Color(
               value.colorSpace,
               value.components,

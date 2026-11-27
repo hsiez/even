@@ -1,10 +1,58 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TraceTable } from "./TraceTable";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { trace } from "../../test/fixtures";
 import { traceHistory, observedReloads } from "../../test/fixtures";
+
+test("exposes the scrolling element and reports its own scroll events", () => {
+  const scrollRef = React.createRef();
+  const onScroll = vi.fn();
+  const { unmount } = render(
+    <TraceTable traces={[trace]} scrollRef={scrollRef} onScroll={onScroll} />,
+  );
+  const viewport = screen.getByRole("region", {
+    name: "Recorded trace results",
+  });
+  expect(scrollRef.current).toBe(viewport);
+  fireEvent.scroll(viewport, { target: { scrollLeft: 120 } });
+  expect(onScroll).toHaveBeenCalledOnce();
+  expect(scrollRef.current.scrollLeft).toBe(120);
+  unmount();
+  expect(scrollRef.current).toBeNull();
+});
+
+test("the selected operation ref follows selection, clears on removal and registers a restored row", () => {
+  const selectedOperationRef = React.createRef();
+  const second = { traceId: "second", label: "Second trace" };
+  const view = (traces, selectedTraceId) => (
+    <TraceTable
+      traces={traces}
+      selectedTraceId={selectedTraceId}
+      selectedOperationRef={selectedOperationRef}
+      onSelectTrace={() => {}}
+    />
+  );
+  const { rerender, unmount } = render(view([trace, second], trace.traceId));
+  const original = screen.getByRole("button", {
+    name: "Investigate deployment",
+  });
+  expect(selectedOperationRef.current).toBe(original);
+  rerender(view([trace, second], second.traceId));
+  expect(selectedOperationRef.current).toBe(
+    screen.getByRole("button", { name: "Second trace" }),
+  );
+  rerender(view([], second.traceId));
+  expect(selectedOperationRef.current).toBeNull();
+  rerender(view([trace], trace.traceId));
+  expect(selectedOperationRef.current).toBe(
+    screen.getByRole("button", { name: "Investigate deployment" }),
+  );
+  expect(selectedOperationRef.current).not.toBe(original);
+  unmount();
+  expect(selectedOperationRef.current).toBeNull();
+});
 
 test("selects a trace and requests sort changes with semantic headers", async () => {
   const user = userEvent.setup(),

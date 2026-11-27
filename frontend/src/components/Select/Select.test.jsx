@@ -1,9 +1,8 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Select } from "./Select";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("reports selection and respects disabled options", async () => {
   const user = userEvent.setup(),

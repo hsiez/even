@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { AttributeList } from "./AttributeList";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Workbench/AttributeList", component: AttributeList };
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <AttributeList
         attributes={{
@@ -22,7 +20,6 @@ export const Default = {
 
 export const Empty = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <AttributeList />;
   },
 };

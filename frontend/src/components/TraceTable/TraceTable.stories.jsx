@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { TraceTable } from "./TraceTable";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { trace } from "../../test/fixtures";
 import { traceHistory, observedReloads } from "../../test/fixtures";
 import { Button } from "../Button/Button";
 import "./InlineEllipsisExperiment.css";
@@ -31,8 +31,27 @@ export const Default = {
 
 export const Empty = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <TraceTable traces={[]} />;
+  },
+};
+
+export const SelectedOperationTarget = {
+  render: function Example() {
+    const [selectedTraceId, setSelectedTraceId] = useState(trace.traceId);
+    const selectedOperationRef = useRef(null);
+    return (
+      <>
+        <TraceTable
+          traces={[trace, { traceId: "second", label: "Another execution" }]}
+          selectedTraceId={selectedTraceId}
+          onSelectTrace={setSelectedTraceId}
+          selectedOperationRef={selectedOperationRef}
+        />
+        <Button onClick={() => selectedOperationRef.current?.focus()}>
+          Focus selected operation
+        </Button>
+      </>
+    );
   },
 };
 
@@ -122,7 +141,7 @@ export const NarrowWithLongContent = {
       ],
     }));
     return (
-      <div style={{ width: "min(100%, 32rem)" }}>
+      <div style={{ width: "min(100%, var(--even-size-panel-preferred))" }}>
         <TraceTable
           traces={longTraces}
           reloads={observedReloads}

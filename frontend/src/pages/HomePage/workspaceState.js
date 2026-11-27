@@ -18,7 +18,6 @@ export function createWorkspace(agentId, initialQuery) {
   return { agentId, spaces: [createSpace(agentId, initialQuery)] };
 }
 
-// Product lifecycle only. Base UI handles tab keyboard navigation and selection.
 export function workspaceReducer(state, action) {
   if (action.type === "visit")
     return {

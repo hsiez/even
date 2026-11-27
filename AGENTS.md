@@ -1,5 +1,7 @@
 # Project instructions
 
+Run `npm run lint` before finishing changes. Follow [the quality policy](docs/design-system/linting.md): explanatory code comments belong in documentation, effects require a reviewed external-system/lifetime entry, and authored presentation consumes decision tokens. Do not bypass checks with inline suppressions or timers that defer state resets.
+
 For frontend work, read [frontend/AGENTS.md](frontend/AGENTS.md) for the component development workflow, [frontend/README.md](frontend/README.md) for existing component contracts, and [the token guide](frontend/tokens/README.md) for design-system usage. Reuse existing components before adding new ones.
 
 ## Components

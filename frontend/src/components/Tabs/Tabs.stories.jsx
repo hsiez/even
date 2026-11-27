@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Tabs } from "./Tabs";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Primitives/Tabs", component: Tabs };
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <Tabs defaultValue="overview">
         <Tabs.List label="Trace sections">

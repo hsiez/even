@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState, useSyncExternalStore } from "react";
 import {
   traceColumns,
   normalizeColumnWidths,
@@ -6,29 +6,50 @@ import {
   rootFontSize,
 } from "./columns";
 
+function createWidthStore(defaultWidths) {
+  let widths = normalizeColumnWidths(defaultWidths);
+  const listeners = new Set();
+  return {
+    getSnapshot: () => widths,
+    subscribe(listener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    resize(column, width) {
+      const next = normalizeColumnWidths({ ...widths, [column.id]: width });
+      if (
+        Object.keys(next).length === Object.keys(widths).length &&
+        Object.entries(next).every(([id, value]) => widths[id] === value)
+      )
+        return;
+      widths = next;
+      for (const listener of [...listeners]) listener();
+      return next;
+    },
+  };
+}
+
 export function useColumnWidths({
   tableRef,
   columnWidths,
   defaultColumnWidths,
   onColumnWidthsChange,
 }) {
-  const [internal, setInternal] = useState(() =>
-    normalizeColumnWidths(defaultColumnWidths),
+  const [store] = useState(() => createWidthStore(defaultColumnWidths));
+  const internal = useSyncExternalStore(
+    store.subscribe,
+    store.getSnapshot,
+    store.getSnapshot,
   );
   const widths = normalizeColumnWidths(
     columnWidths === undefined ? internal : columnWidths,
   );
-  const latest = useRef(widths);
-  useLayoutEffect(() => {
-    latest.current = widths;
-  });
   const [rootSize, setRootSize] = useState(rootFontSize);
   useLayoutEffect(() => {
     const headers = [
       ...tableRef.current.querySelectorAll("thead th[data-column-id]"),
     ];
-    // Widths are fixed by colgroup. Observe layout only to refresh rem-based
-    // limits/announcements when the user's root text size changes.
+
     function measure() {
       setRootSize(rootFontSize());
     }
@@ -42,15 +63,15 @@ export function useColumnWidths({
   }, [tableRef]);
 
   function resize(column, width) {
-    const next = normalizeColumnWidths({
-      ...latest.current,
-      [column.id]: width,
-    });
-    if (next[column.id] === latest.current[column.id]) return;
-    if (columnWidths === undefined) {
-      latest.current = next;
-      setInternal(next);
-    }
+    const next =
+      columnWidths === undefined
+        ? store.resize(column, width)
+        : normalizeColumnWidths({ ...widths, [column.id]: width });
+    if (
+      !next ||
+      (columnWidths !== undefined && next[column.id] === widths[column.id])
+    )
+      return;
     onColumnWidthsChange?.(next);
   }
 

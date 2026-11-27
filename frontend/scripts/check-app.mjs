@@ -294,8 +294,7 @@ try {
     [],
   );
   assert.deepEqual(await readdir(join(project, ".eve")), ["traces"]);
-  // A subsequent CLI startup automatically opens its new handoff URL. Simulate
-  // that new tab in the same browser profile and verify existing tabs recover.
+
   const port = Number(new URL(server.url).port);
   await server.close();
   server = await startServer(await loadEve(project), { port });

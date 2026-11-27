@@ -1,7 +1,5 @@
-// Readable payload leaves shared by the staging UI and persistent projection.
 export function searchContent(value, path = '$', depth = 0, message = false) {
-  // Attributes may serialize a container or string once. After that boundary,
-  // string leaves are recorded content, even when they also look like JSON.
+
   if (typeof value === 'string') {
     try {
       const decoded = JSON.parse(value);
@@ -11,7 +9,7 @@ export function searchContent(value, path = '$', depth = 0, message = false) {
       )
         value = decoded;
     } catch {
-      // Plain text and malformed JSON remain searchable verbatim.
+      return contentLeaves(value, path, depth, message);
     }
   }
   return contentLeaves(value, path, depth, message);

@@ -42,7 +42,6 @@ export async function checkMotionTokens(page, base, theme) {
     css: "110ms",
   });
 
-  // Both zero-duration stages must skip decoration, without dividing by zero.
   await track.evaluate((node) => {
     node.style.setProperty("--even-motion-duration-enter", "0s");
     node.style.setProperty("--even-motion-duration-move", "0s");
@@ -79,7 +78,7 @@ export async function checkMotionTokens(page, base, theme) {
       .evaluate((node) => getComputedStyle(node).transitionDuration),
     "0s",
   );
-  // Input modality also follows the portalled menu, not just keys in the strip.
+
   await page.getByRole("button", { name: "New tab", exact: true }).focus();
   await page.keyboard.press("Enter");
   await page

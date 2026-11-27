@@ -27,7 +27,7 @@ test('finite replay rejects an early end, accepts an empty captured history, and
     yield { type: 'a', meta: { position: { line: 0, index: 0 } } };
   } };
   await assert.rejects(Array.fromAsync(replayEvents(partial, { follow: false })), /captured history tail/);
-  const empty = { async *stream(options) { options.onCaughtUp(); } };
+  const empty = { stream(options) { options.onCaughtUp(); return { async *[Symbol.asyncIterator]() {} }; } };
   assert.deepEqual(await Array.fromAsync(replayEvents(empty, { follow: false })), []);
   const controller = new AbortController();
   controller.abort();

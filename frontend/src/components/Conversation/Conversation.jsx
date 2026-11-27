@@ -11,7 +11,7 @@ export function Conversation({
   const geometry = useRef(null);
   const following = useRef(true);
   const [unread, setUnread] = useState(false);
-  // Upsert repeated IDs while retaining first-seen order, allowing streamed content updates.
+
   const unique = [
     ...new Map(messages.map((message) => [message.id, message])).values(),
   ];
@@ -29,8 +29,7 @@ export function Conversation({
       };
     }
     onActivity();
-    // Observe rendered activity, including updates inside executionAction children.
-    // React element identity is not a reliable signal of visible message changes.
+
     const mutations = new MutationObserver(onActivity);
     mutations.observe(content, {
       childList: true,
@@ -73,8 +72,7 @@ export function Conversation({
         tabIndex={0}
         onScroll={(event) => {
           const node = event.currentTarget;
-          // Layout/content growth can dispatch a scroll event before the resize
-          // observer runs. Let it preserve our previous following intent first.
+
           if (
             typeof ResizeObserver !== "undefined" &&
             geometry.current &&

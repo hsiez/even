@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { MessageComposer } from "./MessageComposer";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default {
   title: "Workbench/MessageComposer",
@@ -9,7 +8,7 @@ export default {
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [, setValue] = useState("");
     return (
       <MessageComposer
         onSend={async (message) => {
@@ -22,7 +21,6 @@ export const Default = {
 
 export const Failure = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <MessageComposer
         onSend={async () => {
@@ -35,14 +33,12 @@ export const Failure = {
 
 export const Disabled = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <MessageComposer disabled />;
   },
 };
 
 export const Pending = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <MessageComposer pending />;
   },
 };

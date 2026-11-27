@@ -17,6 +17,12 @@
     "node": ">=24"
   },
   "scripts": {
+    "lint": "npm run lint:js && npm run lint:design && npm run lint:effects",
+    "lint:js": "eslint . --max-warnings 0",
+    "lint:design": "stylelint 'frontend/src/**/*.css' 'frontend/.storybook/*.css' --max-warnings 0",
+    "lint:effects": "node scripts/audit-code.mjs --check",
+    "lint:audit": "node scripts/audit-code.mjs",
+    "test:lint": "node --test test/lint.test.js",
     "dev:ui": "npm --prefix frontend run dev",
     "build:ui": "npm --prefix frontend run build",
     "prepack": "npm run build:ui >&2",
@@ -27,7 +33,7 @@
     "test:app": "npm run build:ui && node frontend/scripts/check-app.mjs",
     "storybook": "npm --prefix frontend run storybook",
     "build-storybook": "npm --prefix frontend run build-storybook",
-    "test:all": "npm test && npm run test:ui"
+    "test:all": "npm run lint && npm test && npm run test:ui"
   },
   "license": "MIT",
   "dependencies": {
@@ -36,7 +42,16 @@
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^13.1.0",
+    "@eslint/js": "^10.0.1",
     "ajv": "^8.20.0",
+    "color-name": "^2.1.1",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-web-api": "^5.30.6",
+    "globals": "^17.14.0",
+    "postcss": "^8.5.33",
+    "postcss-value-parser": "^4.2.0",
+    "stylelint": "^18.1.0",
     "yaml": "^2.9.1"
   }
 }

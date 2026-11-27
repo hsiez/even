@@ -1,8 +1,5 @@
 @import "@fontsource-variable/geist-mono";
 @import "../tokens/generated/tokens.css";
-
-/* Consumers can override this layer with an ordinary className or inline style.
-   Component rules consume decisions; palette/scale choices belong in JSON. */
 @layer even-components {
   :where(
     .even-workbench,
@@ -16,7 +13,7 @@
     .even-notice
   ) {
     box-sizing: border-box;
-    font-family: var(--even-font-ui, system-ui, sans-serif);
+    font-family: var(--even-font-ui);
     font-size: 0.875rem;
     line-height: 1.5;
     color: var(--even-text-primary);
@@ -29,7 +26,7 @@
     gap: var(--even-space-gap-related);
     min-height: var(--even-size-control-default);
     padding: var(--even-space-inset-tight) var(--even-space-inset-default);
-    border: 1px solid var(--even-border-control);
+    border: var(--even-size-border-control) solid var(--even-border-control);
     border-radius: var(--even-size-radius-control);
     background: var(--even-surface-control);
     color: var(--even-text-primary);
@@ -104,7 +101,7 @@
     min-width: 0;
     min-height: var(--even-size-control-default);
     padding: var(--even-space-inset-compact);
-    border: 1px solid var(--even-border-control);
+    border: var(--even-size-border-control) solid var(--even-border-control);
     border-radius: var(--even-size-radius-control);
     background: var(--even-surface-page);
     color: var(--even-text-primary);
@@ -131,8 +128,6 @@
     justify-content: space-between;
     text-align: start;
   }
-  /* Base UI nests child portals in the parent portal. Each portal isolates its
-     own backdrop/popup levels; child portals then sit above those local levels. */
   :where(.even-overlay-portal) {
     position: relative;
     isolation: isolate;
@@ -155,8 +150,6 @@
     );
     overflow: auto;
   }
-  /* Base UI owns mount/unmount and exposes its transition phases. Only these
-     occasional overlays animate; autocomplete, tooltips and selects stay instant. */
   :where(.even-menu-popup, .even-popover-popup) {
     transform-origin: var(--transform-origin);
     opacity: 1;
@@ -180,8 +173,6 @@
     transition-duration: var(--even-motion-duration-exit);
     transition-timing-function: var(--even-motion-easing-exit);
   }
-  /* The modal scrim changes the whole viewport, so panel and backdrop share
-     the large-area timing even when the dialog's content itself is compact. */
   :where(.even-dialog-popup, .even-dialog-backdrop) {
     opacity: 1;
     transition: opacity var(--even-motion-duration-enter-large)
@@ -288,12 +279,12 @@
     padding: var(--even-space-inset-compact);
   }
   :where(.even-separator) {
-    height: 1px;
+    height: var(--even-size-border-control);
     background: var(--even-border-default);
     margin-block: var(--even-space-gap-related);
   }
   :where(.even-separator[data-orientation="vertical"]) {
-    width: 1px;
+    width: var(--even-size-border-control);
     height: auto;
     align-self: stretch;
     margin-block: 0;
@@ -302,7 +293,8 @@
   :where(.even-tab-list) {
     display: flex;
     gap: var(--even-space-gap-group);
-    border-bottom: 1px solid var(--even-border-default);
+    border-bottom: var(--even-size-border-control) solid
+      var(--even-border-default);
     overflow-x: auto;
   }
   :where(.even-tab) {
@@ -311,7 +303,7 @@
     color: var(--even-text-secondary);
     background: transparent;
     border: 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: var(--even-size-border-strong) solid transparent;
     min-height: var(--even-size-control-default);
     padding: var(--even-space-inset-compact);
     cursor: pointer;
@@ -344,7 +336,6 @@
     display: none;
   }
   :where(.even-workbench-tab-bar) {
-    /* Seed for first layout; useStickyTab replaces this with the rendered height. */
     --even-tab-row-height: calc(
       var(--even-size-control-default) + var(--even-size-border-control)
     );
@@ -376,16 +367,13 @@
     width: 0;
     opacity: 0;
     pointer-events: none;
-    /* Behind the tab's own outline/shoulders, above passing tab slots. */
     z-index: -1;
   }
   :where(.even-workbench-tab:has(.even-tab[data-active]))
     > .even-workbench-active-fade {
     display: block;
   }
-  /* Border-image paint follows the tab but adds no scrollable overflow. */
   :where(.even-workbench-active-fade-start) {
-    /* Stop at the outer edge: child paint would otherwise cover the border. */
     left: calc(-1 * var(--even-size-border-control));
     border-image: linear-gradient(
         to right,
@@ -419,7 +407,6 @@
   :where(.even-workbench-tab-scroll) {
     overflow-x: auto;
     overflow-y: hidden;
-    /* Suppress edge feedback and chaining into browser swipe navigation. */
     overscroll-behavior-x: none;
     overscroll-behavior-y: none;
     scrollbar-width: none;
@@ -453,8 +440,6 @@
     border: 0;
     overflow: visible;
     isolation: auto;
-    /* Keep the hand continuous across tab borders and curved corner gaps.
-       This box follows the actual tabs; spare strip space remains outside it. */
     cursor: pointer;
   }
   :where(.even-workbench-tab) {
@@ -488,7 +473,6 @@
     opacity: 0;
   }
   :where(.even-workbench-tab-track)::before {
-    /* Decoration must not preserve the old scroll extent after tabs close. */
     left: clamp(
       0px,
       var(--even-tab-viewport-start, 0px),
@@ -552,15 +536,12 @@
   )::before {
     content: "";
     position: absolute;
-    /* Keep the tight clearance above the painted baseline, not its outer edge. */
     inset-block: calc(
       var(--even-space-inset-tight) + var(--even-size-border-control)
     );
-    /* Include the reserved stroke in the tight visible edge clearance. */
     inset-inline: calc(
       var(--even-space-inset-tight) - var(--even-size-border-control)
     );
-    /* Concentric with the shoulder's painted inner edge. */
     border-radius: max(
       0px,
       calc(
@@ -584,7 +565,6 @@
     min-height: var(--even-size-control-compact);
     padding: 0;
     border: 0;
-    /* Derived runtime clearance inside the inactive tab's inset hover surface. */
     --even-tab-close-offset: calc(
       (
           var(--even-tab-row-height) - var(--even-size-control-compact) - 3 *
@@ -705,7 +685,6 @@
   ) {
     color: var(--even-text-primary);
   }
-  /* Ignore pointer hover during scroll, including the shared trigger's :hover. */
   :where(
     .even-workbench-tab-track:is(
         [data-scrolling],
@@ -824,10 +803,6 @@
     .even-workbench-tab:has(.even-tab[data-active])::after {
     visibility: hidden;
   }
-  /* The creation outline moves independently of the selected row and viewport.
-     Stationary scroll masks would paint over its border near the final target,
-     making a constant-width tab look narrower. The plus still clips the entry;
-     restore scroll fades when the outline returns to the live sticky row. */
   :where(.even-workbench-tab-track[data-creating])::before,
   :where(.even-workbench-tab-track[data-creating])::after,
   :where(.even-workbench-tab-track[data-creating])
@@ -838,13 +813,8 @@
   :where(.even-workbench-tab-indicator[hidden]) {
     display: none;
   }
-  /* Removal moves the live tab outline with its label, leaving a readable gap.
-     The separate selection indicator must not fill that gap or trail the row. */
   :where(.even-workbench-tab-track[data-removing])
     .even-workbench-tab-indicator {
-    /* Its previous Base UI position may extend beyond the shortened track for
-       one commit. Hidden paint still enlarges scroll overflow and causes a late
-       clamp, canceling removal. The live active row paints this outline. */
     display: none;
   }
   :where(.even-workbench-tab-track[data-removing])
@@ -954,7 +924,6 @@
     flex: 0 0 auto;
     align-self: end;
     margin-inline-start: calc(-1 * var(--even-space-inset-default));
-    /* The leading radius stays transparent so the active shoulder can pass. */
     width: calc(
       var(--even-size-control-comfortable) + var(--even-size-radius-panel)
     );
@@ -977,7 +946,6 @@
     .even-workbench-new:hover,
     .even-workbench-new:active
   ) {
-    /* Cover overflowing tabs after the shoulder, with no seam in the baseline. */
     background:
       linear-gradient(var(--even-border-default), var(--even-border-default))
         right bottom / calc(100% - var(--even-size-radius-panel))
@@ -1037,7 +1005,7 @@
     min-width: 0;
   }
   :where(.even-disclosure) {
-    border: 1px solid var(--even-border-default);
+    border: var(--even-size-border-control) solid var(--even-border-default);
     border-radius: var(--even-size-radius-control);
   }
   :where(.even-disclosure-trigger) {
@@ -1060,7 +1028,7 @@
     display: flex;
     align-items: stretch;
     min-height: 80dvh;
-    border: 1px solid var(--even-border-default);
+    border: var(--even-size-border-control) solid var(--even-border-default);
     background: var(--even-surface-page);
     color: var(--even-text-primary);
   }
@@ -1068,7 +1036,8 @@
     flex: 0 0 var(--even-size-navigation-preferred);
     box-sizing: border-box;
     padding: var(--even-space-inset-default);
-    border-right: 1px solid var(--even-border-default);
+    border-right: var(--even-size-border-control) solid
+      var(--even-border-default);
     background: var(--even-surface-secondary);
   }
   :where(.even-workbench > main) {
@@ -1090,7 +1059,8 @@
     min-width: 0;
     box-sizing: border-box;
     background: var(--even-surface-secondary);
-    border-left: 1px solid var(--even-border-default);
+    border-left: var(--even-size-border-control) solid
+      var(--even-border-default);
   }
   :where(.even-inspector-header) {
     display: flex;
@@ -1099,7 +1069,8 @@
     justify-content: space-between;
     gap: var(--even-space-gap-related);
     padding: var(--even-space-inset-default);
-    border-bottom: 1px solid var(--even-border-default);
+    border-bottom: var(--even-size-border-control) solid
+      var(--even-border-default);
   }
   :where(.even-inspector-header h2) {
     margin: 0;
@@ -1303,7 +1274,8 @@
   }
   :where(.even-table th, .even-table td) {
     padding: var(--even-space-inset-compact);
-    border-bottom: 1px solid var(--even-border-default);
+    border-bottom: var(--even-size-border-control) solid
+      var(--even-border-default);
     text-align: start;
     vertical-align: top;
   }
@@ -1386,7 +1358,8 @@
     position: absolute;
     inset-inline-end: 0;
     inset-block: var(--even-space-inset-compact);
-    border-inline-end: 1px solid var(--even-border-default);
+    border-inline-end: var(--even-size-border-control) solid
+      var(--even-border-default);
     opacity: 0;
   }
   :where(
@@ -1404,13 +1377,12 @@
     border-color: var(--even-border-interaction);
   }
   :where(.even-column-resizer):focus-visible {
-    outline: 2px solid var(--even-focus-ring);
-    outline-offset: -2px;
+    outline: var(--even-size-focus-outline) solid var(--even-focus-ring);
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
   }
   :where(.even-trace-table th, .even-trace-table td) {
     vertical-align: middle;
   }
-  /* Cells establish the text inset; nested controls must not add it twice. */
   :where(.even-trace-table .even-trace-text-action) {
     max-width: 100%;
     padding-inline-start: 0;
@@ -1423,8 +1395,6 @@
   }
   :where(.even-trace-table .even-trace-operation) {
     padding: 0;
-    /* A definite cell height lets the button stretch to the row's actual height.
-       Its content/minimum still participates in native table sizing. */
     height: 1px;
   }
   :where(.even-trace-table .even-trace-operation-action) {
@@ -1437,7 +1407,6 @@
     padding: var(--even-space-inset-compact);
     border: 0;
     border-radius: 0;
-    /* The row supplies hover/selection surfaces; keep the full-cell action clear. */
     background: transparent;
     color: inherit;
     justify-content: flex-start;
@@ -1463,7 +1432,8 @@
   :where(.even-trace-reload-content)::after {
     content: "";
     flex: 1;
-    border-top: 1px dashed var(--even-border-default);
+    border-top: var(--even-size-border-control) dashed
+      var(--even-border-default);
   }
   :where(.even-trace-reload-content > span) {
     min-width: 0;
@@ -1528,7 +1498,7 @@
   :where(.even-payload) {
     background: var(--even-surface-control);
     padding: var(--even-space-inset-default);
-    border: 1px solid var(--even-border-default);
+    border: var(--even-size-border-control) solid var(--even-border-default);
     border-radius: var(--even-size-radius-control);
   }
   :where(.even-span-tree, .even-span-tree ul) {
@@ -1570,7 +1540,7 @@
     padding: var(--even-space-inset-default);
     background: var(--even-status-info-surface);
     color: var(--even-status-info-text);
-    border: 1px solid var(--even-status-info-border);
+    border: var(--even-size-border-control) solid var(--even-status-info-border);
     border-radius: var(--even-size-radius-control);
   }
   :where(.even-notice[role="alert"]) {
@@ -1597,7 +1567,7 @@
     overflow: auto;
     padding: var(--even-space-inset-default);
     margin-block: var(--even-space-gap-group);
-    border: 1px solid var(--even-border-default);
+    border: var(--even-size-border-control) solid var(--even-border-default);
     border-radius: var(--even-size-radius-control);
   }
   :where(.even-conversation ol) {
@@ -1674,7 +1644,8 @@
     :where(.even-workbench > aside) {
       flex-basis: 100%;
       border-left: 0;
-      border-top: 1px solid var(--even-border-default);
+      border-top: var(--even-size-border-control) solid
+        var(--even-border-default);
     }
   }
   @media (max-width: 48rem) {
@@ -1683,7 +1654,8 @@
     }
     :where(.even-workbench > nav) {
       border-right: 0;
-      border-bottom: 1px solid var(--even-border-default);
+      border-bottom: var(--even-size-border-control) solid
+        var(--even-border-default);
     }
     :where(.even-workbench > main) {
       padding: var(--even-space-inset-default);
@@ -1703,5 +1675,455 @@
       outline: var(--even-size-focus-outline) solid Highlight;
       outline-offset: calc(-1 * var(--even-size-focus-outline));
     }
+  }
+  :where(.even-trace-viewer) {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template:
+      auto minmax(0, 1fr) / minmax(0, var(--even-size-panel-preferred))
+      minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--even-surface-page);
+    color: var(--even-text-primary);
+    font-family: var(--even-font-ui);
+    border: var(--even-size-border-control) solid var(--even-border-default);
+    border-radius: var(--even-size-radius-panel);
+  }
+  :where(.even-trace-breadcrumbs) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--even-space-gap-related);
+    min-width: 0;
+    font-family: var(--even-font-ui);
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-breadcrumbs ol) {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: var(--even-space-inset-compact);
+    gap: var(--even-space-gap-tight);
+  }
+  :where(.even-trace-breadcrumbs li) {
+    display: flex;
+    align-items: center;
+    gap: var(--even-space-gap-tight);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  :where(.even-trace-breadcrumbs [aria-current]) {
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    font-weight: 600;
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-breadcrumbs .even-button:not([aria-current])) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-back) {
+    margin: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    min-width: 0;
+    max-width: 100%;
+  }
+  :where(.even-trace-back svg, .even-trace-open-icon) {
+    flex: none;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-trace-open-icon) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-open-icon) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-scope-snapshot) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  :where(.even-trace-breadcrumbs .even-button) {
+    white-space: normal;
+    text-align: start;
+  }
+  :where(.even-trace-breadcrumb-separator) {
+    color: var(--even-text-secondary);
+  }
+  :where(.even-trace-viewer > .even-trace-breadcrumbs) {
+    grid-column: 1 / -1;
+    border-bottom: var(--even-size-border-control) solid
+      var(--even-border-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-trace-viewer-path) {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    border-inline-end: var(--even-size-border-control) solid
+      var(--even-border-default);
+  }
+  :where(.even-trace-path) {
+    min-width: 0;
+    overflow: auto;
+    color: var(--even-text-primary);
+    font-family: var(--even-font-ui);
+    padding: var(--even-space-inset-default);
+  }
+  :where(.even-trace-viewer-path .even-trace-path) {
+    overflow: visible;
+  }
+  :where(.even-trace-raw-format, .even-trace-empty) {
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-path-content) {
+    position: relative;
+    isolation: isolate;
+    display: flow-root;
+    min-width: 0;
+  }
+  :where(.even-trace-rail) {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    color: var(--even-hierarchy-guide);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--even-size-border-control);
+    stroke-linecap: round;
+  }
+  :where(.even-trace-path-tree) {
+    position: relative;
+  }
+  :where(.even-trace-level-guides) {
+    stroke-dasharray: 0 var(--even-space-gap-tight);
+  }
+  :where(.even-trace-path-tree, .even-trace-path-tree ul) {
+    padding-inline-start: var(--even-space-inset-default);
+    margin-inline-start: var(--even-space-inset-compact);
+  }
+  :where(.even-trace-path-tree) {
+    margin-block: var(--even-space-gap-group);
+  }
+  :where(.even-trace-path-tree ul) {
+    margin-block: 0;
+  }
+  :where(.even-trace-path-tree [role="treeitem"]) {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: var(--even-size-control-default);
+    min-width: var(--even-size-object-row-minimum);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+    margin-block: var(--even-space-gap-related);
+    background: transparent;
+  }
+  :where(.even-trace-path-tree [role="treeitem"])::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border-radius: inherit;
+    background: var(--trace-row-background, transparent);
+    pointer-events: none;
+  }
+  :where(.even-trace-path-tree [role="treeitem"]:hover) {
+    --trace-row-background: var(--even-surface-hover);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"]) {
+    --trace-row-background: var(--even-selection-background);
+  }
+  :where(.even-trace-path-node) {
+    position: absolute;
+    inset-inline-start: calc(
+      -1 * var(--even-space-inset-default) - var(--even-size-icon-default) / 2 -
+        var(--even-size-border-control)
+    );
+    top: calc(50% - var(--even-size-icon-default) / 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+    box-sizing: border-box;
+    border-radius: var(--even-size-radius-control);
+    background: var(--even-surface-page);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"]:hover) {
+    --trace-row-background: var(--even-selection-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-tree) [role="treeitem"]:focus-visible {
+    outline-offset: calc(-1 * var(--even-size-focus-outline));
+  }
+  :where(.even-trace-path-tree [role="treeitem"] > span) {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-width: 0;
+    gap: var(--even-space-gap-tight);
+    flex: 1;
+  }
+  :where(.even-trace-path-tree [role="treeitem"] > button) {
+    position: absolute;
+    inset-inline-start: calc(
+      -1 * var(--even-space-inset-default) - var(--even-size-control-compact) /
+        2 - var(--even-size-border-control)
+    );
+    top: calc(50% - var(--even-size-control-compact) / 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--even-size-control-compact);
+    height: var(--even-size-control-compact);
+    min-height: var(--even-size-control-compact);
+    padding: 0;
+  }
+  :where(
+    .even-trace-path-tree [role="treeitem"] > button .even-trace-path-node
+  ) {
+    position: static;
+    pointer-events: none;
+  }
+  :where(.even-trace-object) {
+    display: grid;
+    grid-template-columns: var(--even-size-label-category) minmax(0, 1fr);
+    align-items: center;
+    min-width: 0;
+    gap: var(--even-space-gap-related);
+    overflow: hidden;
+    font-family: var(--even-font-ui);
+    color: inherit;
+  }
+  :where(.even-trace-object[data-category="Step"] .even-trace-path-name) {
+    grid-column: 1 / 3;
+  }
+  :where(.even-trace-object-category) {
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  :where(
+    .even-trace-path-tree [aria-selected="true"] .even-trace-object-category
+  ) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-marker) {
+    width: var(--even-size-icon-small);
+    height: var(--even-size-icon-small);
+    border: var(--even-size-border-control) solid currentColor;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: var(--even-surface-page);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-marker) {
+    background: currentColor;
+  }
+  :where(.even-trace-path-name) {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :where(
+    .even-trace-path-tree .even-trace-path-name,
+    .even-trace-path-tree .even-trace-path-node
+  ) {
+    color: var(--even-text-secondary);
+  }
+  :where(
+    .even-trace-path-tree
+      [role="treeitem"]:hover
+      :is(.even-trace-path-name, .even-trace-path-node),
+    .even-trace-path-tree
+      [role="treeitem"]:focus-visible
+      :is(.even-trace-path-name, .even-trace-path-node),
+    .even-trace-path-tree
+      [role="treeitem"]:has(:focus-visible)
+      :is(.even-trace-path-name, .even-trace-path-node)
+  ) {
+    color: var(--even-text-primary);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-name) {
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-path-tree [aria-selected="true"] .even-trace-path-node) {
+    color: var(--even-selection-indicator);
+  }
+  :where(.even-trace-object[data-category-appearance="label"]) {
+    grid-template-columns:
+      calc(
+        var(--even-size-label-category) + 2 * var(--even-space-inset-default)
+      )
+      minmax(0, 1fr);
+  }
+  :where(
+    .even-trace-object[data-category-appearance="label"]
+      .even-trace-object-category,
+    .even-trace-object[data-category-appearance="label"][data-category="Step"]
+      .even-trace-path-name
+  ) {
+    display: inline-block;
+    justify-self: start;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: var(--even-space-inset-tight) var(--even-space-inset-default);
+    border-radius: var(--even-size-radius-pill);
+    background: var(--even-label-background);
+    color: var(--even-label-foreground);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  :where(
+    .even-trace-path-tree
+      [aria-selected="true"]
+      .even-trace-object[data-category-appearance="label"]
+      .even-trace-object-category,
+    .even-trace-path-tree
+      [aria-selected="true"]
+      .even-trace-object[data-category-appearance="label"][data-category="Step"]
+      .even-trace-path-name
+  ) {
+    background: var(--even-label-selected-background);
+    color: var(--even-selection-foreground);
+  }
+  :where(.even-trace-raw-metrics) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-inline-end: auto;
+    min-width: 0;
+    gap: var(--even-space-gap-related);
+    color: var(--even-text-secondary);
+    font-size: 0.75rem;
+  }
+  :where(.even-trace-path-error) {
+    color: var(--even-status-error-text);
+  }
+  :where(.even-trace-raw-panel) {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    color: var(--even-text-primary);
+    background: var(--even-surface-page);
+    font-family: var(--even-font-ui);
+    overflow: hidden;
+  }
+  :where(.even-visually-hidden) {
+    position: absolute;
+    width: var(--even-size-border-control);
+    height: var(--even-size-border-control);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    padding: 0;
+    border: 0;
+  }
+  :where(.even-copy-error) {
+    color: var(--even-status-error-text);
+    font-size: 0.75rem;
+  }
+  :where(.even-copy-icon) {
+    width: var(--even-size-icon-default);
+    height: var(--even-size-icon-default);
+  }
+  :where(.even-payload-toolbar) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--even-space-gap-related);
+    padding: var(--even-space-inset-tight) var(--even-space-inset-compact);
+  }
+  :where(.even-payload-toolbar > .even-copy-error) {
+    flex-basis: 100%;
+    text-align: end;
+  }
+  :where(.even-trace-raw-panel > .even-payload) {
+    display: grid;
+    grid-template: auto minmax(0, 1fr) / minmax(0, 1fr);
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--even-surface-secondary);
+  }
+  :where(.even-trace-raw-panel .even-payload-toolbar) {
+    padding-inline: var(--even-space-inset-default);
+  }
+  :where(.even-trace-raw-panel .even-payload pre) {
+    box-sizing: border-box;
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    min-height: 0;
+    overflow: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    padding: 0 var(--even-space-inset-default) var(--even-space-inset-default);
+    background: var(--even-surface-secondary);
+  }
+  :where(
+    .even-trace-raw-panel > .even-notice,
+    .even-trace-raw-panel > .even-trace-empty
+  ) {
+    margin: var(--even-space-inset-default);
+  }
+  :where(.even-json-key) {
+    color: var(--even-syntax-key);
+  }
+  :where(.even-json-string) {
+    color: var(--even-syntax-string);
+  }
+  :where(.even-json-number) {
+    color: var(--even-syntax-number);
+  }
+  :where(.even-json-literal) {
+    color: var(--even-syntax-literal);
+  }
+  :where(.even-json-punctuation) {
+    color: var(--even-syntax-punctuation);
+  }
+  @media (max-width: 48rem) {
+    :where(.even-trace-viewer) {
+      grid-template: auto auto minmax(0, 1fr) / minmax(0, 1fr);
+    }
+    :where(.even-trace-viewer-path) {
+      max-height: calc(var(--even-size-control-comfortable) * 5);
+      border-inline-end: 0;
+      border-bottom: var(--even-size-border-control) solid
+        var(--even-border-default);
+    }
+  }
+  :where(.even-trace-viewer-raw) {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  :where(.even-trace-viewer-raw > .even-trace-raw-panel) {
+    flex: 1;
   }
 }

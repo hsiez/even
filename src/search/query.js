@@ -1,4 +1,3 @@
-// Shared browser/backend search syntax. Keep this module free of platform APIs.
 const fields = new Set([
   'agent',
   'tool',

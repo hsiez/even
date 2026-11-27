@@ -9,9 +9,6 @@ export function isKeyboardMotion(element) {
   );
 }
 
-// A shared presentation preference, not primitive selection/focus state. Track
-// the document so keyboard actions in portals are immediate too. Ref counting
-// keeps one listener pair across multiple controls and independent workbenches.
 export function observeMotionInput(document) {
   let entry = documents.get(document);
   if (!entry) {

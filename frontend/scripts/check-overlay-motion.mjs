@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 
-// Exercise real Base UI mount/unmount transitions rather than restating CSS.
 export async function checkOverlayMotion(page, base, theme) {
   const surfaces = [
     {
@@ -123,7 +122,6 @@ export async function checkOverlayMotion(page, base, theme) {
       await trigger.elementHandle(),
     );
 
-    // Keyboard opening and Escape must not wait for pointer decoration.
     await trigger.press("Enter");
     await popup.waitFor();
     assert.equal(
@@ -164,8 +162,6 @@ export async function checkOverlayMotion(page, base, theme) {
     await finish();
   }
 
-  // Reversing a menu mid-entry should retarget the current painted state,
-  // and another opening must work before the previous exit completes.
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto(
     `${base}/iframe.html?id=primitives-menu--default&viewMode=story&globals=theme:${theme}`,

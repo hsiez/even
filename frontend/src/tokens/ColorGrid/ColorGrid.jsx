@@ -238,21 +238,54 @@ export function ColorGrid({ theme = "light", style, label }) {
           </thead>
           <tbody>
             {contrastPairs.map((pair) => {
-              const ratios = ["srgb", "p3"].map((gamut) =>
-                Color.contrastWCAG21(
+              const ratios = ["srgb", "p3"].map((gamut) => {
+                let background = new Color(
+                  resolveColor(theme, pair.background, gamut),
+                );
+                if (pair.underlay) {
+                  const overlay = background.to("srgb");
+                  const base = new Color(
+                    resolveColor(theme, pair.underlay, gamut),
+                  ).to("srgb");
+                  background = new Color(
+                    "srgb",
+                    overlay.coords.map(
+                      (channel, index) =>
+                        channel * overlay.alpha +
+                        base.coords[index] * (1 - overlay.alpha),
+                    ),
+                  );
+                }
+                return Color.contrastWCAG21(
                   new Color(resolveColor(theme, pair.foreground, gamut)),
-                  new Color(resolveColor(theme, pair.background, gamut)),
-                ),
-              );
+                  background,
+                );
+              });
               return (
-                <tr key={`${pair.foreground}/${pair.background}`}>
+                <tr
+                  key={`${pair.foreground}/${pair.background}/${pair.underlay ?? "opaque"}`}
+                >
                   <th scope="row">{pair.purpose}</th>
                   <td>
                     <code>{pair.foreground}</code>
                     <br />
                     <code>{pair.background}</code>
+                    {pair.underlay && (
+                      <>
+                        <br />
+                        over <code>{pair.underlay}</code>
+                      </>
+                    )}
                   </td>
-                  <td>
+                  <td
+                    style={
+                      pair.underlay
+                        ? {
+                            backgroundColor: `var(${semanticVariable(pair.underlay)})`,
+                          }
+                        : undefined
+                    }
+                  >
                     {pair.minimum === 4.5 ? (
                       <span
                         className="even-color-grid__pair"

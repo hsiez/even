@@ -1,4 +1,3 @@
-// Isolate Eve's environment and launcher from Even's HTTP server.
 import lockfile from 'proper-lockfile';
 import { loadEve } from './eve-adapter.js';
 import { stat } from 'node:fs/promises';

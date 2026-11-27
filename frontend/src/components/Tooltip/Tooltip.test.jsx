@@ -1,5 +1,5 @@
 import React from "react";
-import { test, expect, vi } from "vitest";
+import { test, expect } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Tooltip } from "./Tooltip";

@@ -108,7 +108,7 @@ export async function checkStickyTabs(page, base, theme, axe) {
     const frames = [];
     for (const x of [700, 1400, 4000, 0, 520, 6200]) {
       node.scrollLeft = x;
-      // Intentionally sample before scroll listeners/React get another frame.
+
       const row = node.querySelector(
         ".even-workbench-tab:has(.even-tab[data-active])",
       );
@@ -139,8 +139,7 @@ export async function checkStickyTabs(page, base, theme, axe) {
     ),
     "Scroll frames use one native fixed-width outline and close target before React updates",
   );
-  // Native edge feedback can move the sticky tab without a scroll event. Its
-  // attached covers must stay joined even before any observer can run.
+
   const fadeFrames = await scroll.evaluate((node) => {
     node.dispatchEvent(new WheelEvent("wheel", { deltaX: 1 }));
     const row = node.querySelector(
@@ -152,7 +151,7 @@ export async function checkStickyTabs(page, base, theme, axe) {
     const range = node.scrollWidth - node.clientWidth;
     for (const x of [0, 500, 620, 4000, range, 0]) {
       node.scrollLeft = x;
-      // Simulate a fractional elastic edge displacement on the live tab.
+
       for (const shift of [-12.5, 8.25, 0]) {
         row.style.transform = `translateX(${shift}px)`;
         const box = row.getBoundingClientRect();
@@ -203,7 +202,6 @@ export async function checkStickyTabs(page, base, theme, axe) {
   await closeClearance("start");
   await page.screenshot({ path: `/tmp/even-sticky-left-${theme}.png` });
 
-  // Contrasting fixture underlays expose holes in the shoulder masks and fades.
   await move(1000, "start");
   const underlay = await page.addStyleTag({
     content:
@@ -397,8 +395,6 @@ export async function checkStickyTabs(page, base, theme, axe) {
   );
 }
 
-// A real scrollable ancestor exposes gesture chaining that a computed-style
-// assertion would miss. Only the strip should move, and only horizontally.
 async function checkGestureContainment(page) {
   const scroll = page.locator(".even-workbench-tab-scroll");
   await page.locator(".even-tabs-design-frame").evaluate((frame) => {

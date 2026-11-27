@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FilterBar } from "./FilterBar";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Workbench/FilterBar", component: FilterBar };
 

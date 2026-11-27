@@ -1,9 +1,9 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SpanWaterfall } from "./SpanWaterfall";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { spans } from "../../test/fixtures";
 
 test("separates expansion, keyboard focus and shared selection", async () => {
   const user = userEvent.setup(),
@@ -98,7 +98,7 @@ test("keeps one tree tab stop when arrow focus and timeline selection differ", a
     "aria-selected",
     "true",
   );
-  // Unrelated parent updates must not erase the remembered keyboard focus.
+
   rerender(
     <SpanWaterfall spans={[...spans]} defaultExpandedSpanIds={["root"]}>
       <SpanWaterfall.Tree />
@@ -112,4 +112,22 @@ test("keeps one tree tab stop when arrow focus and timeline selection differ", a
   expect(tabStops()).toEqual([
     screen.getByRole("treeitem", { name: "Agent activation" }),
   ]);
+});
+test("activation can repeat on a selected row without reporting a selection change", async () => {
+  const activate = vi.fn(),
+    select = vi.fn(),
+    user = userEvent.setup();
+  render(
+    <SpanWaterfall
+      spans={spans}
+      defaultSelectedSpanId="root"
+      onSelectSpan={select}
+    >
+      <SpanWaterfall.Tree onActivateSpan={activate} />
+    </SpanWaterfall>,
+  );
+  await user.click(screen.getByRole("treeitem", { name: "Agent activation" }));
+  await user.keyboard("{Enter}");
+  expect(activate.mock.calls).toEqual([["root"], ["root"]]);
+  expect(select).not.toHaveBeenCalled();
 });

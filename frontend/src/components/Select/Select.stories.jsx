@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Select } from "./Select";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Primitives/Select", component: Select };
 

@@ -14,8 +14,6 @@ const types = {
   '.png': 'image/png',
 };
 
-// Only the built entry and assets are public. Project files and API resources
-// never pass through this handler, and the HTML contains no launch credential.
 export async function serveBrowser(
   request,
   response,

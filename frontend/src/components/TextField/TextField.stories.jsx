@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField } from "./TextField";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { trace } from "../../test/fixtures";
 
 export default { title: "Primitives/TextField", component: TextField };
 
@@ -21,7 +21,6 @@ export const Default = {
 
 export const Error = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <TextField
         label="Query"
@@ -34,7 +33,6 @@ export const Error = {
 
 export const ReadOnly = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <TextField label="Trace ID" readOnly value={trace.traceId} />;
   },
 };

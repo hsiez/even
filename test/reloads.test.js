@@ -82,7 +82,7 @@ test('background observation captures changes between UI requests and stops on c
     await monitor.list('a');
     f.revisions.set('/a', 'second');
     for (let attempts = 0; f.reads.length < 2 && attempts < 50; attempts++) await delay(5);
-    // Wait for the in-flight sample before publishing the next change.
+
     await delay(5);
     f.revisions.set('/a', 'third');
     const response = await monitor.list('a');

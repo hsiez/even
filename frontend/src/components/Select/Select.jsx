@@ -2,7 +2,6 @@ import React, { useId } from "react";
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { classes } from "../presentation";
 
-// Convenience composition; Base UI owns selection, typeahead, focus and dismissal.
 export function Select({
   label,
   options,

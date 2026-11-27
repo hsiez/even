@@ -1,11 +1,11 @@
 import { searchContent } from "../../../src/search/content.js";
-import { parseTraceQuery } from "../../../src/search/query.js";
+
 export {
   parseTraceQuery,
   removeQueryToken,
   matchExcerpt,
 } from "../../../src/search/query.js";
-// Staging view-model matcher. Backend ingestion uses Eve's canonical helpers.
+
 const textFields = new Set(["input", "output", "context", "reply", "error"]);
 const lower = (value) => String(value ?? "").toLowerCase();
 const contains = (value, term) => lower(value).includes(lower(term));
@@ -119,7 +119,7 @@ export function searchTraces(traces, parsed) {
     });
     for (const token of tokens) {
       const { field, value } = token;
-      let found = [];
+      let found;
       if (field === "tool" || field === "tool.status")
         found = scopedTools.map((span) => ({
           field: "tool",
@@ -187,7 +187,7 @@ export function searchTraces(traces, parsed) {
       if (!found.length) return [];
       matches.push(...found);
     }
-    // Prefer captured content over structural matches when choosing where to open.
+
     const unique = [
       ...new Map(
         matches.map((match) => [

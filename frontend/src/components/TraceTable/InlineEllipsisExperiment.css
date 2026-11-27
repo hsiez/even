@@ -1,10 +1,8 @@
-/* Storybook-only comparison. Do not import into the component defaults. */
 .even-inline-ellipsis-experiment .even-cell-overflow-text {
   width: auto;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  /* Override the current component's inline mask only inside this experiment. */
   clip-path: none !important;
 }
 .even-inline-ellipsis-experiment .even-cell-overflow-marker {

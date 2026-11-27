@@ -31,3 +31,12 @@ export const strokeOptions = Object.entries(tokens)
     value: token.value,
     description: token.description,
   }));
+
+export const radiusOptions = Object.entries(tokens)
+  .filter(([path]) => path.startsWith("options.radius."))
+  .map(([path, token]) => ({
+    key: path.slice("options.".length),
+    variable: `--${token.name}`,
+    value: token.value,
+    description: token.description,
+  }));

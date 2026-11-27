@@ -35,3 +35,9 @@ export { TraceToolbar } from "./TraceToolbar/TraceToolbar";
 export { ViewExecutionAction } from "./ViewExecutionAction/ViewExecutionAction";
 export { WorkbenchLayout } from "./WorkbenchLayout/WorkbenchLayout";
 export { WorkbenchTabs } from "./WorkbenchTabs/WorkbenchTabs";
+
+export { TraceBreadcrumbs } from "./TraceBreadcrumbs/TraceBreadcrumbs";
+export { TracePath } from "./TracePath/TracePath";
+export { TraceRawPanel } from "./TraceRawPanel/TraceRawPanel";
+export { TraceViewer } from "./TraceViewer/TraceViewer";
+export { TraceObject } from "./TraceObject/TraceObject";

@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import { RegisteredTab } from "./RegisteredTab";
 import { WorkbenchTabs } from "./WorkbenchTabs";
 import { Select } from "../Select/Select";
 import { IconButton } from "../IconButton/IconButton";
@@ -13,8 +14,6 @@ const designTabs = [
   { id: "2", label: "Playground 1", kind: "playground" },
 ];
 
-// Story-only decision overrides for comparison. Approved values can then be
-// adopted in token JSON without introducing speculative production variants.
 const sizes = [
   {
     value: "current",
@@ -78,12 +77,23 @@ function Example({
   const refs = useRef(new Map());
   const sequence = useRef(initialTabs?.length ?? count);
   const pendingFocus = useRef(false);
-  useLayoutEffect(() => {
-    if (pendingFocus.current) {
-      refs.current.get(active)?.focus({ preventScroll: true });
-      pendingFocus.current = false;
-    }
-  }, [active, tabs]);
+  const register = useCallback(
+    (id, node) => {
+      if (!node) {
+        refs.current.delete(id);
+        return;
+      }
+      refs.current.set(id, node);
+      if (
+        pendingFocus.current &&
+        tabs.some((tab) => tab.id === id && id === active)
+      ) {
+        node.focus({ preventScroll: true });
+        pendingFocus.current = false;
+      }
+    },
+    [active, tabs],
+  );
   function createTab(kind) {
     const id = String(sequence.current++);
     setTabs((previous) => [
@@ -103,13 +113,12 @@ function Example({
       <WorkbenchTabs.Bar>
         <WorkbenchTabs.List label="Example agent workbench tabs">
           {tabs.map((tab) => (
-            <WorkbenchTabs.Tab
+            <RegisteredTab
               key={tab.id}
               kind={tab.kind}
               value={tab.id}
-              ref={(node) => {
-                refs.current.set(tab.id, node);
-              }}
+              nodeKey={tab.id}
+              register={register}
               onClose={
                 tab.id === "0"
                   ? undefined
@@ -123,7 +132,7 @@ function Example({
               }
             >
               {tab.label}
-            </WorkbenchTabs.Tab>
+            </RegisteredTab>
           ))}
         </WorkbenchTabs.List>
         {immediateCreation ? (

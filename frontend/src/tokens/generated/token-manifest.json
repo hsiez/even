@@ -898,6 +898,13 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.radius.full": {
+          "value": "9999px",
+          "name": "even-radius-full",
+          "reference": null,
+          "description": "Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size.",
+          "type": "dimension"
+        },
         "options.stroke.thin": {
           "value": "1px",
           "name": "even-stroke-thin",
@@ -1108,6 +1115,27 @@
           "description": "",
           "type": "color"
         },
+        "decision.color.label.background": {
+          "value": "rgb(0% 0% 0% / 0.055556)",
+          "name": "even-label-background",
+          "reference": "options.color.gray-alpha.2",
+          "description": "Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite.",
+          "type": "color"
+        },
+        "decision.color.label.foreground": {
+          "value": "rgb(31.3725490196% 31.3725490196% 31.3725490196%)",
+          "name": "even-label-foreground",
+          "reference": "decision.color.text.secondary",
+          "description": "Readable secondary text on the translucent label composite. Selected labels use selection.foreground.",
+          "type": "color"
+        },
+        "decision.color.label.selected-background": {
+          "value": "rgb(0% 0% 0% / 0.095238)",
+          "name": "even-label-selected-background",
+          "reference": "options.color.gray-alpha.3",
+          "description": "Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground.",
+          "type": "color"
+        },
         "decision.color.border.default": {
           "value": "rgb(89.4117647059% 89.4117647059% 89.4117647059%)",
           "name": "even-border-default",
@@ -1155,6 +1183,13 @@
           "name": "even-border-invalid",
           "reference": "options.color.red.9",
           "description": "Invalid input boundary, independent of error message text.",
+          "type": "color"
+        },
+        "decision.color.hierarchy.guide": {
+          "value": "rgb(50.1960784314% 50.1960784314% 50.1960784314%)",
+          "name": "even-hierarchy-guide",
+          "reference": "options.color.neutral.6",
+          "description": "Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity.",
           "type": "color"
         },
         "decision.color.focus.ring": {
@@ -1395,6 +1430,41 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.color.syntax.key": {
+          "value": "rgb(0% 30.5882352941% 60.7843137255%)",
+          "name": "even-syntax-key",
+          "reference": "options.color.blue.9",
+          "description": "JSON property names on page and secondary code surfaces.",
+          "type": "color"
+        },
+        "decision.color.syntax.string": {
+          "value": "rgb(0% 37.6470588235% 20.7843137255%)",
+          "name": "even-syntax-string",
+          "reference": "options.color.green.9",
+          "description": "JSON string values; preserve the recorded text without interpreting it.",
+          "type": "color"
+        },
+        "decision.color.syntax.number": {
+          "value": "rgb(42.7450980392% 1.96078431373% 67.8431372549%)",
+          "name": "even-syntax-number",
+          "reference": "options.color.purple.9",
+          "description": "JSON numeric values.",
+          "type": "color"
+        },
+        "decision.color.syntax.literal": {
+          "value": "rgb(41.1764705882% 28.6274509804% 0%)",
+          "name": "even-syntax-literal",
+          "reference": "options.color.amber.9",
+          "description": "JSON true, false and null literals.",
+          "type": "color"
+        },
+        "decision.color.syntax.punctuation": {
+          "value": "rgb(31.3725490196% 31.3725490196% 31.3725490196%)",
+          "name": "even-syntax-punctuation",
+          "reference": "options.color.neutral.9",
+          "description": "JSON structure and punctuation.",
+          "type": "color"
+        },
         "decision.interaction.delay.removal": {
           "value": "0.075s",
           "name": "even-interaction-delay-removal",
@@ -1584,6 +1654,20 @@
           "description": "Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index.",
           "type": "shadow"
         },
+        "decision.size.label.category": {
+          "value": "4rem",
+          "name": "even-size-label-category",
+          "reference": "options.dimension.64",
+          "description": "Width reserved for short category labels in dense object rows so neighboring titles align.",
+          "type": "dimension"
+        },
+        "decision.size.object-row.minimum": {
+          "value": "16rem",
+          "name": "even-size-object-row-minimum",
+          "reference": "options.dimension.256",
+          "description": "Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title.",
+          "type": "dimension"
+        },
         "decision.size.icon.small": {
           "value": "0.75rem",
           "name": "even-size-icon-small",
@@ -1654,6 +1738,13 @@
           "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
+        "decision.size.radius.pill": {
+          "value": "9999px",
+          "name": "even-size-radius-pill",
+          "reference": "options.radius.full",
+          "description": "Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners.",
+          "type": "dimension"
+        },
         "decision.size.radius.control": {
           "value": "0.25rem",
           "name": "even-size-radius-control",
@@ -1673,6 +1764,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {
@@ -2664,6 +2762,13 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.radius.full": {
+          "value": "9999px",
+          "name": "even-radius-full",
+          "reference": null,
+          "description": "Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size.",
+          "type": "dimension"
+        },
         "options.stroke.thin": {
           "value": "1px",
           "name": "even-stroke-thin",
@@ -2874,6 +2979,27 @@
           "description": "",
           "type": "color"
         },
+        "decision.color.label.background": {
+          "value": "oklch(0% 0 0 / 0.053048)",
+          "name": "even-label-background",
+          "reference": "options.color.gray-alpha.2",
+          "description": "Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite.",
+          "type": "color"
+        },
+        "decision.color.label.foreground": {
+          "value": "oklch(43% 0 0)",
+          "name": "even-label-foreground",
+          "reference": "decision.color.text.secondary",
+          "description": "Readable secondary text on the translucent label composite. Selected labels use selection.foreground.",
+          "type": "color"
+        },
+        "decision.color.label.selected-background": {
+          "value": "oklch(0% 0 0 / 0.09247)",
+          "name": "even-label-selected-background",
+          "reference": "options.color.gray-alpha.3",
+          "description": "Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground.",
+          "type": "color"
+        },
         "decision.color.border.default": {
           "value": "oklch(92% 0 0)",
           "name": "even-border-default",
@@ -2921,6 +3047,13 @@
           "name": "even-border-invalid",
           "reference": "options.color.red.9",
           "description": "Invalid input boundary, independent of error message text.",
+          "type": "color"
+        },
+        "decision.color.hierarchy.guide": {
+          "value": "oklch(60.1% 0 0)",
+          "name": "even-hierarchy-guide",
+          "reference": "options.color.neutral.6",
+          "description": "Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity.",
           "type": "color"
         },
         "decision.color.focus.ring": {
@@ -3161,6 +3294,41 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.color.syntax.key": {
+          "value": "oklch(43% 0.1811073 255)",
+          "name": "even-syntax-key",
+          "reference": "options.color.blue.9",
+          "description": "JSON property names on page and secondary code surfaces.",
+          "type": "color"
+        },
+        "decision.color.syntax.string": {
+          "value": "oklch(43% 0.147243 155)",
+          "name": "even-syntax-string",
+          "reference": "options.color.green.9",
+          "description": "JSON string values; preserve the recorded text without interpreting it.",
+          "type": "color"
+        },
+        "decision.color.syntax.number": {
+          "value": "oklch(43% 0.22 305)",
+          "name": "even-syntax-number",
+          "reference": "options.color.purple.9",
+          "description": "JSON numeric values.",
+          "type": "color"
+        },
+        "decision.color.syntax.literal": {
+          "value": "oklch(43% 0.102516 80)",
+          "name": "even-syntax-literal",
+          "reference": "options.color.amber.9",
+          "description": "JSON true, false and null literals.",
+          "type": "color"
+        },
+        "decision.color.syntax.punctuation": {
+          "value": "oklch(43% 0 0)",
+          "name": "even-syntax-punctuation",
+          "reference": "options.color.neutral.9",
+          "description": "JSON structure and punctuation.",
+          "type": "color"
+        },
         "decision.interaction.delay.removal": {
           "value": "0.075s",
           "name": "even-interaction-delay-removal",
@@ -3350,6 +3518,20 @@
           "description": "Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index.",
           "type": "shadow"
         },
+        "decision.size.label.category": {
+          "value": "4rem",
+          "name": "even-size-label-category",
+          "reference": "options.dimension.64",
+          "description": "Width reserved for short category labels in dense object rows so neighboring titles align.",
+          "type": "dimension"
+        },
+        "decision.size.object-row.minimum": {
+          "value": "16rem",
+          "name": "even-size-object-row-minimum",
+          "reference": "options.dimension.256",
+          "description": "Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title.",
+          "type": "dimension"
+        },
         "decision.size.icon.small": {
           "value": "0.75rem",
           "name": "even-size-icon-small",
@@ -3420,6 +3602,13 @@
           "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
+        "decision.size.radius.pill": {
+          "value": "9999px",
+          "name": "even-size-radius-pill",
+          "reference": "options.radius.full",
+          "description": "Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners.",
+          "type": "dimension"
+        },
         "decision.size.radius.control": {
           "value": "0.25rem",
           "name": "even-size-radius-control",
@@ -3439,6 +3628,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {
@@ -4432,6 +4628,13 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.radius.full": {
+          "value": "9999px",
+          "name": "even-radius-full",
+          "reference": null,
+          "description": "Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size.",
+          "type": "dimension"
+        },
         "options.stroke.thin": {
           "value": "1px",
           "name": "even-stroke-thin",
@@ -4642,6 +4845,27 @@
           "description": "",
           "type": "color"
         },
+        "decision.color.label.background": {
+          "value": "rgb(100% 100% 100% / 0.105263)",
+          "name": "even-label-background",
+          "reference": "options.color.gray-alpha.2",
+          "description": "Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite.",
+          "type": "color"
+        },
+        "decision.color.label.foreground": {
+          "value": "rgb(72.9411764706% 72.9411764706% 72.9411764706%)",
+          "name": "even-label-foreground",
+          "reference": "decision.color.text.secondary",
+          "description": "Readable secondary text on the translucent label composite. Selected labels use selection.foreground.",
+          "type": "color"
+        },
+        "decision.color.label.selected-background": {
+          "value": "rgb(100% 100% 100% / 0.135965)",
+          "name": "even-label-selected-background",
+          "reference": "options.color.gray-alpha.3",
+          "description": "Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground.",
+          "type": "color"
+        },
         "decision.color.border.default": {
           "value": "rgb(22.7450980392% 22.7450980392% 22.7450980392%)",
           "name": "even-border-default",
@@ -4689,6 +4913,13 @@
           "name": "even-border-invalid",
           "reference": "options.color.red.9",
           "description": "Invalid input boundary, independent of error message text.",
+          "type": "color"
+        },
+        "decision.color.hierarchy.guide": {
+          "value": "rgb(52.5490196078% 52.5490196078% 52.5490196078%)",
+          "name": "even-hierarchy-guide",
+          "reference": "options.color.neutral.6",
+          "description": "Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity.",
           "type": "color"
         },
         "decision.color.focus.ring": {
@@ -4929,6 +5160,41 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.color.syntax.key": {
+          "value": "rgb(61.1764705882% 78.0392156863% 100%)",
+          "name": "even-syntax-key",
+          "reference": "options.color.blue.9",
+          "description": "JSON property names on page and secondary code surfaces.",
+          "type": "color"
+        },
+        "decision.color.syntax.string": {
+          "value": "rgb(7.8431372549% 90.9803921569% 53.3333333333%)",
+          "name": "even-syntax-string",
+          "reference": "options.color.green.9",
+          "description": "JSON string values; preserve the recorded text without interpreting it.",
+          "type": "color"
+        },
+        "decision.color.syntax.number": {
+          "value": "rgb(83.5294117647% 69.4117647059% 100%)",
+          "name": "even-syntax-number",
+          "reference": "options.color.purple.9",
+          "description": "JSON numeric values.",
+          "type": "color"
+        },
+        "decision.color.syntax.literal": {
+          "value": "rgb(99.2156862745% 70.9803921569% 0%)",
+          "name": "even-syntax-literal",
+          "reference": "options.color.amber.9",
+          "description": "JSON true, false and null literals.",
+          "type": "color"
+        },
+        "decision.color.syntax.punctuation": {
+          "value": "rgb(72.9411764706% 72.9411764706% 72.9411764706%)",
+          "name": "even-syntax-punctuation",
+          "reference": "options.color.neutral.9",
+          "description": "JSON structure and punctuation.",
+          "type": "color"
+        },
         "decision.interaction.delay.removal": {
           "value": "0.075s",
           "name": "even-interaction-delay-removal",
@@ -5118,6 +5384,20 @@
           "description": "Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index.",
           "type": "shadow"
         },
+        "decision.size.label.category": {
+          "value": "4rem",
+          "name": "even-size-label-category",
+          "reference": "options.dimension.64",
+          "description": "Width reserved for short category labels in dense object rows so neighboring titles align.",
+          "type": "dimension"
+        },
+        "decision.size.object-row.minimum": {
+          "value": "16rem",
+          "name": "even-size-object-row-minimum",
+          "reference": "options.dimension.256",
+          "description": "Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title.",
+          "type": "dimension"
+        },
         "decision.size.icon.small": {
           "value": "0.75rem",
           "name": "even-size-icon-small",
@@ -5188,6 +5468,13 @@
           "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
+        "decision.size.radius.pill": {
+          "value": "9999px",
+          "name": "even-size-radius-pill",
+          "reference": "options.radius.full",
+          "description": "Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners.",
+          "type": "dimension"
+        },
         "decision.size.radius.control": {
           "value": "0.25rem",
           "name": "even-size-radius-control",
@@ -5207,6 +5494,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {
@@ -6198,6 +6492,13 @@
           "description": "768px equivalent at a 16px root; do not fix the user's root font size.",
           "type": "dimension"
         },
+        "options.radius.full": {
+          "value": "9999px",
+          "name": "even-radius-full",
+          "reference": null,
+          "description": "Fully rounded geometry: CSS clamps this radius to half the shorter side. This is a shape sentinel, not a layout size.",
+          "type": "dimension"
+        },
         "options.stroke.thin": {
           "value": "1px",
           "name": "even-stroke-thin",
@@ -6408,6 +6709,27 @@
           "description": "",
           "type": "color"
         },
+        "decision.color.label.background": {
+          "value": "oklch(100% 0 0 / 0.105975)",
+          "name": "even-label-background",
+          "reference": "options.color.gray-alpha.2",
+          "description": "Translucent passive label overlay that lets the containing row show through, including blue selection. Use on page, secondary, control, hover or selection surfaces; evaluate text against the composite.",
+          "type": "color"
+        },
+        "decision.color.label.foreground": {
+          "value": "oklch(79% 0 0)",
+          "name": "even-label-foreground",
+          "reference": "decision.color.text.secondary",
+          "description": "Readable secondary text on the translucent label composite. Selected labels use selection.foreground.",
+          "type": "color"
+        },
+        "decision.color.label.selected-background": {
+          "value": "oklch(100% 0 0 / 0.139564)",
+          "name": "even-label-selected-background",
+          "reference": "options.color.gray-alpha.3",
+          "description": "Stronger translucent overlay for selected labels over selection.background. The white-alpha overlay is brighter in dark mode; pair with selection.foreground.",
+          "type": "color"
+        },
         "decision.color.border.default": {
           "value": "oklch(35% 0 0)",
           "name": "even-border-default",
@@ -6455,6 +6777,13 @@
           "name": "even-border-invalid",
           "reference": "options.color.red.9",
           "description": "Invalid input boundary, independent of error message text.",
+          "type": "color"
+        },
+        "decision.color.hierarchy.guide": {
+          "value": "oklch(62% 0 0)",
+          "name": "even-hierarchy-guide",
+          "reference": "options.color.neutral.6",
+          "description": "Meaningful hierarchy connectors and indentation guides. Maintain at least 3:1 contrast on supported page, secondary, control, hover, active and selection surfaces; do not reduce opacity.",
           "type": "color"
         },
         "decision.color.focus.ring": {
@@ -6695,6 +7024,41 @@
           "description": "Visible edge for neutral strong fills on canvases, same-family backgrounds 1–3, and neutral backgrounds 1–3. Use for default and hovered fills.",
           "type": "color"
         },
+        "decision.color.syntax.key": {
+          "value": "oklch(82% 0.0998069 255)",
+          "name": "even-syntax-key",
+          "reference": "options.color.blue.9",
+          "description": "JSON property names on page and secondary code surfaces.",
+          "type": "color"
+        },
+        "decision.color.syntax.string": {
+          "value": "oklch(82% 0.2 155)",
+          "name": "even-syntax-string",
+          "reference": "options.color.green.9",
+          "description": "JSON string values; preserve the recorded text without interpreting it.",
+          "type": "color"
+        },
+        "decision.color.syntax.number": {
+          "value": "oklch(82% 0.1239728 305)",
+          "name": "even-syntax-number",
+          "reference": "options.color.purple.9",
+          "description": "JSON numeric values.",
+          "type": "color"
+        },
+        "decision.color.syntax.literal": {
+          "value": "oklch(82% 0.1954956 80)",
+          "name": "even-syntax-literal",
+          "reference": "options.color.amber.9",
+          "description": "JSON true, false and null literals.",
+          "type": "color"
+        },
+        "decision.color.syntax.punctuation": {
+          "value": "oklch(79% 0 0)",
+          "name": "even-syntax-punctuation",
+          "reference": "options.color.neutral.9",
+          "description": "JSON structure and punctuation.",
+          "type": "color"
+        },
         "decision.interaction.delay.removal": {
           "value": "0.075s",
           "name": "even-interaction-delay-removal",
@@ -6884,6 +7248,20 @@
           "description": "Shared cast shadow for floating menus, selects, popovers, tooltips and dialog panels. Apply by visual purpose, independently of z-index.",
           "type": "shadow"
         },
+        "decision.size.label.category": {
+          "value": "4rem",
+          "name": "even-size-label-category",
+          "reference": "options.dimension.64",
+          "description": "Width reserved for short category labels in dense object rows so neighboring titles align.",
+          "type": "dimension"
+        },
+        "decision.size.object-row.minimum": {
+          "value": "16rem",
+          "name": "even-size-object-row-minimum",
+          "reference": "options.dimension.256",
+          "description": "Minimum width for dense category/title rows; a narrow hierarchy pane scrolls rather than hiding the entire object title.",
+          "type": "dimension"
+        },
         "decision.size.icon.small": {
           "value": "0.75rem",
           "name": "even-size-icon-small",
@@ -6954,6 +7332,13 @@
           "description": "Maximum width for items sharing a horizontal navigation strip. Share available width equally between this bound and the minimum; leave spare room outside the items.",
           "type": "dimension"
         },
+        "decision.size.radius.pill": {
+          "value": "9999px",
+          "name": "even-size-radius-pill",
+          "reference": "options.radius.full",
+          "description": "Fully rounded ends for capsule-shaped labels and pills, independent of control and floating-panel corners.",
+          "type": "dimension"
+        },
         "decision.size.radius.control": {
           "value": "0.25rem",
           "name": "even-size-radius-control",
@@ -6973,6 +7358,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {

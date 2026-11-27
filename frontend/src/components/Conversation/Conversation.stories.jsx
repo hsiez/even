@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { Conversation } from "./Conversation";
 import { ViewExecutionAction } from "../ViewExecutionAction/ViewExecutionAction";
 import { Button } from "../Button/Button";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Workbench/Conversation", component: Conversation };
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <Conversation
         messages={[
@@ -26,14 +24,12 @@ export const Default = {
 
 export const Empty = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <Conversation />;
   },
 };
 
 export const UpdatedMessage = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <Conversation
         messages={[

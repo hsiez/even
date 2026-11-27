@@ -1,4 +1,3 @@
-// Semantic imports keep the icon vendor out of component and page callers.
 export {
   ListTree as TraceIcon,
   MessageSquare as ChatIcon,
@@ -8,4 +7,20 @@ export {
   Moon as DarkThemeIcon,
   X as CloseIcon,
   Plus as AddIcon,
+  Dot as StepIcon,
+  Hammer as ToolIcon,
+  Files as SkillIcon,
+  Eye as ReadIcon,
+  PenLine as WriteIcon,
+  BrainCircuit as ModelIcon,
+  Bot as AgentIcon,
+  GitFork as DelegationIcon,
+  Database as MemoryIcon,
+  ShieldQuestion as ApprovalIcon,
+  CircleHelp as UnknownOperationIcon,
+  Clipboard as ClipboardIcon,
+  ClipboardCheck as ClipboardSuccessIcon,
+  ClipboardX as ClipboardErrorIcon,
+  ArrowRight as OpenExecutionIcon,
+  ArrowLeft as ParentExecutionIcon,
 } from "lucide-react";
