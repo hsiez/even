@@ -37,8 +37,7 @@ let queue = Promise.resolve();
 parentPort.on('message', ({ id, options }) => {
   queue = queue.then(async () => {
     try {
-      // Requests are serialized. Retain only a successfully initialized index;
-      // a temporary lock or filesystem failure must be retryable next request.
+
       index ??= await initialize();
       parentPort.postMessage({ id, result: await index.search(options) });
     } catch (error) {

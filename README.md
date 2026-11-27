@@ -148,6 +148,10 @@ The backend serves a real-data browser trace explorer; a separate staging previe
 
 ## Verification
 
+`npm run lint` checks JavaScript correctness, design-decision usage, code comments, effect dependencies and reviewed resource lifetimes. `npm run lint:audit` inventories effects, resources and patterns that need human review. See the [lint policy and initial repairs](docs/design-system/linting.md) for supported checks, intentional boundaries and outstanding cache-lifetime work. Root development dependencies provide the lint tools; `npm run test:all` runs lint before the backend and frontend unit suites.
+
+The [Quality GitHub Actions workflow](.github/workflows/quality.yml) runs on pushes and pull requests. Its **Lint** job checks JavaScript/React, design-system usage, the effect inventory and linter regression tests. **Tests and build** follows a successful lint run with backend/frontend tests, token freshness, formatting and a Storybook build.
+
 ```sh
 npm test
 EVEN_TEST_NODE_MODULES=/absolute/path/to/project/node_modules npm test

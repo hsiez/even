@@ -1,10 +1,8 @@
 import React from "react";
 
-// Only color already serialized JSON. React text nodes preserve escaping and
-// whitespace; payload strings are never inserted as HTML or recursively decoded.
 export function JsonText({ text }) {
   const pattern =
-    /"(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\b(?:true|false|null)\b|[{}\[\],:]/g;
+    /"(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\b(?:true|false|null)\b|[{}[\],:]/g;
   const parts = [];
   let cursor = 0;
   for (const match of text.matchAll(pattern)) {

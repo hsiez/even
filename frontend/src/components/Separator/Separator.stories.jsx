@@ -3,7 +3,7 @@ import { Separator } from "./Separator";
 export default { title: "Primitives/Separator", component: Separator };
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <div>

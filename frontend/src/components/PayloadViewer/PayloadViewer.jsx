@@ -9,6 +9,7 @@ export function PayloadViewer({
   highlightJson = false,
   toolbar,
   showCopyButton = true,
+  contentRef,
 }) {
   if (value === undefined)
     return (
@@ -23,7 +24,7 @@ export function PayloadViewer({
       text = serializeValue(JSON.parse(value));
       json = true;
     } catch {
-      /* Plain text is valid payload content. */
+      json = false;
     }
   }
   return (
@@ -33,6 +34,7 @@ export function PayloadViewer({
         <p>Empty content.</p>
       ) : (
         <pre
+          ref={contentRef}
           tabIndex={highlightJson ? 0 : undefined}
           role={highlightJson ? "region" : undefined}
           aria-label={highlightJson ? `${label} content` : undefined}

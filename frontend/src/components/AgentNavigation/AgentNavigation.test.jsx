@@ -1,9 +1,8 @@
 import React from "react";
-import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { test, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import "@testing-library/user-event";
 import { AgentNavigation } from "./AgentNavigation";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("encodes agent paths and identifies the current destination", () => {
   render(<AgentNavigation agentId="a/b" current="playground" />);

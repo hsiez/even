@@ -133,14 +133,11 @@ function assertCloseGeometry(geometry) {
   );
 }
 
-// Hover may reveal a control via native scrolling; inspect its resting hover
-// only after the same idle cooldown that users experience.
 async function scrollIdle(page) {
   await page.waitForFunction(
     () => !document.querySelector(".even-workbench-tab-track[data-scrolling]"),
   );
-  // Hover can also schedule Base UI / ResizeObserver geometry updates without
-  // a scroll event. Audit the rendered layout after those frame callbacks.
+
   await page.evaluate(async () => {
     await new Promise(requestAnimationFrame);
     await new Promise(requestAnimationFrame);
@@ -185,7 +182,7 @@ export async function checkWorkbenchTabs(page, base, theme, axe) {
   await page.getByRole("tab", { name: "Traces", exact: true }).hover();
   await scrollIdle(page);
   await page.screenshot({ path: `/tmp/even-tab-inactive-hover-${theme}.png` });
-  // Hover crosses two semantic controls, but must remain one visual tab.
+
   for (const name of ["Playground 1", "Tool errors"]) {
     const tab = page.getByRole("tab", { name, exact: true });
     const close = page.getByRole("button", {
@@ -366,8 +363,7 @@ export async function checkWorkbenchTabs(page, base, theme, axe) {
   const target = await page
     .getByRole("tab", { name: "Traces", exact: true })
     .elementHandle();
-  // Pause the real CSS transition midway, rather than depending on wall-clock
-  // timing on a busy CI host. This checks interpolation in a rendered browser.
+
   const motion = await indicator.evaluate(async (node, target) => {
     const start = node.getBoundingClientRect().left;
     target.click();
@@ -610,8 +606,7 @@ export async function checkImmediateCreation(page, base, theme) {
     (await viewport.evaluate((node) => node.scrollLeft)) < beforeClose,
     "Closing the rightmost tab brings hidden left tabs into the freed space",
   );
-  // Repeat through the overflow threshold: invisible fades must not keep an
-  // obsolete scroll range alive, including when the active view stays put.
+
   await page.getByRole("tab", { name: "Traces", exact: true }).click();
   await viewport.evaluate((node) => (node.scrollLeft = node.scrollWidth));
   await page
@@ -924,7 +919,7 @@ async function checkOverflowFades(page, base, theme, axe) {
     "Tab overflow stays within the strip on mobile",
   );
   await page.setViewportSize({ width: 1280, height: 900 });
-  // Fewer tabs remove both fades when the strip no longer overflows.
+
   await page.goto(
     `${base}/iframe.html?id=workbench-workbenchtabs--default&viewMode=story&globals=theme:${theme}`,
   );
@@ -1359,7 +1354,7 @@ export async function checkTabCursorContinuity(page, base, theme) {
       [],
       "Pointer stays continuous over narrow seams, borders and curved corners",
     );
-    // Exercise real mouse movement too, rather than checking only declarations.
+
     for (const point of geometry.seams.filter((_, i) => i % 6 === 0)) {
       await page.mouse.move(point.x, point.y);
       assert.equal(

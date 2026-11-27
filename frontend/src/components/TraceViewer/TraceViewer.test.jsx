@@ -1,6 +1,6 @@
 import React from "react";
 import { test, expect } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TraceViewer } from "./TraceViewer";
 import {
@@ -11,13 +11,49 @@ const raw = (scope = screen) =>
   JSON.parse(
     scope.getByRole("region", { name: "raw span JSON content" }).textContent,
   );
+
+test("restores both scroll axes per scope and span without resetting ordinary selection", async () => {
+  const user = userEvent.setup();
+  const { container, rerender } = render(<TraceViewer trace={viewerTrace} />);
+  const path = () => container.querySelector('[data-trace-surface="path"]');
+  const content = () =>
+    screen.getByRole("region", { name: "raw span JSON content" });
+  fireEvent.scroll(path(), { target: { scrollTop: 140, scrollLeft: 12 } });
+  fireEvent.scroll(content(), { target: { scrollTop: 90, scrollLeft: 24 } });
+  await user.click(screen.getByRole("treeitem", { name: "Tool read_logs" }));
+  expect(path().scrollTop).toBe(140);
+  expect(path().scrollLeft).toBe(12);
+  expect(content().scrollTop).toBe(0);
+  await user.click(screen.getByRole("treeitem", { name: "Step 0" }));
+  expect(content().scrollTop).toBe(90);
+  expect(content().scrollLeft).toBe(24);
+  await user.click(
+    screen.getByRole("treeitem", { name: /^Subagent Research\b/ }),
+  );
+  expect(path().scrollTop).toBe(0);
+  fireEvent.scroll(path(), { target: { scrollTop: 60, scrollLeft: 8 } });
+  await user.click(screen.getByRole("button", { name: "Back to Support" }));
+  expect(path().scrollTop).toBe(140);
+  expect(path().scrollLeft).toBe(12);
+  expect(
+    screen.getByRole("treeitem", { name: /^Subagent Research\b/ }),
+  ).toHaveFocus();
+  await user.click(screen.getByRole("treeitem", { name: "Step 0" }));
+  rerender(<TraceViewer trace={viewerTrace} loading />);
+  expect(screen.queryByRole("treeitem")).toBeNull();
+  fireEvent.scroll(path(), { target: { scrollTop: 0, scrollLeft: 0 } });
+  rerender(<TraceViewer trace={viewerTrace} />);
+  expect(path().scrollTop).toBe(140);
+  expect(content().scrollTop).toBe(90);
+  expect(content().scrollLeft).toBe(24);
+});
 test("selection shows the full original span, entering children changes scope and breadcrumbs restore state", async () => {
   const user = userEvent.setup();
   render(<TraceViewer trace={viewerTrace} defaultSelectedSpanId="logs" />);
   expect(raw()).toEqual(
     viewerTrace.spans.find((span) => span.spanId === "logs"),
   );
-  // Child contents stay out of the parent's tree until the activation is entered.
+
   expect(screen.queryByRole("treeitem", { name: /^Tool search\b/ })).toBeNull();
   await user.click(
     screen.getByRole("treeitem", { name: /^Subagent Research\b/ }),
@@ -28,7 +64,7 @@ test("selection shows the full original span, entering children changes scope an
   expect(raw().spanId).toBe("research-step");
   expect(screen.getByRole("treeitem", { name: /^Step 0\b/ })).toHaveFocus();
   await user.click(
-    screen.getByRole("treeitem", { name: /^Subagent Source\ checking\b/ }),
+    screen.getByRole("treeitem", { name: /^Subagent Source checking\b/ }),
   );
   expect(
     screen.getByRole("treeitem", { name: /^Tool search\b/ }),

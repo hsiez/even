@@ -3,8 +3,6 @@ import { describeSpan } from "../../traces/traceModel";
 import { classes } from "../presentation";
 import "../components.css";
 
-// Presentation only: the tree owns selection, focus and expansion; the host
-// supplies the original span without modifying it.
 export function TraceObject({
   span,
   category,

@@ -1,4 +1,3 @@
-// Deliberate staging data. No Eve runtime, network request or model is involved.
 export const previewAgents = [
   { id: "support", name: "Support" },
   { id: "research", name: "Research" },
@@ -196,7 +195,7 @@ export function createSampleTrace(
         });
     }
   }
-  // A successful read and unrelated failed publish distinguish the two error scopes.
+
   if (index === 5) {
     spans[2].statusCode = 0;
     delete spans[2].statusMessage;

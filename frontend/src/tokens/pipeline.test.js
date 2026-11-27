@@ -1,4 +1,3 @@
-// @vitest-environment node
 import { test, expect } from "vitest";
 import { readFile } from "node:fs/promises";
 import StyleDictionary from "style-dictionary";

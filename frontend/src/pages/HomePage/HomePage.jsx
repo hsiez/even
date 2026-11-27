@@ -1,4 +1,5 @@
-import React, { useId, useLayoutEffect, useReducer, useRef } from "react";
+import React, { useCallback, useId, useReducer, useRef } from "react";
+import { RegisteredTab } from "../../components/WorkbenchTabs/RegisteredTab";
 import {
   Button,
   MessageComposer,
@@ -38,17 +39,27 @@ export function HomePage({
   const nextId = useRef(0);
   const focusRequested = useRef(false);
   const refKey = (source, tab) => JSON.stringify([source, tab]);
-  const activeTrigger = () =>
-    tabRefs.current.get(refKey(agentId, space.activeTabId));
-  useLayoutEffect(() => {
-    const trigger = activeTrigger();
-    if (focusRequested.current) {
-      trigger?.focus({ preventScroll: true });
-      focusRequested.current = false;
-    }
-    if (!trigger?.closest("[data-removing]"))
-      trigger?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
-  }, [workspace]);
+  const registerTab = useCallback(
+    (key, node) => {
+      if (!node) {
+        tabRefs.current.delete(key);
+        return;
+      }
+      tabRefs.current.set(key, node);
+      const currentSpace = workspace.spaces.find(
+        (item) => item.agentId === workspace.agentId,
+      );
+      const activeKey = JSON.stringify([
+        workspace.agentId,
+        currentSpace.activeTabId,
+      ]);
+      if (key === activeKey && focusRequested.current) {
+        node.focus({ preventScroll: true });
+        focusRequested.current = false;
+      }
+    },
+    [workspace],
+  );
   function openTab(kind) {
     focusRequested.current = true;
     dispatch({ type: "open", kind, id: `tab-${++nextId.current}` });
@@ -145,22 +156,24 @@ export function HomePage({
               label={`${agents.find((agent) => agent.id === item.agentId)?.name ?? (item.agentId || "All agents")} workbench tabs`}
             >
               {item.tabs.map((tab) => (
-                <WorkbenchTabs.Tab
+                <RegisteredTab
                   key={tab.id}
                   kind={tab.kind}
                   value={tab.id}
-                  ref={(node) => {
-                    const key = refKey(item.agentId, tab.id);
-                    if (node) tabRefs.current.set(key, node);
-                    else tabRefs.current.delete(key);
-                  }}
+                  nodeKey={refKey(item.agentId, tab.id)}
+                  register={registerTab}
                   onClose={tab.pinned ? undefined : () => closeTab(tab.id)}
                 >
                   {tab.label}
-                </WorkbenchTabs.Tab>
+                </RegisteredTab>
               ))}
             </WorkbenchTabs.List>
-            <WorkbenchTabs.New onCreate={openTab} finalFocus={activeTrigger} />
+            <WorkbenchTabs.New
+              onCreate={openTab}
+              finalFocus={() =>
+                tabRefs.current.get(refKey(agentId, space.activeTabId))
+              }
+            />
           </WorkbenchTabs.Bar>
           {item.tabs.map((tab) =>
             tab.kind === "traces" ? (

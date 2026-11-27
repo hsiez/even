@@ -9,8 +9,6 @@ export function isWithin(root, path) {
   return rel === '' || (!rel.startsWith('..' + sep) && rel !== '..' && !isAbsolute(rel));
 }
 
-// Eve's discovery and local host APIs are internal. Add versions only after
-// running the adapter contract suite against that installed version.
 export const supportedEveVersions = ['1.0.0-rc.6'];
 
 export async function loadEve(projectPath) {
@@ -47,7 +45,6 @@ export async function loadEve(projectPath) {
     internal('discover/discover-agent.js'),
   ]);
 
-  // Bound Eve's upward root search and source reads to the selected project.
   const source = {
     kind: 'disk',
     async stat(path) {

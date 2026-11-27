@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import Color from "colorjs.io";
 
-// Check the painted route against actual marker positions, not CSS constants or
-// a second implementation of the curve formula. Observers may settle next frame.
 async function checkRail(page) {
   await page.waitForFunction(() => {
     const paths = document.querySelectorAll(".even-trace-route");
@@ -14,7 +12,7 @@ async function checkRail(page) {
     const matrix = path.getScreenCTM();
     const length = path.getTotalLength();
     const route = [];
-    // Move-only subpaths are valid when neighboring steps are collapsed.
+
     for (const match of d.matchAll(/M ([\d.-]+) ([\d.-]+)/g))
       route.push(
         new DOMPoint(Number(match[1]), Number(match[2])).matrixTransform(
@@ -482,8 +480,7 @@ async function checkContinuousRail(page, base, theme) {
     Math.max(...heights) - Math.min(...heights) < 1,
     "Long titles stay on one row at narrow widths",
   );
-  // Root text sizing changes every rem-based inset, and preview scaling changes
-  // screen coordinates without changing the SVG's local coordinate system.
+
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "20px";
     const content = document.querySelector(".even-trace-path-content");
@@ -641,7 +638,7 @@ async function checkScopeNavigation(page, base, theme) {
   );
   const child = page.getByRole("treeitem", { name: /^Subagent Research\b/ });
   assert.equal(await child.getAttribute("aria-selected"), "true");
-  // Keyboard interrupts decoration and performs its own navigation immediately.
+
   await child.press("Enter");
   assert.equal(await viewer.getAttribute("data-scope-transition"), null);
   assert.equal(
@@ -667,7 +664,7 @@ async function checkScopeNavigation(page, base, theme) {
   await page.waitForFunction(
     () => !document.querySelector("[data-scope-transition]"),
   );
-  // Several native clicks in one task must leave the newest scope, no queue.
+
   await viewer.evaluate((root) => {
     root
       .querySelector('[data-trace-surface="path"] [data-span-id="research"]')
@@ -972,7 +969,7 @@ export async function checkTraceViewer(page, base, theme, axe) {
   assert.equal(JSON.parse(await raw()).spanId, "research-step");
   await checkRail(page);
   await page
-    .getByRole("treeitem", { name: /^Subagent Source\ checking\b/ })
+    .getByRole("treeitem", { name: /^Subagent Source checking\b/ })
     .click();
   assert.equal(JSON.parse(await raw()).spanId, "source-step");
   await checkRail(page);
@@ -1069,8 +1066,7 @@ export async function checkTraceViewer(page, base, theme, axe) {
   );
   await page.getByRole("treeitem", { name: /^Subagent Research\b/ }).click();
   await page.getByRole("button", { name: "Support", exact: true }).click();
-  // The click can reveal Research before navigation; capture/restoration follows
-  // actual viewport movement, not a guessed scroll offset.
+
   assert.ok(await path.evaluate((node) => node.scrollTop > 0));
   await page
     .locator('[data-trace-surface="path"] [data-span-id="model-1"]')

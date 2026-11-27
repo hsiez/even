@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 
-// Internal table control: headers write width state; native columns size all rows.
 export function ColumnResizeHandle({ column, tableId, onResize }) {
   const drag = useRef(null);
   const [resizing, setResizing] = useState(false);

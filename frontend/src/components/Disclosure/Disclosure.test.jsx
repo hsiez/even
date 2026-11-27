@@ -1,9 +1,8 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Disclosure } from "./Disclosure";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("shares state across wrappers, supports keyboard and isolates roots", async () => {
   const user = userEvent.setup();

@@ -1,4 +1,3 @@
-// Read-only views of a generated manifest; Style Dictionary owns alias resolution.
 export function createColorModel(manifest) {
   const themes = ["light", "dark"];
   function palette(theme, gamut) {

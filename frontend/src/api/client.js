@@ -5,8 +5,6 @@ export class ApiError extends Error {
   }
 }
 
-// The launch fragment is never sent over HTTP. Consume it before rendering and
-// remove it from the address bar/history before the automatic session exchange.
 export function takeLaunchToken(browser = window) {
   const hash = new URLSearchParams(browser.location.hash.slice(1));
   const token = hash.get("token") ?? "";

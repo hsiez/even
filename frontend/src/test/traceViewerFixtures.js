@@ -1,4 +1,3 @@
-// Synthetic OTLP-reader-shaped records. No model calls or backend requests.
 const traceId = "11111111111111111111111111111111";
 const origin = 1795200000000000000n;
 function span(id, parent, name, start, duration, attributes = {}, extra = {}) {

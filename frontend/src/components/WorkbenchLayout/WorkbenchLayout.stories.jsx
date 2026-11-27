@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { WorkbenchLayout } from "./WorkbenchLayout";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default {
   title: "Workbench/WorkbenchLayout",
@@ -9,7 +8,6 @@ export default {
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <WorkbenchLayout
         navigation={<nav aria-label="Agents">Support</nav>}

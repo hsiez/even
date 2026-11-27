@@ -6,7 +6,7 @@ import { Select } from "../Select/Select";
 export default { title: "Primitives/Dialog", component: Dialog };
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <Dialog>
@@ -27,7 +27,7 @@ export const Default = {
 };
 export const InitiallyOpen = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <Dialog defaultOpen>
@@ -47,7 +47,6 @@ export const InitiallyOpen = {
   },
 };
 
-// Exercise both nesting directions: popover → modal → floating controls.
 export const NestedOverlays = {
   render: () => (
     <div style={{ minHeight: "70vh", display: "grid", placeItems: "center" }}>

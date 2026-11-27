@@ -471,7 +471,7 @@ test("live refresh preserves the mounted table, column widths, focus and inspect
   expect(screen.getByRole("table", { name: "Recorded traces" })).toBe(table);
   expect(child).toHaveAttribute("aria-selected", "true");
   expect(resize).toHaveFocus();
-  // The next first page need not contain the execution being inspected.
+
   await act(async () =>
     completeRefresh({
       ...response,

@@ -1,7 +1,5 @@
 import { randomUUID } from 'node:crypto';
 
-// Observe Eve's published runtime token without starting a host, rebuilding, or
-// importing authored code. Only the last token is retained, never exposed.
 export function createReloadMonitor(adapter, { intervalMs = 1000 } = {}) {
   const entries = new Map();
   let closed = false;
@@ -25,7 +23,7 @@ export function createReloadMonitor(adapter, { intervalMs = 1000 } = {}) {
     clearTimeout(entry.timer);
     entry.pending = (async () => {
       let revision;
-      try { revision = await readRevision(entry.appRoot); } catch { /* Unknown is not a reload. */ }
+      try { revision = await readRevision(entry.appRoot); } catch { revision = undefined; }
       entry.available = typeof revision === 'string' && revision.length > 0;
       if (!entry.available) return;
       if (entry.revision !== undefined && revision !== entry.revision) {

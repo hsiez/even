@@ -1,9 +1,9 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SpanWaterfall } from "./SpanWaterfall";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { spans } from "../../test/fixtures";
 
 test("separates expansion, keyboard focus and shared selection", async () => {
   const user = userEvent.setup(),
@@ -98,7 +98,7 @@ test("keeps one tree tab stop when arrow focus and timeline selection differ", a
     "aria-selected",
     "true",
   );
-  // Unrelated parent updates must not erase the remembered keyboard focus.
+
   rerender(
     <SpanWaterfall spans={[...spans]} defaultExpandedSpanIds={["root"]}>
       <SpanWaterfall.Tree />

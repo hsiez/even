@@ -2,8 +2,6 @@ import { readFile, writeFile } from "node:fs/promises";
 import Color from "colorjs.io";
 import { format } from "prettier";
 
-// Explicitly derive JSON options; Style Dictionary remains the CSS compiler.
-// CSS source-over uses encoded sRGB: target = ink * alpha + canvas * (1 - alpha).
 for (const theme of ["light", "dark"])
   for (const gamut of ["srgb", "p3"]) {
     const suffix = `${theme}${gamut === "p3" ? ".p3" : ""}.json`;
@@ -43,7 +41,6 @@ for (const theme of ["light", "dark"])
           `${source}: step ${step} cannot be represented translucently with this ink`,
         );
       scale[step] = {
-        // OKLCH C=0, H=0; sRGB equivalents provide the established fallback.
         $value: {
           colorSpace: gamut === "p3" ? "oklch" : "srgb",
           components: gamut === "p3" ? [ink, 0, 0] : [ink, ink, ink],

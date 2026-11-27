@@ -1,4 +1,3 @@
-// Component layout defaults in rem; user adjustments are measured CSS pixels.
 export const traceColumns = [
   {
     id: "startedAt",

@@ -22,6 +22,92 @@ const deferred = () => {
   return { promise, resolve, reject };
 };
 
+test("detail responses from a replaced source never leak into the same trace ID", async () => {
+  const pending = deferred();
+  const first = { trace: vi.fn().mockReturnValue(pending.promise) };
+  const second = {
+    trace: vi.fn().mockResolvedValue({ spans: [{ spanId: "new" }] }),
+  };
+  const { result, rerender } = renderHook(
+    (source) => useTraceDetail(source, "support", "same-id"),
+    { initialProps: first },
+  );
+  const signal = first.trace.mock.calls[0][0].signal;
+  rerender(second);
+  expect(signal.aborted).toBe(true);
+  expect(result.current.loading).toBe(true);
+  await waitFor(() =>
+    expect(result.current.trace?.spans[0].spanId).toBe("new"),
+  );
+  await act(async () => pending.resolve({ spans: [{ spanId: "stale" }] }));
+  expect(result.current.trace.spans[0].spanId).toBe("new");
+});
+
+test("unmount cancels a pending query debounce before it starts a request", () => {
+  vi.useFakeTimers();
+  try {
+    const source = { search: vi.fn() };
+    const { unmount } = renderHook(() =>
+      useTraceData(source, { agentId: "support", query: "query" }),
+    );
+    expect(source.search).not.toHaveBeenCalled();
+    unmount();
+    act(() => vi.runAllTimers());
+    expect(source.search).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+test("returning to the same detail after closing shows a new pending request", async () => {
+  const pending = deferred();
+  const source = {
+    trace: vi
+      .fn()
+      .mockResolvedValueOnce({ spans: [{ spanId: "first" }] })
+      .mockReturnValue(pending.promise),
+  };
+  const { result, rerender } = renderHook(
+    (traceId) => useTraceDetail(source, "support", traceId),
+    { initialProps: "same-id" },
+  );
+  await waitFor(() =>
+    expect(result.current.trace?.spans[0].spanId).toBe("first"),
+  );
+  rerender(undefined);
+  expect(result.current.loading).toBe(false);
+  rerender("same-id");
+  expect(result.current.loading).toBe(true);
+  expect(result.current.trace).toBeUndefined();
+  await act(async () => pending.resolve({ spans: [{ spanId: "second" }] }));
+  expect(result.current.trace.spans[0].spanId).toBe("second");
+});
+
+test("returning to a previously loaded agent retains its rows while correctly reporting a fresh request", async () => {
+  const pending = deferred();
+  const source = {
+    search: vi
+      .fn()
+      .mockResolvedValueOnce(page("first"))
+      .mockReturnValue(pending.promise),
+  };
+  const { result, rerender } = renderHook(
+    (agentId) => useTraceData(source, { agentId, query: "" }),
+    { initialProps: "support" },
+  );
+  await waitFor(() =>
+    expect(result.current.results[0]?.trace.traceId).toBe("first"),
+  );
+  rerender("research");
+  rerender("support");
+  expect(result.current.loading).toBe(true);
+  expect(result.current.results[0].trace.traceId).toBe("first");
+  await act(async () => pending.resolve(page("second")));
+  expect(result.current.loading).toBe(false);
+  expect(result.current.results[0].trace.traceId).toBe("second");
+});
+
 test("ignores late responses after agent and query changes and cancels old requests", async () => {
   const old = deferred(),
     recent = deferred();
@@ -93,7 +179,7 @@ test("refresh retains rows while pending and after a failure, then replaces them
   expect(result.current.loading).toBe(true);
   expect(result.current.results[0].trace.traceId).toBe("first");
   await waitFor(() => expect(source.search).toHaveBeenCalledTimes(2));
-  // A refresh failure keeps useful data available to the mounted explorer.
+
   await act(async () => refresh.reject(new Error("Offline")));
   expect(result.current.error).toBe("Offline");
   expect(result.current.results[0].trace.traceId).toBe("first");

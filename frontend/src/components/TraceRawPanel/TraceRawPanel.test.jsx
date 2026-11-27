@@ -4,6 +4,25 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TraceRawPanel } from "./TraceRawPanel";
 import { serializeValue } from "../AttributeList/AttributeList";
+
+test("registers delayed JSON and replaces the content node when the selected span changes", () => {
+  const contentRef = React.createRef();
+  const first = { spanId: "first", attributes: {} };
+  const { rerender, unmount } = render(
+    <TraceRawPanel span={first} loading contentRef={contentRef} />,
+  );
+  expect(contentRef.current).toBeNull();
+  rerender(<TraceRawPanel span={first} contentRef={contentRef} />);
+  const original = contentRef.current;
+  expect(original.tagName).toBe("PRE");
+  rerender(
+    <TraceRawPanel span={{ spanId: "second" }} contentRef={contentRef} />,
+  );
+  expect(contentRef.current).not.toBe(original);
+  expect(JSON.parse(contentRef.current.textContent).spanId).toBe("second");
+  unmount();
+  expect(contentRef.current).toBeNull();
+});
 test("preserves the complete supplied record and copies JSON without interpreting payload strings", async () => {
   const user = userEvent.setup();
   vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();

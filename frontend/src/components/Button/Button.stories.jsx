@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "./Button";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Primitives/Button", component: Button };
 
@@ -17,14 +16,12 @@ export const Default = {
 
 export const Pending = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <Button pending>Refreshing…</Button>;
   },
 };
 
 export const Disabled = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <Button disabled>Send</Button>;
   },
 };

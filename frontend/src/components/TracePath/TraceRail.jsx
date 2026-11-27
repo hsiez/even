@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useRef } from "react";
 
-// One SVG route with separate subpaths at step boundaries.
 export function railPath(points, cornerRadius = 0) {
   if (!points.length) return "";
   let path = `M ${points[0].x} ${points[0].y}`;
@@ -22,8 +21,6 @@ export function railPath(points, cornerRadius = 0) {
       gap / 4,
     );
     if (next.x > previous.x) {
-      // Enter a deeper level horizontally from the marker's left, so the
-      // parent column remains legible instead of making a diagonal S-bend.
       path += ` L ${previous.x} ${next.y - radius} Q ${previous.x} ${next.y} ${previous.x + radius} ${next.y} L ${next.x} ${next.y}`;
     } else {
       const middle = previous.y + gap / 2;
@@ -39,7 +36,7 @@ export function TraceRail({ contentRef }) {
   useLayoutEffect(() => {
     const path = pathRef.current;
     const guide = guideRef.current;
-    // Child layout effects can run before the parent wrapper's ref attaches.
+
     const content =
       contentRef.current ?? path?.closest(".even-trace-path-content");
     const tree = content?.querySelector('[role="tree"]');
@@ -67,7 +64,7 @@ export function TraceRail({ contentRef }) {
         guide.removeAttribute("d");
         return;
       }
-      // Work in local CSS coordinates, including inside a scaled preview.
+
       const style = getComputedStyle(content);
       const scaleX = box.width / parseFloat(style.width);
       const scaleY = box.height / parseFloat(style.height);
@@ -81,8 +78,7 @@ export function TraceRail({ contentRef }) {
         const point = {
           x: (marker.left + marker.width / 2 - box.left) / scaleX,
           y: (marker.top + marker.height / 2 - box.top) / scaleY,
-          // A new sibling/ancestor-level step starts its own path. Preserve
-          // genuine parent-to-child links if a trace records nested steps.
+
           breakBefore:
             isStep(row) &&
             !!previousStep &&
@@ -91,13 +87,12 @@ export function TraceRail({ contentRef }) {
         rows.set(row, point);
         return point;
       });
-      // The existing control radius resolves rem/caller overrides to pixels.
+
       const radius = markers.length
         ? parseFloat(getComputedStyle(markers[0]).borderTopLeftRadius) || 0
         : 0;
       path.setAttribute("d", railPath(points, radius));
 
-      // Persistent level references follow each expanded branch's extent.
       const groups = new Map(
         [...tree.querySelectorAll('[role="group"]')].map((group) => [
           group.id,

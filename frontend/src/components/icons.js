@@ -1,4 +1,3 @@
-// Semantic imports keep the icon vendor out of component and page callers.
 export {
   ListTree as TraceIcon,
   MessageSquare as ChatIcon,

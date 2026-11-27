@@ -1,6 +1,5 @@
 import { spanForest } from "../components/SpanWaterfall/SpanWaterfall";
 
-// Version-tolerant presentation only. Keep the supplied span objects intact.
 export function isActivation(span) {
   return (
     span.name === "agent.turn" ||
@@ -59,8 +58,6 @@ export function describeSpan(span) {
   };
 }
 
-// Remove only the current activation's presentation row. Keep the original
-// records and parent IDs intact for inspection, and retain child activations.
 export function pathSpans(spans, activationId) {
   return spans.filter(
     (span) => span.spanId !== activationId || !isActivation(span),
@@ -87,8 +84,6 @@ function ownTokenUsage(span) {
     : undefined;
 }
 
-// A step owns model usage in its execution, not usage in a child activation.
-// Stop at a model's recorded usage so nested SDK telemetry is not counted twice.
 export function traceTokenUsage(spans) {
   const nodes = new Map();
   function index(forest) {
@@ -156,8 +151,7 @@ export function traceScopes(spans) {
     if (scope) {
       result.push(scope.span);
       collect(scope.node.children);
-      // Partial exports can omit a parent. Keep unowned spans inspectable in
-      // the initial view rather than silently assigning them to a subagent.
+
       if (id === scopes.keys().next().value)
         for (const span of spans)
           if (!owners.get(span.spanId) && !result.includes(span))

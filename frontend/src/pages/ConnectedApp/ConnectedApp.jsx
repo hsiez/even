@@ -9,18 +9,22 @@ export function ConnectedApp({
   clientFactory = createApiClient,
   dataLabel = "Local Eve",
 }) {
-  const [inventory, setInventory] = useState();
-  const [error, setError] = useState("");
+  const [connection, setConnection] = useState({});
   const [attempt, setAttempt] = useState(0);
   const [theme, setTheme] = useState(
     () => document.documentElement.dataset.evenTheme ?? "dark",
   );
   const client = useMemo(() => clientFactory(), [clientFactory]);
+  const current =
+    connection.client === client &&
+    connection.attempt === attempt &&
+    connection.initialize === initialize;
+  const { inventory, error } = current ? connection : {};
+  function chooseTheme(nextTheme) {
+    document.documentElement.dataset.evenTheme = nextTheme;
+    setTheme(nextTheme);
+  }
   useEffect(() => {
-    document.documentElement.dataset.evenTheme = theme;
-  }, [theme]);
-  useEffect(() => {
-    setInventory(undefined);
     let alive = true;
     const controller = new AbortController();
     Promise.resolve()
@@ -28,10 +32,17 @@ export function ConnectedApp({
       .then(() => client.inventory({ signal: controller.signal }))
       .then(
         (value) => {
-          if (alive) setInventory(value);
+          if (alive)
+            setConnection({ client, attempt, initialize, inventory: value });
         },
         (failure) => {
-          if (alive && failure.name !== "AbortError") setError(failure.message);
+          if (alive && failure.name !== "AbortError")
+            setConnection({
+              client,
+              attempt,
+              initialize,
+              error: failure.message,
+            });
         },
       );
     return () => {
@@ -49,7 +60,6 @@ export function ConnectedApp({
             action={
               <Button
                 onClick={() => {
-                  setError("");
                   setAttempt((value) => value + 1);
                 }}
               >
@@ -83,7 +93,7 @@ export function ConnectedApp({
       dataSource={client}
       dataLabel={dataLabel}
       theme={theme}
-      onThemeChange={setTheme}
+      onThemeChange={chooseTheme}
     />
   );
 }

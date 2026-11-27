@@ -16,6 +16,7 @@ export function TraceRawPanel({
   error,
   onRetry,
   className,
+  contentRef,
   ...props
 }) {
   const usage =
@@ -38,6 +39,7 @@ export function TraceRawPanel({
         <Notice>Loading span…</Notice>
       ) : span ? (
         <PayloadViewer
+          contentRef={contentRef}
           key={span.spanId}
           value={span}
           label="raw span JSON"

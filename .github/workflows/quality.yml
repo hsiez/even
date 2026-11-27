@@ -1,0 +1,59 @@
+name: Quality
+on: [push, pull_request]
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+      - name: Install root tooling
+        run: npm ci
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+      - name: JavaScript and React rules
+        run: npm run lint:js
+      - name: Design-system rules
+        run: npm run lint:design
+      - name: Reviewed effect inventory
+        run: npm run lint:effects
+      - name: Linter regression tests
+        run: npm run test:lint
+  checks:
+    name: Tests and build
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+      - name: Install root tooling
+        run: npm ci
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+      - name: Backend tests
+        run: npm test
+      - name: Frontend tests and token freshness
+        run: npm --prefix frontend test -- --maxWorkers=2
+      - name: Frontend formatting
+        run: npm --prefix frontend run format:check
+      - name: Storybook build
+        run: npm --prefix frontend run build-storybook

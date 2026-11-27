@@ -3,7 +3,6 @@ import { test, expect, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TraceToolbar } from "./TraceToolbar";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("changes search without clearing filters and prevents duplicate refresh", async () => {
   const user = userEvent.setup(),

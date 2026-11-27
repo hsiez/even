@@ -294,7 +294,7 @@ test(
           match.source === 'agent.action.name' && match.spanId === spanId(2)
       )
     );
-    // Embedding from stdin must not pass --input-type through to a file worker.
+
     const embedded = promisify(execFile)(
       process.execPath,
       ['--input-type=module', '-'],

@@ -1,7 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 
-// Internal table presentation: preserve the original semantic content and its
-// accessible name. Only its painted portion is masked; the marker is decorative.
 export function CellOverflow({ children }) {
   const rootRef = useRef(null);
   const textRef = useRef(null);

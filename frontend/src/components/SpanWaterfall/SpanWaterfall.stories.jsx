@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { SpanWaterfall } from "./SpanWaterfall";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { spans } from "../../test/fixtures";
 
 export default { title: "Workbench/SpanWaterfall", component: SpanWaterfall };
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <SpanWaterfall spans={spans} defaultExpandedSpanIds={["root"]}>
         <SpanWaterfall.Tree />
@@ -34,7 +33,6 @@ export const Controlled = {
 
 export const MissingParent = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <SpanWaterfall spans={[{ ...spans[1], parentSpanId: "missing" }]}>
         <SpanWaterfall.Tree />
@@ -46,7 +44,6 @@ export const MissingParent = {
 
 export const Empty = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <SpanWaterfall>
         <SpanWaterfall.Tree />

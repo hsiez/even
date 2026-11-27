@@ -41,8 +41,6 @@ export function readInteractionDelay(element, purpose) {
   return readDuration(element, token);
 }
 
-// WAAPI cannot consume var(). Read the same resolved decisions CSS uses,
-// including caller overrides. The generated manifest supplies unthemed defaults.
 export function readMotionTiming(element, purpose) {
   const duration = tokens[`decision.motion.duration.${purpose}`];
   const easing = tokens[`decision.motion.easing.${purpose}`];

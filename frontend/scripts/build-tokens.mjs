@@ -1,12 +1,10 @@
 import StyleDictionary from "style-dictionary";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { format } from "prettier";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { createTokenConfig } from "../style-dictionary.config.js";
 
-// Style Dictionary owns parsing, merging, reference resolution, transforms and CSS formatting.
-// This orchestration only combines mode outputs and checks deterministic generated artifacts.
 export async function compileTokens() {
   const manifest = {
     themes: {},

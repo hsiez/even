@@ -1,10 +1,9 @@
 import React from "react";
-import { test, expect, vi } from "vitest";
+import { test, expect } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Conversation } from "./Conversation";
 import { ViewExecutionAction } from "../ViewExecutionAction/ViewExecutionAction";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("updates repeated message IDs without duplicate messages or executable markup", () => {
   const { rerender } = render(

@@ -2,8 +2,6 @@ function timestamp(value) {
   return value == null ? NaN : new Date(value).getTime();
 }
 
-// Caller owns trace filtering/sorting. Merge observed reloads into chronological
-// rows without attributing executions to a code revision or reordering traces.
 export function traceTimeline(traces, reloads, sort) {
   const direction = sort.direction === "ascending" ? 1 : -1;
   const seen = new Set();

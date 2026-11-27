@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Disclosure } from "./Disclosure";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Primitives/Disclosure", component: Disclosure };
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <Disclosure>
         <header>

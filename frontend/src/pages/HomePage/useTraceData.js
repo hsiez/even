@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { parseTraceQuery } from "../../search/traceSearch";
 
 const empty = {
@@ -13,26 +13,31 @@ export function useTraceData(source, { agentId, query }) {
   const [version, setVersion] = useState(0);
   const [state, setState] = useState(empty);
   const actions = useRef({});
-  const metadata = useRef({ source, agents: new Map() });
+  const [metadata, setMetadata] = useState(() => ({
+    source,
+    agents: new Map(),
+  }));
   const resource = JSON.stringify([agentId, query]);
   const key = JSON.stringify([resource, version]);
+  const request = useMemo(
+    () => ({ source, agentId, query, version }),
+    [source, agentId, query, version],
+  );
   const compatible = state.source === source && state.resource === resource;
+  const retained = useEffectEvent(() => ({ compatible, state }));
+  const valid = !!source && !!agentId && !parseTraceQuery(query).error;
   useEffect(() => {
     actions.current = {};
-    if (metadata.current.source !== source)
-      metadata.current = { source, agents: new Map() };
-    if (!source || !agentId || parseTraceQuery(query).error) {
-      setState({ ...empty, key, resource, source });
-      return;
-    }
+    if (!valid) return;
+    const previous = retained();
     let alive = true,
       busy = false,
       controller;
-    // Refresh the same resource in place. A new agent/query must never show
-    // another resource's rows, but refresh must not dismantle the current view.
+
     let current = {
-      ...(compatible ? state : empty),
+      ...(previous.compatible ? previous.state : empty),
       key,
+      request,
       resource,
       source,
       loading: true,
@@ -46,7 +51,8 @@ export function useTraceData(source, { agentId, query }) {
       if (!alive || busy) return;
       busy = true;
       controller = new AbortController();
-      publish({ ...current, loading: true, error: undefined, notice });
+      if (append || notice)
+        publish({ ...current, loading: true, error: undefined, notice });
       try {
         const [search, reloads] = await Promise.allSettled([
           source.search({
@@ -73,26 +79,32 @@ export function useTraceData(source, { agentId, query }) {
           },
           matches: matches.map((match) => ({ ...match, text: match.excerpt })),
         }));
-        const known = metadata.current.agents.get(agentId) ?? {
-          tools: [],
-          agents: [],
-        };
-        metadata.current.agents.set(agentId, {
-          tools: [
-            ...new Set([
-              ...known.tools,
-              ...results.flatMap(({ trace }) => trace.toolNames ?? []),
-            ]),
-          ],
-          agents: [
-            ...new Set([
-              ...known.agents,
-              ...results.flatMap(({ trace }) => [
-                trace.agentId,
-                ...(trace.agentNames ?? []),
+        setMetadata((previous) => {
+          const agents = new Map(
+            previous.source === source ? previous.agents : [],
+          );
+          const known = agents.get(agentId) ?? {
+            tools: [],
+            agents: [],
+          };
+          agents.set(agentId, {
+            tools: [
+              ...new Set([
+                ...known.tools,
+                ...results.flatMap(({ trace }) => trace.toolNames ?? []),
               ]),
-            ]),
-          ],
+            ],
+            agents: [
+              ...new Set([
+                ...known.agents,
+                ...results.flatMap(({ trace }) => [
+                  trace.agentId,
+                  ...(trace.agentNames ?? []),
+                ]),
+              ]),
+            ],
+          });
+          return { source, agents };
         });
         publish({
           ...current,
@@ -135,33 +147,33 @@ export function useTraceData(source, { agentId, query }) {
         busy = false;
       }
     }
-    publish(current);
     actions.current.loadMore = () =>
       current.nextCursor && load(current.nextCursor, true);
-    // Debounce a new text query, while an explicit refresh starts immediately.
-    const timer = setTimeout(() => load(), query && !compatible ? 200 : 0);
+
+    const timer =
+      query && !previous.compatible ? setTimeout(() => load(), 200) : undefined;
+    if (timer === undefined) void load();
     return () => {
       alive = false;
       clearTimeout(timer);
       controller?.abort();
     };
-  }, [source, key]);
-  const visible = compatible
-    ? {
-        ...state,
-        loading: state.key !== key || state.loading,
-        error: state.key === key ? state.error : undefined,
-      }
-    : {
-        ...empty,
-        loading: !!source && !!agentId && !parseTraceQuery(query).error,
-      };
+  }, [source, key, agentId, query, resource, valid, request]);
+  const visible =
+    valid && compatible
+      ? {
+          ...state,
+          loading: state.request !== request || state.loading,
+          error: state.request === request ? state.error : undefined,
+        }
+      : {
+          ...empty,
+          loading: valid,
+        };
   return {
     ...visible,
     suggestions:
-      metadata.current.source === source
-        ? metadata.current.agents.get(agentId)
-        : undefined,
+      metadata.source === source ? metadata.agents.get(agentId) : undefined,
     refresh: () => setVersion((value) => value + 1),
     loadMore: () => actions.current.loadMore?.(),
   };
@@ -171,22 +183,24 @@ export function useTraceDetail(source, agentId, traceId) {
   const [version, setVersion] = useState(0);
   const [state, setState] = useState({});
   const key = JSON.stringify([agentId, traceId, version]);
+  const request = useMemo(
+    () => ({ source, agentId, traceId, version }),
+    [source, agentId, traceId, version],
+  );
   useEffect(() => {
-    if (!source || !traceId) {
-      setState({ key });
-      return;
-    }
+    if (!source || !traceId) return;
     let alive = true;
     const controller = new AbortController();
-    setState({ key, loading: true });
     source.trace({ agentId, traceId, signal: controller.signal }).then(
       (trace) => {
-        if (alive) setState({ key, trace });
+        if (alive) setState({ key, request, source, trace });
       },
       (error) => {
         if (alive && error.name !== "AbortError")
           setState({
             key,
+            request,
+            source,
             error:
               error.status === 404
                 ? "This trace is no longer available."
@@ -198,9 +212,11 @@ export function useTraceDetail(source, agentId, traceId) {
       alive = false;
       controller.abort();
     };
-  }, [source, key]);
+  }, [source, key, agentId, traceId, request]);
   return {
-    ...(state.key === key ? state : { loading: !!source && !!traceId }),
+    ...(state.request === request && source && traceId
+      ? state
+      : { loading: !!source && !!traceId }),
     refresh: () => setVersion((value) => value + 1),
   };
 }

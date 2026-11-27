@@ -614,6 +614,9 @@
   --even-size-field-preferred: var(
     --even-dimension-256
   ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
+  --even-size-border-strong: var(
+    --even-stroke-strong
+  ); /** Emphasized separator or indicator stroke; independent of keyboard focus. */
   --even-size-border-control: var(
     --even-stroke-thin
   ); /** Persistent control border width; keep unchanged between rest and focus to preserve geometry. */
@@ -1261,6 +1264,9 @@
   --even-size-field-preferred: var(
     --even-dimension-256
   ); /** Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width. */
+  --even-size-border-strong: var(
+    --even-stroke-strong
+  ); /** Emphasized separator or indicator stroke; independent of keyboard focus. */
   --even-size-border-control: var(
     --even-stroke-thin
   ); /** Persistent control border width; keep unchanged between rest and focus to preserve geometry. */

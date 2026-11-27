@@ -25,8 +25,7 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
     response.setHeader('referrer-policy', 'no-referrer');
     response.setHeader('x-frame-options', 'DENY');
     response.setHeader('content-security-policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
-    // Browser writes may carry our exact origin. Foreign origins, null origins,
-    // and alternate Host headers remain forbidden before routing or file access.
+
     if (request.headers.host !== host || (request.headers.origin !== undefined && request.headers.origin !== origin)) {
       return json(response, 403, { error: 'Forbidden origin or host' });
     }
@@ -44,8 +43,7 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
     const cookie = Buffer.from(cookies.length === 1 ? cookies[0].slice(cookieName.length + 1) : '');
     const sameOriginBrowser = request.headers['sec-fetch-site'] === 'same-origin' || request.headers.origin === origin;
     const browserSession = sameOriginBrowser && cookie.length === browserExpected.length && timingSafeEqual(cookie, browserExpected);
-    // An explicit Authorization header must itself be valid; cookies do not
-    // turn invalid programmatic credentials into a successful request.
+
     if (!(request.headers.authorization !== undefined ? bearer : browserSession)) {
       return json(response, 401, { error: 'Even authentication required' });
     }
@@ -56,8 +54,7 @@ export async function startServer(adapter, { port = 0, eveHeaders, traceSearch =
     if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
       return json(response, 401, { error: 'Launch bearer token required' });
     }
-    // Cookie names include the port so simultaneous Even launches can coexist.
-    // No expiry makes this a browser-session cookie; its value rotates at launch.
+
     response.setHeader('set-cookie', 'even_browser_' + app.server.address().port + '=' + browserSecret + '; Path=/api/v1; HttpOnly; SameSite=Strict');
     json(response, 200, { connected: true });
   });

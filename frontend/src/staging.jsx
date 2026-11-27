@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Button } from "./components";
 import { HomePage } from "./pages";
@@ -13,9 +13,10 @@ function StagingApp() {
   const [traces, setTraces] = useState(previewTraces);
   const sequence = useRef(previewTraces.length);
   const [theme, setTheme] = useState("dark");
-  useEffect(() => {
-    document.documentElement.dataset.evenTheme = theme;
-  }, [theme]);
+  function chooseTheme(nextTheme) {
+    document.documentElement.dataset.evenTheme = nextTheme;
+    setTheme(nextTheme);
+  }
   return (
     <HomePage
       workspaceName="Staging workspace"
@@ -23,7 +24,7 @@ function StagingApp() {
       traces={traces}
       dataLabel="Staging · simulated data"
       theme={theme}
-      onThemeChange={setTheme}
+      onThemeChange={chooseTheme}
       actions={
         <>
           <Button

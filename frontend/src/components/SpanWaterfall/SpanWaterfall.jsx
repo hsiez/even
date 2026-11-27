@@ -52,7 +52,7 @@ function Root({
     </Context.Provider>
   );
 }
-// Normalize malformed parentage into a forest so missing parents and cycles cannot hide spans.
+
 export function spanForest(spans) {
   const nodes = new Map(
     spans.map((span) => [span.spanId, { span, children: [] }]),
@@ -114,8 +114,7 @@ function Tree({
         : previous.filter((id) => id !== spanId),
     );
   }
-  // Explicit ownership keeps the accessible child group attached to its
-  // parent without including descendant operation text in the parent label.
+
   function renderNodes(nodes) {
     return nodes.map(({ span, children }) => {
       const isExpanded = expanded.includes(span.spanId);

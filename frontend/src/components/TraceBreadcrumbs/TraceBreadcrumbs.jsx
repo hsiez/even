@@ -3,7 +3,6 @@ import { Button } from "../Button/Button";
 import { classes } from "../presentation";
 import { ParentExecutionIcon } from "../icons";
 
-// Ancestry is supplied by the host; a breadcrumb does not infer trace links.
 export function TraceBreadcrumbs({
   items = [],
   onNavigate,

@@ -1,9 +1,8 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { IconButton } from "./IconButton";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 test("provides a name independently of decorative content", async () => {
   const click = vi.fn(),

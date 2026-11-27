@@ -1,9 +1,9 @@
 import React from "react";
 import { test, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SessionSelector } from "./SessionSelector";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { sessions } from "../../test/fixtures";
 
 test("limits claims to current launch and exposes creation state and errors", async () => {
   const user = userEvent.setup(),

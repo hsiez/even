@@ -6,7 +6,7 @@ import { fold, projectTrace } from './projection.js';
 import { matchExcerpt, parseTraceQuery } from './query.js';
 
 const hash = (value) => createHash('sha256').update(value).digest('hex');
-// Bump when extraction or canonical-operation interpretation changes.
+
 const projectionVersion = 2;
 const fingerprintFiles = (files) =>
   hash(JSON.stringify([projectionVersion, files]));
@@ -43,9 +43,6 @@ export function validateSearch(options = {}) {
   return { q, agentId, sort, direction, limit, cursor, parsed };
 }
 
-// Text matching remains literal substring matching. Trigrams narrow candidates
-// for 3+ Unicode code points; instr is always the final check, including short
-// strings, punctuation and quoted FTS operators. No user SQL/FTS is executed.
 function literal(alias, term) {
   const value = fold(term);
   const params = [];
@@ -105,7 +102,7 @@ function compile(parsed) {
     } else if (field === 'has') conditions.push('t.errors>0');
     else {
       const expression = textPredicate(token, withTool ? 'o' : undefined);
-      // Tool filters and scoped payload predicates share a single operation.
+
       if (withTool && (field === 'text' || scopedFields.includes(field))) {
         opConditions.push(expression.sql);
         opParams.push(...expression.params);
@@ -295,7 +292,7 @@ export class TraceSearchIndex {
           message,
         });
     };
-    // Reconcile removed workspace members as well as source retention.
+
     const sourceIds = new Set(this.sources.map((source) => source.id));
     for (const row of this.db.prepare('SELECT pk,agent_id FROM traces').all())
       if (!sourceIds.has(row.agent_id)) this.remove(row.pk);
@@ -350,8 +347,7 @@ export class TraceSearchIndex {
             if (!parsed.length) unreadable++;
             else spans.push(...parsed);
           }
-          // Do not checkpoint a moving snapshot; filenames alone are insufficient
-          // to notice replacement, redaction, or removal of an existing segment.
+
           const after = await this.files(source, traceId);
           if (fingerprintFiles(after) !== fingerprint)
             throw new Error('Trace changed while indexing. Retry the search.');
@@ -376,7 +372,7 @@ export class TraceSearchIndex {
           this.put(source.id, traceId, fingerprint, projection, unreadable > 0);
           coverage.indexedTraces++;
         } catch (error) {
-          // Changed or unreadable source data must not leave old payloads searchable.
+
           if (
             previous &&
             this.db.prepare('SELECT 1 FROM traces WHERE pk=?').get(previous.pk)

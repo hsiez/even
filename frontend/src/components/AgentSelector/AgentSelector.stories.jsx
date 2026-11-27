@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AgentSelector } from "./AgentSelector";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { agents } from "../../test/fixtures";
 
 export default { title: "Workbench/AgentSelector", component: AgentSelector };
 
@@ -19,14 +19,12 @@ export const Default = {
 
 export const Empty = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <AgentSelector agents={[]} />;
   },
 };
 
 export const UnknownSelection = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <AgentSelector agents={agents} value="removed" />;
   },
 };

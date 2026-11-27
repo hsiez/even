@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TraceToolbar } from "./TraceToolbar";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
 
 export default { title: "Workbench/TraceToolbar", component: TraceToolbar };
 

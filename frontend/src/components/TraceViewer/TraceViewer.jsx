@@ -1,7 +1,7 @@
 import React, {
   createContext,
   useContext,
-  useLayoutEffect,
+  useCallback,
   useMemo,
   useRef,
   useState,
@@ -21,6 +21,7 @@ import {
 import { ScopeMotion } from "./ScopeMotion";
 
 const Context = createContext(null);
+const emptySpans = [];
 function useViewer() {
   const context = useContext(Context);
   if (!context) throw new Error("TraceViewer parts require <TraceViewer>.");
@@ -38,7 +39,7 @@ function Controller({
   ref,
   ...props
 }) {
-  const spans = trace?.spans ?? [];
+  const spans = trace?.spans ?? emptySpans;
   const model = useMemo(() => traceScopes(spans), [spans]);
   const usage = useMemo(() => traceTokenUsage(spans), [spans]);
   const [requestedScope, setScope] = useState(initialActivationId);
@@ -67,7 +68,7 @@ function Controller({
   }
   function navigate(id) {
     if (id === scopeId || !model.scopes.has(id)) return;
-    // Retain the outgoing default too, before its children unmount.
+
     const entering =
       model.scopes.get(id).path.length >
       (model.scopes.get(scopeId)?.path.length ?? 0);
@@ -126,7 +127,6 @@ function Controller({
   );
 }
 function Root(props) {
-  // Each trace owns an independent drill-in history; another trace resets it.
   return <Controller key={props.trace?.traceId ?? "empty"} {...props} />;
 }
 function Breadcrumbs(props) {
@@ -158,28 +158,58 @@ function Path(props) {
     scrollPositions,
     focusRequested,
   } = useViewer();
-  const ref = useRef(null);
-  useLayoutEffect(() => {
-    const node = ref.current;
-    const position = scrollPositions.current.get(scopeId);
-    node.scrollTop = position?.top ?? 0;
-    node.scrollLeft = position?.left ?? 0;
-    if (focusRequested.current) {
-      const target =
-        [...node.querySelectorAll('[role="treeitem"]')].find(
-          (item) => item.dataset.spanId === view.selected,
-        ) ?? node.querySelector('[role="treeitem"]');
-      target?.focus({ preventScroll: true });
-      focusRequested.current = false;
-    }
-  }, [scopeId]);
+  const restored = useRef(null);
+  const hasSpans = scopedSpans.length > 0;
+  const attach = useCallback(
+    (node) => {
+      if (!node) return;
+      if (loading || error || !hasSpans) {
+        restored.current = null;
+        return;
+      }
+      if (
+        restored.current?.node === node &&
+        restored.current.scopeId === scopeId &&
+        !focusRequested.current
+      )
+        return;
+      const position = scrollPositions.current.get(scopeId);
+      node.scrollTop = position?.top ?? 0;
+      node.scrollLeft = position?.left ?? 0;
+      if (focusRequested.current) {
+        const target =
+          [...node.querySelectorAll('[role="treeitem"]')].find(
+            (item) => item.dataset.spanId === view.selected,
+          ) ?? node.querySelector('[role="treeitem"]');
+        if (target) {
+          target.focus({ preventScroll: true });
+          focusRequested.current = false;
+        }
+      }
+      restored.current = { node, scopeId };
+    },
+    [
+      scopeId,
+      scrollPositions,
+      focusRequested,
+      view.selected,
+      loading,
+      error,
+      hasSpans,
+    ],
+  );
   return (
     <div
       className="even-trace-viewer-path"
       data-trace-surface="path"
-      ref={ref}
+      ref={attach}
       onScroll={(event) => {
-        if (event.target === event.currentTarget)
+        if (
+          !loading &&
+          !error &&
+          hasSpans &&
+          event.target === event.currentTarget
+        )
           scrollPositions.current.set(scopeId, {
             top: event.currentTarget.scrollTop,
             left: event.currentTarget.scrollLeft,
@@ -224,21 +254,20 @@ function Raw(props) {
     scopeId,
     scrollPositions,
   } = useViewer();
-  const ref = useRef(null);
   const key = JSON.stringify(["raw", scopeId, selected?.spanId]);
-  useLayoutEffect(() => {
-    const node = ref.current.querySelector("pre");
-    const position = scrollPositions.current.get(key);
-    if (node && position) {
-      node.scrollTop = position.top;
-      node.scrollLeft = position.left;
-    }
-  }, [key, loading, error]);
+  const attachContent = useCallback(
+    (node) => {
+      if (!node) return;
+      const position = scrollPositions.current.get(key);
+      node.scrollTop = position?.top ?? 0;
+      node.scrollLeft = position?.left ?? 0;
+    },
+    [key, scrollPositions],
+  );
   return (
     <div
       className="even-trace-viewer-raw"
       data-trace-surface="raw"
-      ref={ref}
       onScrollCapture={(event) => {
         if (event.target.tagName === "PRE")
           scrollPositions.current.set(key, {
@@ -248,6 +277,7 @@ function Raw(props) {
       }}
     >
       <TraceRawPanel
+        contentRef={attachContent}
         {...props}
         span={selected}
         tokenUsage={tokenUsage}

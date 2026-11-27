@@ -1,0 +1,47 @@
+{
+  "frontend/.storybook/preview.js#Theme.useEffect": {
+    "count": 1,
+    "system": "Storybook document theme for portal inheritance",
+    "cleanup": "Host-owned immediate document write; no retained resource."
+  },
+  "frontend/src/components/Conversation/Conversation.jsx#Conversation.useLayoutEffect": {
+    "count": 1,
+    "system": "Rendered message log geometry and content",
+    "cleanup": "Disconnect MutationObserver and ResizeObserver."
+  },
+  "frontend/src/components/TracePath/TraceRail.jsx#TraceRail.useLayoutEffect": {
+    "count": 1,
+    "system": "Measured SVG rail and DOM marker positions",
+    "cleanup": "Disconnect resize and mutation observers."
+  },
+  "frontend/src/components/TraceTable/CellOverflow.jsx#CellOverflow.useLayoutEffect": {
+    "count": 1,
+    "system": "Rendered grapheme boundaries and font readiness",
+    "cleanup": "Disconnect ResizeObserver, remove font listener, invalidate pending font callback."
+  },
+  "frontend/src/components/TraceTable/useColumnWidths.js#useColumnWidths.useLayoutEffect": {
+    "count": 1,
+    "system": "Root-font-sensitive column geometry",
+    "cleanup": "Disconnect the column ResizeObserver."
+  },
+  "frontend/src/components/motionInput.js#useMotionInput.useEffect": {
+    "count": 1,
+    "system": "Shared document keyboard/pointer presentation preference",
+    "cleanup": "Release reference-counted document listeners."
+  },
+  "frontend/src/pages/ConnectedApp/ConnectedApp.jsx#ConnectedApp.useEffect": {
+    "count": 1,
+    "system": "Authenticated inventory request",
+    "cleanup": "Abort the request and invalidate stale result delivery."
+  },
+  "frontend/src/pages/HomePage/useTraceData.js#useTraceData.useEffect": {
+    "count": 1,
+    "system": "Search, pagination, reload metadata and text-query debounce",
+    "cleanup": "Clear debounce timeout, abort request controller and invalidate stale result delivery."
+  },
+  "frontend/src/pages/HomePage/useTraceData.js#useTraceDetail.useEffect": {
+    "count": 1,
+    "system": "Selected trace request",
+    "cleanup": "Abort request controller and invalidate stale result delivery."
+  }
+}

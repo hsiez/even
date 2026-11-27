@@ -1766,6 +1766,13 @@
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
           "type": "dimension"
         },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
+          "type": "dimension"
+        },
         "decision.size.border.control": {
           "value": "1px",
           "name": "even-size-border-control",
@@ -3621,6 +3628,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {
@@ -5482,6 +5496,13 @@
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
           "type": "dimension"
         },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
+          "type": "dimension"
+        },
         "decision.size.border.control": {
           "value": "1px",
           "name": "even-size-border-control",
@@ -7337,6 +7358,13 @@
           "name": "even-size-field-preferred",
           "reference": "options.dimension.256",
           "description": "Preferred width for a flexible form field; allow it to grow or shrink independently of navigation width.",
+          "type": "dimension"
+        },
+        "decision.size.border.strong": {
+          "value": "2px",
+          "name": "even-size-border-strong",
+          "reference": "options.stroke.strong",
+          "description": "Emphasized separator or indicator stroke; independent of keyboard focus.",
           "type": "dimension"
         },
         "decision.size.border.control": {

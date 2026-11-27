@@ -14,7 +14,7 @@ test("reuses tree navigation and separates expansion, focus and selection", asyn
   expect(screen.queryByRole("heading", { name: "Execution path" })).toBeNull();
   await user.tab();
   expect(screen.queryByRole("treeitem", { name: /^Support\b/ })).toBeNull();
-  expect(screen.getByRole("treeitem", { name: /^Step\ 0\b/ })).toHaveFocus();
+  expect(screen.getByRole("treeitem", { name: /^Step 0\b/ })).toHaveFocus();
   await user.keyboard("{ArrowRight}{ArrowRight}");
   expect(
     screen.getByRole("treeitem", { name: /^Model chat fixture-model\b/ }),

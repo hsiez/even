@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { ViewExecutionAction } from "./ViewExecutionAction";
-import { trace, spans, agents, sessions } from "../../test/fixtures";
+import { trace } from "../../test/fixtures";
 
 export default {
   title: "Workbench/ViewExecutionAction",
@@ -9,7 +9,6 @@ export default {
 
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <ViewExecutionAction
         traces={[trace]}
@@ -21,21 +20,18 @@ export const Default = {
 
 export const Pending = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <ViewExecutionAction pending />;
   },
 };
 
 export const Unavailable = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return <ViewExecutionAction />;
   },
 };
 
 export const Multiple = {
   render: function Example() {
-    const [value, setValue] = useState("");
     return (
       <ViewExecutionAction
         traces={[trace, { traceId: "b" }]}

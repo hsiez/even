@@ -1,6 +1,6 @@
 import "../components.css";
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Button } from "../Button/Button";
 import { IconButton } from "../IconButton/IconButton";
 import {
@@ -14,34 +14,28 @@ export function CopyButton({
   iconOnly = false,
   ...props
 }) {
-  const [status, setStatus] = useState("");
-  const [pending, setPending] = useState(false);
-  const busy = useRef(false);
-  const revision = useRef(0);
-  useEffect(() => {
-    revision.current++;
-    setStatus("");
-    setPending(false);
-    busy.current = false;
-    return () => {
-      revision.current++;
-    };
-  }, [value]);
+  const fresh = () => ({ value, status: "", pending: false, token: {} });
+  const [request, setRequest] = useState(fresh);
+  const busy = useRef(null);
+  if (request.value !== value) setRequest(fresh());
+  const { status, pending, token } = request;
+  function update(next) {
+    setRequest((current) =>
+      current.token === token ? { ...current, ...next } : current,
+    );
+  }
   async function copy() {
-    if (busy.current) return;
-    busy.current = true;
-    setPending(true);
-    const current = revision.current;
+    if (busy.current === token) return;
+    busy.current = token;
+    update({ pending: true });
     try {
       await navigator.clipboard.writeText(value);
-      if (current === revision.current) setStatus("Copied.");
+      update({ status: "Copied." });
     } catch {
-      if (current === revision.current) setStatus("Copy failed. Try again.");
+      update({ status: "Copy failed. Try again." });
     } finally {
-      if (current === revision.current) {
-        busy.current = false;
-        setPending(false);
-      }
+      if (busy.current === token) busy.current = null;
+      update({ pending: false });
     }
   }
   const Control = iconOnly ? IconButton : Button;

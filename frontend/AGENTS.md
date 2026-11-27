@@ -12,6 +12,8 @@
 
 ## Construction and verification
 
+- Run `npm run lint` from the repository root (or this frontend folder) before finishing. See `../docs/design-system/linting.md` for decision-value enforcement, the no-comment policy, reviewed effect sites and lifecycle cleanup requirements. New effects need an explicit external-system/lifetime review; do not add timers to defer React state resets or bypass lint.
+
 - Read `../docs/design-system/component-exemplar.md` and `README.md` before changing component APIs.
 - Each public component lives in `src/components/Name/` with `Name.jsx`, `Name.stories.jsx`, and `Name.test.jsx`. Keep compound parts together until splitting improves clarity.
 - Shared presentation lives in `src/components/components.css`, in the `even-components` cascade layer. Consume decision tokens for colors, spacing and sizing; keep palette/scale choices in JSON. Read `tokens/README.md` before changing foundations. Preserve `className` (including Base UI state callbacks), `style`, refs and primitive event props when wrapping parts. Avoid CSS frameworks and custom interaction engines.

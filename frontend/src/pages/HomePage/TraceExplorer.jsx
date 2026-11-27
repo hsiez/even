@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Button,
   InspectorPanel,
@@ -26,7 +26,6 @@ import { useTraceData, useTraceDetail } from "./useTraceData";
 const startedAt = (trace) =>
   trace.startedAt == null ? NaN : Date.parse(trace.startedAt);
 
-// Private controller retained per tab; inactive panels unmount their content.
 export function TraceExplorer({
   agents = [],
   traces: suppliedTraces = [],
@@ -46,23 +45,18 @@ export function TraceExplorer({
   const [detailTab, setDetailTab] = useState("spans");
   const [columnWidths, setColumnWidths] = useState({});
   const [selection, setSelection] = useState();
-  const [spanId, setSpanId] = useState();
-  const [expandedSpanIds, setExpandedSpanIds] = useState([]);
+  const [requestedSpanId, setSpanId] = useState();
+  const [requestedExpandedIds, setExpandedSpanIds] = useState();
   const [focusInspector, setFocusInspector] = useState(false);
-  const viewRef = useRef(null);
   const operationRef = useRef(null);
   const scroll = useRef({ top: 0, left: 0 });
-  useEffect(() => {
-    if (!active) setFocusInspector(false);
-  }, [active]);
-  useLayoutEffect(() => {
-    if (!active || !viewRef.current) return;
-    viewRef.current.scrollTop = scroll.current.top;
-    const table = viewRef.current.querySelector(
-      ".even-home-results .even-table-scroll",
-    );
-    if (table) table.scrollLeft = scroll.current.left;
-  }, [active]);
+  if (!active && focusInspector) setFocusInspector(false);
+  const attachView = useCallback((node) => {
+    if (node) node.scrollTop = scroll.current.top;
+  }, []);
+  const attachTable = useCallback((node) => {
+    if (node) node.scrollLeft = scroll.current.left;
+  }, []);
   const remote = useTraceData(dataSource, { agentId, query });
   const traces = dataSource
     ? remote.results.map((result) => result.trace)
@@ -85,19 +79,14 @@ export function TraceExplorer({
   const filtered = searchResults
     .map((result) => result.trace)
     .sort((a, b) => {
-      if (dataSource) return 0; // The backend orders the full result set before pagination.
+      if (dataSource) return 0;
       const left = startedAt(a),
         right = startedAt(b);
-      // The explorer always shows the most recent traces first; unknowns last.
+
       if (!Number.isFinite(left)) return Number.isFinite(right) ? 1 : 0;
       if (!Number.isFinite(right)) return -1;
       return right - left;
     });
-  useLayoutEffect(() => {
-    operationRef.current = viewRef.current?.querySelector(
-      '.even-trace-operation-action[aria-pressed="true"]',
-    );
-  }, [active, selection?.traceId, filtered.length]);
   const selectedSummary =
     (!error || dataSource) &&
     (filtered.find((trace) => trace.traceId === selection?.traceId) ??
@@ -108,23 +97,20 @@ export function TraceExplorer({
     (dataSource
       ? { ...selectedSummary, spans: detail.trace?.spans ?? [] }
       : selectedSummary);
-  useEffect(() => {
-    if (!detail.trace) return;
-    const next =
-      spanId ?? detail.trace.spans?.find((span) => !span.parentSpanId)?.spanId;
-    setSpanId(next);
-    setExpandedSpanIds(expandedAncestors(detail.trace.spans ?? [], next));
-  }, [detail.trace]);
-  useEffect(() => {
-    if (
-      !dataSource &&
-      selection &&
-      (error || !traces.some((trace) => trace.traceId === selection.traceId))
-    ) {
-      setSelection(undefined);
-      setSpanId(undefined);
-    }
-  }, [dataSource, error, traces, selection]);
+  const spanId =
+    requestedSpanId ??
+    selected?.spans?.find((span) => !span.parentSpanId)?.spanId;
+  const expandedSpanIds =
+    requestedExpandedIds ?? expandedAncestors(selected?.spans ?? [], spanId);
+  if (
+    !dataSource &&
+    selection &&
+    (error || !traces.some((trace) => trace.traceId === selection.traceId))
+  ) {
+    setSelection(undefined);
+    setSpanId(undefined);
+    setExpandedSpanIds(undefined);
+  }
   function changeFilter(update) {
     setSelection(undefined);
     setSpanId(undefined);
@@ -156,12 +142,10 @@ export function TraceExplorer({
           {header}
           <div
             className="even-home-explorer"
-            ref={viewRef}
+            ref={attachView}
             onScrollCapture={(event) => {
               if (event.target === event.currentTarget)
                 scroll.current.top = event.target.scrollTop;
-              if (event.target.matches(".even-home-results .even-table-scroll"))
-                scroll.current.left = event.target.scrollLeft;
             }}
           >
             <div className="even-home-explorer-content">
@@ -292,11 +276,17 @@ export function TraceExplorer({
                   (!error || dataSource) &&
                   filtered.length > 0 && (
                     <TraceTable
+                      scrollRef={attachTable}
+                      onScroll={(event) => {
+                        if (event.target === event.currentTarget)
+                          scroll.current.left = event.currentTarget.scrollLeft;
+                      }}
                       traces={filtered}
                       reloads={dataSource ? remote.reloads : []}
                       columnWidths={columnWidths}
                       onColumnWidthsChange={setColumnWidths}
                       selectedTraceId={selected?.traceId}
+                      selectedOperationRef={operationRef}
                       renderOperationDetail={
                         normalizedQuery
                           ? (trace) => {
@@ -336,11 +326,13 @@ export function TraceExplorer({
                             ?.spans?.find((span) => !span.parentSpanId)?.spanId;
                         setSpanId(matchedSpan);
                         setExpandedSpanIds(
-                          expandedAncestors(
-                            filtered.find((trace) => trace.traceId === id)
-                              ?.spans ?? [],
-                            matchedSpan,
-                          ),
+                          dataSource
+                            ? undefined
+                            : expandedAncestors(
+                                filtered.find((trace) => trace.traceId === id)
+                                  ?.spans ?? [],
+                                matchedSpan,
+                              ),
                         );
                       }}
                     />
@@ -425,7 +417,7 @@ export function TraceExplorer({
                                           setSpanId(match.spanId);
                                           setExpandedSpanIds((previous) => [
                                             ...new Set([
-                                              ...previous,
+                                              ...(previous ?? expandedSpanIds),
                                               ...expandedAncestors(
                                                 selected.spans ?? [],
                                                 match.spanId,

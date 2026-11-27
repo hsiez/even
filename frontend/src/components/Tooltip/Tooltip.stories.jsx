@@ -3,7 +3,7 @@ import { Tooltip } from "./Tooltip";
 export default { title: "Primitives/Tooltip", component: Tooltip };
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <Tooltip.Provider delay={0}>

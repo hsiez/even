@@ -4,7 +4,6 @@ import { RadioGroup } from "@base-ui/react/radio-group";
 import { classes } from "../presentation";
 import { LightThemeIcon, DarkThemeIcon } from "../icons";
 
-// The host owns the document theme. Base UI owns selection and keyboard input.
 export function ThemeToggle({ className, ...props }) {
   return (
     <RadioGroup

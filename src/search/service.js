@@ -1,7 +1,6 @@
 import { Worker } from 'node:worker_threads';
 import { validateSearch } from './index.js';
 
-// A lazy worker keeps passive inventory/session APIs independent of indexing.
 export function createTraceSearch(adapter) {
   let worker,
     sequence = 0,
@@ -21,8 +20,7 @@ export function createTraceSearch(adapter) {
       throw unavailable('Trace search requires a project-backed Eve adapter.');
     const active = new Worker(new URL('./worker.js', import.meta.url), {
       workerData: { project: adapter.project },
-      // This worker is plain JS. Host/test/entrypoint flags can be invalid for
-      // workers, including --input-type and V8 options expanded by node --test.
+
       execArgv: [],
       resourceLimits: { maxOldGenerationSizeMb: 512 },
     });

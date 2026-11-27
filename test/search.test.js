@@ -304,8 +304,6 @@ test('literal payload strings survive indexing and old projections rebuild witho
   for (const q of ['output:1234567890123456800', 'output:1000'])
     assert.equal((await index.search({ q })).total, 0, q);
 
-  // Seed the previous projection's checkpoint and missing content. The spool
-  // stays unchanged, so recovery must come from projection version invalidation.
   const files = await index.files(f.sources[0], id(70));
   const oldFingerprint = createHash('sha256')
     .update(JSON.stringify([1, files]))

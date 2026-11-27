@@ -1,6 +1,6 @@
 import { classes } from "../presentation";
 import React from "react";
-import { createContext, useContext, useEffect, useId, useRef } from "react";
+import { createContext, useContext, useCallback, useId } from "react";
 const Context = createContext(null);
 function useInspector() {
   const value = useContext(Context);
@@ -16,28 +16,30 @@ function Root({
   children,
   ...props
 }) {
-  const ref = useRef(null);
   const id = useId();
-  useEffect(() => {
-    if (!open) return;
-    const previous = returnFocusRef?.current ?? document.activeElement;
-    if (autoFocus) ref.current?.focus();
-    const panel = ref.current;
-    return () => {
-      if (
-        panel?.contains(document.activeElement) ||
-        document.activeElement === document.body
-      )
-        previous?.focus?.();
-    };
-  }, [open, returnFocusRef, autoFocus]);
+  const attach = useCallback(
+    (panel) => {
+      if (!panel) return;
+      const document = panel.ownerDocument;
+      const previous = returnFocusRef?.current ?? document.activeElement;
+      if (autoFocus) panel.focus();
+      return () => {
+        if (
+          panel?.contains(document.activeElement) ||
+          document.activeElement === document.body
+        )
+          previous?.focus?.();
+      };
+    },
+    [returnFocusRef, autoFocus],
+  );
   if (!open) return null;
   return (
     <Context.Provider value={{ onClose, id }}>
       <aside
         {...props}
         className={classes("even-inspector", props.className)}
-        ref={ref}
+        ref={attach}
         tabIndex={-1}
         aria-label={label}
       >

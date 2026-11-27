@@ -2,8 +2,6 @@ import React from "react";
 import { readMotionTiming } from "../../tokens/motion";
 import { observeMotionInput, isKeyboardMotion } from "../motionInput";
 
-// The outgoing pixels are decoration only. The live scope, accessible tree and
-// focus change immediately; no navigation or data waits for an animation.
 export class ScopeMotion extends React.Component {
   root = React.createRef();
   overlay = React.createRef();
@@ -56,7 +54,7 @@ export class ScopeMotion extends React.Component {
     const panels = [...root.querySelectorAll("[data-trace-surface]")];
     return panels.map((node) => {
       const clone = node.cloneNode(true);
-      // Never duplicate live IDs, keyboard targets or accessibility ownership.
+
       for (const item of [clone, ...clone.querySelectorAll("*")]) {
         for (const name of [
           "id",
@@ -96,8 +94,7 @@ export class ScopeMotion extends React.Component {
     const reduced = this.media?.matches;
     const timing = readMotionTiming(root, reduced ? "reduced" : "move-large");
     if (!timing.duration) return;
-    // Resolve the existing spacing decision to pixels for WAAPI, including
-    // caller overrides and rem/calc values, without duplicating a scale value.
+
     const probe = root.ownerDocument.createElement("div");
     probe.style.cssText =
       "position:absolute;width:var(--even-space-gap-group);visibility:hidden";
@@ -140,7 +137,7 @@ export class ScopeMotion extends React.Component {
       .then(() => {
         if (this.animations === current) this.stop();
       })
-      .catch(() => {}); // Interruption cancels decoration, never the navigation.
+      .catch(() => {});
   }
 
   render() {

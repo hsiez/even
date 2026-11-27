@@ -3,7 +3,7 @@ import { Popover } from "./Popover";
 export default { title: "Primitives/Popover", component: Popover };
 export const Default = {
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <Popover>
@@ -35,7 +35,7 @@ export const InitiallyOpen = {
     },
   },
   render: function Example() {
-    const [value, setValue] = useState("");
+    const [value] = useState("");
     return (
       <>
         <Popover defaultOpen>

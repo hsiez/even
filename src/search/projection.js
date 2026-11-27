@@ -1,6 +1,5 @@
 import { searchContent } from './content.js';
-// Eve owns identity, deduplication and wrapper/execution pairing. This module
-// projects their output into searchable values with the original source intact.
+
 export const fold = (value) => String(value ?? '').toLowerCase();
 
 export function projectTrace(agentId, traceId, rawSpans, helpers) {
@@ -44,8 +43,7 @@ export function projectTrace(agentId, traceId, rawSpans, helpers) {
       ['reply', 'gen_ai.output.messages'],
     ]) {
       if (attributes[source] === undefined) continue;
-      // Keep payload leaves separate: phrases must not cross message boundaries
-      // or synthesize a match from adjacent unrelated JSON fields.
+
       for (const leaf of searchContent(
         attributes[source],
         '$',

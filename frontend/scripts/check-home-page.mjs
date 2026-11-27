@@ -43,7 +43,7 @@ export async function checkHomePage(page, base, theme, axe) {
     beforeFocus,
     "Search focus does not alter layout geometry",
   );
-  // Decisions remain independently adjustable without changing focus geometry.
+
   await search.evaluate((node) => {
     node.style.setProperty("--even-size-border-control", "2px");
     node.style.setProperty("--even-size-focus-inset", "3px");
@@ -534,9 +534,6 @@ async function checkSearchPrototype(page, base, theme, axe) {
       await page.evaluate(async () =>
         (
           await window.axe.run(document.body, {
-            // Base UI hides the outside accessibility tree while its typeable
-            // combobox is open, then reveals it on Tab. Axe's static focus rule
-            // flags those outside controls; verify that transition below.
             rules: {
               region: { enabled: false },
               "aria-hidden-focus": { enabled: false },

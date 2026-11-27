@@ -23,7 +23,7 @@ export default {
       },
     },
   },
-  // The browser gate owns axe runs; the panel remains available on demand.
+
   initialGlobals: { theme: "dark", a11y: { manual: true } },
   decorators: [
     (Story, context) =>
